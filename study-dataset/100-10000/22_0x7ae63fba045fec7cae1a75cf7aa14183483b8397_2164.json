@@ -1,0 +1,927 @@
+[
+    {
+        "transactions": 2164,
+        "function_num": 22
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC165).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "currentEthOverflowOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function currentEthOverflowOf(uint256 _projectId)\n    external\n    view\n    virtual\n    override\n    returns (uint256)\n  {\n    // Get this terminal's current overflow.\n    uint256 _overflow = store.currentOverflowOf(this, _projectId);\n\n    // Adjust the decimals of the fixed point number if needed to have 18 decimals.\n    uint256 _adjustedOverflow = (decimals == 18)\n      ? _overflow\n      : JBFixedPointNumber.adjustDecimals(_overflow, decimals, 18);\n\n    // Return the amount converted to ETH.\n    return\n      (currency == JBCurrencies.ETH)\n        ? _adjustedOverflow\n        : PRBMath.mulDiv(\n          _adjustedOverflow,\n          10**decimals,\n          prices.priceFor(currency, JBCurrencies.ETH, decimals)\n        );\n  }",
+        "comments": [
+            "",
+            "  //*********************************************************************//",
+            "  // ------------------------- external views -------------------------- //",
+            "  //*********************************************************************//",
+            "",
+            "  /**",
+            "    @notice",
+            "    Gets the current overflowed amount in this terminal for a specified project, in terms of ETH.",
+            "",
+            "    @dev",
+            "    The current overflow is represented as a fixed point number with 18 decimals.",
+            "",
+            "    @param _projectId The ID of the project to get overflow for.",
+            "",
+            "    @return The current amount of ETH overflow that project has in this terminal, as a fixed point number with 18 decimals.",
+            "  */",
+            "  "
+        ],
+        "comt": "\n  //*********************************************************************//\n  // ------------------------- external views -------------------------- //\n  //*********************************************************************//\n\n  /**\n    @notice\n    Gets the current overflowed amount in this terminal for a specified project, in terms of ETH.\n\n    @dev\n    The current overflow is represented as a fixed point number with 18 decimals.\n\n    @param _projectId The ID of the project to get overflow for.\n\n    @return The current amount of ETH overflow that project has in this terminal, as a fixed point number with 18 decimals.\n  */\n  ",
+        "@notice\n": "Gets the current overflowed amount in this terminal for a specified project, in terms of ETH.",
+        "@dev\n": "The current overflow is represented as a fixed point number with 18 decimals.",
+        "@param1": "_projectId The ID of the project to get overflow for.",
+        "@return1": "The current amount of ETH overflow that project has in this terminal, as a fixed point number with 18 decimals.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "heldFeesOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function heldFeesOf(uint256 _projectId) external view override returns (JBFee[] memory) {\n    return _heldFeesOf[_projectId];\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    The fees that are currently being held to be processed later for each project.",
+            "",
+            "    @param _projectId The ID of the project for which fees are being held.",
+            "",
+            "    @return An array of fees that are being held.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    The fees that are currently being held to be processed later for each project.\n\n    @param _projectId The ID of the project for which fees are being held.\n\n    @return An array of fees that are being held.\n  */\n",
+        "@notice\n": "The fees that are currently being held to be processed later for each project.",
+        "@param1": "_projectId The ID of the project for which fees are being held.",
+        "@return1": "An array of fees that are being held.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 _interfaceId)\n    public\n    view\n    virtual\n    override(JBSingleTokenPaymentTerminal, IERC165)\n    returns (bool)\n  {\n    return\n      _interfaceId == type(IJBPayoutRedemptionPaymentTerminal).interfaceId ||\n      _interfaceId == type(IJBPayoutTerminal).interfaceId ||\n      _interfaceId == type(IJBAllowanceTerminal).interfaceId ||\n      _interfaceId == type(IJBRedemptionTerminal).interfaceId ||\n      _interfaceId == type(IJBOperatable).interfaceId ||\n      super.supportsInterface(_interfaceId);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Indicates if this contract adheres to the specified interface.",
+            "",
+            "    @dev ",
+            "    See {IERC165-supportsInterface}.",
+            "",
+            "    @param _interfaceId The ID of the interface to check for adherance to.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Indicates if this contract adheres to the specified interface.\n\n    @dev \n    See {IERC165-supportsInterface}.\n\n    @param _interfaceId The ID of the interface to check for adherance to.\n  */\n",
+        "@notice\n": "Indicates if this contract adheres to the specified interface.",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "@param1": "_interfaceId The ID of the interface to check for adherance to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pay",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "name": "_beneficiary",
+                "type": "address"
+            },
+            {
+                "name": "_minReturnedTokens",
+                "type": "uint256"
+            },
+            {
+                "name": "_preferClaimedTokens",
+                "type": "bool"
+            },
+            {
+                "name": "_memo",
+                "type": "string calldata"
+            },
+            {
+                "name": "_metadata",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function pay(\n    uint256 _projectId,\n    uint256 _amount,\n    address _token,\n    address _beneficiary,\n    uint256 _minReturnedTokens,\n    bool _preferClaimedTokens,\n    string calldata _memo,\n    bytes calldata _metadata\n  ) external payable virtual override isTerminalOf(_projectId) returns (uint256) {\n    _token; // Prevents unused var compiler and natspec complaints.\n\n    // ETH shouldn't be sent if this terminal's token isn't ETH.\n    if (token != JBTokens.ETH) {\n      if (msg.value > 0) revert NO_MSG_VALUE_ALLOWED();\n\n      // Transfer tokens to this terminal from the msg sender.\n      _transferFrom(msg.sender, payable(address(this)), _amount);\n    }\n    // If this terminal's token is ETH, override _amount with msg.value.\n    else _amount = msg.value;\n\n    return\n      _pay(\n        _amount,\n        msg.sender,\n        _projectId,\n        _beneficiary,\n        _minReturnedTokens,\n        _preferClaimedTokens,\n        _memo,\n        _metadata\n      );\n  }",
+        "comments": [
+            "",
+            "  //*********************************************************************//",
+            "  // ---------------------- external transactions ---------------------- //",
+            "  //*********************************************************************//",
+            "",
+            "  /**",
+            "    @notice",
+            "    Contribute tokens to a project.",
+            "",
+            "    @param _projectId The ID of the project being paid.",
+            "    @param _amount The amount of terminal tokens being received, as a fixed point number with the same amount of decimals as this terminal. If this terminal's token is ETH, this is ignored and msg.value is used in its place.",
+            "    @param _token The token being paid. This terminal ignores this property since it only manages one token. ",
+            "    @param _beneficiary The address to mint tokens for and pass along to the funding cycle's data source and delegate.",
+            "    @param _minReturnedTokens The minimum number of project tokens expected in return, as a fixed point number with the same amount of decimals as this terminal.",
+            "    @param _preferClaimedTokens A flag indicating whether the request prefers to mint project tokens into the beneficiaries wallet rather than leaving them unclaimed. This is only possible if the project has an attached token contract. Leaving them unclaimed saves gas.",
+            "    @param _memo A memo to pass along to the emitted event, and passed along the the funding cycle's data source and delegate.  A data source can alter the memo before emitting in the event and forwarding to the delegate.",
+            "    @param _metadata Bytes to send along to the data source, delegate, and emitted event, if provided.",
+            "",
+            "    @return The number of tokens minted for the beneficiary, as a fixed point number with 18 decimals.",
+            "  */",
+            "  "
+        ],
+        "comt": "\n  //*********************************************************************//\n  // ---------------------- external transactions ---------------------- //\n  //*********************************************************************//\n\n  /**\n    @notice\n    Contribute tokens to a project.\n\n    @param _projectId The ID of the project being paid.\n    @param _amount The amount of terminal tokens being received, as a fixed point number with the same amount of decimals as this terminal. If this terminal's token is ETH, this is ignored and msg.value is used in its place.\n    @param _token The token being paid. This terminal ignores this property since it only manages one token. \n    @param _beneficiary The address to mint tokens for and pass along to the funding cycle's data source and delegate.\n    @param _minReturnedTokens The minimum number of project tokens expected in return, as a fixed point number with the same amount of decimals as this terminal.\n    @param _preferClaimedTokens A flag indicating whether the request prefers to mint project tokens into the beneficiaries wallet rather than leaving them unclaimed. This is only possible if the project has an attached token contract. Leaving them unclaimed saves gas.\n    @param _memo A memo to pass along to the emitted event, and passed along the the funding cycle's data source and delegate.  A data source can alter the memo before emitting in the event and forwarding to the delegate.\n    @param _metadata Bytes to send along to the data source, delegate, and emitted event, if provided.\n\n    @return The number of tokens minted for the beneficiary, as a fixed point number with 18 decimals.\n  */\n  ",
+        "@notice\n": "Contribute tokens to a project.",
+        "@param1": "_projectId The ID of the project being paid.",
+        "@param2": "_amount The amount of terminal tokens being received, as a fixed point number with the same amount of decimals as this terminal. If this terminal's token is ETH, this is ignored and msg.value is used in its place.",
+        "@param3": "_token The token being paid. This terminal ignores this property since it only manages one token.",
+        "@param4": "_beneficiary The address to mint tokens for and pass along to the funding cycle's data source and delegate.",
+        "@param5": "_minReturnedTokens The minimum number of project tokens expected in return, as a fixed point number with the same amount of decimals as this terminal.",
+        "@param6": "_preferClaimedTokens A flag indicating whether the request prefers to mint project tokens into the beneficiaries wallet rather than leaving them unclaimed. This is only possible if the project has an attached token contract. Leaving them unclaimed saves gas.",
+        "@param7": "_memo A memo to pass along to the emitted event, and passed along the the funding cycle's data source and delegate. A data source can alter the memo before emitting in the event and forwarding to the delegate.",
+        "@param8": "_metadata Bytes to send along to the data source, delegate, and emitted event, if provided.",
+        "@return1": "The number of tokens minted for the beneficiary, as a fixed point number with 18 decimals.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeemTokensOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_holder",
+                "type": "address"
+            },
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_tokenCount",
+                "type": "uint256"
+            },
+            {
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "name": "_minReturnedTokens",
+                "type": "uint256"
+            },
+            {
+                "name": "_beneficiary",
+                "type": "address payable"
+            },
+            {
+                "name": "_memo",
+                "type": "string memory"
+            },
+            {
+                "name": "_metadata",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function redeemTokensOf(\n    address _holder,\n    uint256 _projectId,\n    uint256 _tokenCount,\n    address _token,\n    uint256 _minReturnedTokens,\n    address payable _beneficiary,\n    string memory _memo,\n    bytes memory _metadata\n  )\n    external\n    virtual\n    override\n    requirePermission(_holder, _projectId, JBOperations.REDEEM)\n    returns (uint256 reclaimAmount)\n  {\n    _token; // Prevents unused var compiler and natspec complaints.\n\n    return\n      _redeemTokensOf(\n        _holder,\n        _projectId,\n        _tokenCount,\n        _minReturnedTokens,\n        _beneficiary,\n        _memo,\n        _metadata\n      );\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Holders can redeem their tokens to claim the project's overflowed tokens, or to trigger rules determined by the project's current funding cycle's data source.",
+            "",
+            "    @dev",
+            "    Only a token holder or a designated operator can redeem its tokens.",
+            "",
+            "    @param _holder The account to redeem tokens for.",
+            "    @param _projectId The ID of the project to which the tokens being redeemed belong.",
+            "    @param _tokenCount The number of project tokens to redeem, as a fixed point number with 18 decimals.",
+            "    @param _token The token being reclaimed. This terminal ignores this property since it only manages one token. ",
+            "    @param _minReturnedTokens The minimum amount of terminal tokens expected in return, as a fixed point number with the same amount of decimals as the terminal.",
+            "    @param _beneficiary The address to send the terminal tokens to.",
+            "    @param _memo A memo to pass along to the emitted event.",
+            "    @param _metadata Bytes to send along to the data source, delegate, and emitted event, if provided.",
+            "",
+            "    @return reclaimAmount The amount of terminal tokens that the project tokens were redeemed for, as a fixed point number with 18 decimals.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Holders can redeem their tokens to claim the project's overflowed tokens, or to trigger rules determined by the project's current funding cycle's data source.\n\n    @dev\n    Only a token holder or a designated operator can redeem its tokens.\n\n    @param _holder The account to redeem tokens for.\n    @param _projectId The ID of the project to which the tokens being redeemed belong.\n    @param _tokenCount The number of project tokens to redeem, as a fixed point number with 18 decimals.\n    @param _token The token being reclaimed. This terminal ignores this property since it only manages one token. \n    @param _minReturnedTokens The minimum amount of terminal tokens expected in return, as a fixed point number with the same amount of decimals as the terminal.\n    @param _beneficiary The address to send the terminal tokens to.\n    @param _memo A memo to pass along to the emitted event.\n    @param _metadata Bytes to send along to the data source, delegate, and emitted event, if provided.\n\n    @return reclaimAmount The amount of terminal tokens that the project tokens were redeemed for, as a fixed point number with 18 decimals.\n  */\n",
+        "@notice\n": "Holders can redeem their tokens to claim the project's overflowed tokens, or to trigger rules determined by the project's current funding cycle's data source.",
+        "@dev\n": "Only a token holder or a designated operator can redeem its tokens.",
+        "@param1": "_holder The account to redeem tokens for.",
+        "@param2": "_projectId The ID of the project to which the tokens being redeemed belong.",
+        "@param3": "_tokenCount The number of project tokens to redeem, as a fixed point number with 18 decimals.",
+        "@param4": "_token The token being reclaimed. This terminal ignores this property since it only manages one token.",
+        "@param5": "_minReturnedTokens The minimum amount of terminal tokens expected in return, as a fixed point number with the same amount of decimals as the terminal.",
+        "@param6": "_beneficiary The address to send the terminal tokens to.",
+        "@param7": "_memo A memo to pass along to the emitted event.",
+        "@param8": "_metadata Bytes to send along to the data source, delegate, and emitted event, if provided.",
+        "@return1": "reclaimAmount The amount of terminal tokens that the project tokens were redeemed for, as a fixed point number with 18 decimals.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "distributePayoutsOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_currency",
+                "type": "uint256"
+            },
+            {
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "name": "_minReturnedTokens",
+                "type": "uint256"
+            },
+            {
+                "name": "_memo",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function distributePayoutsOf(\n    uint256 _projectId,\n    uint256 _amount,\n    uint256 _currency,\n    address _token,\n    uint256 _minReturnedTokens,\n    string calldata _memo\n  ) external virtual override returns (uint256 netLeftoverDistributionAmount) {\n    _token; // Prevents unused var compiler and natspec complaints.\n\n    return _distributePayoutsOf(_projectId, _amount, _currency, _minReturnedTokens, _memo);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Distributes payouts for a project with the distribution limit of its current funding cycle.",
+            "",
+            "    @dev",
+            "    Payouts are sent to the preprogrammed splits. Any leftover is sent to the project's owner.",
+            "",
+            "    @dev",
+            "    Anyone can distribute payouts on a project's behalf. The project can preconfigure a wildcard split that is used to send funds to msg.sender. This can be used to incentivize calling this function.",
+            "",
+            "    @dev",
+            "    All funds distributed outside of this contract or any feeless terminals incure the protocol fee.",
+            "",
+            "    @param _projectId The ID of the project having its payouts distributed.",
+            "    @param _amount The amount of terminal tokens to distribute, as a fixed point number with same number of decimals as this terminal.",
+            "    @param _currency The expected currency of the amount being distributed. Must match the project's current funding cycle's distribution limit currency.",
+            "    @param _token The token being distributed. This terminal ignores this property since it only manages one token. ",
+            "    @param _minReturnedTokens The minimum number of terminal tokens that the `_amount` should be valued at in terms of this terminal's currency, as a fixed point number with the same number of decimals as this terminal.",
+            "    @param _memo A memo to pass along to the emitted event.",
+            "",
+            "    @return netLeftoverDistributionAmount The amount that was sent to the project owner, as a fixed point number with the same amount of decimals as this terminal.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Distributes payouts for a project with the distribution limit of its current funding cycle.\n\n    @dev\n    Payouts are sent to the preprogrammed splits. Any leftover is sent to the project's owner.\n\n    @dev\n    Anyone can distribute payouts on a project's behalf. The project can preconfigure a wildcard split that is used to send funds to msg.sender. This can be used to incentivize calling this function.\n\n    @dev\n    All funds distributed outside of this contract or any feeless terminals incure the protocol fee.\n\n    @param _projectId The ID of the project having its payouts distributed.\n    @param _amount The amount of terminal tokens to distribute, as a fixed point number with same number of decimals as this terminal.\n    @param _currency The expected currency of the amount being distributed. Must match the project's current funding cycle's distribution limit currency.\n    @param _token The token being distributed. This terminal ignores this property since it only manages one token. \n    @param _minReturnedTokens The minimum number of terminal tokens that the `_amount` should be valued at in terms of this terminal's currency, as a fixed point number with the same number of decimals as this terminal.\n    @param _memo A memo to pass along to the emitted event.\n\n    @return netLeftoverDistributionAmount The amount that was sent to the project owner, as a fixed point number with the same amount of decimals as this terminal.\n  */\n",
+        "@notice\n": "Distributes payouts for a project with the distribution limit of its current funding cycle.",
+        "@dev\n": "Payouts are sent to the preprogrammed splits. Any leftover is sent to the project's owner. * Anyone can distribute payouts on a project's behalf. The project can preconfigure a wildcard split that is used to send funds to msg.sender. This can be used to incentivize calling this function. * All funds distributed outside of this contract or any feeless terminals incure the protocol fee.",
+        "@param1": "_projectId The ID of the project having its payouts distributed.",
+        "@param2": "_amount The amount of terminal tokens to distribute, as a fixed point number with same number of decimals as this terminal.",
+        "@param3": "_currency The expected currency of the amount being distributed. Must match the project's current funding cycle's distribution limit currency.",
+        "@param4": "_token The token being distributed. This terminal ignores this property since it only manages one token.",
+        "@param5": "_minReturnedTokens The minimum number of terminal tokens that the `_amount` should be valued at in terms of this terminal's currency, as a fixed point number with the same number of decimals as this terminal.",
+        "@param6": "_memo A memo to pass along to the emitted event.",
+        "@return1": "netLeftoverDistributionAmount The amount that was sent to the project owner, as a fixed point number with the same amount of decimals as this terminal.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "useAllowanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_currency",
+                "type": "uint256"
+            },
+            {
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "name": "_minReturnedTokens",
+                "type": "uint256"
+            },
+            {
+                "name": "_beneficiary",
+                "type": "address payable"
+            },
+            {
+                "name": "_memo",
+                "type": "string memory"
+            }
+        ],
+        "func": "function useAllowanceOf(\n    uint256 _projectId,\n    uint256 _amount,\n    uint256 _currency,\n    address _token,\n    uint256 _minReturnedTokens,\n    address payable _beneficiary,\n    string memory _memo\n  )\n    external\n    virtual\n    override\n    requirePermission(projects.ownerOf(_projectId), _projectId, JBOperations.USE_ALLOWANCE)\n    returns (uint256 netDistributedAmount)\n  {\n    _token; // Prevents unused var compiler and natspec complaints.\n\n    return _useAllowanceOf(_projectId, _amount, _currency, _minReturnedTokens, _beneficiary, _memo);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Allows a project to send funds from its overflow up to the preconfigured allowance.",
+            "",
+            "    @dev",
+            "    Only a project's owner or a designated operator can use its allowance.",
+            "",
+            "    @dev",
+            "    Incurs the protocol fee.",
+            "",
+            "    @param _projectId The ID of the project to use the allowance of.",
+            "    @param _amount The amount of terminal tokens to use from this project's current allowance, as a fixed point number with the same amount of decimals as this terminal.",
+            "    @param _currency The expected currency of the amount being distributed. Must match the project's current funding cycle's overflow allowance currency.",
+            "    @param _token The token being distributed. This terminal ignores this property since it only manages one token. ",
+            "    @param _minReturnedTokens The minimum number of tokens that the `_amount` should be valued at in terms of this terminal's currency, as a fixed point number with 18 decimals.",
+            "    @param _beneficiary The address to send the funds to.",
+            "    @param _memo A memo to pass along to the emitted event.",
+            "",
+            "    @return netDistributedAmount The amount of tokens that was distributed to the beneficiary, as a fixed point number with the same amount of decimals as the terminal.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Allows a project to send funds from its overflow up to the preconfigured allowance.\n\n    @dev\n    Only a project's owner or a designated operator can use its allowance.\n\n    @dev\n    Incurs the protocol fee.\n\n    @param _projectId The ID of the project to use the allowance of.\n    @param _amount The amount of terminal tokens to use from this project's current allowance, as a fixed point number with the same amount of decimals as this terminal.\n    @param _currency The expected currency of the amount being distributed. Must match the project's current funding cycle's overflow allowance currency.\n    @param _token The token being distributed. This terminal ignores this property since it only manages one token. \n    @param _minReturnedTokens The minimum number of tokens that the `_amount` should be valued at in terms of this terminal's currency, as a fixed point number with 18 decimals.\n    @param _beneficiary The address to send the funds to.\n    @param _memo A memo to pass along to the emitted event.\n\n    @return netDistributedAmount The amount of tokens that was distributed to the beneficiary, as a fixed point number with the same amount of decimals as the terminal.\n  */\n",
+        "@notice\n": "Allows a project to send funds from its overflow up to the preconfigured allowance.",
+        "@dev\n": "Only a project's owner or a designated operator can use its allowance. * Incurs the protocol fee.",
+        "@param1": "_projectId The ID of the project to use the allowance of.",
+        "@param2": "_amount The amount of terminal tokens to use from this project's current allowance, as a fixed point number with the same amount of decimals as this terminal.",
+        "@param3": "_currency The expected currency of the amount being distributed. Must match the project's current funding cycle's overflow allowance currency.",
+        "@param4": "_token The token being distributed. This terminal ignores this property since it only manages one token.",
+        "@param5": "_minReturnedTokens The minimum number of tokens that the `_amount` should be valued at in terms of this terminal's currency, as a fixed point number with 18 decimals.",
+        "@param6": "_beneficiary The address to send the funds to.",
+        "@param7": "_memo A memo to pass along to the emitted event.",
+        "@return1": "netDistributedAmount The amount of tokens that was distributed to the beneficiary, as a fixed point number with the same amount of decimals as the terminal.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "migrate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_to",
+                "type": "IJBPaymentTerminal"
+            }
+        ],
+        "func": "function migrate(uint256 _projectId, IJBPaymentTerminal _to)\n    external\n    virtual\n    override\n    requirePermission(projects.ownerOf(_projectId), _projectId, JBOperations.MIGRATE_TERMINAL)\n    returns (uint256 balance)\n  {\n    // The terminal being migrated to must accept the same token as this terminal.\n    if (!_to.acceptsToken(token, _projectId)) revert TERMINAL_TOKENS_INCOMPATIBLE();\n\n    // Record the migration in the store.\n    balance = store.recordMigration(_projectId);\n\n    // Transfer the balance if needed.\n    if (balance > 0) {\n      // Trigger any inherited pre-transfer logic.\n      _beforeTransferTo(address(_to), balance);\n\n      // If this terminal's token is ETH, send it in msg.value.\n      uint256 _payableValue = token == JBTokens.ETH ? balance : 0;\n\n      // Withdraw the balance to transfer to the new terminal;\n      _to.addToBalanceOf{value: _payableValue}(_projectId, balance, token, '', bytes(''));\n    }\n\n    emit Migrate(_projectId, _to, balance, msg.sender);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Allows a project owner to migrate its funds and operations to a new terminal that accepts the same token type.",
+            "",
+            "    @dev",
+            "    Only a project's owner or a designated operator can migrate it.",
+            "",
+            "    @param _projectId The ID of the project being migrated.",
+            "    @param _to The terminal contract that will gain the project's funds.",
+            "",
+            "    @return balance The amount of funds that were migrated, as a fixed point number with the same amount of decimals as this terminal.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Allows a project owner to migrate its funds and operations to a new terminal that accepts the same token type.\n\n    @dev\n    Only a project's owner or a designated operator can migrate it.\n\n    @param _projectId The ID of the project being migrated.\n    @param _to The terminal contract that will gain the project's funds.\n\n    @return balance The amount of funds that were migrated, as a fixed point number with the same amount of decimals as this terminal.\n  */\n",
+        "@notice\n": "Allows a project owner to migrate its funds and operations to a new terminal that accepts the same token type.",
+        "@dev\n": "Only a project's owner or a designated operator can migrate it.",
+        "@param1": "_projectId The ID of the project being migrated.",
+        "@param2": "_to The terminal contract that will gain the project's funds.",
+        "@return1": "balance The amount of funds that were migrated, as a fixed point number with the same amount of decimals as this terminal.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addToBalanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "name": "_memo",
+                "type": "string calldata"
+            },
+            {
+                "name": "_metadata",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function addToBalanceOf(\n    uint256 _projectId,\n    uint256 _amount,\n    address _token,\n    string calldata _memo,\n    bytes calldata _metadata\n  ) external payable virtual override isTerminalOf(_projectId) {\n    _token; // Prevents unused var compiler and natspec complaints.\n\n    // If this terminal's token isn't ETH, make sure no msg.value was sent, then transfer the tokens in from msg.sender.\n    if (token != JBTokens.ETH) {\n      // Amount must be greater than 0.\n      if (msg.value > 0) revert NO_MSG_VALUE_ALLOWED();\n\n      // Transfer tokens to this terminal from the msg sender.\n      _transferFrom(msg.sender, payable(address(this)), _amount);\n    }\n    // If the terminal's token is ETH, override `_amount` with msg.value.\n    else _amount = msg.value;\n\n    // Add to balance while only refunding held fees if the funds aren't originating from a feeless terminal.\n    _addToBalanceOf(_projectId, _amount, !isFeelessAddress[msg.sender], _memo, _metadata);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Receives funds belonging to the specified project.",
+            "",
+            "    @param _projectId The ID of the project to which the funds received belong.",
+            "    @param _amount The amount of tokens to add, as a fixed point number with the same number of decimals as this terminal. If this is an ETH terminal, this is ignored and msg.value is used instead.",
+            "    @param _token The token being paid. This terminal ignores this property since it only manages one currency. ",
+            "    @param _memo A memo to pass along to the emitted event.",
+            "    @param _metadata Extra data to pass along to the emitted event.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Receives funds belonging to the specified project.\n\n    @param _projectId The ID of the project to which the funds received belong.\n    @param _amount The amount of tokens to add, as a fixed point number with the same number of decimals as this terminal. If this is an ETH terminal, this is ignored and msg.value is used instead.\n    @param _token The token being paid. This terminal ignores this property since it only manages one currency. \n    @param _memo A memo to pass along to the emitted event.\n    @param _metadata Extra data to pass along to the emitted event.\n  */\n",
+        "@notice\n": "Receives funds belonging to the specified project.",
+        "@param1": "_projectId The ID of the project to which the funds received belong.",
+        "@param2": "_amount The amount of tokens to add, as a fixed point number with the same number of decimals as this terminal. If this is an ETH terminal, this is ignored and msg.value is used instead.",
+        "@param3": "_token The token being paid. This terminal ignores this property since it only manages one currency.",
+        "@param4": "_memo A memo to pass along to the emitted event.",
+        "@param5": "_metadata Extra data to pass along to the emitted event.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "processFees",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function processFees(uint256 _projectId)\n    external\n    virtual\n    override\n    requirePermissionAllowingOverride(\n      projects.ownerOf(_projectId),\n      _projectId,\n      JBOperations.PROCESS_FEES,\n      msg.sender == owner()\n    )\n  {\n    // Get a reference to the project's held fees.\n    JBFee[] memory _heldFees = _heldFeesOf[_projectId];\n\n    // Delete the held fees.\n    delete _heldFeesOf[_projectId];\n\n    // Push array length in stack\n    uint256 _heldFeeLength = _heldFees.length;\n\n    // Process each fee.\n    for (uint256 _i = 0; _i < _heldFeeLength; ) {\n      // Get the fee amount.\n      uint256 _amount = _feeAmount(\n        _heldFees[_i].amount,\n        _heldFees[_i].fee,\n        _heldFees[_i].feeDiscount\n      );\n\n      // Process the fee.\n      _processFee(_amount, _heldFees[_i].beneficiary);\n\n      emit ProcessFee(_projectId, _amount, true, _heldFees[_i].beneficiary, msg.sender);\n\n      unchecked {\n        ++_i;\n      }\n    }\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Process any fees that are being held for the project.",
+            "",
+            "    @dev",
+            "    Only a project owner, an operator, or the contract's owner can process held fees.",
+            "",
+            "    @param _projectId The ID of the project whos held fees should be processed.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Process any fees that are being held for the project.\n\n    @dev\n    Only a project owner, an operator, or the contract's owner can process held fees.\n\n    @param _projectId The ID of the project whos held fees should be processed.\n  */\n",
+        "@notice\n": "Process any fees that are being held for the project.",
+        "@dev\n": "Only a project owner, an operator, or the contract's owner can process held fees.",
+        "@param1": "_projectId The ID of the project whos held fees should be processed.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFee",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_fee",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setFee(uint256 _fee) external virtual override onlyOwner {\n    // The provided fee must be within the max.\n    if (_fee > _FEE_CAP) revert FEE_TOO_HIGH();\n\n    // Store the new fee.\n    fee = _fee;\n\n    emit SetFee(_fee, msg.sender);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Allows the fee to be updated.",
+            "",
+            "    @dev",
+            "    Only the owner of this contract can change the fee.",
+            "",
+            "    @param _fee The new fee, out of MAX_FEE.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Allows the fee to be updated.\n\n    @dev\n    Only the owner of this contract can change the fee.\n\n    @param _fee The new fee, out of MAX_FEE.\n  */\n",
+        "@notice\n": "Allows the fee to be updated.",
+        "@dev\n": "Only the owner of this contract can change the fee.",
+        "@param1": "_fee The new fee, out of MAX_FEE.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFeeGauge",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_feeGauge",
+                "type": "IJBFeeGauge"
+            }
+        ],
+        "func": "function setFeeGauge(IJBFeeGauge _feeGauge) external virtual override onlyOwner {\n    // Store the new fee gauge.\n    feeGauge = _feeGauge;\n\n    emit SetFeeGauge(_feeGauge, msg.sender);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Allows the fee gauge to be updated.",
+            "",
+            "    @dev",
+            "    Only the owner of this contract can change the fee gauge.",
+            "",
+            "    @dev",
+            "    If the fee gauge reverts when called upon while a project is attempting to distribute its funds, a project's funds will be locked. This is a known risk.",
+            "",
+            "    @param _feeGauge The new fee gauge.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Allows the fee gauge to be updated.\n\n    @dev\n    Only the owner of this contract can change the fee gauge.\n\n    @dev\n    If the fee gauge reverts when called upon while a project is attempting to distribute its funds, a project's funds will be locked. This is a known risk.\n\n    @param _feeGauge The new fee gauge.\n  */\n",
+        "@notice\n": "Allows the fee gauge to be updated.",
+        "@dev\n": "Only the owner of this contract can change the fee gauge. * If the fee gauge reverts when called upon while a project is attempting to distribute its funds, a project's funds will be locked. This is a known risk.",
+        "@param1": "_feeGauge The new fee gauge.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFeelessAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            },
+            {
+                "name": "_flag",
+                "type": "bool"
+            }
+        ],
+        "func": "function setFeelessAddress(address _address, bool _flag) external virtual override onlyOwner {\n    // Set the flag value.\n    isFeelessAddress[_address] = _flag;\n\n    emit SetFeelessAddress(_address, _flag, msg.sender);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Sets whether projects operating on this terminal can pay towards the specified address without incurring a fee.",
+            "",
+            "    @dev",
+            "    Only the owner of this contract can set addresses as feeless.",
+            "",
+            "    @param _address The address that can be paid towards while still bypassing fees.",
+            "    @param _flag A flag indicating whether the terminal should be feeless or not.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Sets whether projects operating on this terminal can pay towards the specified address without incurring a fee.\n\n    @dev\n    Only the owner of this contract can set addresses as feeless.\n\n    @param _address The address that can be paid towards while still bypassing fees.\n    @param _flag A flag indicating whether the terminal should be feeless or not.\n  */\n",
+        "@notice\n": "Sets whether projects operating on this terminal can pay towards the specified address without incurring a fee.",
+        "@dev\n": "Only the owner of this contract can set addresses as feeless.",
+        "@param1": "_address The address that can be paid towards while still bypassing fees.",
+        "@param2": "_flag A flag indicating whether the terminal should be feeless or not.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "acceptsToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function acceptsToken(address _token, uint256 _projectId) external view override returns (bool) {\n    _projectId; // Prevents unused var compiler and natspec complaints.\n\n    return _token == token;\n  }",
+        "comments": [
+            "",
+            "  //*********************************************************************//",
+            "  // ------------------------- external views -------------------------- //",
+            "  //*********************************************************************//",
+            "",
+            "  /** ",
+            "    @notice",
+            "    A flag indicating if this terminal accepts the specified token.",
+            "",
+            "    @param _token The token to check if this terminal accepts or not.",
+            "    @param _projectId The project ID to check for token acceptance.",
+            "",
+            "    @return The flag.",
+            "  */",
+            "  "
+        ],
+        "comt": "\n  //*********************************************************************//\n  // ------------------------- external views -------------------------- //\n  //*********************************************************************//\n\n  /** \n    @notice\n    A flag indicating if this terminal accepts the specified token.\n\n    @param _token The token to check if this terminal accepts or not.\n    @param _projectId The project ID to check for token acceptance.\n\n    @return The flag.\n  */\n  ",
+        "@notice\n": "A flag indicating if this terminal accepts the specified token.",
+        "@param1": "_token The token to check if this terminal accepts or not.",
+        "@param2": "_projectId The project ID to check for token acceptance.",
+        "@return1": "The flag.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimalsForToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function decimalsForToken(address _token) external view override returns (uint256) {\n    _token; // Prevents unused var compiler and natspec complaints.\n\n    return decimals;\n  }",
+        "comments": [
+            "/** ",
+            "    @notice",
+            "    The decimals that should be used in fixed number accounting for the specified token.",
+            "",
+            "    @param _token The token to check for the decimals of.",
+            "",
+            "    @return The number of decimals for the token.",
+            "  */",
+            ""
+        ],
+        "comt": "/** \n    @notice\n    The decimals that should be used in fixed number accounting for the specified token.\n\n    @param _token The token to check for the decimals of.\n\n    @return The number of decimals for the token.\n  */\n",
+        "@notice\n": "The decimals that should be used in fixed number accounting for the specified token.",
+        "@param1": "_token The token to check for the decimals of.",
+        "@return1": "The number of decimals for the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "currencyForToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function currencyForToken(address _token) external view override returns (uint256) {\n    _token; // Prevents unused var compiler and natspec complaints.\n\n    return currency;\n  }",
+        "comments": [
+            "/** ",
+            "    @notice",
+            "    The currency that should be used for the specified token.",
+            "",
+            "    @param _token The token to check for the currency of.",
+            "",
+            "    @return The currency index.",
+            "  */",
+            ""
+        ],
+        "comt": "/** \n    @notice\n    The currency that should be used for the specified token.\n\n    @param _token The token to check for the currency of.\n\n    @return The currency index.\n  */\n",
+        "@notice\n": "The currency that should be used for the specified token.",
+        "@param1": "_token The token to check for the currency of.",
+        "@return1": "The currency index.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 _interfaceId)\n    public\n    view\n    virtual\n    override(ERC165, IERC165)\n    returns (bool)\n  {\n    return\n      _interfaceId == type(IJBPaymentTerminal).interfaceId ||\n      _interfaceId == type(IJBSingleTokenPaymentTerminal).interfaceId ||\n      super.supportsInterface(_interfaceId);\n  }",
+        "comments": [
+            "/**",
+            "    @notice",
+            "    Indicates if this contract adheres to the specified interface.",
+            "",
+            "    @dev ",
+            "    See {IERC165-supportsInterface}.",
+            "",
+            "    @param _interfaceId The ID of the interface to check for adherance to.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n    @notice\n    Indicates if this contract adheres to the specified interface.\n\n    @dev \n    See {IERC165-supportsInterface}.\n\n    @param _interfaceId The ID of the interface to check for adherance to.\n  */\n",
+        "@notice\n": "Indicates if this contract adheres to the specified interface.",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "@param1": "_interfaceId The ID of the interface to check for adherance to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

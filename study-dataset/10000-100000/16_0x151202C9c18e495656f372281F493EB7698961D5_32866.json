@@ -1,0 +1,367 @@
+[
+    {
+        "transactions": 32866,
+        "function_num": 16
+    },
+    {
+        "name": "Ownable",
+        "visibility": "public",
+        "args": [],
+        "func": "function Ownable() public {\n    owner = msg.sender;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev The Ownable constructor sets the original `owner` of the contract to the sender",
+            "   * account.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev The Ownable constructor sets the original `owner` of the contract to the sender\n   * account.\n   */\n",
+        "@dev": "The Ownable constructor sets the original `owner` of the contract to the sender * account.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) onlyOwner public {\n    require(newOwner != address(0));\n    OwnershipTransferred(owner, newOwner);\n    owner = newOwner;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            "   * @param newOwner The address to transfer ownership to.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Allows the current owner to transfer control of the contract to a newOwner.\n   * @param newOwner The address to transfer ownership to.\n   */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner.",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address _to, uint _value) public returns (bool success) {\n        require(_to != address(0));\n        require(_value <= balances[msg.sender]);\n\n        // SafeMath.sub will throw if there is not enough balance.\n        balances[msg.sender] = balances[msg.sender].sub(_value);\n        balances[_to] = balances[_to].add(_value);\n        Transfer(msg.sender, _to, _value);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint _value) public returns (bool success) {\n        require(_to != address(0));\n        require(_value <= balances[_from]);\n        require(_value <= allowed[_from][msg.sender]);\n\n        balances[_from] = balances[_from].sub(_value);\n        balances[_to] = balances[_to].add(_value);\n        allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);\n        Transfer(_from, _to, _value);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public view returns (uint balance) {\n        return balances[_owner];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint"
+            }
+        ],
+        "func": "function approve(address _spender, uint _value) public returns (bool success) {\n        allowed[msg.sender][_spender] = _value;\n        Approval(msg.sender, _spender, _value);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint remaining) {\n        return allowed[_owner][_spender];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function increaseApproval (address _spender, uint _addedValue) public returns (bool success) {\n        allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);\n        Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function decreaseApproval (address _spender, uint _subtractedValue) public returns (bool success) {\n        uint oldValue = allowed[msg.sender][_spender];\n        if (_subtractedValue > oldValue) {\n            allowed[msg.sender][_spender] = 0;\n        } else {\n            allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);\n        }\n        Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "FreezableToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function FreezableToken() public {\n        freezed = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint"
+            },
+            {
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "func": "function transfer(address _to, uint _value, bytes _data) canTransfer(msg.sender)\n        public\n        canTransfer(msg.sender)\n        returns (bool success) {\n        //filtering if the target is a contract with bytecode inside it\n        require(super.transfer(_to, _value)); // do a normal token transfer\n        if (isContract(_to)) {\n            require(contractFallback(msg.sender, _to, _value, _data));\n        }\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint"
+            },
+            {
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint _value, bytes _data) public canTransfer(msg.sender) returns (bool success) {\n        require(super.transferFrom(_from, _to, _value)); // do a normal token transfer\n        if (isContract(_to)) {\n            require(contractFallback(_from, _to, _value, _data));\n        }\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address _to, uint _value) canTransfer(msg.sender) public canTransfer(msg.sender) returns (bool success) {\n        return transfer(_to, _value, new bytes(0));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint _value) public canTransfer(msg.sender) returns (bool success) {\n        return transferFrom(_from, _to, _value, new bytes(0));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreeze",
+        "visibility": "public",
+        "args": [],
+        "func": "function unfreeze() public onlyOwner returns (bool){\n        freezed = false;\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "DebitumToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function DebitumToken() public {\n        balances[msg.sender]  = totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

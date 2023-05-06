@@ -1,0 +1,730 @@
+[
+    {
+        "transactions": 563,
+        "function_num": 26
+    },
+    {
+        "name": "HouseOwned",
+        "visibility": "public",
+        "args": [],
+        "func": "function HouseOwned() public {\n        house = msg.sender;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Contract constructor",
+            "    "
+        ],
+        "comt": "\n    /// @dev Contract constructor\n    ",
+        "@dev": "Contract constructor",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "Token",
+        "visibility": "public",
+        "args": [],
+        "func": "function Token() HouseOwned() public {\n        name = \"JACK Token\";\n        symbol = \"JACK\";\n        supply = 1000000;\n    }",
+        "comments": [
+            "",
+            "    //////",
+            "    /// @title Constructor and Initialization",
+            "    //",
+            "",
+            "    /// @dev Initializes contract with initial supply tokens to the creator of the contract",
+            "    "
+        ],
+        "comt": "\n    //////\n    /// @title Constructor and Initialization\n    //\n\n    /// @dev Initializes contract with initial supply tokens to the creator of the contract\n    ",
+        "@title": "Constructor and Initialization",
+        "@dev": "Initializes contract with initial supply tokens to the creator of the contract",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setJackpot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_jackpot",
+                "type": "address"
+            }
+        ],
+        "func": "function setJackpot(address _jackpot) onlyHouse public {\n        require(address(jackpot) == 0x0);\n        require(_jackpot != address(this)); // Protection from admin's mistake\n\n        jackpot = Jackpot(_jackpot);\n\n        uint256 bountyPortion = supply / 40;           // 2.5% is the bounty portion for marketing expenses\n        balances[house] = bountyPortion;               // House receives the bounty tokens\n        balances[jackpot] = supply - bountyPortion;    // Jackpot gets the rest\n\n        croupier = jackpot.croupier();\n    }",
+        "comments": [
+            "",
+            "    /// @dev Function to set address of Jackpot contract once after creation",
+            "    /// @param _jackpot Address of the Jackpot contract",
+            "    "
+        ],
+        "comt": "\n    /// @dev Function to set address of Jackpot contract once after creation\n    /// @param _jackpot Address of the Jackpot contract\n    ",
+        "@dev": "Function to set address of Jackpot contract once after creation",
+        "@param1": "_jackpot Address of the Jackpot contract",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "returnDeposit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_extra",
+                "type": "uint256"
+            }
+        ],
+        "func": "function returnDeposit(address _to, uint256 _extra) onlyCroupier public {\n        require(depositOf[_to] > 0 || _extra > 0);\n        uint256 amount = depositOf[_to];\n        depositOf[_to] = 0;\n        totalDeposit = totalDeposit.sub(amount);\n\n        _transfer(croupier, _to, amount.add(_extra));\n\n        Deposit(_to, amount, 1, 0);\n    }",
+        "comments": [
+            "",
+            "    //////",
+            "    /// @title Public Methods",
+            "    //",
+            "",
+            "",
+            "    /// @dev Croupier invokes this method to return deposits to players",
+            "    /// @param _to The address of the recipient",
+            "    /// @param _extra Additional off-chain credit (AirDrop support), so that croupier can return more than the user has actually deposited",
+            "    "
+        ],
+        "comt": "\n    //////\n    /// @title Public Methods\n    //\n\n\n    /// @dev Croupier invokes this method to return deposits to players\n    /// @param _to The address of the recipient\n    /// @param _extra Additional off-chain credit (AirDrop support), so that croupier can return more than the user has actually deposited\n    ",
+        "@title": "Public Methods",
+        "@dev": "Croupier invokes this method to return deposits to players",
+        "@param1": "_to The address of the recipient",
+        "@param2": "_extra Additional off-chain credit (AirDrop support), so that croupier can return more than the user has actually deposited",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public view returns (uint256 balance) {\n        return balances[_owner];\n    }",
+        "comments": [
+            "",
+            "    /// @dev Gets the balance of the specified address.",
+            "    /// @param _owner The address",
+            "    "
+        ],
+        "comt": "\n    /// @dev Gets the balance of the specified address.\n    /// @param _owner The address\n    ",
+        "@dev": "Gets the balance of the specified address.",
+        "@param1": "_owner The address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return supply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) onlyPayloadSize(2 * 32) public returns (bool) {\n        require(address(jackpot) != 0x0);\n        require(croupier != 0x0);\n\n        if (_to == address(jackpot)) {\n            // It is a token bet. Ignoring _value, only using 1 token\n            _burnFromAccount(msg.sender, 1);\n            jackpot.betToken(msg.sender);\n            return true;\n        }\n\n        if (_to == croupier && msg.sender != house) {\n            // It's a deposit to Croupier. In addition to transferring the token,\n            // mark it in the deposits table\n\n            // House can't make deposits. If House is transferring something to\n            // Croupier, it's just a transfer, nothing more\n\n            depositOf[msg.sender] += _value;\n            totalDeposit = totalDeposit.add(_value);\n\n            Deposit(msg.sender, _value, 0, depositOf[msg.sender]);\n        }\n\n        // In all cases but Jackpot transfer (which is terminated by a return), actually\n        // do perform the transfer\n        return _transfer(msg.sender, _to, _value);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Send `_value` tokens to `_to`",
+            "    /// @param _to The address of the recipient",
+            "    /// @param _value the amount to send",
+            "    "
+        ],
+        "comt": "\n    /// @dev Send `_value` tokens to `_to`\n    /// @param _to The address of the recipient\n    /// @param _value the amount to send\n    ",
+        "@dev": "Send `_value` tokens to `_to`",
+        "@param1": "_to The address of the recipient",
+        "@param2": "_value the amount to send",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {\n        require(_to != address(0));\n        require(_value <= balances[_from]);\n        require(_value <= allowed[_from][msg.sender]);\n\n        balances[_from] = balances[_from].sub(_value);\n        balances[_to] = balances[_to].add(_value);\n        allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);\n        Transfer(_from, _to, _value);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Transfer tokens from one address to another",
+            "    /// @param _from address The address which you want to send tokens from",
+            "    /// @param _to address The address which you want to transfer to",
+            "    /// @param _value uint256 the amount of tokens to be transferred",
+            "    "
+        ],
+        "comt": "\n    /// @dev Transfer tokens from one address to another\n    /// @param _from address The address which you want to send tokens from\n    /// @param _to address The address which you want to transfer to\n    /// @param _value uint256 the amount of tokens to be transferred\n    ",
+        "@dev": "Transfer tokens from one address to another",
+        "@param1": "_from address The address which you want to send tokens from",
+        "@param2": "_to address The address which you want to transfer to",
+        "@param3": "_value uint256 the amount of tokens to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _value) public returns (bool) {\n        allowed[msg.sender][_spender] = _value;\n        Approval(msg.sender, _spender, _value);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+            "    /// @param _spender The address which will spend the funds.",
+            "    /// @param _value The amount of tokens to be spent.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\n    /// @param _spender The address which will spend the funds.\n    /// @param _value The amount of tokens to be spent.\n    ",
+        "@dev": "Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_value The amount of tokens to be spent.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint256) {\n        return allowed[_owner][_spender];\n    }",
+        "comments": [
+            "",
+            "    /// @dev Function to check the amount of tokens that an owner allowed to a spender.",
+            "    /// @param _owner address The address which owns the funds.",
+            "    /// @param _spender address The address which will spend the funds.",
+            "    /// @return A uint256 specifying the amount of tokens still available for the spender.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Function to check the amount of tokens that an owner allowed to a spender.\n    /// @param _owner address The address which owns the funds.\n    /// @param _spender address The address which will spend the funds.\n    /// @return A uint256 specifying the amount of tokens still available for the spender.\n    ",
+        "@dev": "Function to check the amount of tokens that an owner allowed to a spender.",
+        "@param1": "_owner address The address which owns the funds.",
+        "@param2": "_spender address The address which will spend the funds.",
+        "@return1": "A uint256 specifying the amount of tokens still available for the spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function increaseApproval(address _spender, uint _addedValue) public returns (bool) {\n        allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);\n        Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Increase the amount of tokens that an owner allowed to a spender.",
+            "    /// @param _spender The address which will spend the funds.",
+            "    /// @param _addedValue The amount of tokens to increase the allowance by.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Increase the amount of tokens that an owner allowed to a spender.\n    /// @param _spender The address which will spend the funds.\n    /// @param _addedValue The amount of tokens to increase the allowance by.\n    ",
+        "@dev": "Increase the amount of tokens that an owner allowed to a spender.",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_addedValue The amount of tokens to increase the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function decreaseApproval(address _spender, uint _subtractedValue) public returns (bool) {\n        uint oldValue = allowed[msg.sender][_spender];\n        if (_subtractedValue > oldValue) {\n            allowed[msg.sender][_spender] = 0;\n        } else {\n            allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);\n        }\n        Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Decrease the amount of tokens that an owner allowed to a spender.",
+            "    /// @param _spender The address which will spend the funds.",
+            "    /// @param _subtractedValue The amount of tokens to decrease the allowance by.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Decrease the amount of tokens that an owner allowed to a spender.\n    /// @param _spender The address which will spend the funds.\n    /// @param _subtractedValue The amount of tokens to decrease the allowance by.\n    ",
+        "@dev": "Decrease the amount of tokens that an owner allowed to a spender.",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_subtractedValue The amount of tokens to decrease the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freezeDeposit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "name": "_extra",
+                "type": "uint256"
+            }
+        ],
+        "func": "function freezeDeposit(address _user, uint256 _extra) onlyCroupier public {\n        require(depositOf[_user] > 0 || _extra > 0);\n\n        uint256 deposit = depositOf[_user];\n        depositOf[_user] = depositOf[_user].sub(deposit);\n        totalDeposit = totalDeposit.sub(deposit);\n\n        uint256 depositWithExtra = deposit.add(_extra);\n\n        frozenPool = frozenPool.add(depositWithExtra);\n\n        DepositFrozen(_user, depositWithExtra);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Croupier uses this method to set deposited credits of a player for sale",
+            "    /// @param _user The address of the user",
+            "    /// @param _extra Additional off-chain credit (AirDrop support), so that croupier could have frozen more than the user had invested",
+            "    "
+        ],
+        "comt": "\n    /// @dev Croupier uses this method to set deposited credits of a player for sale\n    /// @param _user The address of the user\n    /// @param _extra Additional off-chain credit (AirDrop support), so that croupier could have frozen more than the user had invested\n    ",
+        "@dev": "Croupier uses this method to set deposited credits of a player for sale",
+        "@param1": "_user The address of the user",
+        "@param2": "_extra Additional off-chain credit (AirDrop support), so that croupier could have frozen more than the user had invested",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreezeDeposit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function unfreezeDeposit(address _user, uint256 _value) onlyCroupier public {\n        require(_value > 0);\n        require(frozenPool >= _value);\n\n        depositOf[_user] = depositOf[_user].add(_value);\n        totalDeposit = totalDeposit.add(_value);\n\n        frozenPool = frozenPool.sub(_value);\n\n        DepositUnfrozen(_user, depositOf[_user]);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Croupier uses this method stop selling user's tokens and return them to normal deposit",
+            "    /// @param _user The user whose deposit is being unfrozen",
+            "    /// @param _value The value to unfreeze according to Croupier's records (off-chain sale data)",
+            "    "
+        ],
+        "comt": "\n    /// @dev Croupier uses this method stop selling user's tokens and return them to normal deposit\n    /// @param _user The user whose deposit is being unfrozen\n    /// @param _value The value to unfreeze according to Croupier's records (off-chain sale data)\n    ",
+        "@dev": "Croupier uses this method stop selling user's tokens and return them to normal deposit",
+        "@param1": "_user The user whose deposit is being unfrozen",
+        "@param2": "_value The value to unfreeze according to Croupier's records (off-chain sale data)",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFromCroupier",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFromCroupier(address _to, uint256 _value) onlyJackpot public {\n        require(_value > 0);\n        require(frozenPool >= _value);\n\n        frozenPool = frozenPool.sub(_value);\n\n        _transfer(croupier, _to, _value);\n    }",
+        "comments": [
+            "",
+            "    /// @dev The Jackpot contract invokes this method when selling tokens from Croupier",
+            "    /// @param _to The recipient of the tokens",
+            "    /// @param _value The amount",
+            "    "
+        ],
+        "comt": "\n    /// @dev The Jackpot contract invokes this method when selling tokens from Croupier\n    /// @param _to The recipient of the tokens\n    /// @param _value The amount\n    ",
+        "@dev": "The Jackpot contract invokes this method when selling tokens from Croupier",
+        "@param1": "_to The recipient of the tokens",
+        "@param2": "_value The amount",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "Jackpot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_croupier",
+                "type": "address"
+            }
+        ],
+        "func": "function Jackpot(address _croupier)\n        HouseOwned()\n        public\n    {\n        require(_croupier != 0x0);\n        croupier = _croupier;\n\n        // There are no bets (it even starts in ICO stage), so initialize\n        // lastBetUser, just so that value is not zero and is meaningful\n        // The game can't end until at least one bid is made, and once\n        // a bid is made, this value is permanently overwritten.\n        lastBetUser = _croupier;\n    }",
+        "comments": [
+            "",
+            "",
+            "    //////",
+            "    /// @title Constructor and Initialization",
+            "    //",
+            "",
+            "    /// @dev The contract constructor",
+            "    /// @param _croupier The address of the trusted Croupier bot's account",
+            "    "
+        ],
+        "comt": "\n\n    //////\n    /// @title Constructor and Initialization\n    //\n\n    /// @dev The contract constructor\n    /// @param _croupier The address of the trusted Croupier bot's account\n    ",
+        "@title": "Constructor and Initialization",
+        "@dev": "The contract constructor",
+        "@param1": "_croupier The address of the trusted Croupier bot's account",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function setToken(address _token) onlyHouse public {\n        require(address(token) == 0x0);\n        require(_token != address(this)); // Protection from admin's mistake\n\n        token = Token(_token);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Function to set address of Token contract once after creation",
+            "    /// @param _token Address of the Token contract (JACK Token)",
+            "    "
+        ],
+        "comt": "\n    /// @dev Function to set address of Token contract once after creation\n    /// @param _token Address of the Token contract (JACK Token)\n    ",
+        "@dev": "Function to set address of Token contract once after creation",
+        "@param1": "_token Address of the Token contract (JACK Token)",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "payOutJackpot",
+        "visibility": "public",
+        "args": [],
+        "func": "function payOutJackpot() onlyCroupier public {\n        require(winner != 0x0);\n    \n        if (pendingJackpotForHouse > 0) {\n            uint256 housePay = pendingJackpotForHouse;\n            pendingJackpotForHouse = 0;\n\n            house.transfer(housePay);\n        }\n\n        if (pendingJackpotForWinner > 0) {\n            uint256 winnersPay = pendingJackpotForWinner;\n            pendingJackpotForWinner = 0;\n\n            winner.transfer(winnersPay);\n        }\n\n    }",
+        "comments": [
+            "",
+            "    // Croupier will call this function when the jackpot is won",
+            "    // If Croupier fails to call the function for any reason, house and winner",
+            "    // still can claim their jackpot portion by sending ether to Jackpot",
+            "    "
+        ],
+        "comt": "\n    // Croupier will call this function when the jackpot is won\n    // If Croupier fails to call the function for any reason, house and winner\n    // still can claim their jackpot portion by sending ether to Jackpot\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "shouldBeTerminated",
+        "visibility": "public",
+        "args": [],
+        "func": "function shouldBeTerminated() public view returns (bool should) {\n        return stage == Stages.GameOn && terminationTime != 0 && now > terminationTime;\n    }",
+        "comments": [
+            "",
+            "    //////",
+            "    /// @title Public Functions",
+            "    //",
+            "",
+            "    /// @dev View function to check whether the game should be terminated",
+            "    ///      Used as internal function by checkTermination, as well as by the",
+            "    ///      Croupier bot, to check whether it should call checkTermination",
+            "    /// @return Whether the game should be terminated by timeout",
+            "    "
+        ],
+        "comt": "\n    //////\n    /// @title Public Functions\n    //\n\n    /// @dev View function to check whether the game should be terminated\n    ///      Used as internal function by checkTermination, as well as by the\n    ///      Croupier bot, to check whether it should call checkTermination\n    /// @return Whether the game should be terminated by timeout\n    ",
+        "@title": "Public Functions",
+        "@dev": "View function to check whether the game should be terminated /// Used as internal function by checkTermination, as well as by the /// Croupier bot, to check whether it should call checkTermination",
+        "@return1": "Whether the game should be terminated by timeout",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkTermination",
+        "visibility": "public",
+        "args": [],
+        "func": "function checkTermination() public returns (bool terminated) {\n        if (shouldBeTerminated()) {\n            stage = Stages.GameOver;\n\n            winner = lastBetUser;\n\n            // Flush amount due for Croupier immediately\n            _flushEtherToCroupier();\n\n            // The rest should be claimed by the winner (except what house gets)\n            JackpotWon(winner, this.balance);\n\n\n            uint256 jackpot = this.balance;\n            pendingJackpotForHouse = jackpot.div(5);\n            pendingJackpotForWinner = jackpot.sub(pendingJackpotForHouse);\n\n            return true;\n        }\n\n        return false;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Check whether the game should be terminated, and if it should, terminate it",
+            "    /// @return Whether the game was terminated as the result",
+            "    "
+        ],
+        "comt": "\n    /// @dev Check whether the game should be terminated, and if it should, terminate it\n    /// @return Whether the game was terminated as the result\n    ",
+        "@dev": "Check whether the game should be terminated, and if it should, terminate it",
+        "@return1": "Whether the game was terminated as the result",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "shouldBeStarted",
+        "visibility": "public",
+        "args": [],
+        "func": "function shouldBeStarted() public view returns (bool should) {\n        return stage == Stages.InitialOffer && icoEndTime != 0 && now > icoEndTime;\n    }",
+        "comments": [
+            "",
+            "    /// @dev View function to check whether the game should be started",
+            "    ///      Used as internal function by `checkGameStart`, as well as by the",
+            "    ///      Croupier bot, to check whether it should call `checkGameStart`",
+            "    /// @return Whether the game should be started",
+            "    "
+        ],
+        "comt": "\n    /// @dev View function to check whether the game should be started\n    ///      Used as internal function by `checkGameStart`, as well as by the\n    ///      Croupier bot, to check whether it should call `checkGameStart`\n    /// @return Whether the game should be started\n    ",
+        "@dev": "View function to check whether the game should be started /// Used as internal function by `checkGameStart`, as well as by the /// Croupier bot, to check whether it should call `checkGameStart`",
+        "@return1": "Whether the game should be started",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkGameStart",
+        "visibility": "public",
+        "args": [],
+        "func": "function checkGameStart() public returns (bool started) {\n        if (shouldBeStarted()) {\n            stage = Stages.GameOn;\n\n            return true;\n        }\n\n        return false;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Check whether the game should be started, and if it should, start it",
+            "    /// @return Whether the game was started as the result",
+            "    "
+        ],
+        "comt": "\n    /// @dev Check whether the game should be started, and if it should, start it\n    /// @return Whether the game was started as the result\n    ",
+        "@dev": "Check whether the game should be started, and if it should, start it",
+        "@return1": "Whether the game was started as the result",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "betToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "func": "function betToken(address _user) onlyToken public {\n        // Token bets can only be accepted in the game stage\n        require(stage == Stages.GameOn);\n\n        bool terminated = checkTermination();\n        if (terminated) {\n            return;\n        }\n\n        TokenBet(_user);\n        lastBetUser = _user;\n        terminationTime = now + _terminationDuration();\n\n        // Check for winning minor prizes\n        _checkMinorPrizes(_user, 0);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Bet 1 token in the game",
+            "    ///      The token has already been burned having passed all checks, so",
+            "    ///      just process the bet of 1 token",
+            "    "
+        ],
+        "comt": "\n    /// @dev Bet 1 token in the game\n    ///      The token has already been burned having passed all checks, so\n    ///      just process the bet of 1 token\n    ",
+        "@dev": "Bet 1 token in the game /// The token has already been burned having passed all checks, so /// just process the bet of 1 token",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "abort",
+        "visibility": "public",
+        "args": [],
+        "func": "function abort() onlyHouse public {\n        require(stage == Stages.InitialOffer);\n\n        stage = Stages.Aborted;\n        abortTime = now;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Allows House to terminate ICO as an emergency measure",
+            "    "
+        ],
+        "comt": "\n    /// @dev Allows House to terminate ICO as an emergency measure\n    ",
+        "@dev": "Allows House to terminate ICO as an emergency measure",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimRefund",
+        "visibility": "public",
+        "args": [],
+        "func": "function claimRefund() public {\n        require(stage == Stages.Aborted);\n        require(investmentOf[msg.sender] > 0);\n\n        uint256 payment = investmentOf[msg.sender];\n        investmentOf[msg.sender] = 0;\n\n        msg.sender.transfer(payment);\n    }",
+        "comments": [
+            "",
+            "    /// @dev In case the ICO is emergency-terminated by House, allows investors",
+            "    ///      to pull back the investments",
+            "    "
+        ],
+        "comt": "\n    /// @dev In case the ICO is emergency-terminated by House, allows investors\n    ///      to pull back the investments\n    ",
+        "@dev": "In case the ICO is emergency-terminated by House, allows investors /// to pull back the investments",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "killAborted",
+        "visibility": "public",
+        "args": [],
+        "func": "function killAborted() onlyHouse public {\n        require(stage == Stages.Aborted);\n        require(now > abortTime + 60 days);\n\n        selfdestruct(house);\n    }",
+        "comments": [
+            "",
+            "    /// @dev In case the ICO was terminated, allows House to kill the contract in 2 months",
+            "    ///      after the termination date",
+            "    "
+        ],
+        "comt": "\n    /// @dev In case the ICO was terminated, allows House to kill the contract in 2 months\n    ///      after the termination date\n    ",
+        "@dev": "In case the ICO was terminated, allows House to kill the contract in 2 months /// after the termination date",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

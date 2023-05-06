@@ -1,0 +1,2807 @@
+[
+    {
+        "transactions": 5696,
+        "function_num": 93
+    },
+    {
+        "name": "distributorCallback",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "callbackData",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function distributorCallback(bytes calldata callbackData) external override {\n        CallbackParams memory params = abi.decode(callbackData, (CallbackParams));\n\n        for (uint256 p; p < params.pools.length; p++) {\n            address poolAddress = params.pools[p];\n\n            IBasePool poolContract = IBasePool(poolAddress);\n            bytes32 poolId = poolContract.getPoolId();\n            ensurePoolTokenSetSaved(poolId);\n\n            IERC20 pool = IERC20(poolAddress);\n            _exitPool(pool, poolId, params.recipient);\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Exits specified pool with all bpt",
+            "     * @param callbackData are the encoded function arguments:",
+            "     * recipient - the recipient of the pool tokens",
+            "     * pools - The pools to exit from (addresses)",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Exits specified pool with all bpt\n     * @param callbackData are the encoded function arguments:\n     * recipient - the recipient of the pool tokens\n     * pools - The pools to exit from (addresses)\n     */\n",
+        "@notice": "Exits specified pool with all bpt",
+        "@param1": "callbackData are the encoded function arguments: * recipient - the recipient of the pool tokens * pools - The pools to exit from (addresses)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getLastInvariant",
+        "visibility": "public",
+        "args": [],
+        "func": "function getLastInvariant() public view virtual returns (uint256) {\n        return _lastInvariant;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInvariant",
+        "visibility": "public",
+        "args": [],
+        "func": "function getInvariant() public view returns (uint256) {\n        (, uint256[] memory balances, ) = getVault().getPoolTokens(getPoolId());\n\n        // Since the Pool hooks always work with upscaled balances, we manually\n        // upscale here for consistency\n        _upscaleArray(balances, _scalingFactors());\n\n        (uint256[] memory normalizedWeights, ) = _getNormalizedWeightsAndMaxWeightIndex();\n        return WeightedMath._calculateInvariant(normalizedWeights, balances);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current value of the invariant.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current value of the invariant.\n     */\n",
+        "@dev": "Returns the current value of the invariant.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNormalizedWeights",
+        "visibility": "external",
+        "args": [],
+        "func": "function getNormalizedWeights() external view returns (uint256[] memory) {\n        return _getNormalizedWeights();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRate",
+        "visibility": "public",
+        "args": [],
+        "func": "function getRate() public view returns (uint256) {\n        // The initial BPT supply is equal to the invariant times the number of tokens.\n        return Math.mul(getInvariant(), _getTotalTokens()).divDown(totalSupply());\n    }",
+        "comments": [
+            "/**",
+            "     * @dev This function returns the appreciation of one BPT relative to the",
+            "     * underlying tokens. This starts at 1 when the pool is created and grows over time",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev This function returns the appreciation of one BPT relative to the\n     * underlying tokens. This starts at 1 when the pool is created and grows over time\n     */\n",
+        "@dev": "This function returns the appreciation of one BPT relative to the * underlying tokens. This starts at 1 when the pool is created and grows over time",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "savePoolTokenSet",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function savePoolTokenSet(bytes32 poolId) public {\n        (IERC20[] memory poolTokens, , ) = vault.getPoolTokens(poolId);\n\n        if (_poolTokenSetSaved[poolId]) {\n            // Purge potentially stale cached data\n            uint256 numTokens = _poolTokenSets[poolId].length();\n\n            // Clear the set by removing the last element n times, which uses less gas than removing elements in any\n            // other order.\n            for (uint256 i = 0; i < numTokens; i++) {\n                uint256 lastIndex = numTokens - 1 - i;\n\n                address lastIndexAddress = _poolTokenSets[poolId].unchecked_at(lastIndex);\n                _poolTokenSets[poolId].remove(lastIndexAddress);\n            }\n        } else {\n            _poolTokenSetSaved[poolId] = true;\n        }\n\n        for (uint256 pt; pt < poolTokens.length; pt++) {\n            _poolTokenSets[poolId].add(address(poolTokens[pt]));\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ensurePoolTokenSetSaved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function ensurePoolTokenSetSaved(bytes32 poolId) public {\n        if (!_poolTokenSetSaved[poolId]) {\n            savePoolTokenSet(poolId);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "poolHasToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "func": "function poolHasToken(bytes32 poolId, address token) public view returns (bool) {\n        return _poolTokenSets[poolId].contains(token);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "poolTokensLength",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function poolTokensLength(bytes32 poolId) public view returns (uint256) {\n        return _poolTokenSets[poolId].length();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "poolTokenAtIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function poolTokenAtIndex(bytes32 poolId, uint256 index) public view returns (address) {\n        return _poolTokenSets[poolId].at(index);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onSwap",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "request",
+                "type": "SwapRequest memory"
+            },
+            {
+                "name": "balanceTokenIn",
+                "type": "uint256"
+            },
+            {
+                "name": "balanceTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onSwap(\n        SwapRequest memory request,\n        uint256 balanceTokenIn,\n        uint256 balanceTokenOut\n    ) public virtual override onlyVault(request.poolId) returns (uint256) {\n        uint256 scalingFactorTokenIn = _scalingFactor(request.tokenIn);\n        uint256 scalingFactorTokenOut = _scalingFactor(request.tokenOut);\n\n        if (request.kind == IVault.SwapKind.GIVEN_IN) {\n            // Fees are subtracted before scaling, to reduce the complexity of the rounding direction analysis.\n            uint256 amountInMinusSwapFees = _subtractSwapFeeAmount(request.amount);\n\n            // Process the (upscaled!) swap fee.\n            uint256 swapFee = request.amount - amountInMinusSwapFees;\n            _processSwapFeeAmount(request.tokenIn, _upscale(swapFee, scalingFactorTokenIn));\n\n            request.amount = amountInMinusSwapFees;\n\n            // All token amounts are upscaled.\n            balanceTokenIn = _upscale(balanceTokenIn, scalingFactorTokenIn);\n            balanceTokenOut = _upscale(balanceTokenOut, scalingFactorTokenOut);\n            request.amount = _upscale(request.amount, scalingFactorTokenIn);\n\n            uint256 amountOut = _onSwapGivenIn(request, balanceTokenIn, balanceTokenOut);\n\n            // amountOut tokens are exiting the Pool, so we round down.\n            return _downscaleDown(amountOut, scalingFactorTokenOut);\n        } else {\n            // All token amounts are upscaled.\n            balanceTokenIn = _upscale(balanceTokenIn, scalingFactorTokenIn);\n            balanceTokenOut = _upscale(balanceTokenOut, scalingFactorTokenOut);\n            request.amount = _upscale(request.amount, scalingFactorTokenOut);\n\n            uint256 amountIn = _onSwapGivenOut(request, balanceTokenIn, balanceTokenOut);\n\n            // amountIn tokens are entering the Pool, so we round up.\n            amountIn = _downscaleUp(amountIn, scalingFactorTokenIn);\n\n            // Fees are added after scaling happens, to reduce the complexity of the rounding direction analysis.\n            uint256 amountInPlusSwapFees = _addSwapFeeAmount(amountIn);\n\n            // Process the (upscaled!) swap fee.\n            uint256 swapFee = amountInPlusSwapFees - amountIn;\n            _processSwapFeeAmount(request.tokenIn, _upscale(swapFee, scalingFactorTokenIn));\n\n            return amountInPlusSwapFees;\n        }\n    }",
+        "comments": [
+            "    // Swap Hooks",
+            "",
+            "    "
+        ],
+        "comt": "    // Swap Hooks\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPoolId",
+        "visibility": "public",
+        "args": [],
+        "func": "function getPoolId() public view override returns (bytes32) {\n        return _poolId;\n    }",
+        "comments": [
+            "",
+            "    // Getters / Setters",
+            "",
+            "    "
+        ],
+        "comt": "\n    // Getters / Setters\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSwapFeePercentage",
+        "visibility": "public",
+        "args": [],
+        "func": "function getSwapFeePercentage() public view returns (uint256) {\n        return _miscData.decodeUint64(_SWAP_FEE_PERCENTAGE_OFFSET);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSwapFeePercentage",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "swapFeePercentage",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setSwapFeePercentage(uint256 swapFeePercentage) external virtual authenticate whenNotPaused {\n        _setSwapFeePercentage(swapFeePercentage);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAssetManagerPoolConfig",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            },
+            {
+                "name": "poolConfig",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function setAssetManagerPoolConfig(IERC20 token, bytes memory poolConfig)\n        public\n        virtual\n        authenticate\n        whenNotPaused\n    {\n        _setAssetManagerPoolConfig(token, poolConfig);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPaused",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "paused",
+                "type": "bool"
+            }
+        ],
+        "func": "function setPaused(bool paused) external authenticate {\n        _setPaused(paused);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onJoinPool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "lastChangeBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "protocolSwapFeePercentage",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function onJoinPool(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256 lastChangeBlock,\n        uint256 protocolSwapFeePercentage,\n        bytes memory userData\n    ) public virtual override onlyVault(poolId) returns (uint256[] memory, uint256[] memory) {\n        uint256[] memory scalingFactors = _scalingFactors();\n\n        if (totalSupply() == 0) {\n            (uint256 bptAmountOut, uint256[] memory amountsIn) = _onInitializePool(\n                poolId,\n                sender,\n                recipient,\n                scalingFactors,\n                userData\n            );\n\n            // On initialization, we lock _getMinimumBpt() by minting it for the zero address. This BPT acts as a\n            // minimum as it will never be burned, which reduces potential issues with rounding, and also prevents the\n            // Pool from ever being fully drained.\n            _require(bptAmountOut >= _getMinimumBpt(), Errors.MINIMUM_BPT);\n            _mintPoolTokens(address(0), _getMinimumBpt());\n            _mintPoolTokens(recipient, bptAmountOut - _getMinimumBpt());\n\n            // amountsIn are amounts entering the Pool, so we round up.\n            _downscaleUpArray(amountsIn, scalingFactors);\n\n            return (amountsIn, new uint256[](_getTotalTokens()));\n        } else {\n            _upscaleArray(balances, scalingFactors);\n            (uint256 bptAmountOut, uint256[] memory amountsIn, uint256[] memory dueProtocolFeeAmounts) = _onJoinPool(\n                poolId,\n                sender,\n                recipient,\n                balances,\n                lastChangeBlock,\n                protocolSwapFeePercentage,\n                scalingFactors,\n                userData\n            );\n\n            // Note we no longer use `balances` after calling `_onJoinPool`, which may mutate it.\n\n            _mintPoolTokens(recipient, bptAmountOut);\n\n            // amountsIn are amounts entering the Pool, so we round up.\n            _downscaleUpArray(amountsIn, scalingFactors);\n            // dueProtocolFeeAmounts are amounts exiting the Pool, so we round down.\n            _downscaleDownArray(dueProtocolFeeAmounts, scalingFactors);\n\n            return (amountsIn, dueProtocolFeeAmounts);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onExitPool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "lastChangeBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "protocolSwapFeePercentage",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function onExitPool(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256 lastChangeBlock,\n        uint256 protocolSwapFeePercentage,\n        bytes memory userData\n    ) public virtual override onlyVault(poolId) returns (uint256[] memory, uint256[] memory) {\n        uint256[] memory scalingFactors = _scalingFactors();\n        _upscaleArray(balances, scalingFactors);\n\n        (uint256 bptAmountIn, uint256[] memory amountsOut, uint256[] memory dueProtocolFeeAmounts) = _onExitPool(\n            poolId,\n            sender,\n            recipient,\n            balances,\n            lastChangeBlock,\n            protocolSwapFeePercentage,\n            scalingFactors,\n            userData\n        );\n\n        // Note we no longer use `balances` after calling `_onExitPool`, which may mutate it.\n\n        _burnPoolTokens(sender, bptAmountIn);\n\n        // Both amountsOut and dueProtocolFeeAmounts are amounts exiting the Pool, so we round down.\n        _downscaleDownArray(amountsOut, scalingFactors);\n        _downscaleDownArray(dueProtocolFeeAmounts, scalingFactors);\n\n        return (amountsOut, dueProtocolFeeAmounts);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "queryJoin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "lastChangeBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "protocolSwapFeePercentage",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function queryJoin(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256 lastChangeBlock,\n        uint256 protocolSwapFeePercentage,\n        bytes memory userData\n    ) external returns (uint256 bptOut, uint256[] memory amountsIn) {\n        InputHelpers.ensureInputLengthMatch(balances.length, _getTotalTokens());\n\n        _queryAction(\n            poolId,\n            sender,\n            recipient,\n            balances,\n            lastChangeBlock,\n            protocolSwapFeePercentage,\n            userData,\n            _onJoinPool,\n            _downscaleUpArray\n        );\n\n        // The `return` opcode is executed directly inside `_queryAction`, so execution never reaches this statement,\n        // and we don't need to return anything here - it just silences compiler warnings.\n        return (bptOut, amountsIn);\n    }",
+        "comments": [
+            "",
+            "    // Query functions",
+            "",
+            "    /**",
+            "     * @dev Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the",
+            "     * Vault with the same arguments, along with the number of tokens `sender` would have to supply.",
+            "     *",
+            "     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault",
+            "     * data, such as the protocol swap fee percentage and Pool balances.",
+            "     *",
+            "     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must",
+            "     * explicitly use eth_call instead of eth_sendTransaction.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Query functions\n\n    /**\n     * @dev Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the\n     * Vault with the same arguments, along with the number of tokens `sender` would have to supply.\n     *\n     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault\n     * data, such as the protocol swap fee percentage and Pool balances.\n     *\n     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must\n     * explicitly use eth_call instead of eth_sendTransaction.\n     */\n    ",
+        "@dev": "Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the * Vault with the same arguments, along with the number of tokens `sender` would have to supply. * * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault * data, such as the protocol swap fee percentage and Pool balances. * * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must * explicitly use eth_call instead of eth_sendTransaction.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "queryExit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "lastChangeBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "protocolSwapFeePercentage",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function queryExit(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256 lastChangeBlock,\n        uint256 protocolSwapFeePercentage,\n        bytes memory userData\n    ) external returns (uint256 bptIn, uint256[] memory amountsOut) {\n        InputHelpers.ensureInputLengthMatch(balances.length, _getTotalTokens());\n\n        _queryAction(\n            poolId,\n            sender,\n            recipient,\n            balances,\n            lastChangeBlock,\n            protocolSwapFeePercentage,\n            userData,\n            _onExitPool,\n            _downscaleDownArray\n        );\n\n        // The `return` opcode is executed directly inside `_queryAction`, so execution never reaches this statement,\n        // and we don't need to return anything here - it just silences compiler warnings.\n        return (bptIn, amountsOut);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the",
+            "     * Vault with the same arguments, along with the number of tokens `recipient` would receive.",
+            "     *",
+            "     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault",
+            "     * data, such as the protocol swap fee percentage and Pool balances.",
+            "     *",
+            "     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must",
+            "     * explicitly use eth_call instead of eth_sendTransaction.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the\n     * Vault with the same arguments, along with the number of tokens `recipient` would receive.\n     *\n     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault\n     * data, such as the protocol swap fee percentage and Pool balances.\n     *\n     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must\n     * explicitly use eth_call instead of eth_sendTransaction.\n     */\n",
+        "@dev": "Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the * Vault with the same arguments, along with the number of tokens `recipient` would receive. * * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault * data, such as the protocol swap fee percentage and Pool balances. * * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must * explicitly use eth_call instead of eth_sendTransaction.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getScalingFactors",
+        "visibility": "external",
+        "args": [],
+        "func": "function getScalingFactors() external view returns (uint256[] memory) {\n        return _scalingFactors();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPausedState",
+        "visibility": "external",
+        "args": [],
+        "func": "function getPausedState()\n        external\n        view\n        override\n        returns (\n            bool paused,\n            uint256 pauseWindowEndTime,\n            uint256 bufferPeriodEndTime\n        )\n    {\n        paused = !_isNotPaused();\n        pauseWindowEndTime = _getPauseWindowEndTime();\n        bufferPeriodEndTime = _getBufferPeriodEndTime();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current contract pause status, as well as the end times of the Pause Window and Buffer",
+            "     * Period.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current contract pause status, as well as the end times of the Pause Window and Buffer\n     * Period.\n     */\n",
+        "@dev": "Returns the current contract pause status, as well as the end times of the Pause Window and Buffer * Period.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the name of the token.\n     */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the symbol of the token, usually a shorter version of the",
+            "     * name.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the symbol of the token, usually a shorter version of the\n     * name.\n     */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of decimals used to get its user representation.",
+            "     * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "     * be displayed to a user as `5,05` (`505 / 10 ** 2`).",
+            "     *",
+            "     * Tokens usually opt for a value of 18, imitating the relationship between",
+            "     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is",
+            "     * called.",
+            "     *",
+            "     * NOTE: This information is only used for _display_ purposes: it in",
+            "     * no way affects any of the arithmetic of the contract, including",
+            "     * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of decimals used to get its user representation.\n     * For example, if `decimals` equals `2`, a balance of `505` tokens should\n     * be displayed to a user as `5,05` (`505 / 10 ** 2`).\n     *\n     * Tokens usually opt for a value of 18, imitating the relationship between\n     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is\n     * called.\n     *\n     * NOTE: This information is only used for _display_ purposes: it in\n     * no way affects any of the arithmetic of the contract, including\n     * {IERC20-balanceOf} and {IERC20-transfer}.\n     */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5,05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is * called. * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}.\n     */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(msg.sender, recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(msg.sender, spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(\n            sender,\n            msg.sender,\n            _allowances[sender][msg.sender].sub(amount, Errors.ERC20_TRANSFER_EXCEEDS_ALLOWANCE)\n        );\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(msg.sender, spender, _allowances[msg.sender][spender].add(addedValue));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(\n            msg.sender,\n            spender,\n            _allowances[msg.sender][spender].sub(subtractedValue, Errors.ERC20_DECREASED_ALLOWANCE_BELOW_ZERO)\n        );\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVault",
+        "visibility": "public",
+        "args": [],
+        "func": "function getVault() public view returns (IVault) {\n        return _vault;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view override returns (uint256) {\n        if (spender == address(getVault())) {\n            return uint256(-1);\n        } else {\n            return super.allowance(owner, spender);\n        }\n    }",
+        "comments": [
+            "",
+            "    // Overrides",
+            "",
+            "    /**",
+            "     * @dev Override to grant the Vault infinite allowance, causing for Pool Tokens to not require approval.",
+            "     *",
+            "     * This is sound as the Vault already provides authorization mechanisms when initiation token transfers, which this",
+            "     * contract inherits.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Overrides\n\n    /**\n     * @dev Override to grant the Vault infinite allowance, causing for Pool Tokens to not require approval.\n     *\n     * This is sound as the Vault already provides authorization mechanisms when initiation token transfers, which this\n     * contract inherits.\n     */\n    ",
+        "@dev": "Override to grant the Vault infinite allowance, causing for Pool Tokens to not require approval. * * This is sound as the Vault already provides authorization mechanisms when initiation token transfers, which this * contract inherits.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public override returns (bool) {\n        uint256 currentAllowance = allowance(sender, msg.sender);\n        _require(msg.sender == sender || currentAllowance >= amount, Errors.ERC20_TRANSFER_EXCEEDS_ALLOWANCE);\n\n        _transfer(sender, recipient, amount);\n\n        if (msg.sender != sender && currentAllowance != uint256(-1)) {\n            // Because of the previous require, we know that if msg.sender != sender then currentAllowance >= amount\n            _approve(sender, msg.sender, currentAllowance - amount);\n        }\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Override to allow for 'infinite allowance' and let the token owner use `transferFrom` with no self-allowance",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Override to allow for 'infinite allowance' and let the token owner use `transferFrom` with no self-allowance\n     */\n",
+        "@dev": "Override to allow for 'infinite allowance' and let the token owner use `transferFrom` with no self-allowance",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 amount) public override returns (bool) {\n        uint256 currentAllowance = allowance(msg.sender, spender);\n\n        if (amount >= currentAllowance) {\n            _approve(msg.sender, spender, 0);\n        } else {\n            // No risk of underflow due to if condition\n            _approve(msg.sender, spender, currentAllowance - amount);\n        }\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Override to allow decreasing allowance by more than the current amount (setting it to zero)",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Override to allow decreasing allowance by more than the current amount (setting it to zero)\n     */\n",
+        "@dev": "Override to allow decreasing allowance by more than the current amount (setting it to zero)",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOwner",
+        "visibility": "public",
+        "args": [],
+        "func": "function getOwner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAuthorizer",
+        "visibility": "external",
+        "args": [],
+        "func": "function getAuthorizer() external view returns (IAuthorizer) {\n        return _getAuthorizer();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "permit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function permit(\n        address owner,\n        address spender,\n        uint256 value,\n        uint256 deadline,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) public virtual override {\n        // solhint-disable-next-line not-rely-on-time\n        _require(block.timestamp <= deadline, Errors.EXPIRED_PERMIT);\n\n        uint256 nonce = _nonces[owner];\n        bytes32 structHash = keccak256(abi.encode(_PERMIT_TYPEHASH, owner, spender, value, nonce, deadline));\n\n        bytes32 hash = _hashTypedDataV4(structHash);\n\n        address signer = ecrecover(hash, v, r, s);\n        _require((signer != address(0)) && (signer == owner), Errors.INVALID_SIGNATURE);\n\n        _nonces[owner] = nonce + 1;\n        _approve(owner, spender, value);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20Permit-permit}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20Permit-permit}.\n     */\n",
+        "@dev": "See {IERC20Permit-permit}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "nonces",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function nonces(address owner) public view override returns (uint256) {\n        return _nonces[owner];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20Permit-nonces}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20Permit-nonces}.\n     */\n",
+        "@dev": "See {IERC20Permit-nonces}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "DOMAIN_SEPARATOR",
+        "visibility": "external",
+        "args": [],
+        "func": "function DOMAIN_SEPARATOR() external view override returns (bytes32) {\n        return _domainSeparatorV4();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getActionId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "selector",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function getActionId(bytes4 selector) public view override returns (bytes32) {\n        // Each external function is dynamically assigned an action identifier as the hash of the disambiguator and the\n        // function selector. Disambiguation is necessary to avoid potential collisions in the function selectors of\n        // multiple contracts.\n        return keccak256(abi.encodePacked(_actionIdDisambiguator, selector));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "distributorCallback",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function distributorCallback(bytes calldata) external override {\n        emit CallbackReceived();\n        return;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "distributorCallback",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "callbackData",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function distributorCallback(bytes calldata callbackData) external override {\n        CallbackParams memory params = abi.decode(callbackData, (CallbackParams));\n\n        ensurePoolTokenSetSaved(params.poolId);\n\n        IAsset[] memory assets = _getAssets(params.poolId);\n\n        (uint256[] memory amountsIn, IVault.UserBalanceOp[] memory leftoverOps) = _initializeArrays(\n            params.poolId,\n            params.tokens\n        );\n\n        uint256[] memory internalBalances = vault.getInternalBalance(address(this), params.tokens);\n        _populateArrays(params.poolId, params.recipient, params.tokens, internalBalances, amountsIn, leftoverOps);\n\n        _joinPool(params.poolId, params.recipient, assets, amountsIn);\n        vault.manageUserBalance(leftoverOps);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Reinvests tokens in a specified pool",
+            "     * @param callbackData - the encoded function arguments",
+            "     * recipient - the recipient of the bpt and leftover funds",
+            "     * poolId - The pool to receive the tokens",
+            "     * tokens - The tokens that were received",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Reinvests tokens in a specified pool\n     * @param callbackData - the encoded function arguments\n     * recipient - the recipient of the bpt and leftover funds\n     * poolId - The pool to receive the tokens\n     * tokens - The tokens that were received\n     */\n",
+        "@notice": "Reinvests tokens in a specified pool",
+        "@param1": "callbackData - the encoded function arguments * recipient - the recipient of the bpt and leftover funds * poolId - The pool to receive the tokens * tokens - The tokens that were received",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowlistRewarder",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewarder",
+                "type": "address"
+            }
+        ],
+        "func": "function allowlistRewarder(\n        IERC20 pool,\n        IERC20 rewardsToken,\n        address rewarder\n    ) external override onlyAllowlisters(pool) {\n        _allowlistRewarder(pool, rewardsToken, rewarder);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a rewarder to be explicitly added to an allowlist of rewarders",
+            "     * @param pool The bpt of the pool that the rewarder can reward",
+            "     * @param rewardsToken The token to be distributed to stakers",
+            "     * @param rewarder The address of the rewarder",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a rewarder to be explicitly added to an allowlist of rewarders\n     * @param pool The bpt of the pool that the rewarder can reward\n     * @param rewardsToken The token to be distributed to stakers\n     * @param rewarder The address of the rewarder\n     */\n",
+        "@notice": "Allows a rewarder to be explicitly added to an allowlist of rewarders",
+        "@param1": "pool The bpt of the pool that the rewarder can reward",
+        "@param2": "rewardsToken The token to be distributed to stakers",
+        "@param3": "rewarder The address of the rewarder",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isAllowlistedRewarder",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewarder",
+                "type": "address"
+            }
+        ],
+        "func": "function isAllowlistedRewarder(\n        IERC20 pool,\n        IERC20 rewardsToken,\n        address rewarder\n    ) public view override returns (bool) {\n        return _isAllowlistedRewarder(pool, rewardsToken, rewarder);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Whether a rewarder can reward bpt of a pool with a token",
+            "     * @param pool The bpt of the pool",
+            "     * @param rewardsToken The token to be distributed to stakers",
+            "     * @param rewarder The address of the rewarder",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Whether a rewarder can reward bpt of a pool with a token\n     * @param pool The bpt of the pool\n     * @param rewardsToken The token to be distributed to stakers\n     * @param rewarder The address of the rewarder\n     */\n",
+        "@notice": "Whether a rewarder can reward bpt of a pool with a token",
+        "@param1": "pool The bpt of the pool",
+        "@param2": "rewardsToken The token to be distributed to stakers",
+        "@param3": "rewarder The address of the rewarder",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addReward",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsDuration",
+                "type": "uint256"
+            }
+        ],
+        "func": "function addReward(\n        IERC20 pool,\n        IERC20 rewardsToken,\n        uint256 rewardsDuration\n    ) external override onlyAllowlistedRewarder(pool, rewardsToken) {\n        require(rewardsDuration > 0, \"reward rate must be nonzero\");\n        require(rewardData[pool][msg.sender][rewardsToken].rewardsDuration == 0, \"Duplicate rewards token\");\n        _rewardTokens[pool].add(address(rewardsToken));\n        _rewarders[pool][rewardsToken].add(msg.sender);\n        rewardData[pool][msg.sender][rewardsToken].rewardsDuration = rewardsDuration;\n        rewardsToken.approve(address(getVault()), type(uint256).max);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Adds a new reward token to be distributed",
+            "     * @param pool The bpt of the pool that will receive rewards",
+            "     * @param rewardsToken The new token to be distributed to stakers",
+            "     * @param rewardsDuration The duration over which each distribution is spread",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Adds a new reward token to be distributed\n     * @param pool The bpt of the pool that will receive rewards\n     * @param rewardsToken The new token to be distributed to stakers\n     * @param rewardsDuration The duration over which each distribution is spread\n     */\n",
+        "@notice": "Adds a new reward token to be distributed",
+        "@param1": "pool The bpt of the pool that will receive rewards",
+        "@param2": "rewardsToken The new token to be distributed to stakers",
+        "@param3": "rewardsDuration The duration over which each distribution is spread",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            }
+        ],
+        "func": "function totalSupply(IERC20 pool) external view returns (uint256) {\n        return _totalSupply[pool];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Total supply of a pools bpt that has been staked",
+            "     * @param pool The bpt of the pool",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Total supply of a pools bpt that has been staked\n     * @param pool The bpt of the pool\n     */\n",
+        "@notice": "Total supply of a pools bpt that has been staked",
+        "@param1": "pool The bpt of the pool",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(IERC20 pool, address account) external view returns (uint256) {\n        return _balances[pool][account];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice The balance of a pools bpt that `account` has staked",
+            "     * @param pool The bpt of the pool",
+            "     * @param account The address of the user with staked bpt",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice The balance of a pools bpt that `account` has staked\n     * @param pool The bpt of the pool\n     * @param account The address of the user with staked bpt\n     */\n",
+        "@notice": "The balance of a pools bpt that `account` has staked",
+        "@param1": "pool The bpt of the pool",
+        "@param2": "account The address of the user with staked bpt",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewarder",
+                "type": "address"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            }
+        ],
+        "func": "function lastTimeRewardApplicable(\n        IERC20 pool,\n        address rewarder,\n        IERC20 rewardsToken\n    ) public view returns (uint256) {\n        return _lastTimeRewardApplicable(rewardData[pool][rewarder][rewardsToken]);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice This time is used when determining up until what time a reward has been accounted for",
+            "     * @param pool The bpt of the pool",
+            "     * @param rewarder The address of the rewarder",
+            "     * @param rewardsToken The token to be distributed to stakers",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice This time is used when determining up until what time a reward has been accounted for\n     * @param pool The bpt of the pool\n     * @param rewarder The address of the rewarder\n     * @param rewardsToken The token to be distributed to stakers\n     */\n",
+        "@notice": "This time is used when determining up until what time a reward has been accounted for",
+        "@param1": "pool The bpt of the pool",
+        "@param2": "rewarder The address of the rewarder",
+        "@param3": "rewardsToken The token to be distributed to stakers",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewarder",
+                "type": "address"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            }
+        ],
+        "func": "function rewardPerToken(\n        IERC20 pool,\n        address rewarder,\n        IERC20 rewardsToken\n    ) public view returns (uint256) {\n        return _rewardPerToken(pool, rewardData[pool][rewarder][rewardsToken]);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Calculates the amount of reward token per staked bpt",
+            "     * @param pool The bpt of the pool",
+            "     * @param rewarder The address of the rewarder",
+            "     * @param rewardsToken The token to be distributed to stakers",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Calculates the amount of reward token per staked bpt\n     * @param pool The bpt of the pool\n     * @param rewarder The address of the rewarder\n     * @param rewardsToken The token to be distributed to stakers\n     */\n",
+        "@notice": "Calculates the amount of reward token per staked bpt",
+        "@param1": "pool The bpt of the pool",
+        "@param2": "rewarder The address of the rewarder",
+        "@param3": "rewardsToken The token to be distributed to stakers",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unaccountedForUnpaidRewards",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewarder",
+                "type": "address"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            }
+        ],
+        "func": "function unaccountedForUnpaidRewards(\n        IERC20 pool,\n        address rewarder,\n        address account,\n        IERC20 rewardsToken\n    ) public view returns (uint256) {\n        return\n            _balances[pool][account].mulDown(\n                rewardPerToken(pool, rewarder, rewardsToken).sub(\n                    userRewardPerTokenPaid[pool][rewarder][account][rewardsToken]\n                )\n            );\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Calculates the amount of `rewardsToken` that `account` is able to claim",
+            "     * from a particular rewarder",
+            "     * @param pool The bpt of the pool",
+            "     * @param rewarder The address of the rewarder",
+            "     * @param account The address receiving the rewards",
+            "     * @param rewardsToken The token to be distributed to stakers",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Calculates the amount of `rewardsToken` that `account` is able to claim\n     * from a particular rewarder\n     * @param pool The bpt of the pool\n     * @param rewarder The address of the rewarder\n     * @param account The address receiving the rewards\n     * @param rewardsToken The token to be distributed to stakers\n     */\n",
+        "@notice": "Calculates the amount of `rewardsToken` that `account` is able to claim * from a particular rewarder",
+        "@param1": "pool The bpt of the pool",
+        "@param2": "rewarder The address of the rewarder",
+        "@param3": "account The address receiving the rewards",
+        "@param4": "rewardsToken The token to be distributed to stakers",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalEarned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            }
+        ],
+        "func": "function totalEarned(\n        IERC20 pool,\n        address account,\n        IERC20 rewardsToken\n    ) public view returns (uint256 total) {\n        uint256 rewardersLength = _rewarders[pool][rewardsToken].length();\n        for (uint256 r; r < rewardersLength; r++) {\n            total = total.add(\n                unaccountedForUnpaidRewards(pool, _rewarders[pool][rewardsToken].unchecked_at(r), account, rewardsToken)\n            );\n        }\n        total = total.add(unpaidRewards[pool][account][rewardsToken]);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Calculates the total amount of `rewardsToken` that `account` is able to claim",
+            "     * @param pool The bpt of the pool",
+            "     * @param account The address receiving the rewards",
+            "     * @param rewardsToken The token to be distributed to stakers",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Calculates the total amount of `rewardsToken` that `account` is able to claim\n     * @param pool The bpt of the pool\n     * @param account The address receiving the rewards\n     * @param rewardsToken The token to be distributed to stakers\n     */\n",
+        "@notice": "Calculates the total amount of `rewardsToken` that `account` is able to claim",
+        "@param1": "pool The bpt of the pool",
+        "@param2": "account The address receiving the rewards",
+        "@param3": "rewardsToken The token to be distributed to stakers",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(IERC20 pool, uint256 amount) external nonReentrant {\n        _stakeFor(pool, amount, msg.sender, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice stakes a token on the msg.sender's behalf",
+            "     * @param pool The bpt of the pool that the rewarder can reward",
+            "     * @param amount Amount of `pool` to stake",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice stakes a token on the msg.sender's behalf\n     * @param pool The bpt of the pool that the rewarder can reward\n     * @param amount Amount of `pool` to stake\n     */\n",
+        "@notice": "stakes a token on the msg.sender's behalf",
+        "@param1": "pool The bpt of the pool that the rewarder can reward",
+        "@param2": "amount Amount of `pool` to stake",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stakeFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            }
+        ],
+        "func": "function stakeFor(\n        IERC20 pool,\n        uint256 amount,\n        address receiver\n    ) external nonReentrant {\n        _stakeFor(pool, amount, msg.sender, receiver);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Stakes a token so that `receiver` can earn rewards",
+            "     * @param pool The token being staked to earn rewards",
+            "     * @param amount Amount of `pool` to stake",
+            "     * @param receiver The recipient of claimed rewards",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Stakes a token so that `receiver` can earn rewards\n     * @param pool The token being staked to earn rewards\n     * @param amount Amount of `pool` to stake\n     * @param receiver The recipient of claimed rewards\n     */\n",
+        "@notice": "Stakes a token so that `receiver` can earn rewards",
+        "@param1": "pool The token being staked to earn rewards",
+        "@param2": "amount Amount of `pool` to stake",
+        "@param3": "receiver The recipient of claimed rewards",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stakeWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function stakeWithPermit(\n        IERC20 pool,\n        uint256 amount,\n        uint256 deadline,\n        address account,\n        address recipient,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) external nonReentrant {\n        // Force the sender to be the recipient to ensure signature is not extracted from the\n        // mempool and used for another recipient\n        require(account == recipient, \"The recipient must match the account in the permit signature\");\n        IERC20Permit(address(pool)).permit(account, address(this), amount, deadline, v, r, s);\n        _stakeFor(pool, amount, account, recipient);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Stake tokens using a permit signature for approval",
+            "     * @param pool      The bpt being staked to earn rewards",
+            "     * @param amount    Amount of allowance",
+            "     * @param deadline  The time at which this expires (unix time)",
+            "     * @param v         v of the signature",
+            "     * @param r         r of the signature",
+            "     * @param s         s of the signature",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Stake tokens using a permit signature for approval\n     * @param pool      The bpt being staked to earn rewards\n     * @param amount    Amount of allowance\n     * @param deadline  The time at which this expires (unix time)\n     * @param v         v of the signature\n     * @param r         r of the signature\n     * @param s         s of the signature\n     */\n",
+        "@notice": "Stake tokens using a permit signature for approval",
+        "@param1": "pool The bpt being staked to earn rewards",
+        "@param2": "amount Amount of allowance",
+        "@param3": "deadline The time at which this expires (unix time)",
+        "@param4": "v v of the signature",
+        "@param5": "r r of the signature",
+        "@param6": "s s of the signature",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unstake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            }
+        ],
+        "func": "function unstake(\n        IERC20 pool,\n        uint256 amount,\n        address receiver\n    ) public nonReentrant updateReward(pool, msg.sender) {\n        require(amount > 0, \"Cannot withdraw 0\");\n        _totalSupply[pool] = _totalSupply[pool].sub(amount);\n        _balances[pool][msg.sender] = _balances[pool][msg.sender].sub(amount);\n        pool.safeTransfer(receiver, amount);\n        emit Withdrawn(address(pool), receiver, amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Untakes a token",
+            "     * @param pool The token being staked to earn rewards",
+            "     * @param amount Amount of `pool` to unstake",
+            "     * @param receiver The recipient of the bpt",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Untakes a token\n     * @param pool The token being staked to earn rewards\n     * @param amount Amount of `pool` to unstake\n     * @param receiver The recipient of the bpt\n     */\n",
+        "@notice": "Untakes a token",
+        "@param1": "pool The token being staked to earn rewards",
+        "@param2": "amount Amount of `pool` to unstake",
+        "@param3": "receiver The recipient of the bpt",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pools",
+                "type": "IERC20[] calldata"
+            }
+        ],
+        "func": "function getReward(IERC20[] calldata pools) external nonReentrant {\n        _getReward(pools, msg.sender, false);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to claim any rewards to an EOA",
+            "     * @param pools The pools to claim rewards for",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to claim any rewards to an EOA\n     * @param pools The pools to claim rewards for\n     */\n",
+        "@notice": "Allows a user to claim any rewards to an EOA",
+        "@param1": "pools The pools to claim rewards for",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRewardAsInternalBalance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pools",
+                "type": "IERC20[] calldata"
+            }
+        ],
+        "func": "function getRewardAsInternalBalance(IERC20[] calldata pools) external nonReentrant {\n        _getReward(pools, msg.sender, true);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to claim any rewards to an internal balance",
+            "     * @param pools The pools to claim rewards for",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to claim any rewards to an internal balance\n     * @param pools The pools to claim rewards for\n     */\n",
+        "@notice": "Allows a user to claim any rewards to an internal balance",
+        "@param1": "pools The pools to claim rewards for",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRewardWithCallback",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pools",
+                "type": "IERC20[] calldata"
+            },
+            {
+                "name": "callbackContract",
+                "type": "IDistributorCallback"
+            },
+            {
+                "name": "callbackData",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function getRewardWithCallback(\n        IERC20[] calldata pools,\n        IDistributorCallback callbackContract,\n        bytes calldata callbackData\n    ) external nonReentrant {\n        _getReward(pools, address(callbackContract), true);\n\n        callbackContract.distributorCallback(callbackData);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows the user to claim rewards to a callback contract",
+            "     * @param pools An array of pools from which rewards will be claimed",
+            "     * @param callbackContract The contract where rewards will be transferred",
+            "     * @param callbackData The data that is used to call the callback contract's 'callback' method",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows the user to claim rewards to a callback contract\n     * @param pools An array of pools from which rewards will be claimed\n     * @param callbackContract The contract where rewards will be transferred\n     * @param callbackData The data that is used to call the callback contract's 'callback' method\n     */\n",
+        "@notice": "Allows the user to claim rewards to a callback contract",
+        "@param1": "pools An array of pools from which rewards will be claimed",
+        "@param2": "callbackContract The contract where rewards will be transferred",
+        "@param3": "callbackData The data that is used to call the callback contract's 'callback' method",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pools",
+                "type": "IERC20[] calldata"
+            }
+        ],
+        "func": "function exit(IERC20[] calldata pools) external {\n        for (uint256 p; p < pools.length; p++) {\n            IERC20 pool = pools[p];\n            unstake(pool, _balances[pool][msg.sender], msg.sender);\n        }\n        _getReward(pools, msg.sender, false);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to unstake all their tokens",
+            "     * @param pools The pools to unstake tokens for",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to unstake all their tokens\n     * @param pools The pools to unstake tokens for\n     */\n",
+        "@notice": "Allows a user to unstake all their tokens",
+        "@param1": "pools The pools to unstake tokens for",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exitWithCallback",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pools",
+                "type": "IERC20[] calldata"
+            },
+            {
+                "name": "callbackContract",
+                "type": "IDistributorCallback"
+            },
+            {
+                "name": "callbackData",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function exitWithCallback(\n        IERC20[] calldata pools,\n        IDistributorCallback callbackContract,\n        bytes calldata callbackData\n    ) external {\n        for (uint256 p; p < pools.length; p++) {\n            IERC20 pool = pools[p];\n            unstake(pool, _balances[pool][msg.sender], address(callbackContract));\n        }\n        _getReward(pools, msg.sender, false);\n        callbackContract.distributorCallback(callbackData);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to unstake all their bpt to exit pools, transferring accrued rewards to the user",
+            "     * and the unstaked bpt to a callback contract",
+            "     * @param pools The pools to claim rewards for",
+            "     * @param callbackContract The contract where bpt will be transferred",
+            "     * @param callbackData The data that is used to call the callback contract's 'callback' method",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to unstake all their bpt to exit pools, transferring accrued rewards to the user\n     * and the unstaked bpt to a callback contract\n     * @param pools The pools to claim rewards for\n     * @param callbackContract The contract where bpt will be transferred\n     * @param callbackData The data that is used to call the callback contract's 'callback' method\n     */\n",
+        "@notice": "Allows a user to unstake all their bpt to exit pools, transferring accrued rewards to the user * and the unstaked bpt to a callback contract",
+        "@param1": "pools The pools to claim rewards for",
+        "@param2": "callbackContract The contract where bpt will be transferred",
+        "@param3": "callbackData The data that is used to call the callback contract's 'callback' method",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "reward",
+                "type": "uint256"
+            },
+            {
+                "name": "rewarder",
+                "type": "address"
+            }
+        ],
+        "func": "function notifyRewardAmount(\n        IERC20 pool,\n        IERC20 rewardsToken,\n        uint256 reward,\n        address rewarder\n    ) external override updateReward(pool, address(0)) {\n        require(\n            msg.sender == rewarder || msg.sender == address(rewardsScheduler),\n            \"Rewarder must be sender, or rewards scheduler\"\n        );\n\n        require(_rewarders[pool][rewardsToken].contains(rewarder), \"Reward must be configured with addReward\");\n\n        // handle the transfer of reward tokens via `safeTransferFrom` to reduce the number\n        // of transactions required and ensure correctness of the reward amount\n        // Tokens always come from msg.sender because either `msg.sender == rewarder`\n        // or the`rewardsScheduler` is holding tokens on behalf of the `rewarder`\n        rewardsToken.safeTransferFrom(msg.sender, address(this), reward);\n\n        IVault.UserBalanceOp[] memory ops = new IVault.UserBalanceOp[](1);\n\n        ops[0] = IVault.UserBalanceOp({\n            asset: IAsset(address(rewardsToken)),\n            amount: reward,\n            sender: address(this),\n            recipient: payable(address(this)),\n            kind: IVault.UserBalanceOpKind.DEPOSIT_INTERNAL\n        });\n\n        getVault().manageUserBalance(ops);\n\n        // Save the storage pointer to compute the slot only once.\n        Reward storage data = rewardData[pool][rewarder][rewardsToken];\n\n        // Cache storage variables to avoid repeated access.\n        uint256 periodFinish = data.periodFinish;\n        uint256 rewardsDuration = data.rewardsDuration;\n\n        if (block.timestamp >= periodFinish) {\n            data.rewardRate = Math.divDown(reward, rewardsDuration);\n        } else {\n            uint256 remainingTime = periodFinish - block.timestamp; // Checked arithmetic is not required due to the if\n            uint256 leftoverRewards = Math.mul(remainingTime, data.rewardRate);\n            data.rewardRate = Math.divDown(reward.add(leftoverRewards), rewardsDuration);\n        }\n\n        data.lastUpdateTime = block.timestamp;\n        data.periodFinish = block.timestamp.add(rewardsDuration);\n        emit RewardAdded(address(pool), address(rewardsToken), rewarder, reward);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a rewards distributor, or the reward scheduler",
+            "     * to deposit more tokens to be distributed as rewards",
+            "     * @param pool The pool bpt that is staked in this contract",
+            "     * @param rewardsToken The token to deposit into staking contract for distribution",
+            "     * @param reward The amount of tokens to deposit",
+            "     * @param rewarder The address issuing the reward (usually msg.sender)",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a rewards distributor, or the reward scheduler\n     * to deposit more tokens to be distributed as rewards\n     * @param pool The pool bpt that is staked in this contract\n     * @param rewardsToken The token to deposit into staking contract for distribution\n     * @param reward The amount of tokens to deposit\n     * @param rewarder The address issuing the reward (usually msg.sender)\n     */\n",
+        "@notice": "Allows a rewards distributor, or the reward scheduler * to deposit more tokens to be distributed as rewards",
+        "@param1": "pool The pool bpt that is staked in this contract",
+        "@param2": "rewardsToken The token to deposit into staking contract for distribution",
+        "@param3": "reward The amount of tokens to deposit",
+        "@param4": "rewarder The address issuing the reward (usually msg.sender)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRewardsDuration",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsDuration",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setRewardsDuration(\n        IERC20 pool,\n        IERC20 rewardsToken,\n        uint256 rewardsDuration\n    ) external onlyAllowlistedRewarder(pool, rewardsToken) {\n        require(_rewarders[pool][rewardsToken].contains(msg.sender), \"Reward must be configured with addReward\");\n        require(\n            block.timestamp > rewardData[pool][msg.sender][rewardsToken].periodFinish,\n            \"Reward period still active\"\n        );\n        require(rewardsDuration > 0, \"Reward duration must be non-zero\");\n        rewardData[pool][msg.sender][rewardsToken].rewardsDuration = rewardsDuration;\n        emit RewardsDurationUpdated(\n            address(pool),\n            address(rewardsToken),\n            msg.sender,\n            rewardData[pool][msg.sender][rewardsToken].rewardsDuration\n        );\n    }",
+        "comments": [
+            "/**",
+            "     * @notice set the reward duration for a reward",
+            "     * @param pool The pool's bpt",
+            "     * @param rewardsToken The token for the reward",
+            "     * @param rewardsDuration The duration over which each distribution is spread",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice set the reward duration for a reward\n     * @param pool The pool's bpt\n     * @param rewardsToken The token for the reward\n     * @param rewardsDuration The duration over which each distribution is spread\n     */\n",
+        "@notice": "set the reward duration for a reward",
+        "@param1": "pool The pool's bpt",
+        "@param2": "rewardsToken The token for the reward",
+        "@param3": "rewardsDuration The duration over which each distribution is spread",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getScheduledRewardInfo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "rewardId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getScheduledRewardInfo(bytes32 rewardId) external view returns (ScheduledReward memory reward) {\n        return _rewards[rewardId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "startRewards",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "rewardIds",
+                "type": "bytes32[] calldata"
+            }
+        ],
+        "func": "function startRewards(bytes32[] calldata rewardIds) external {\n        for (uint256 r; r < rewardIds.length; r++) {\n            bytes32 rewardId = rewardIds[r];\n            ScheduledReward memory scheduledReward = _rewards[rewardId];\n\n            require(scheduledReward.status == RewardStatus.PENDING, \"Reward cannot be started\");\n            require(scheduledReward.startTime <= block.timestamp, \"Reward start time is in the future\");\n\n            _rewards[rewardId].status = RewardStatus.STARTED;\n\n            if (\n                scheduledReward.rewardsToken.allowance(address(this), address(_multirewards)) < scheduledReward.amount\n            ) {\n                scheduledReward.rewardsToken.approve(address(_multirewards), type(uint256).max);\n            }\n            _multirewards.notifyRewardAmount(\n                scheduledReward.pool,\n                scheduledReward.rewardsToken,\n                scheduledReward.amount,\n                scheduledReward.rewarder\n            );\n            emit RewardStarted(\n                rewardId,\n                scheduledReward.rewarder,\n                scheduledReward.pool,\n                scheduledReward.rewardsToken,\n                scheduledReward.startTime,\n                scheduledReward.amount\n            );\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRewardId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewarder",
+                "type": "address"
+            },
+            {
+                "name": "startTime",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getRewardId(\n        IERC20 pool,\n        IERC20 rewardsToken,\n        address rewarder,\n        uint256 startTime\n    ) public pure returns (bytes32) {\n        return keccak256(abi.encodePacked(pool, rewardsToken, rewarder, startTime));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "scheduleReward",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewardsToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "startTime",
+                "type": "uint256"
+            }
+        ],
+        "func": "function scheduleReward(\n        IERC20 pool,\n        IERC20 rewardsToken,\n        uint256 amount,\n        uint256 startTime\n    ) public returns (bytes32 rewardId) {\n        rewardId = getRewardId(pool, rewardsToken, msg.sender, startTime);\n        require(startTime > block.timestamp, \"Reward can only be scheduled for the future\");\n        require(\n            _multirewards.isAllowlistedRewarder(pool, rewardsToken, msg.sender),\n            \"Only allowlisted rewarders can schedule reward\"\n        );\n\n        require(_rewards[rewardId].status == RewardStatus.UNINITIALIZED, \"Reward has already been scheduled\");\n\n        _rewards[rewardId] = ScheduledReward({\n            pool: pool,\n            rewardsToken: rewardsToken,\n            rewarder: msg.sender,\n            amount: amount,\n            startTime: startTime,\n            status: RewardStatus.PENDING\n        });\n\n        rewardsToken.safeTransferFrom(msg.sender, address(this), amount);\n\n        emit RewardScheduled(rewardId, msg.sender, pool, rewardsToken, startTime, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVault",
+        "visibility": "public",
+        "args": [],
+        "func": "function getVault() public view returns (IVault) {\n        return _vault;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAuthorizer",
+        "visibility": "external",
+        "args": [],
+        "func": "function getAuthorizer() external view returns (IAuthorizer) {\n        return _getAuthorizer();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isAssetManager",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pool",
+                "type": "IERC20"
+            },
+            {
+                "name": "rewarder",
+                "type": "address"
+            }
+        ],
+        "func": "function isAssetManager(IERC20 pool, address rewarder) public view returns (bool) {\n        IBasePool poolContract = IBasePool(address(pool));\n        bytes32 poolId = poolContract.getPoolId();\n        (IERC20[] memory poolTokens, , ) = getVault().getPoolTokens(poolId);\n\n        for (uint256 pt; pt < poolTokens.length; pt++) {\n            (, , , address assetManager) = getVault().getPoolTokenInfo(poolId, poolTokens[pt]);\n            if (assetManager == rewarder) {\n                return true;\n            }\n        }\n        return false;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Checks if a rewarder is an asset manager",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Checks if a rewarder is an asset manager\n     */\n",
+        "@notice": "Checks if a rewarder is an asset manager",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimWeek",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "liquidityProvider",
+                "type": "address"
+            },
+            {
+                "name": "week",
+                "type": "uint256"
+            },
+            {
+                "name": "claimedBalance",
+                "type": "uint256"
+            },
+            {
+                "name": "merkleProof",
+                "type": "bytes32[] memory"
+            }
+        ],
+        "func": "function claimWeek(\n        address liquidityProvider,\n        uint256 week,\n        uint256 claimedBalance,\n        bytes32[] memory merkleProof\n    ) external {\n        require(msg.sender == liquidityProvider, \"user must claim own balance\");\n        require(!claimed[week][liquidityProvider], \"cannot claim twice\");\n        require(verifyClaim(liquidityProvider, week, claimedBalance, merkleProof), \"Incorrect merkle proof\");\n\n        claimed[week][liquidityProvider] = true;\n        _disburse(liquidityProvider, claimedBalance);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to claim a particular week's worth of rewards",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to claim a particular week's worth of rewards\n     */\n",
+        "@notice": "Allows a user to claim a particular week's worth of rewards",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimWeeks",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "liquidityProvider",
+                "type": "address"
+            },
+            {
+                "name": "claims",
+                "type": "Claim[] memory"
+            }
+        ],
+        "func": "function claimWeeks(address liquidityProvider, Claim[] memory claims) external {\n        require(msg.sender == liquidityProvider, \"user must claim own balance\");\n\n        uint256 totalBalance = _processClaims(liquidityProvider, claims);\n        _disburse(liquidityProvider, totalBalance);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to claim multiple weeks of reward",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to claim multiple weeks of reward\n     */\n",
+        "@notice": "Allows a user to claim multiple weeks of reward",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimWeeksToInternalBalance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "liquidityProvider",
+                "type": "address"
+            },
+            {
+                "name": "claims",
+                "type": "Claim[] memory"
+            }
+        ],
+        "func": "function claimWeeksToInternalBalance(address liquidityProvider, Claim[] memory claims) external {\n        require(msg.sender == liquidityProvider, \"user must claim own balance\");\n\n        uint256 totalBalance = _processClaims(liquidityProvider, claims);\n\n        _disburseToInternalBalance(liquidityProvider, totalBalance);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to claim multiple weeks of reward to internal balance",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to claim multiple weeks of reward to internal balance\n     */\n",
+        "@notice": "Allows a user to claim multiple weeks of reward to internal balance",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimWeeksWithCallback",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "liquidityProvider",
+                "type": "address"
+            },
+            {
+                "name": "callbackContract",
+                "type": "IDistributorCallback"
+            },
+            {
+                "name": "callbackData",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "claims",
+                "type": "Claim[] memory"
+            }
+        ],
+        "func": "function claimWeeksWithCallback(\n        address liquidityProvider,\n        IDistributorCallback callbackContract,\n        bytes calldata callbackData,\n        Claim[] memory claims\n    ) external {\n        require(msg.sender == liquidityProvider, \"user must claim own balance\");\n        uint256 totalBalance = _processClaims(liquidityProvider, claims);\n\n        _disburseToInternalBalance(address(callbackContract), totalBalance);\n\n        callbackContract.distributorCallback(callbackData);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to claim several weeks of rewards to a callback",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to claim several weeks of rewards to a callback\n     */\n",
+        "@notice": "Allows a user to claim several weeks of rewards to a callback",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimStatus",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "liquidityProvider",
+                "type": "address"
+            },
+            {
+                "name": "begin",
+                "type": "uint256"
+            },
+            {
+                "name": "end",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claimStatus(\n        address liquidityProvider,\n        uint256 begin,\n        uint256 end\n    ) external view returns (bool[] memory) {\n        require(begin <= end, \"weeks must be specified in ascending order\");\n        uint256 size = 1 + end - begin;\n        bool[] memory arr = new bool[](size);\n        for (uint256 i = 0; i < size; i++) {\n            arr[i] = claimed[begin + i][liquidityProvider];\n        }\n        return arr;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "merkleRoots",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "begin",
+                "type": "uint256"
+            },
+            {
+                "name": "end",
+                "type": "uint256"
+            }
+        ],
+        "func": "function merkleRoots(uint256 begin, uint256 end) external view returns (bytes32[] memory) {\n        require(begin <= end, \"weeks must be specified in ascending order\");\n        uint256 size = 1 + end - begin;\n        bytes32[] memory arr = new bytes32[](size);\n        for (uint256 i = 0; i < size; i++) {\n            arr[i] = weekMerkleRoots[begin + i];\n        }\n        return arr;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "verifyClaim",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "liquidityProvider",
+                "type": "address"
+            },
+            {
+                "name": "week",
+                "type": "uint256"
+            },
+            {
+                "name": "claimedBalance",
+                "type": "uint256"
+            },
+            {
+                "name": "merkleProof",
+                "type": "bytes32[] memory"
+            }
+        ],
+        "func": "function verifyClaim(\n        address liquidityProvider,\n        uint256 week,\n        uint256 claimedBalance,\n        bytes32[] memory merkleProof\n    ) public view returns (bool) {\n        bytes32 leaf = keccak256(abi.encodePacked(liquidityProvider, claimedBalance));\n        return MerkleProof.verify(merkleProof, weekMerkleRoots[week], leaf);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "seedAllocations",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "week",
+                "type": "uint256"
+            },
+            {
+                "name": "_merkleRoot",
+                "type": "bytes32"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function seedAllocations(\n        uint256 week,\n        bytes32 _merkleRoot,\n        uint256 amount\n    ) external onlyOwner {\n        require(weekMerkleRoots[week] == bytes32(0), \"cannot rewrite merkle root\");\n        weekMerkleRoots[week] = _merkleRoot;\n        rewardToken.safeTransferFrom(msg.sender, address(this), amount);\n        emit RewardAdded(address(rewardToken), amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice",
+            "     * Allows the owner to add funds to the contract as a merkle tree, These tokens will",
+            "     * be withdrawn from the sender",
+            "     * These will be pulled from the user",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice\n     * Allows the owner to add funds to the contract as a merkle tree, These tokens will\n     * be withdrawn from the sender\n     * These will be pulled from the user\n     */\n",
+        "@notice\n": "* Allows the owner to add funds to the contract as a merkle tree, These tokens will * be withdrawn from the sender * These will be pulled from the user",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        _require(newOwner != address(0), Errors.NEW_OWNER_IS_ZERO);\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVault",
+        "visibility": "public",
+        "args": [],
+        "func": "function getVault() public view returns (IVault) {\n        return _vault;\n    }",
+        "comments": [
+            "",
+            "    // Getters",
+            "    "
+        ],
+        "comt": "\n    // Getters\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDistributionRoot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            },
+            {
+                "name": "distributor",
+                "type": "address"
+            },
+            {
+                "name": "distributionId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getDistributionRoot(\n        IERC20 token,\n        address distributor,\n        uint256 distributionId\n    ) external view returns (bytes32) {\n        bytes32 channelId = _getChannelId(token, distributor);\n        return _distributionRoot[channelId][distributionId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRemainingBalance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            },
+            {
+                "name": "distributor",
+                "type": "address"
+            }
+        ],
+        "func": "function getRemainingBalance(IERC20 token, address distributor) external view returns (uint256) {\n        bytes32 channelId = _getChannelId(token, distributor);\n        return _remainingBalance[channelId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNextDistributionId",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            },
+            {
+                "name": "distributor",
+                "type": "address"
+            }
+        ],
+        "func": "function getNextDistributionId(IERC20 token, address distributor) external view returns (uint256) {\n        bytes32 channelId = _getChannelId(token, distributor);\n        return _nextDistributionId[channelId];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice distribution ids must be sequential and can have an optional offset",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice distribution ids must be sequential and can have an optional offset\n     */\n",
+        "@notice": "distribution ids must be sequential and can have an optional offset",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isClaimed",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            },
+            {
+                "name": "distributor",
+                "type": "address"
+            },
+            {
+                "name": "distributionId",
+                "type": "uint256"
+            },
+            {
+                "name": "claimer",
+                "type": "address"
+            }
+        ],
+        "func": "function isClaimed(\n        IERC20 token,\n        address distributor,\n        uint256 distributionId,\n        address claimer\n    ) public view returns (bool) {\n        (uint256 distributionWordIndex, uint256 distributionBitIndex) = _getIndices(distributionId);\n\n        bytes32 channelId = _getChannelId(token, distributor);\n        return (_claimedBitmap[channelId][claimer][distributionWordIndex] & (1 << distributionBitIndex)) != 0;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "verifyClaim",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            },
+            {
+                "name": "distributor",
+                "type": "address"
+            },
+            {
+                "name": "distributionId",
+                "type": "uint256"
+            },
+            {
+                "name": "claimer",
+                "type": "address"
+            },
+            {
+                "name": "claimedBalance",
+                "type": "uint256"
+            },
+            {
+                "name": "merkleProof",
+                "type": "bytes32[] memory"
+            }
+        ],
+        "func": "function verifyClaim(\n        IERC20 token,\n        address distributor,\n        uint256 distributionId,\n        address claimer,\n        uint256 claimedBalance,\n        bytes32[] memory merkleProof\n    ) external view returns (bool) {\n        bytes32 channelId = _getChannelId(token, distributor);\n        return _verifyClaim(channelId, distributionId, claimer, claimedBalance, merkleProof);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimDistributions",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "claimer",
+                "type": "address"
+            },
+            {
+                "name": "claims",
+                "type": "Claim[] memory"
+            },
+            {
+                "name": "tokens",
+                "type": "IERC20[] memory"
+            }
+        ],
+        "func": "function claimDistributions(\n        address claimer,\n        Claim[] memory claims,\n        IERC20[] memory tokens\n    ) external {\n        _processClaims(claimer, claimer, claims, tokens, false);\n    }",
+        "comments": [
+            "",
+            "    // Claim functions",
+            "",
+            "    /**",
+            "     * @notice Allows anyone to claim multiple distributions for a claimer.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Claim functions\n\n    /**\n     * @notice Allows anyone to claim multiple distributions for a claimer.\n     */\n    ",
+        "@notice": "Allows anyone to claim multiple distributions for a claimer.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimDistributionsToInternalBalance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "claimer",
+                "type": "address"
+            },
+            {
+                "name": "claims",
+                "type": "Claim[] memory"
+            },
+            {
+                "name": "tokens",
+                "type": "IERC20[] memory"
+            }
+        ],
+        "func": "function claimDistributionsToInternalBalance(\n        address claimer,\n        Claim[] memory claims,\n        IERC20[] memory tokens\n    ) external {\n        require(msg.sender == claimer, \"user must claim own balance\");\n        _processClaims(claimer, claimer, claims, tokens, true);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to claim their own multiple distributions to internal balance.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to claim their own multiple distributions to internal balance.\n     */\n",
+        "@notice": "Allows a user to claim their own multiple distributions to internal balance.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimDistributionsWithCallback",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "claimer",
+                "type": "address"
+            },
+            {
+                "name": "claims",
+                "type": "Claim[] memory"
+            },
+            {
+                "name": "tokens",
+                "type": "IERC20[] memory"
+            },
+            {
+                "name": "callbackContract",
+                "type": "IDistributorCallback"
+            },
+            {
+                "name": "callbackData",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function claimDistributionsWithCallback(\n        address claimer,\n        Claim[] memory claims,\n        IERC20[] memory tokens,\n        IDistributorCallback callbackContract,\n        bytes calldata callbackData\n    ) external {\n        require(msg.sender == claimer, \"user must claim own balance\");\n        _processClaims(claimer, address(callbackContract), claims, tokens, true);\n        callbackContract.distributorCallback(callbackData);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a user to claim their own several distributions to a callback.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a user to claim their own several distributions to a callback.\n     */\n",
+        "@notice": "Allows a user to claim their own several distributions to a callback.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createDistribution",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            },
+            {
+                "name": "merkleRoot",
+                "type": "bytes32"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "distributionId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function createDistribution(\n        IERC20 token,\n        bytes32 merkleRoot,\n        uint256 amount,\n        uint256 distributionId\n    ) external {\n        address distributor = msg.sender;\n\n        bytes32 channelId = _getChannelId(token, distributor);\n        require(\n            _nextDistributionId[channelId] == distributionId || _nextDistributionId[channelId] == 0,\n            \"invalid distribution ID\"\n        );\n        token.safeTransferFrom(distributor, address(this), amount);\n\n        token.approve(address(getVault()), amount);\n        IVault.UserBalanceOp[] memory ops = new IVault.UserBalanceOp[](1);\n\n        ops[0] = IVault.UserBalanceOp({\n            asset: IAsset(address(token)),\n            amount: amount,\n            sender: address(this),\n            recipient: payable(address(this)),\n            kind: IVault.UserBalanceOpKind.DEPOSIT_INTERNAL\n        });\n\n        getVault().manageUserBalance(ops);\n\n        _remainingBalance[channelId] += amount;\n        _distributionRoot[channelId][distributionId] = merkleRoot;\n        _nextDistributionId[channelId] = distributionId + 1;\n        emit DistributionAdded(distributor, token, distributionId, merkleRoot, amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows a distributor to add funds to the contract as a merkle tree.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows a distributor to add funds to the contract as a merkle tree.\n     */\n",
+        "@notice": "Allows a distributor to add funds to the contract as a merkle tree.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

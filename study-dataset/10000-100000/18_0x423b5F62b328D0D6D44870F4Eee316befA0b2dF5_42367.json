@@ -1,0 +1,533 @@
+[
+    {
+        "transactions": 42367,
+        "function_num": 18
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) public returns (bool) {\n        require(_to != 0x0);\n        require(_to != address(this));\n        require(balances[msg.sender] >= _value);\n        require(balances[_to] + _value >= balances[_to]);\n\n        balances[msg.sender] -= _value;\n        balances[_to] += _value;\n\n        emit Transfer(msg.sender, _to, _value);\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool)\n    {\n        //Address shouldn't be null\n        require(_from != 0x0);\n        require(_to != 0x0);\n        require(_to != address(this));\n        require(balances[_from] >= _value);\n        require(allowed[_from][msg.sender] >= _value);\n        require(balances[_to] + _value >= balances[_to]);\n\n        balances[_to] += _value;\n        balances[_from] -= _value;\n        allowed[_from][msg.sender] -= _value;\n\n        emit Transfer(_from, _to, _value);\n\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Transfer \"_value\" tokens from \"_from\" to \"_to\" if \"msg.sender\" is allowed.",
+            "    /// @dev Allows for an approved third party to transfer tokens from one",
+            "    /// address to another. Returns success.",
+            "    /// @param _from Address from where tokens are withdrawn.",
+            "    /// @param _to Address to where tokens are sent.",
+            "    /// @param _value Number of tokens to transfer.",
+            "    /// @return Returns success of function call.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Transfer \"_value\" tokens from \"_from\" to \"_to\" if \"msg.sender\" is allowed.\n    /// @dev Allows for an approved third party to transfer tokens from one\n    /// address to another. Returns success.\n    /// @param _from Address from where tokens are withdrawn.\n    /// @param _to Address to where tokens are sent.\n    /// @param _value Number of tokens to transfer.\n    /// @return Returns success of function call.\n    ",
+        "@notice": "Transfer \"_value\" tokens from \"_from\" to \"_to\" if \"msg.sender\" is allowed.",
+        "@dev": "Allows for an approved third party to transfer tokens from one /// address to another. Returns success.",
+        "@param1": "_from Address from where tokens are withdrawn.",
+        "@param2": "_to Address to where tokens are sent.",
+        "@param3": "_value Number of tokens to transfer.",
+        "@return1": "Returns success of function call.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_who",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _who, uint256 _value) public returns (bool) {\n\n        // Address shouldn't be null\n        require(_who != 0x0);\n\n        // To change the approve amount you first have to reduce the addresses`\n        // allowance to zero by calling `approve(_who, 0)` if it is not\n        // already 0 to mitigate the race condition described here:\n        // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n        require(_value == 0 || allowed[msg.sender][_who] == 0);\n\n        allowed[msg.sender][_who] = _value;\n        emit Approval(msg.sender, _who, _value);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Approves \"_who\" to transfer \"_value\" tokens from \"msg.sender\" to any address.",
+            "    /// @dev Sets approved amount of tokens for the spender. Returns success.",
+            "    /// @param _who Address of allowed account.",
+            "    /// @param _value Number of approved tokens.",
+            "    /// @return Returns success of function call.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Approves \"_who\" to transfer \"_value\" tokens from \"msg.sender\" to any address.\n    /// @dev Sets approved amount of tokens for the spender. Returns success.\n    /// @param _who Address of allowed account.\n    /// @param _value Number of approved tokens.\n    /// @return Returns success of function call.\n    ",
+        "@notice": "Approves \"_who\" to transfer \"_value\" tokens from \"msg.sender\" to any address.",
+        "@dev": "Sets approved amount of tokens for the spender. Returns success.",
+        "@param1": "_who Address of allowed account.",
+        "@param2": "_value Number of approved tokens.",
+        "@return1": "Returns success of function call.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_who",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _who) constant public returns (uint256)\n    {\n        return allowed[_owner][_who];\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns number of allowed tokens that a spender can transfer on behalf of a token owner.",
+            "    /// @param _owner Address of token owner.",
+            "    /// @param _who Address of token spender.",
+            "    /// @return Returns remaining allowance for spender.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns number of allowed tokens that a spender can transfer on behalf of a token owner.\n    /// @param _owner Address of token owner.\n    /// @param _who Address of token spender.\n    /// @return Returns remaining allowance for spender.\n    ",
+        "@dev": "Returns number of allowed tokens that a spender can transfer on behalf of a token owner.",
+        "@param1": "_owner Address of token owner.",
+        "@param2": "_who Address of token spender.",
+        "@return1": "Returns remaining allowance for spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) constant public returns (uint256) {\n        return balances[_owner];\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns number of tokens owned by a given address.",
+            "    /// @param _owner Address of token owner.",
+            "    /// @return Returns balance of owner.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns number of tokens owned by a given address.\n    /// @param _owner Address of token owner.\n    /// @return Returns balance of owner.\n    ",
+        "@dev": "Returns number of tokens owned by a given address.",
+        "@param1": "_owner Address of token owner.",
+        "@return1": "Returns balance of owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "GoToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "auction_address",
+                "type": "address"
+            },
+            {
+                "name": "wallet_address",
+                "type": "address"
+            },
+            {
+                "name": "initial_supply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function GoToken(address auction_address, address wallet_address, uint256 initial_supply) public\n    {\n        // Auction address should not be null.\n        require(auction_address != 0x0);\n        require(wallet_address != 0x0);\n\n        // Initial supply is in indivisible units e.g. 50e24\n        require(initial_supply > multiplier);\n\n        // Total supply of indivisible GOT units at deployment\n        totalSupply = initial_supply;\n\n        // preallocation\n        balances[auction_address] = initial_supply / 2;\n        balances[wallet_address] = initial_supply / 2;\n\n        // Record the events\n        emit Transfer(0x0, auction_address, balances[auction_address]);\n        emit Transfer(0x0, wallet_address, balances[wallet_address]);\n\n        emit Deployed(totalSupply);\n\n        assert(totalSupply == balances[auction_address] + balances[wallet_address]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "GoTokenDutchAuction",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_wallet_address",
+                "type": "address"
+            },
+            {
+                "name": "_whitelister_address",
+                "type": "address"
+            },
+            {
+                "name": "_distributor_address",
+                "type": "address"
+            },
+            {
+                "name": "_price_start",
+                "type": "uint256"
+            },
+            {
+                "name": "_price_constant1",
+                "type": "uint256"
+            },
+            {
+                "name": "_price_exponent1",
+                "type": "uint256"
+            },
+            {
+                "name": "_price_constant2",
+                "type": "uint256"
+            },
+            {
+                "name": "_price_exponent2",
+                "type": "uint256"
+            }
+        ],
+        "func": "function GoTokenDutchAuction(\n        address _wallet_address,\n        address _whitelister_address,\n        address _distributor_address,\n        uint256 _price_start,\n        uint256 _price_constant1,\n        uint256 _price_exponent1,\n        uint256 _price_constant2,\n        uint256 _price_exponent2)\n        public\n    {\n        // Address shouldn't be null\n        require(_wallet_address != 0x0);\n        require(_whitelister_address != 0x0);\n        require(_distributor_address != 0x0);\n        wallet_address = _wallet_address;\n        whitelister_address = _whitelister_address;\n        distributor_address = _distributor_address;\n\n        owner_address = msg.sender;\n        stage = Stages.AuctionDeployed;\n        changePriceCurveSettings(_price_start, _price_constant1, _price_exponent1, _price_constant2, _price_exponent2);\n        Deployed(_price_start, _price_constant1, _price_exponent1, _price_constant2, _price_exponent2);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setup",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token_address",
+                "type": "address"
+            }
+        ],
+        "func": "function setup(address _token_address) public isOwner atStage(Stages.AuctionDeployed) {\n        require(_token_address != 0x0);\n        token = GoToken(_token_address);\n\n        // Get number of GoToken indivisible tokens (GOT * token_multiplier)\n        // to be auctioned from token auction balance\n        num_tokens_auctioned = token.balanceOf(address(this));\n\n        // Set the number of the token multiplier for its decimals\n        token_multiplier = 10 ** (token.decimals());\n\n        // State is set to Auction Setup\n        stage = Stages.AuctionSetUp;\n        Setup();\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set \"_token_address\" as the token address to be used in the auction.",
+            "    /// @dev Setup function sets external contracts addresses.",
+            "    /// @param _token_address Token address.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set \"_token_address\" as the token address to be used in the auction.\n    /// @dev Setup function sets external contracts addresses.\n    /// @param _token_address Token address.\n    ",
+        "@notice": "Set \"_token_address\" as the token address to be used in the auction.",
+        "@dev": "Setup function sets external contracts addresses.",
+        "@param1": "_token_address Token address.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addToPublicSaleWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_bidder_addresses",
+                "type": "address[]"
+            }
+        ],
+        "func": "function addToPublicSaleWhitelist(address[] _bidder_addresses) public isWhitelister {\n        for (uint32 i = 0; i < _bidder_addresses.length; i++) {\n            require(!privatesalewhitelist[_bidder_addresses[i]]); //Can't be in public whitelist\n            publicsalewhitelist[_bidder_addresses[i]] = true;\n            PublicSaleWhitelisted(_bidder_addresses[i]);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeFromPublicSaleWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_bidder_addresses",
+                "type": "address[]"
+            }
+        ],
+        "func": "function removeFromPublicSaleWhitelist(address[] _bidder_addresses) public isWhitelister {\n        for (uint32 i = 0; i < _bidder_addresses.length; i++) {\n            publicsalewhitelist[_bidder_addresses[i]] = false;\n            RemovedFromPublicSaleWhitelist(_bidder_addresses[i]);\n        }\n    }",
+        "comments": [
+            "",
+            "    // @notice Removes account addresses from public sale ETH whitelist.",
+            "    // @dev Removes account addresses from public sale ETH whitelist.",
+            "    // @param _bidder_addresses Array of addresses.  Use double quoted array.",
+            "    "
+        ],
+        "comt": "\n    // @notice Removes account addresses from public sale ETH whitelist.\n    // @dev Removes account addresses from public sale ETH whitelist.\n    // @param _bidder_addresses Array of addresses.  Use double quoted array.\n    ",
+        "@notice": "Removes account addresses from public sale ETH whitelist.",
+        "@dev": "Removes account addresses from public sale ETH whitelist.",
+        "@param1": "_bidder_addresses Array of addresses. Use double quoted array.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addToPrivateSaleWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_bidder_addresses",
+                "type": "address[]"
+            }
+        ],
+        "func": "function addToPrivateSaleWhitelist(address[] _bidder_addresses) public isOwner {\n        for (uint32 i = 0; i < _bidder_addresses.length; i++) {\n              privatesalewhitelist[_bidder_addresses[i]] = true;\n        PrivateSaleWhitelisted(_bidder_addresses[i]);\n          }\n      }",
+        "comments": [
+            "",
+            "    // Private sale contributors whitelist. Only Admin can add or remove",
+            "",
+            "   // @notice Adds presale account addresses to privatesalewhitelist.",
+            "    // @ Admin Adds presale account addresses to privatesalewhitelist.",
+            "    // @param _bidder_addresses Array of addresses.",
+            "    "
+        ],
+        "comt": "\n    // Private sale contributors whitelist. Only Admin can add or remove\n\n   // @notice Adds presale account addresses to privatesalewhitelist.\n    // @ Admin Adds presale account addresses to privatesalewhitelist.\n    // @param _bidder_addresses Array of addresses.\n    ",
+        "@notice": "Adds presale account addresses to privatesalewhitelist.",
+        "@": "Admin Adds presale account addresses to privatesalewhitelist.",
+        "@param1": "_bidder_addresses Array of addresses.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeFromPrivateSaleWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_bidder_addresses",
+                "type": "address[]"
+            }
+        ],
+        "func": "function removeFromPrivateSaleWhitelist(address[] _bidder_addresses) public isOwner {\n          for (uint32 i = 0; i < _bidder_addresses.length; i++) {\n              privatesalewhitelist[_bidder_addresses[i]] = false;\n        RemovedFromPrivateSaleWhitelist(_bidder_addresses[i]);\n          }\n      }",
+        "comments": [
+            "",
+            "      // @notice Removes presale account addresses from privatesalewhitelist.",
+            "      // @ Admin Removes presale account addresses from privatesalewhitelist.",
+            "      // @param _bidder_addresses Array of addresses.",
+            "      "
+        ],
+        "comt": "\n      // @notice Removes presale account addresses from privatesalewhitelist.\n      // @ Admin Removes presale account addresses from privatesalewhitelist.\n      // @param _bidder_addresses Array of addresses.\n      ",
+        "@notice": "Removes presale account addresses from privatesalewhitelist.",
+        "@": "Admin Removes presale account addresses from privatesalewhitelist.",
+        "@param1": "_bidder_addresses Array of addresses.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "startAuction",
+        "visibility": "public",
+        "args": [],
+        "func": "function startAuction() public isOwner atStage(Stages.AuctionSetUp) {\n        stage = Stages.AuctionStarted;\n        auction_start_time = now;\n        start_block = block.number;\n        AuctionStarted(auction_start_time, start_block);\n    }",
+        "comments": [
+            "",
+            "    // @notice Start the auction.",
+            "    // @dev Starts auction and sets auction_start_time.",
+            "    "
+        ],
+        "comt": "\n    // @notice Start the auction.\n    // @dev Starts auction and sets auction_start_time.\n    ",
+        "@notice": "Start the auction.",
+        "@dev": "Starts auction and sets auction_start_time.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "bid",
+        "visibility": "public",
+        "args": [],
+        "func": "function bid() public payable\n    {\n        // Address shouldn't be null and the minimum bid amount of contribution is met.\n        // Private sale contributor can submit a bid at AuctionSetUp before AuctionStarted\n        // When AuctionStarted only private sale and public sale whitelisted ETH addresses can participate\n        require(stage == Stages.AuctionSetUp || stage == Stages.AuctionStarted);\n        require(privatesalewhitelist[msg.sender] || publicsalewhitelist[msg.sender]);\n        if (stage == Stages.AuctionSetUp){\n          require(privatesalewhitelist[msg.sender]);\n        }\n        require(msg.value > 0);\n        require(bids[msg.sender].received + msg.value >= bid_threshold);\n        assert(bids[msg.sender].received + msg.value >= msg.value);\n\n        // Maximum public sale contribution per ETH account\n        //if (stage == Stages.AuctionStarted && publicsalewhitelist[msg.sender]) {\n        //  require (bids[msg.sender].received + msg.value <= MAX_CONTRIBUTION_PUBLICSALE);\n        //}\n\n        // Remaining funds without the current bid value to end the auction\n        uint256 remaining_funds_to_end_auction = remainingFundsToEndAuction();\n\n        // The bid value must be less than the funds remaining to end the auction\n        // at the current price.\n        require(msg.value <= remaining_funds_to_end_auction);\n\n/*\n---------------------------------------------------------------------------------------------\n        Bonus period settings\n---------------------------------------------------------------------------------------------\n*/\n        //Private sale bids before Auction starts\n        if (stage == Stages.AuctionSetUp){\n          require(privatesalewhitelist[msg.sender]);\n          currentBonus = 25; //private sale bonus before AuctionStarted\n        }\n        else if (stage == Stages.AuctionStarted) {\n          // private sale contributors bonus period settings\n        if (privatesalewhitelist[msg.sender] && now >= auction_start_time  && now < auction_start_time + BONUS_DAY1_DURATION) {\n          currentBonus = 25; //private sale contributor Day 1 bonus\n        }\n          else if (privatesalewhitelist[msg.sender] && now >= auction_start_time + BONUS_DAY1_DURATION && now < auction_start_time + BONUS_DAY2_DURATION ) {\n          currentBonus = 25; //private sale contributor Day 2 bonus\n        }\n        else if (privatesalewhitelist[msg.sender] && now >= auction_start_time + BONUS_DAY2_DURATION && now < auction_start_time + BONUS_DAY3_DURATION) {\n          currentBonus = 25; //private sale contributor Day 3 bonus\n        }\n          else if (privatesalewhitelist[msg.sender] && now >= auction_start_time + BONUS_DAY3_DURATION) {\n              currentBonus = 25; //private sale contributor Day 4+ bonus\n          }\n          else if (publicsalewhitelist[msg.sender] && now >= auction_start_time  && now < auction_start_time + BONUS_DAY1_DURATION) {\n          currentBonus = 15; //private sale contributor Day 1 bonus\n        }\n          else if (publicsalewhitelist[msg.sender] && now >= auction_start_time + BONUS_DAY1_DURATION && now < auction_start_time + BONUS_DAY2_DURATION ) {\n          currentBonus = 10; //private sale contributor Day 2 bonus\n        }\n        else if (publicsalewhitelist[msg.sender] && now >= auction_start_time + BONUS_DAY2_DURATION && now < auction_start_time + BONUS_DAY3_DURATION) {\n          currentBonus = 5; //private sale contributor Day 3 bonus\n        }\n          else if (publicsalewhitelist[msg.sender] && now >= auction_start_time + BONUS_DAY3_DURATION) {\n              currentBonus = 0; //private sale contributor Day 4+ bonus\n          }\n        else {\n          currentBonus = 0;\n        }\n        }\n        else {\n          currentBonus = 0;\n        }\n\n        // amount raised including bonus\n        uint256 accounted = msg.value + msg.value * (currentBonus) / 100;\n\n        // Save the bid amount received with and without bonus.\n      bids[msg.sender].accounted += accounted; //including bonus\n      bids[msg.sender].received += msg.value;\n\n        // keep track of total amount raised and with bonus\n        received_wei += msg.value;\n        received_wei_with_bonus += accounted;\n\n        // Send bid amount to wallet\n        wallet_address.transfer(msg.value);\n\n        //Log the bid\n        BidSubmission(msg.sender, msg.value, accounted, remaining_funds_to_end_auction);\n\n        assert(received_wei >= msg.value);\n        assert(received_wei_with_bonus >= accounted);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Send \"msg.value\" WEI to the auction from the \"msg.sender\" account.",
+            "    /// @dev Allows to send a bid to the auction.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Send \"msg.value\" WEI to the auction from the \"msg.sender\" account.\n    /// @dev Allows to send a bid to the auction.\n    ",
+        "@notice": "Send \"msg.value\" WEI to the auction from the \"msg.sender\" account.",
+        "@dev": "Allows to send a bid to the auction.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finalizeAuction",
+        "visibility": "public",
+        "args": [],
+        "func": "function finalizeAuction() public isOwner\n    {\n        // The owner can end the auction anytime during the stages\n        // AuctionSetUp and AuctionStarted\n        require(stage == Stages.AuctionSetUp || stage == Stages.AuctionStarted);\n\n        // Calculate the final price = WEI / (GOT / token_multiplier)\n        final_price = token_multiplier * received_wei_with_bonus / num_tokens_auctioned;\n\n        // End the auction\n        end_time = now;\n        stage = Stages.AuctionEnded;\n        AuctionEnded(final_price);\n\n        assert(final_price > 0);\n    }",
+        "comments": [
+            "",
+            "    // @notice Finalize the auction - sets the final GoToken price and",
+            "    // changes the auction stage after no bids are allowed. Only owner can finalize the auction.",
+            "    // The owner can end the auction anytime after either the auction is deployed or started.",
+            "    // @dev Finalize auction and set the final GOT token price.",
+            "    "
+        ],
+        "comt": "\n    // @notice Finalize the auction - sets the final GoToken price and\n    // changes the auction stage after no bids are allowed. Only owner can finalize the auction.\n    // The owner can end the auction anytime after either the auction is deployed or started.\n    // @dev Finalize auction and set the final GOT token price.\n    ",
+        "@notice": "Finalize the auction - sets the final GoToken price and // changes the auction stage after no bids are allowed. Only owner can finalize the auction. // The owner can end the auction anytime after either the auction is deployed or started.",
+        "@dev": "Finalize auction and set the final GOT token price.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "distributeGoTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "receiver_address",
+                "type": "address"
+            }
+        ],
+        "func": "function distributeGoTokens(address receiver_address)\n        public isDistributor atStage(Stages.AuctionEnded) returns (bool)\n    {\n        // Waiting period in days after the end of the auction, before anyone can claim GoTokens.\n        // Ensures enough time to check if auction was finalized correctly\n        // before users start transacting tokens\n        require(now > end_time + TOKEN_CLAIM_WAIT_PERIOD);\n        require(receiver_address != 0x0);\n        require(bids[receiver_address].received > 0);\n\n        if (bids[receiver_address].received == 0 || bids[receiver_address].accounted == 0) {\n            return false;\n        }\n\n        // Number of GOT = bid_wei_with_bonus / (wei_per_GOT * token_multiplier)\n        // Includes the bonus\n        uint256 num = (token_multiplier * bids[receiver_address].accounted) / final_price;\n\n        // Due to final_price rounding, the number of assigned tokens may be higher\n        // than expected. Therefore, the number of remaining unassigned auction tokens\n        // may be smaller than the number of tokens needed for the last claimTokens call\n        uint256 auction_tokens_balance = token.balanceOf(address(this));\n        if (num > auction_tokens_balance) {\n            num = auction_tokens_balance;\n        }\n\n        // Update the total amount of funds for which tokens have been claimed\n        funds_claimed += bids[receiver_address].received;\n\n        // Set receiver bid to 0 before assigning tokens\n        bids[receiver_address].accounted = 0;\n        bids[receiver_address].received = 0;\n\n        // Send the GoTokens to the receiver address including the qualified bonus\n        require(token.transfer(receiver_address, num));\n\n        // Log the event for claimed GoTokens\n        ClaimedTokens(receiver_address, num);\n\n        // After the last tokens are claimed, change the auction stage\n        // Due to the above logic described, rounding errors will not be an issue here.\n        if (funds_claimed == received_wei) {\n            stage = Stages.TokensDistributed;\n            TokensDistributed();\n        }\n\n        assert(token.balanceOf(receiver_address) >= num);\n        assert(bids[receiver_address].accounted == 0);\n        assert(bids[receiver_address].received == 0);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    // @notice Distribute GoTokens for \"receiver_address\" after the auction has ended by the owner.",
+            "    // @dev Distribute GoTokens for \"receiver_address\" after auction has ended by the owner.",
+            "    // @param receiver_address GoTokens will be assigned to this address if eligible.",
+            "    "
+        ],
+        "comt": "\n    // @notice Distribute GoTokens for \"receiver_address\" after the auction has ended by the owner.\n    // @dev Distribute GoTokens for \"receiver_address\" after auction has ended by the owner.\n    // @param receiver_address GoTokens will be assigned to this address if eligible.\n    ",
+        "@notice": "Distribute GoTokens for \"receiver_address\" after the auction has ended by the owner.",
+        "@dev": "Distribute GoTokens for \"receiver_address\" after auction has ended by the owner.",
+        "@param1": "receiver_address GoTokens will be assigned to this address if eligible.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "price",
+        "visibility": "public",
+        "args": [],
+        "func": "function price() public constant returns (uint256) {\n        if (stage == Stages.AuctionEnded ||\n            stage == Stages.TokensDistributed) {\n            return 0;\n        }\n        return calcTokenPrice();\n    }",
+        "comments": [
+            "",
+            "    /// @notice Get the GOT price in WEI during the auction, at the time of",
+            "    /// calling this function. Returns 0 if auction has ended.",
+            "    /// Returns \"price_start\" before auction has started.",
+            "    /// @dev Calculates the current GOT token price in WEI.",
+            "    /// @return Returns WEI per indivisible GOT (token_multiplier * GOT).",
+            "    "
+        ],
+        "comt": "\n    /// @notice Get the GOT price in WEI during the auction, at the time of\n    /// calling this function. Returns 0 if auction has ended.\n    /// Returns \"price_start\" before auction has started.\n    /// @dev Calculates the current GOT token price in WEI.\n    /// @return Returns WEI per indivisible GOT (token_multiplier * GOT).\n    ",
+        "@notice": "Get the GOT price in WEI during the auction, at the time of /// calling this function. Returns 0 if auction has ended. /// Returns \"price_start\" before auction has started.",
+        "@dev": "Calculates the current GOT token price in WEI.",
+        "@return1": "Returns WEI per indivisible GOT (token_multiplier * GOT).",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "remainingFundsToEndAuction",
+        "visibility": "public",
+        "args": [],
+        "func": "function remainingFundsToEndAuction() constant public returns (uint256) {\n\n        // num_tokens_auctioned = total number of indivisible GOT (GOT * token_multiplier) that is auctioned\n        uint256 required_wei_at_price = num_tokens_auctioned * price() / token_multiplier;\n        if (required_wei_at_price <= received_wei) {\n            return 0;\n        }\n\n        return required_wei_at_price - received_wei;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Get the remaining funds needed to end the auction, calculated at",
+            "    /// the current GOT price in WEI.",
+            "    /// @dev The remaining funds necessary to end the auction at the current GOT price in WEI.",
+            "    /// @return Returns the remaining funds to end the auction in WEI.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Get the remaining funds needed to end the auction, calculated at\n    /// the current GOT price in WEI.\n    /// @dev The remaining funds necessary to end the auction at the current GOT price in WEI.\n    /// @return Returns the remaining funds to end the auction in WEI.\n    ",
+        "@notice": "Get the remaining funds needed to end the auction, calculated at /// the current GOT price in WEI.",
+        "@dev": "The remaining funds necessary to end the auction at the current GOT price in WEI.",
+        "@return1": "Returns the remaining funds to end the auction in WEI.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

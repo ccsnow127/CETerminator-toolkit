@@ -1,0 +1,1382 @@
+[
+    {
+        "transactions": 207076,
+        "function_num": 38
+    },
+    {
+        "name": "LockRequestable",
+        "visibility": "public",
+        "args": [],
+        "func": "function LockRequestable() public {\n lockRequestCount = 0;\n }",
+        "comments": [
+            "",
+            " // CONSTRUCTOR",
+            " "
+        ],
+        "comt": "\n // CONSTRUCTOR\n ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "CustodianUpgradeable",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_custodian",
+                "type": "address"
+            }
+        ],
+        "func": "function CustodianUpgradeable(\n address _custodian\n )\n LockRequestable()\n public\n {\n custodian = _custodian;\n }",
+        "comments": [
+            "",
+            " // CONSTRUCTOR",
+            " "
+        ],
+        "comt": "\n // CONSTRUCTOR\n ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCustodianChange",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_proposedCustodian",
+                "type": "address"
+            }
+        ],
+        "func": "function requestCustodianChange(address _proposedCustodian) public returns (bytes32 lockId) {\n require(_proposedCustodian != address(0));\n\n lockId = generateLockId();\n\n custodianChangeReqs[lockId] = CustodianChangeRequest({\n proposedNew: _proposedCustodian\n });\n\n emit CustodianChangeRequested(lockId, msg.sender, _proposedCustodian);\n }",
+        "comments": [
+            "",
+            " // PUBLIC FUNCTIONS",
+            " // (UPGRADE)",
+            "",
+            " /** @notice Requests a change of the custodian associated with this contract.",
+            " *",
+            " * @dev Returns a unique lock id associated with the request.",
+            " * Anyone can call this function, but confirming the request is authorized",
+            " * by the custodian.",
+            " *",
+            " * @param _proposedCustodian The address of the new custodian.",
+            " * @return lockId A unique identifier for this request.",
+            " */",
+            " "
+        ],
+        "comt": "\n // PUBLIC FUNCTIONS\n // (UPGRADE)\n\n /** @notice Requests a change of the custodian associated with this contract.\n *\n * @dev Returns a unique lock id associated with the request.\n * Anyone can call this function, but confirming the request is authorized\n * by the custodian.\n *\n * @param _proposedCustodian The address of the new custodian.\n * @return lockId A unique identifier for this request.\n */\n ",
+        "@notice": "Requests a change of the custodian associated with this contract.",
+        "@dev": "Returns a unique lock id associated with the request. * Anyone can call this function, but confirming the request is authorized * by the custodian.",
+        "@param1": "_proposedCustodian The address of the new custodian.",
+        "@return1": "lockId A unique identifier for this request.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "confirmCustodianChange",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_lockId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function confirmCustodianChange(bytes32 _lockId) public onlyCustodian {\n custodian = getCustodianChangeReq(_lockId);\n\n delete custodianChangeReqs[_lockId];\n\n emit CustodianChangeConfirmed(_lockId, custodian);\n }",
+        "comments": [
+            "/** @notice Confirms a pending change of the custodian associated with this contract.",
+            " *",
+            " * @dev When called by the current custodian with a lock id associated with a",
+            " * pending custodian change, the `address custodian` member will be updated with the",
+            " * requested address.",
+            " *",
+            " * @param _lockId The identifier of a pending change request.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Confirms a pending change of the custodian associated with this contract.\n *\n * @dev When called by the current custodian with a lock id associated with a\n * pending custodian change, the `address custodian` member will be updated with the\n * requested address.\n *\n * @param _lockId The identifier of a pending change request.\n */\n",
+        "@notice": "Confirms a pending change of the custodian associated with this contract.",
+        "@dev": "When called by the current custodian with a lock id associated with a * pending custodian change, the `address custodian` member will be updated with the * requested address.",
+        "@param1": "_lockId The identifier of a pending change request.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ERC20ImplUpgradeable",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_custodian",
+                "type": "address"
+            }
+        ],
+        "func": "function ERC20ImplUpgradeable(address _custodian) CustodianUpgradeable(_custodian) public {\n erc20Impl = ERC20Impl(0x0);\n }",
+        "comments": [
+            "",
+            " // CONSTRUCTOR",
+            " "
+        ],
+        "comt": "\n // CONSTRUCTOR\n ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestImplChange",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_proposedImpl",
+                "type": "address"
+            }
+        ],
+        "func": "function requestImplChange(address _proposedImpl) public returns (bytes32 lockId) {\n require(_proposedImpl != address(0));\n\n lockId = generateLockId();\n\n implChangeReqs[lockId] = ImplChangeRequest({\n proposedNew: _proposedImpl\n });\n\n emit ImplChangeRequested(lockId, msg.sender, _proposedImpl);\n }",
+        "comments": [
+            "",
+            " // PUBLIC FUNCTIONS",
+            " // (UPGRADE)",
+            " /** @notice Requests a change of the active implementation associated",
+            " * with this contract.",
+            " *",
+            " * @dev Returns a unique lock id associated with the request.",
+            " * Anyone can call this function, but confirming the request is authorized",
+            " * by the custodian.",
+            " *",
+            " * @param _proposedImpl The address of the new active implementation.",
+            " * @return lockId A unique identifier for this request.",
+            " */",
+            " "
+        ],
+        "comt": "\n // PUBLIC FUNCTIONS\n // (UPGRADE)\n /** @notice Requests a change of the active implementation associated\n * with this contract.\n *\n * @dev Returns a unique lock id associated with the request.\n * Anyone can call this function, but confirming the request is authorized\n * by the custodian.\n *\n * @param _proposedImpl The address of the new active implementation.\n * @return lockId A unique identifier for this request.\n */\n ",
+        "@notice": "Requests a change of the active implementation associated * with this contract.",
+        "@dev": "Returns a unique lock id associated with the request. * Anyone can call this function, but confirming the request is authorized * by the custodian.",
+        "@param1": "_proposedImpl The address of the new active implementation.",
+        "@return1": "lockId A unique identifier for this request.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "confirmImplChange",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_lockId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function confirmImplChange(bytes32 _lockId) public onlyCustodian {\n erc20Impl = getImplChangeReq(_lockId);\n\n delete implChangeReqs[_lockId];\n\n emit ImplChangeConfirmed(_lockId, address(erc20Impl));\n }",
+        "comments": [
+            "/** @notice Confirms a pending change of the active implementation",
+            " * associated with this contract.",
+            " *",
+            " * @dev When called by the custodian with a lock id associated with a",
+            " * pending change, the `ERC20Impl erc20Impl` member will be updated",
+            " * with the requested address.",
+            " *",
+            " * @param _lockId The identifier of a pending change request.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Confirms a pending change of the active implementation\n * associated with this contract.\n *\n * @dev When called by the custodian with a lock id associated with a\n * pending change, the `ERC20Impl erc20Impl` member will be updated\n * with the requested address.\n *\n * @param _lockId The identifier of a pending change request.\n */\n",
+        "@notice": "Confirms a pending change of the active implementation * associated with this contract.",
+        "@dev": "When called by the custodian with a lock id associated with a * pending change, the `ERC20Impl erc20Impl` member will be updated * with the requested address.",
+        "@param1": "_lockId The identifier of a pending change request.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ERC20Proxy",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "name": "_decimals",
+                "type": "uint8"
+            },
+            {
+                "name": "_custodian",
+                "type": "address"
+            }
+        ],
+        "func": "function ERC20Proxy(\n string _name,\n string _symbol,\n uint8 _decimals,\n address _custodian\n )\n ERC20ImplUpgradeable(_custodian)\n public\n {\n name = _name;\n symbol = _symbol;\n decimals = _decimals;\n }",
+        "comments": [
+            "",
+            " // CONSTRUCTOR",
+            " "
+        ],
+        "comt": "\n // CONSTRUCTOR\n ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n return erc20Impl.totalSupply();\n }",
+        "comments": [
+            "",
+            " // PUBLIC FUNCTIONS",
+            " // (ERC20Interface)",
+            " /** @notice Returns the total token supply.",
+            " *",
+            " * @return the total token supply.",
+            " */",
+            " "
+        ],
+        "comt": "\n // PUBLIC FUNCTIONS\n // (ERC20Interface)\n /** @notice Returns the total token supply.\n *\n * @return the total token supply.\n */\n ",
+        "@notice": "Returns the total token supply.",
+        "@return1": "the total token supply.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public view returns (uint256 balance) {\n return erc20Impl.balanceOf(_owner);\n }",
+        "comments": [
+            "/** @notice Returns the account balance of another account with address",
+            " * `_owner`.",
+            " *",
+            " * @return balance the balance of account with address `_owner`.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Returns the account balance of another account with address\n * `_owner`.\n *\n * @return balance the balance of account with address `_owner`.\n */\n",
+        "@notice": "Returns the account balance of another account with address * `_owner`.",
+        "@return1": "balance the balance of account with address `_owner`.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "emitTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function emitTransfer(address _from, address _to, uint256 _value) public onlyImpl {\n emit Transfer(_from, _to, _value);\n }",
+        "comments": [
+            "/** @dev Internal use only.",
+            " */",
+            ""
+        ],
+        "comt": "/** @dev Internal use only.\n */\n",
+        "@dev": "Internal use only.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) public returns (bool success) {\n return erc20Impl.transferWithSender(msg.sender, _to, _value);\n }",
+        "comments": [
+            "/** @notice Transfers `_value` amount of tokens to address `_to`.",
+            " *",
+            " * @dev Will fire the `Transfer` event. Will revert if the `_from`",
+            " * account balance does not have enough tokens to spend.",
+            " *",
+            " * @return success true if transfer completes.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Transfers `_value` amount of tokens to address `_to`.\n *\n * @dev Will fire the `Transfer` event. Will revert if the `_from`\n * account balance does not have enough tokens to spend.\n *\n * @return success true if transfer completes.\n */\n",
+        "@notice": "Transfers `_value` amount of tokens to address `_to`.",
+        "@dev": "Will fire the `Transfer` event. Will revert if the `_from` * account balance does not have enough tokens to spend.",
+        "@return1": "success true if transfer completes.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {\n return erc20Impl.transferFromWithSender(msg.sender, _from, _to, _value);\n }",
+        "comments": [
+            "/** @notice Transfers `_value` amount of tokens from address `_from`",
+            " * to address `_to`.",
+            " *",
+            " * @dev Will fire the `Transfer` event. Will revert unless the `_from`",
+            " * account has deliberately authorized the sender of the message",
+            " * via some mechanism.",
+            " *",
+            " * @return success true if transfer completes.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Transfers `_value` amount of tokens from address `_from`\n * to address `_to`.\n *\n * @dev Will fire the `Transfer` event. Will revert unless the `_from`\n * account has deliberately authorized the sender of the message\n * via some mechanism.\n *\n * @return success true if transfer completes.\n */\n",
+        "@notice": "Transfers `_value` amount of tokens from address `_from` * to address `_to`.",
+        "@dev": "Will fire the `Transfer` event. Will revert unless the `_from` * account has deliberately authorized the sender of the message * via some mechanism.",
+        "@return1": "success true if transfer completes.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "emitApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function emitApproval(address _owner, address _spender, uint256 _value) public onlyImpl {\n emit Approval(_owner, _spender, _value);\n }",
+        "comments": [
+            "/** @dev Internal use only.",
+            " */",
+            ""
+        ],
+        "comt": "/** @dev Internal use only.\n */\n",
+        "@dev": "Internal use only.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _value) public returns (bool success) {\n return erc20Impl.approveWithSender(msg.sender, _spender, _value);\n }",
+        "comments": [
+            "/** @notice Allows `_spender` to withdraw from your account multiple times,",
+            " * up to the `_value` amount. If this function is called again it",
+            " * overwrites the current allowance with _value.",
+            " *",
+            " * @dev Will fire the `Approval` event.",
+            " *",
+            " * @return success true if approval completes.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Allows `_spender` to withdraw from your account multiple times,\n * up to the `_value` amount. If this function is called again it\n * overwrites the current allowance with _value.\n *\n * @dev Will fire the `Approval` event.\n *\n * @return success true if approval completes.\n */\n",
+        "@notice": "Allows `_spender` to withdraw from your account multiple times, * up to the `_value` amount. If this function is called again it * overwrites the current allowance with _value.",
+        "@dev": "Will fire the `Approval` event.",
+        "@return1": "success true if approval completes.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseApproval(address _spender, uint256 _addedValue) public returns (bool success) {\n return erc20Impl.increaseApprovalWithSender(msg.sender, _spender, _addedValue);\n }",
+        "comments": [
+            "/** @notice Increases the amount `_spender` is allowed to withdraw from",
+            " * your account.",
+            " * This function is implemented to avoid the race condition in standard",
+            " * ERC20 contracts surrounding the `approve` method.",
+            " *",
+            " * @dev Will fire the `Approval` event. This function should be used instead of",
+            " * `approve`.",
+            " *",
+            " * @return success true if approval completes.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Increases the amount `_spender` is allowed to withdraw from\n * your account.\n * This function is implemented to avoid the race condition in standard\n * ERC20 contracts surrounding the `approve` method.\n *\n * @dev Will fire the `Approval` event. This function should be used instead of\n * `approve`.\n *\n * @return success true if approval completes.\n */\n",
+        "@notice": "Increases the amount `_spender` is allowed to withdraw from * your account. * This function is implemented to avoid the race condition in standard * ERC20 contracts surrounding the `approve` method.",
+        "@dev": "Will fire the `Approval` event. This function should be used instead of * `approve`.",
+        "@return1": "success true if approval completes.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseApproval(address _spender, uint256 _subtractedValue) public returns (bool success) {\n return erc20Impl.decreaseApprovalWithSender(msg.sender, _spender, _subtractedValue);\n }",
+        "comments": [
+            "/** @notice Decreases the amount `_spender` is allowed to withdraw from",
+            " * your account. This function is implemented to avoid the race",
+            " * condition in standard ERC20 contracts surrounding the `approve` method.",
+            " *",
+            " * @dev Will fire the `Approval` event. This function should be used",
+            " * instead of `approve`.",
+            " *",
+            " * @return success true if approval completes.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Decreases the amount `_spender` is allowed to withdraw from\n * your account. This function is implemented to avoid the race\n * condition in standard ERC20 contracts surrounding the `approve` method.\n *\n * @dev Will fire the `Approval` event. This function should be used\n * instead of `approve`.\n *\n * @return success true if approval completes.\n */\n",
+        "@notice": "Decreases the amount `_spender` is allowed to withdraw from * your account. This function is implemented to avoid the race * condition in standard ERC20 contracts surrounding the `approve` method.",
+        "@dev": "Will fire the `Approval` event. This function should be used * instead of `approve`.",
+        "@return1": "success true if approval completes.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint256 remaining) {\n return erc20Impl.allowance(_owner, _spender);\n }",
+        "comments": [
+            "/** @notice Returns how much `_spender` is currently allowed to spend from",
+            " * `_owner`'s balance.",
+            " *",
+            " * @return remaining the remaining allowance.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Returns how much `_spender` is currently allowed to spend from\n * `_owner`'s balance.\n *\n * @return remaining the remaining allowance.\n */\n",
+        "@notice": "Returns how much `_spender` is currently allowed to spend from * `_owner`'s balance.",
+        "@return1": "remaining the remaining allowance.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ERC20Impl",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_erc20Proxy",
+                "type": "address"
+            },
+            {
+                "name": "_erc20Store",
+                "type": "address"
+            },
+            {
+                "name": "_custodian",
+                "type": "address"
+            },
+            {
+                "name": "_sweeper",
+                "type": "address"
+            }
+        ],
+        "func": "function ERC20Impl(\n address _erc20Proxy,\n address _erc20Store,\n address _custodian,\n address _sweeper\n )\n CustodianUpgradeable(_custodian)\n public\n {\n require(_sweeper != 0);\n erc20Proxy = ERC20Proxy(_erc20Proxy);\n erc20Store = ERC20Store(_erc20Store);\n\n sweeper = _sweeper;\n sweepMsg = keccak256(address(this), \"sweep\");\n }",
+        "comments": [
+            "",
+            " // CONSTRUCTOR",
+            " "
+        ],
+        "comt": "\n // CONSTRUCTOR\n ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approveWithSender",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_sender",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approveWithSender(\n address _sender,\n address _spender,\n uint256 _value\n )\n public\n onlyProxy\n returns (bool success)\n {\n require(_spender != address(0)); // disallow unspendable approvals\n erc20Store.setAllowance(_sender, _spender, _value);\n erc20Proxy.emitApproval(_sender, _spender, _value);\n return true;\n }",
+        "comments": [
+            "/** @notice Core logic of the ERC20 `approve` function.",
+            " *",
+            " * @dev This function can only be called by the referenced proxy,",
+            " * which has an `approve` function.",
+            " * Every argument passed to that function as well as the original",
+            " * `msg.sender` gets passed to this function.",
+            " * NOTE: approvals for the zero address (unspendable) are disallowed.",
+            " *",
+            " * @param _sender The address initiating the approval in proxy.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Core logic of the ERC20 `approve` function.\n *\n * @dev This function can only be called by the referenced proxy,\n * which has an `approve` function.\n * Every argument passed to that function as well as the original\n * `msg.sender` gets passed to this function.\n * NOTE: approvals for the zero address (unspendable) are disallowed.\n *\n * @param _sender The address initiating the approval in proxy.\n */\n",
+        "@notice": "Core logic of the ERC20 `approve` function.",
+        "@dev": "This function can only be called by the referenced proxy, * which has an `approve` function. * Every argument passed to that function as well as the original * `msg.sender` gets passed to this function. * NOTE: approvals for the zero address (unspendable) are disallowed.",
+        "@param1": "_sender The address initiating the approval in proxy.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "increaseApprovalWithSender",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_sender",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseApprovalWithSender(\n address _sender,\n address _spender,\n uint256 _addedValue\n )\n public\n onlyProxy\n returns (bool success)\n {\n require(_spender != address(0)); // disallow unspendable approvals\n uint256 currentAllowance = erc20Store.allowed(_sender, _spender);\n uint256 newAllowance = currentAllowance + _addedValue;\n\n require(newAllowance >= currentAllowance);\n\n erc20Store.setAllowance(_sender, _spender, newAllowance);\n erc20Proxy.emitApproval(_sender, _spender, newAllowance);\n return true;\n }",
+        "comments": [
+            "/** @notice Core logic of the `increaseApproval` function.",
+            " *",
+            " * @dev This function can only be called by the referenced proxy,",
+            " * which has an `increaseApproval` function.",
+            " * Every argument passed to that function as well as the original",
+            " * `msg.sender` gets passed to this function.",
+            " * NOTE: approvals for the zero address (unspendable) are disallowed.",
+            " *",
+            " * @param _sender The address initiating the approval.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Core logic of the `increaseApproval` function.\n *\n * @dev This function can only be called by the referenced proxy,\n * which has an `increaseApproval` function.\n * Every argument passed to that function as well as the original\n * `msg.sender` gets passed to this function.\n * NOTE: approvals for the zero address (unspendable) are disallowed.\n *\n * @param _sender The address initiating the approval.\n */\n",
+        "@notice": "Core logic of the `increaseApproval` function.",
+        "@dev": "This function can only be called by the referenced proxy, * which has an `increaseApproval` function. * Every argument passed to that function as well as the original * `msg.sender` gets passed to this function. * NOTE: approvals for the zero address (unspendable) are disallowed.",
+        "@param1": "_sender The address initiating the approval.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "decreaseApprovalWithSender",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_sender",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseApprovalWithSender(\n address _sender,\n address _spender,\n uint256 _subtractedValue\n )\n public\n onlyProxy\n returns (bool success)\n {\n require(_spender != address(0)); // disallow unspendable approvals\n uint256 currentAllowance = erc20Store.allowed(_sender, _spender);\n uint256 newAllowance = currentAllowance - _subtractedValue;\n\n require(newAllowance <= currentAllowance);\n\n erc20Store.setAllowance(_sender, _spender, newAllowance);\n erc20Proxy.emitApproval(_sender, _spender, newAllowance);\n return true;\n }",
+        "comments": [
+            "/** @notice Core logic of the `decreaseApproval` function.",
+            " *",
+            " * @dev This function can only be called by the referenced proxy,",
+            " * which has a `decreaseApproval` function.",
+            " * Every argument passed to that function as well as the original",
+            " * `msg.sender` gets passed to this function.",
+            " * NOTE: approvals for the zero address (unspendable) are disallowed.",
+            " *",
+            " * @param _sender The address initiating the approval.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Core logic of the `decreaseApproval` function.\n *\n * @dev This function can only be called by the referenced proxy,\n * which has a `decreaseApproval` function.\n * Every argument passed to that function as well as the original\n * `msg.sender` gets passed to this function.\n * NOTE: approvals for the zero address (unspendable) are disallowed.\n *\n * @param _sender The address initiating the approval.\n */\n",
+        "@notice": "Core logic of the `decreaseApproval` function.",
+        "@dev": "This function can only be called by the referenced proxy, * which has a `decreaseApproval` function. * Every argument passed to that function as well as the original * `msg.sender` gets passed to this function. * NOTE: approvals for the zero address (unspendable) are disallowed.",
+        "@param1": "_sender The address initiating the approval.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "requestPrint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_receiver",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function requestPrint(address _receiver, uint256 _value) public returns (bytes32 lockId) {\n require(_receiver != address(0));\n\n lockId = generateLockId();\n\n pendingPrintMap[lockId] = PendingPrint({\n receiver: _receiver,\n value: _value\n });\n\n emit PrintingLocked(lockId, _receiver, _value);\n }",
+        "comments": [
+            "/** @notice Requests an increase in the token supply, with the newly created",
+            " * tokens to be added to the balance of the specified account.",
+            " *",
+            " * @dev Returns a unique lock id associated with the request.",
+            " * Anyone can call this function, but confirming the request is authorized",
+            " * by the custodian.",
+            " * NOTE: printing to the zero address is disallowed.",
+            " *",
+            " * @param _receiver The receiving address of the print, if confirmed.",
+            " * @param _value The number of tokens to add to the total supply and the",
+            " * balance of the receiving address, if confirmed.",
+            " *",
+            " * @return lockId A unique identifier for this request.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Requests an increase in the token supply, with the newly created\n * tokens to be added to the balance of the specified account.\n *\n * @dev Returns a unique lock id associated with the request.\n * Anyone can call this function, but confirming the request is authorized\n * by the custodian.\n * NOTE: printing to the zero address is disallowed.\n *\n * @param _receiver The receiving address of the print, if confirmed.\n * @param _value The number of tokens to add to the total supply and the\n * balance of the receiving address, if confirmed.\n *\n * @return lockId A unique identifier for this request.\n */\n",
+        "@notice": "Requests an increase in the token supply, with the newly created * tokens to be added to the balance of the specified account.",
+        "@dev": "Returns a unique lock id associated with the request. * Anyone can call this function, but confirming the request is authorized * by the custodian. * NOTE: printing to the zero address is disallowed.",
+        "@param1": "_receiver The receiving address of the print, if confirmed.",
+        "@param2": "_value The number of tokens to add to the total supply and the * balance of the receiving address, if confirmed.",
+        "@return1": "lockId A unique identifier for this request.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "confirmPrint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_lockId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function confirmPrint(bytes32 _lockId) public onlyCustodian {\n PendingPrint storage print = pendingPrintMap[_lockId];\n\n // reject \u2018null\u2019 results from the map lookup\n // this can only be the case if an unknown `_lockId` is received\n address receiver = print.receiver;\n require (receiver != address(0));\n uint256 value = print.value;\n\n delete pendingPrintMap[_lockId];\n\n uint256 supply = erc20Store.totalSupply();\n uint256 newSupply = supply + value;\n if (newSupply >= supply) {\n erc20Store.setTotalSupply(newSupply);\n erc20Store.addBalance(receiver, value);\n\n emit PrintingConfirmed(_lockId, receiver, value);\n erc20Proxy.emitTransfer(address(0), receiver, value);\n }\n }",
+        "comments": [
+            "/** @notice Confirms a pending increase in the token supply.",
+            " *",
+            " * @dev When called by the custodian with a lock id associated with a",
+            " * pending increase, the amount requested to be printed in the print request",
+            " * is printed to the receiving address specified in that same request.",
+            " * NOTE: this function will not execute any print that would overflow the",
+            " * total supply, but it will not revert either.",
+            " *",
+            " * @param _lockId The identifier of a pending print request.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Confirms a pending increase in the token supply.\n *\n * @dev When called by the custodian with a lock id associated with a\n * pending increase, the amount requested to be printed in the print request\n * is printed to the receiving address specified in that same request.\n * NOTE: this function will not execute any print that would overflow the\n * total supply, but it will not revert either.\n *\n * @param _lockId The identifier of a pending print request.\n */\n",
+        "@notice": "Confirms a pending increase in the token supply.",
+        "@dev": "When called by the custodian with a lock id associated with a * pending increase, the amount requested to be printed in the print request * is printed to the receiving address specified in that same request. * NOTE: this function will not execute any print that would overflow the * total supply, but it will not revert either.",
+        "@param1": "_lockId The identifier of a pending print request.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 _value) public returns (bool success) {\n uint256 balanceOfSender = erc20Store.balances(msg.sender);\n require(_value <= balanceOfSender);\n\n erc20Store.setBalance(msg.sender, balanceOfSender - _value);\n erc20Store.setTotalSupply(erc20Store.totalSupply() - _value);\n\n erc20Proxy.emitTransfer(msg.sender, address(0), _value);\n\n return true;\n }",
+        "comments": [
+            "/** @notice Burns the specified value from the sender's balance.",
+            " *",
+            " * @dev Sender's balanced is subtracted by the amount they wish to burn.",
+            " *",
+            " * @param _value The amount to burn.",
+            " *",
+            " * @return success true if the burn succeeded.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Burns the specified value from the sender's balance.\n *\n * @dev Sender's balanced is subtracted by the amount they wish to burn.\n *\n * @param _value The amount to burn.\n *\n * @return success true if the burn succeeded.\n */\n",
+        "@notice": "Burns the specified value from the sender's balance.",
+        "@dev": "Sender's balanced is subtracted by the amount they wish to burn.",
+        "@param1": "_value The amount to burn.",
+        "@return1": "success true if the burn succeeded.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "batchTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tos",
+                "type": "address[]"
+            },
+            {
+                "name": "_values",
+                "type": "uint256[]"
+            }
+        ],
+        "func": "function batchTransfer(address[] _tos, uint256[] _values) public returns (bool success) {\n require(_tos.length == _values.length);\n\n uint256 numTransfers = _tos.length;\n uint256 senderBalance = erc20Store.balances(msg.sender);\n\n for (uint256 i = 0; i < numTransfers; i++) {\n address to = _tos[i];\n require(to != address(0));\n uint256 v = _values[i];\n require(senderBalance >= v);\n\n if (msg.sender != to) {\n senderBalance -= v;\n erc20Store.addBalance(to, v);\n }\n erc20Proxy.emitTransfer(msg.sender, to, v);\n }\n\n erc20Store.setBalance(msg.sender, senderBalance);\n\n return true;\n }",
+        "comments": [
+            "/** @notice A function for a sender to issue multiple transfers to multiple",
+            " * different addresses at once. This function is implemented for gas",
+            " * considerations when someone wishes to transfer, as one transaction is",
+            " * cheaper than issuing several distinct individual `transfer` transactions.",
+            " *",
+            " * @dev By specifying a set of destination addresses and values, the",
+            " * sender can issue one transaction to transfer multiple amounts to",
+            " * distinct addresses, rather than issuing each as a separate",
+            " * transaction. The `_tos` and `_values` arrays must be equal length, and",
+            " * an index in one array corresponds to the same index in the other array",
+            " * (e.g. `_tos[0]` will receive `_values[0]`, `_tos[1]` will receive",
+            " * `_values[1]`, and so on.)",
+            " * NOTE: transfers to the zero address are disallowed.",
+            " *",
+            " * @param _tos The destination addresses to receive the transfers.",
+            " * @param _values The values for each destination address.",
+            " * @return success If transfers succeeded.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice A function for a sender to issue multiple transfers to multiple\n * different addresses at once. This function is implemented for gas\n * considerations when someone wishes to transfer, as one transaction is\n * cheaper than issuing several distinct individual `transfer` transactions.\n *\n * @dev By specifying a set of destination addresses and values, the\n * sender can issue one transaction to transfer multiple amounts to\n * distinct addresses, rather than issuing each as a separate\n * transaction. The `_tos` and `_values` arrays must be equal length, and\n * an index in one array corresponds to the same index in the other array\n * (e.g. `_tos[0]` will receive `_values[0]`, `_tos[1]` will receive\n * `_values[1]`, and so on.)\n * NOTE: transfers to the zero address are disallowed.\n *\n * @param _tos The destination addresses to receive the transfers.\n * @param _values The values for each destination address.\n * @return success If transfers succeeded.\n */\n",
+        "@notice": "A function for a sender to issue multiple transfers to multiple * different addresses at once. This function is implemented for gas * considerations when someone wishes to transfer, as one transaction is * cheaper than issuing several distinct individual `transfer` transactions.",
+        "@dev": "By specifying a set of destination addresses and values, the * sender can issue one transaction to transfer multiple amounts to * distinct addresses, rather than issuing each as a separate * transaction. The `_tos` and `_values` arrays must be equal length, and * an index in one array corresponds to the same index in the other array * (e.g. `_tos[0]` will receive `_values[0]`, `_tos[1]` will receive * `_values[1]`, and so on.) * NOTE: transfers to the zero address are disallowed.",
+        "@param1": "_tos The destination addresses to receive the transfers.",
+        "@param2": "_values The values for each destination address.",
+        "@return1": "success If transfers succeeded.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "enableSweep",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_vs",
+                "type": "uint8[]"
+            },
+            {
+                "name": "_rs",
+                "type": "bytes32[]"
+            },
+            {
+                "name": "_ss",
+                "type": "bytes32[]"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            }
+        ],
+        "func": "function enableSweep(uint8[] _vs, bytes32[] _rs, bytes32[] _ss, address _to) public onlySweeper {\n require(_to != address(0));\n require((_vs.length == _rs.length) && (_vs.length == _ss.length));\n\n uint256 numSignatures = _vs.length;\n uint256 sweptBalance = 0;\n\n for (uint256 i=0; i<numSignatures; ++i) {\n address from = ecrecover(sweepMsg, _vs[i], _rs[i], _ss[i]);\n\n // ecrecover returns 0 on malformed input\n if (from != address(0)) {\n sweptSet[from] = true;\n\n uint256 fromBalance = erc20Store.balances(from);\n\n if (fromBalance > 0) {\n sweptBalance += fromBalance;\n\n erc20Store.setBalance(from, 0);\n\n erc20Proxy.emitTransfer(from, _to, fromBalance);\n }\n }\n }\n\n if (sweptBalance > 0) {\n erc20Store.addBalance(_to, sweptBalance);\n }\n }",
+        "comments": [
+            "/** @notice Enables the delegation of transfer control for many",
+            " * accounts to the sweeper account, transferring any balances",
+            " * as well to the given destination.",
+            " *",
+            " * @dev An account delegates transfer control by signing the",
+            " * value of `sweepMsg`. The sweeper account is the only authorized",
+            " * caller of this function, so it must relay signatures on behalf",
+            " * of accounts that delegate transfer control to it. Enabling",
+            " * delegation is idempotent and permanent. If the account has a",
+            " * balance at the time of enabling delegation, its balance is",
+            " * also transfered to the given destination account `_to`.",
+            " * NOTE: transfers to the zero address are disallowed.",
+            " *",
+            " * @param _vs The array of recovery byte components of the ECDSA signatures.",
+            " * @param _rs The array of 'R' components of the ECDSA signatures.",
+            " * @param _ss The array of 'S' components of the ECDSA signatures.",
+            " * @param _to The destination for swept balances.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Enables the delegation of transfer control for many\n * accounts to the sweeper account, transferring any balances\n * as well to the given destination.\n *\n * @dev An account delegates transfer control by signing the\n * value of `sweepMsg`. The sweeper account is the only authorized\n * caller of this function, so it must relay signatures on behalf\n * of accounts that delegate transfer control to it. Enabling\n * delegation is idempotent and permanent. If the account has a\n * balance at the time of enabling delegation, its balance is\n * also transfered to the given destination account `_to`.\n * NOTE: transfers to the zero address are disallowed.\n *\n * @param _vs The array of recovery byte components of the ECDSA signatures.\n * @param _rs The array of 'R' components of the ECDSA signatures.\n * @param _ss The array of 'S' components of the ECDSA signatures.\n * @param _to The destination for swept balances.\n */\n",
+        "@notice": "Enables the delegation of transfer control for many * accounts to the sweeper account, transferring any balances * as well to the given destination.",
+        "@dev": "An account delegates transfer control by signing the * value of `sweepMsg`. The sweeper account is the only authorized * caller of this function, so it must relay signatures on behalf * of accounts that delegate transfer control to it. Enabling * delegation is idempotent and permanent. If the account has a * balance at the time of enabling delegation, its balance is * also transfered to the given destination account `_to`. * NOTE: transfers to the zero address are disallowed.",
+        "@param1": "_vs The array of recovery byte components of the ECDSA signatures.",
+        "@param2": "_rs The array of 'R' components of the ECDSA signatures.",
+        "@param3": "_ss The array of 'S' components of the ECDSA signatures.",
+        "@param4": "_to The destination for swept balances.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "replaySweep",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_froms",
+                "type": "address[]"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            }
+        ],
+        "func": "function replaySweep(address[] _froms, address _to) public onlySweeper {\n require(_to != address(0));\n uint256 lenFroms = _froms.length;\n uint256 sweptBalance = 0;\n\n for (uint256 i=0; i<lenFroms; ++i) {\n address from = _froms[i];\n\n if (sweptSet[from]) {\n uint256 fromBalance = erc20Store.balances(from);\n\n if (fromBalance > 0) {\n sweptBalance += fromBalance;\n\n erc20Store.setBalance(from, 0);\n\n erc20Proxy.emitTransfer(from, _to, fromBalance);\n }\n }\n }\n\n if (sweptBalance > 0) {\n erc20Store.addBalance(_to, sweptBalance);\n }\n }",
+        "comments": [
+            "/** @notice For accounts that have delegated, transfer control",
+            " * to the sweeper, this function transfers their balances to the given",
+            " * destination.",
+            " *",
+            " * @dev The sweeper account is the only authorized caller of",
+            " * this function. This function accepts an array of addresses to have their",
+            " * balances transferred for gas efficiency purposes.",
+            " * NOTE: any address for an account that has not been previously enabled",
+            " * will be ignored.",
+            " * NOTE: transfers to the zero address are disallowed.",
+            " *",
+            " * @param _froms The addresses to have their balances swept.",
+            " * @param _to The destination address of all these transfers.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice For accounts that have delegated, transfer control\n * to the sweeper, this function transfers their balances to the given\n * destination.\n *\n * @dev The sweeper account is the only authorized caller of\n * this function. This function accepts an array of addresses to have their\n * balances transferred for gas efficiency purposes.\n * NOTE: any address for an account that has not been previously enabled\n * will be ignored.\n * NOTE: transfers to the zero address are disallowed.\n *\n * @param _froms The addresses to have their balances swept.\n * @param _to The destination address of all these transfers.\n */\n",
+        "@notice": "For accounts that have delegated, transfer control * to the sweeper, this function transfers their balances to the given * destination.",
+        "@dev": "The sweeper account is the only authorized caller of * this function. This function accepts an array of addresses to have their * balances transferred for gas efficiency purposes. * NOTE: any address for an account that has not been previously enabled * will be ignored. * NOTE: transfers to the zero address are disallowed.",
+        "@param1": "_froms The addresses to have their balances swept.",
+        "@param2": "_to The destination address of all these transfers.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFromWithSender",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_sender",
+                "type": "address"
+            },
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFromWithSender(\n address _sender,\n address _from,\n address _to,\n uint256 _value\n )\n public\n onlyProxy\n returns (bool success)\n {\n require(_to != address(0)); // ensure burn is the cannonical transfer to 0x0\n\n uint256 balanceOfFrom = erc20Store.balances(_from);\n require(_value <= balanceOfFrom);\n\n uint256 senderAllowance = erc20Store.allowed(_from, _sender);\n require(_value <= senderAllowance);\n\n erc20Store.setBalance(_from, balanceOfFrom - _value);\n erc20Store.addBalance(_to, _value);\n\n erc20Store.setAllowance(_from, _sender, senderAllowance - _value);\n\n erc20Proxy.emitTransfer(_from, _to, _value);\n\n return true;\n }",
+        "comments": [
+            "/** @notice Core logic of the ERC20 `transferFrom` function.",
+            " *",
+            " * @dev This function can only be called by the referenced proxy,",
+            " * which has a `transferFrom` function.",
+            " * Every argument passed to that function as well as the original",
+            " * `msg.sender` gets passed to this function.",
+            " * NOTE: transfers to the zero address are disallowed.",
+            " *",
+            " * @param _sender The address initiating the transfer in proxy.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Core logic of the ERC20 `transferFrom` function.\n *\n * @dev This function can only be called by the referenced proxy,\n * which has a `transferFrom` function.\n * Every argument passed to that function as well as the original\n * `msg.sender` gets passed to this function.\n * NOTE: transfers to the zero address are disallowed.\n *\n * @param _sender The address initiating the transfer in proxy.\n */\n",
+        "@notice": "Core logic of the ERC20 `transferFrom` function.",
+        "@dev": "This function can only be called by the referenced proxy, * which has a `transferFrom` function. * Every argument passed to that function as well as the original * `msg.sender` gets passed to this function. * NOTE: transfers to the zero address are disallowed.",
+        "@param1": "_sender The address initiating the transfer in proxy.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "transferWithSender",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_sender",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferWithSender(\n address _sender,\n address _to,\n uint256 _value\n )\n public\n onlyProxy\n returns (bool success)\n {\n require(_to != address(0)); // ensure burn is the cannonical transfer to 0x0\n\n uint256 balanceOfSender = erc20Store.balances(_sender);\n require(_value <= balanceOfSender);\n\n erc20Store.setBalance(_sender, balanceOfSender - _value);\n erc20Store.addBalance(_to, _value);\n\n erc20Proxy.emitTransfer(_sender, _to, _value);\n\n return true;\n }",
+        "comments": [
+            "/** @notice Core logic of the ERC20 `transfer` function.",
+            " *",
+            " * @dev This function can only be called by the referenced proxy,",
+            " * which has a `transfer` function.",
+            " * Every argument passed to that function as well as the original",
+            " * `msg.sender` gets passed to this function.",
+            " * NOTE: transfers to the zero address are disallowed.",
+            " *",
+            " * @param _sender The address initiating the transfer in proxy.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Core logic of the ERC20 `transfer` function.\n *\n * @dev This function can only be called by the referenced proxy,\n * which has a `transfer` function.\n * Every argument passed to that function as well as the original\n * `msg.sender` gets passed to this function.\n * NOTE: transfers to the zero address are disallowed.\n *\n * @param _sender The address initiating the transfer in proxy.\n */\n",
+        "@notice": "Core logic of the ERC20 `transfer` function.",
+        "@dev": "This function can only be called by the referenced proxy, * which has a `transfer` function. * Every argument passed to that function as well as the original * `msg.sender` gets passed to this function. * NOTE: transfers to the zero address are disallowed.",
+        "@param1": "_sender The address initiating the transfer in proxy.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n return erc20Store.totalSupply();\n }",
+        "comments": [
+            "",
+            " // METHODS (ERC20 sub interface impl.)",
+            " /// @notice Core logic of the ERC20 `totalSupply` function.",
+            " "
+        ],
+        "comt": "\n // METHODS (ERC20 sub interface impl.)\n /// @notice Core logic of the ERC20 `totalSupply` function.\n ",
+        "@notice": "Core logic of the ERC20 `totalSupply` function.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public view returns (uint256 balance) {\n return erc20Store.balances(_owner);\n }",
+        "comments": [
+            "",
+            " /// @notice Core logic of the ERC20 `balanceOf` function.",
+            " "
+        ],
+        "comt": "\n /// @notice Core logic of the ERC20 `balanceOf` function.\n ",
+        "@notice": "Core logic of the ERC20 `balanceOf` function.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint256 remaining) {\n return erc20Store.allowed(_owner, _spender);\n }",
+        "comments": [
+            "",
+            " /// @notice Core logic of the ERC20 `allowance` function.",
+            " "
+        ],
+        "comt": "\n /// @notice Core logic of the ERC20 `allowance` function.\n ",
+        "@notice": "Core logic of the ERC20 `allowance` function.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "ERC20Store",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_custodian",
+                "type": "address"
+            }
+        ],
+        "func": "function ERC20Store(address _custodian) ERC20ImplUpgradeable(_custodian) public {\n totalSupply = 0;\n }",
+        "comments": [
+            "",
+            " // CONSTRUCTOR",
+            " "
+        ],
+        "comt": "\n // CONSTRUCTOR\n ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTotalSupply",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newTotalSupply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setTotalSupply(\n uint256 _newTotalSupply\n )\n public\n onlyImpl\n {\n totalSupply = _newTotalSupply;\n }",
+        "comments": [
+            "",
+            "",
+            " // PUBLIC FUNCTIONS",
+            " // (ERC20 Ledger)",
+            "",
+            " /** @notice The function to set the total supply of tokens.",
+            " *",
+            " * @dev Intended for use by token implementation functions",
+            " * that update the total supply. The only authorized caller",
+            " * is the active implementation.",
+            " *",
+            " * @param _newTotalSupply the value to set as the new total supply",
+            " */",
+            " "
+        ],
+        "comt": "\n\n // PUBLIC FUNCTIONS\n // (ERC20 Ledger)\n\n /** @notice The function to set the total supply of tokens.\n *\n * @dev Intended for use by token implementation functions\n * that update the total supply. The only authorized caller\n * is the active implementation.\n *\n * @param _newTotalSupply the value to set as the new total supply\n */\n ",
+        "@notice": "The function to set the total supply of tokens.",
+        "@dev": "Intended for use by token implementation functions * that update the total supply. The only authorized caller * is the active implementation.",
+        "@param1": "_newTotalSupply the value to set as the new total supply",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setAllowance(\n address _owner,\n address _spender,\n uint256 _value\n )\n public\n onlyImpl\n {\n allowed[_owner][_spender] = _value;\n }",
+        "comments": [
+            "/** @notice Sets how much `_owner` allows `_spender` to transfer on behalf",
+            " * of `_owner`.",
+            " *",
+            " * @dev Intended for use by token implementation functions",
+            " * that update spending allowances. The only authorized caller",
+            " * is the active implementation.",
+            " *",
+            " * @param _owner The account that will allow an on-behalf-of spend.",
+            " * @param _spender The account that will spend on behalf of the owner.",
+            " * @param _value The limit of what can be spent.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Sets how much `_owner` allows `_spender` to transfer on behalf\n * of `_owner`.\n *\n * @dev Intended for use by token implementation functions\n * that update spending allowances. The only authorized caller\n * is the active implementation.\n *\n * @param _owner The account that will allow an on-behalf-of spend.\n * @param _spender The account that will spend on behalf of the owner.\n * @param _value The limit of what can be spent.\n */\n",
+        "@notice": "Sets how much `_owner` allows `_spender` to transfer on behalf * of `_owner`.",
+        "@dev": "Intended for use by token implementation functions * that update spending allowances. The only authorized caller * is the active implementation.",
+        "@param1": "_owner The account that will allow an on-behalf-of spend.",
+        "@param2": "_spender The account that will spend on behalf of the owner.",
+        "@param3": "_value The limit of what can be spent.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBalance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_newBalance",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setBalance(\n address _owner,\n uint256 _newBalance\n )\n public\n onlyImpl\n {\n balances[_owner] = _newBalance;\n }",
+        "comments": [
+            "/** @notice Sets the balance of `_owner` to `_newBalance`.",
+            " *",
+            " * @dev Intended for use by token implementation functions",
+            " * that update balances. The only authorized caller",
+            " * is the active implementation.",
+            " *",
+            " * @param _owner The account that will hold a new balance.",
+            " * @param _newBalance The balance to set.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Sets the balance of `_owner` to `_newBalance`.\n *\n * @dev Intended for use by token implementation functions\n * that update balances. The only authorized caller\n * is the active implementation.\n *\n * @param _owner The account that will hold a new balance.\n * @param _newBalance The balance to set.\n */\n",
+        "@notice": "Sets the balance of `_owner` to `_newBalance`.",
+        "@dev": "Intended for use by token implementation functions * that update balances. The only authorized caller * is the active implementation.",
+        "@param1": "_owner The account that will hold a new balance.",
+        "@param2": "_newBalance The balance to set.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addBalance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_balanceIncrease",
+                "type": "uint256"
+            }
+        ],
+        "func": "function addBalance(\n address _owner,\n uint256 _balanceIncrease\n )\n public\n onlyImpl\n {\n balances[_owner] = balances[_owner] + _balanceIncrease;\n }",
+        "comments": [
+            "/** @notice Adds `_balanceIncrease` to `_owner`'s balance.",
+            " *",
+            " * @dev Intended for use by token implementation functions",
+            " * that update balances. The only authorized caller",
+            " * is the active implementation.",
+            " * WARNING: the caller is responsible for preventing overflow.",
+            " *",
+            " * @param _owner The account that will hold a new balance.",
+            " * @param _balanceIncrease The balance to add.",
+            " */",
+            ""
+        ],
+        "comt": "/** @notice Adds `_balanceIncrease` to `_owner`'s balance.\n *\n * @dev Intended for use by token implementation functions\n * that update balances. The only authorized caller\n * is the active implementation.\n * WARNING: the caller is responsible for preventing overflow.\n *\n * @param _owner The account that will hold a new balance.\n * @param _balanceIncrease The balance to add.\n */\n",
+        "@notice": "Adds `_balanceIncrease` to `_owner`'s balance.",
+        "@dev": "Intended for use by token implementation functions * that update balances. The only authorized caller * is the active implementation. * WARNING: the caller is responsible for preventing overflow.",
+        "@param1": "_owner The account that will hold a new balance.",
+        "@param2": "_balanceIncrease The balance to add.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

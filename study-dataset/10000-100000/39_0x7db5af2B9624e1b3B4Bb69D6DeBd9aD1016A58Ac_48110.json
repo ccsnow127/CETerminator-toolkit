@@ -1,0 +1,772 @@
+[
+    {
+        "transactions": 48110,
+        "function_num": 39
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "external",
+        "args": [],
+        "func": "function name() external view returns (string memory) {\n        return _name;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "external",
+        "args": [],
+        "func": "function symbol() external view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "external",
+        "args": [],
+        "func": "function decimals() external view returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "external",
+        "args": [],
+        "func": "function totalSupply() external view override returns (uint256) {\n        return _tTotal;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n        if (_isExcluded[account]) return _tOwned[account];\n        return tokenFromReflection(_rOwned[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) external override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) external view override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) external override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address sender, address recipient, uint256 amount) external override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, \"ERC20: transfer amount exceeds allowance\"));\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) external virtual returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) external virtual returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, \"ERC20: decreased allowance below zero\"));\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isExcludedFromReward",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function isExcludedFromReward(address account) external view returns (bool) {\n        return _isExcluded[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalFees",
+        "visibility": "external",
+        "args": [],
+        "func": "function totalFees() external view returns (uint256) {\n        return _tFeeTotal;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "airdrop",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function airdrop(address recipient, uint256 amount) external onlyOwner() {\n        removeAllFee();\n        _transfer(_msgSender(), recipient, amount * 10**9);\n        restoreAllFee();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "airdropArray",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newholders",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "amounts",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function airdropArray(address[] calldata newholders, uint256[] calldata amounts) external onlyOwner(){\n        uint256 iterator = 0;\n        require(newholders.length == amounts.length, \"must be the same length\");\n        while(iterator < newholders.length){\n            airdropInternal(newholders[iterator], amounts[iterator] * 10**9);\n            iterator += 1;\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deliver",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function deliver(uint256 tAmount) external {\n        address sender = _msgSender();\n        require(!_isExcluded[sender], \"Excluded addresses cannot call this function\");\n        (uint256 rAmount,,,,,) = _getValues(tAmount);\n        _rOwned[sender] = _rOwned[sender].sub(rAmount);\n        _rTotal = _rTotal.sub(rAmount);\n        _tFeeTotal = _tFeeTotal.add(tAmount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reflectionFromToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "deductTransferFee",
+                "type": "bool"
+            }
+        ],
+        "func": "function reflectionFromToken(uint256 tAmount, bool deductTransferFee) external view returns(uint256) {\n        require(tAmount <= _tTotal, \"Amount must be less than supply\");\n        if (!deductTransferFee) {\n            (uint256 rAmount,,,,,) = _getValues(tAmount);\n            return rAmount;\n        } else {\n            (,uint256 rTransferAmount,,,,) = _getValues(tAmount);\n            return rTransferAmount;\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenFromReflection",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "rAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenFromReflection(uint256 rAmount) public view returns(uint256) {\n        require(rAmount <= _rTotal, \"Amount must be less than total reflections\");\n        uint256 currentRate =  _getRate();\n        return rAmount.div(currentRate);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "excludeFromReward",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function excludeFromReward(address account) external onlyOwner() {\n        // require(account != 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, 'We can not exclude Uniswap router.');\n        require(!_isExcluded[account], \"Account is already excluded\");\n        if(_rOwned[account] > 0) {\n            _tOwned[account] = tokenFromReflection(_rOwned[account]);\n        }\n        _isExcluded[account] = true;\n        _excluded.push(account);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "includeInReward",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function includeInReward(address account) external onlyOwner() {\n        require(_isExcluded[account], \"Account is already excluded\");\n        for (uint256 i = 0; i < _excluded.length; i++) {\n            if (_excluded[i] == account) {\n                _excluded[i] = _excluded[_excluded.length - 1];\n                _tOwned[account] = 0;\n                _isExcluded[account] = false;\n                _excluded.pop();\n                break;\n            }\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "excludeFromFee",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function excludeFromFee(address account) external onlyOwner {\n        _isExcludedFromFee[account] = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "includeInFee",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function includeInFee(address account) external onlyOwner {\n        _isExcludedFromFee[account] = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMarketingWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "walletAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setMarketingWallet(address walletAddress) external onlyOwner {\n        marketingWallet = walletAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setDevWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "walletAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setDevWallet(address walletAddress) external onlyOwner {\n        devWallet = walletAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBurningAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "walletAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setBurningAddress(address walletAddress) external onlyOwner {\n        burningAddress = walletAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSwapThresholdAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "SwapThresholdAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setSwapThresholdAmount(uint256 SwapThresholdAmount) external onlyOwner() {\n        require(SwapThresholdAmount > 69000000, \"Swap Threshold Amount cannot be less than 69 Million\");\n        numTokensSellToAddToLiquidity = SwapThresholdAmount * 10**9;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimTokens ",
+        "visibility": "external",
+        "args": [],
+        "func": "function claimTokens () external onlyOwner {\n        // make sure we capture all BNB that may or may not be sent to this contract\n        payable(devWallet).transfer(address(this).balance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimOtherTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenAddress",
+                "type": "IERC20"
+            },
+            {
+                "name": "walletaddress",
+                "type": "address"
+            }
+        ],
+        "func": "function claimOtherTokens(IERC20 tokenAddress, address walletaddress) external onlyOwner() {\n        tokenAddress.transfer(walletaddress, tokenAddress.balanceOf(address(this)));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "clearStuckBalance ",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "walletaddress",
+                "type": "address payable"
+            }
+        ],
+        "func": "function clearStuckBalance (address payable walletaddress) external onlyOwner() {\n        walletaddress.transfer(address(this).balance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addBotWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "botwallet",
+                "type": "address"
+            }
+        ],
+        "func": "function addBotWallet(address botwallet) external onlyOwner() {\n        botWallets[botwallet] = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeBotWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "botwallet",
+                "type": "address"
+            }
+        ],
+        "func": "function removeBotWallet(address botwallet) external onlyOwner() {\n        botWallets[botwallet] = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBotWalletStatus",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "botwallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getBotWalletStatus(address botwallet) external view returns (bool) {\n        return botWallets[botwallet];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowtrading",
+        "visibility": "external",
+        "args": [],
+        "func": "function allowtrading()external onlyOwner() {\n        canTrade = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMigrationWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "walletAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setMigrationWallet(address walletAddress) external onlyOwner {\n        migrationWallet = walletAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSwapAndLiquifyEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setSwapAndLiquifyEnabled(bool _enabled) external onlyOwner {\n        swapAndLiquifyEnabled = _enabled;\n        emit SwapAndLiquifyEnabledUpdated(_enabled);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isExcludedFromFee",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function isExcludedFromFee(address account) external view returns(bool) {\n        return _isExcludedFromFee[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

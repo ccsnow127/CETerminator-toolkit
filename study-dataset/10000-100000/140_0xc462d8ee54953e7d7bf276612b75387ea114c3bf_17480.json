@@ -1,0 +1,2815 @@
+[
+    {
+        "transactions": 17480,
+        "function_num": 140
+    },
+    {
+        "name": "totalShare",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalShare() public view returns (uint256) {\n        return boardHistory[boardHistory.length.sub(1)].totalShares;\n    }",
+        "comments": [
+            "/* ========== VIEW FUNCTIONS ========== */",
+            ""
+        ],
+        "comt": "/* ========== VIEW FUNCTIONS ========== */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getShareOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "director",
+                "type": "address"
+            }
+        ],
+        "func": "function getShareOf(address director) public view returns (uint256) {\n        return directors[director].shares;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAppointmentTimeOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "director",
+                "type": "address"
+            }
+        ],
+        "func": "function getAppointmentTimeOf(address director)\n        public\n        view\n        returns (uint256)\n    {\n        return directors[director].appointmentTime;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCashEarningsOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "director",
+                "type": "address"
+            }
+        ],
+        "func": "function getCashEarningsOf(address director) public view returns (uint256) {\n        uint256 totalRewards = 0;\n        if (getShareOf(director) <= 0) {\n            return totalRewards;\n        }\n\n        for (uint256 i = boardHistory.length; i > 0; i = i.sub(1)) {\n            BoardSnapshot memory snapshot = boardHistory[i.sub(1)];\n\n            if (snapshot.timestamp < getAppointmentTimeOf(director)) {\n                break;\n            }\n\n            uint256 snapshotRewards = snapshot\n                .rewardReceived\n                .mul(getShareOf(director))\n                .div(snapshot.totalShares);\n            totalRewards = totalRewards.add(snapshotRewards);\n        }\n        return totalRewards;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimDividends",
+        "visibility": "public",
+        "args": [],
+        "func": "function claimDividends() public onlyOneBlock {\n        uint256 totalRewards = getCashEarningsOf(msg.sender);\n        directors[msg.sender].appointmentTime = now;\n\n        if (totalRewards > 0) {\n            cash.safeTransfer(msg.sender, totalRewards);\n            emit RewardPaid(msg.sender, totalRewards);\n        }\n    }",
+        "comments": [
+            "/* ========== MUTATIVE FUNCTIONS ========== */",
+            ""
+        ],
+        "comt": "/* ========== MUTATIVE FUNCTIONS ========== */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) external {\n        require(amount > 0, 'Boardroom: Cannot stake 0');\n\n        // Claim all outstanding dividends before making state changes\n        claimDividends();\n\n        // Update director's boardseat\n        Boardseat memory director = directors[msg.sender];\n        director.shares = director.shares.add(amount);\n        directors[msg.sender] = director;\n\n        // Update latest snapshot\n        uint256 snapshotIndex = boardHistory.length.sub(1);\n        boardHistory[snapshotIndex].totalShares = totalShare().add(amount);\n\n        share.safeTransferFrom(msg.sender, address(this), amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public directorExists {\n        require(amount > 0, 'Boardroom: Cannot withdraw 0');\n\n        // Claim all outstanding dividends before making state changes\n        claimDividends();\n\n        // Update director's boardseat\n        uint256 directorShare = getShareOf(msg.sender);\n        require(\n            directorShare >= amount,\n            'Boardroom: withdraw request greater than staked amount'\n        );\n        directors[msg.sender].shares = directorShare.sub(amount);\n\n        // Update latest snapshot\n        uint256 snapshotIndex = boardHistory.length.sub(1);\n        boardHistory[snapshotIndex].totalShares = totalShare().sub(amount);\n\n        share.safeTransfer(msg.sender, amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(getShareOf(msg.sender));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allocateSeigniorage",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function allocateSeigniorage(uint256 amount)\n        external\n        onlyOneBlock\n        onlyOperator\n    {\n        require(amount > 0, 'Boardroom: Cannot allocate 0');\n\n        // Create & add new snapshot\n        BoardSnapshot memory newSnapshot = BoardSnapshot({\n            timestamp: now,\n            rewardReceived: amount,\n            totalShares: totalShare()\n        });\n        boardHistory.push(newSnapshot);\n\n        cash.safeTransferFrom(msg.sender, address(this), amount);\n\n        emit RewardAdded(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "operator",
+        "visibility": "public",
+        "args": [],
+        "func": "function operator() public view returns (address) {\n        return _operator;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isOperator",
+        "visibility": "public",
+        "args": [],
+        "func": "function isOperator() public view returns (bool) {\n        return _msgSender() == _operator;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOperator",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOperator_",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOperator(address newOperator_) public onlyOwner {\n        _transferOperator(newOperator_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "OnlyOperator",
+        "visibility": "public",
+        "args": [],
+        "func": "function OnlyOperator() public onlyOperator {\n        emit OKOnlyOperator(msg.sender);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "actionTreasury",
+        "visibility": "public",
+        "args": [],
+        "func": "function actionTreasury() public {\n        treasury.allocateSeigniorage();\n        treasury.allocateSeigniorage(); // should revert\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "actionBoardroom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "share",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function actionBoardroom(address share, uint256 amount) public {\n        IERC20(share).approve(address(boardroom), amount);\n        boardroom.stake(amount);\n        boardroom.withdraw(amount); // should revert\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCashPrice",
+        "visibility": "public",
+        "args": [],
+        "func": "function getCashPrice() public view returns (uint256 cashPrice) {\n        try cashOracle.consult(cash, 1e18) returns (uint256 price) {\n            return price;\n        } catch {\n            revert('Treasury: failed to consult cash price from the oracle');\n        }\n    }",
+        "comments": [
+            "/* ========== VIEW FUNCTIONS ========== */",
+            ""
+        ],
+        "comt": "/* ========== VIEW FUNCTIONS ========== */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "migrate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "target",
+                "type": "address"
+            }
+        ],
+        "func": "function migrate(address target) public onlyOperator checkMigration {\n        require(block.timestamp >= startTime, 'Treasury: not started yet');\n\n        // cash\n        Operator(cash).transferOperator(target);\n        Operator(cash).transferOwnership(target);\n        IERC20(cash).transfer(target, IERC20(cash).balanceOf(address(this)));\n\n        // bond\n        Operator(bond).transferOperator(target);\n        Operator(bond).transferOwnership(target);\n        IERC20(bond).transfer(target, IERC20(bond).balanceOf(address(this)));\n\n        // share\n        Operator(share).transferOperator(target);\n        Operator(share).transferOwnership(target);\n        IERC20(share).transfer(target, IERC20(share).balanceOf(address(this)));\n\n        migrated = true;\n        emit Migration(target);\n    }",
+        "comments": [
+            "/* ========== GOVERNANCE ========== */",
+            ""
+        ],
+        "comt": "/* ========== GOVERNANCE ========== */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buyBonds",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "targetPrice",
+                "type": "uint256"
+            }
+        ],
+        "func": "function buyBonds(uint256 amount, uint256 targetPrice) external {\n        require(amount > 0, 'Treasury: cannot purchase bonds with zero amount');\n\n        uint256 cashPrice = _getCashPrice();\n        require(cashPrice == targetPrice, 'Treasury: cash price moved');\n        _allocateSeigniorage(cashPrice); // ignore returns\n\n        uint256 bondPrice = cashPrice;\n\n        IBasisAsset(cash).burnFrom(msg.sender, amount);\n        IBasisAsset(bond).mint(msg.sender, amount.mul(1e18).div(bondPrice));\n\n        emit BoughtBonds(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeemBonds",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "targetPrice",
+                "type": "uint256"
+            }
+        ],
+        "func": "function redeemBonds(uint256 amount, uint256 targetPrice) external {\n        require(amount > 0, 'Treasury: cannot redeem bonds with zero amount');\n\n        uint256 cashPrice = _getCashPrice();\n        require(cashPrice == targetPrice, 'Treasury: cash price moved');\n        _allocateSeigniorage(cashPrice); // ignore returns\n\n        require(\n            cashPrice > cashPriceCeiling,\n            'Treasury: bond redemption failed; basis cash remains depegged.'\n        );\n\n        uint256 treasuryBalance = IERC20(cash).balanceOf(address(this));\n        require(\n            treasuryBalance >= amount,\n            'Treasury: treasury has no more budget'\n        );\n\n        if (seigniorageSaved >= amount) {\n            seigniorageSaved = seigniorageSaved.sub(amount);\n        } else {\n            seigniorageSaved = 0;\n        }\n\n        IBasisAsset(bond).burnFrom(msg.sender, amount);\n        IERC20(cash).safeTransfer(msg.sender, amount);\n\n        emit RedeemedBonds(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allocateSeigniorage",
+        "visibility": "external",
+        "args": [],
+        "func": "function allocateSeigniorage() external {\n        uint256 cashPrice = _getCashPrice();\n        (bool result, string memory reason) = _allocateSeigniorage(cashPrice);\n        require(result, reason);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "update",
+        "visibility": "external",
+        "args": [],
+        "func": "function update() external {\n        (\n            uint256 price0Cumulative,\n            uint256 price1Cumulative,\n            uint32 blockTimestamp\n        ) = UniswapV2OracleLibrary.currentCumulativePrices(address(pair));\n        uint32 timeElapsed = blockTimestamp - blockTimestampLast; // overflow is desired\n\n        if (timeElapsed < PERIOD) {\n            // doesn't need to be updated, since a minimum period is not elapsed yet\n            return;\n        }\n\n        // overflow is desired, casting never truncates\n        // cumulative price is in (uq112x112 price * seconds) units so we simply wrap it after division by time elapsed\n        price0Average = FixedPoint.uq112x112(\n            uint224((price0Cumulative - price0CumulativeLast) / timeElapsed)\n        );\n        price1Average = FixedPoint.uq112x112(\n            uint224((price1Cumulative - price1CumulativeLast) / timeElapsed)\n        );\n\n        price0CumulativeLast = price0Cumulative;\n        price1CumulativeLast = price1Cumulative;\n        blockTimestampLast = blockTimestamp;\n\n        emit Updated(price0Cumulative, price1Cumulative);\n    }",
+        "comments": [
+            "/** @dev Updates 1-day EMA price from Uniswap.  */",
+            ""
+        ],
+        "comt": "/** @dev Updates 1-day EMA price from Uniswap.  */\n",
+        "@dev": "Updates 1-day EMA price from Uniswap.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "consult",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "amountIn",
+                "type": "uint256"
+            }
+        ],
+        "func": "function consult(address token, uint256 amountIn)\n        external\n        view\n        returns (uint144 amountOut)\n    {\n        if (token == token0) {\n            amountOut = price0Average.mul(amountIn).decode144();\n        } else {\n            require(token == token1, 'Oracle: INVALID_TOKEN');\n            amountOut = price1Average.mul(amountIn).decode144();\n        }\n    }",
+        "comments": [
+            "",
+            "    // note this will always return 0 before update has been called successfully for the first time.",
+            "    "
+        ],
+        "comt": "\n    // note this will always return 0 before update has been called successfully for the first time.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pairFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "factory",
+                "type": "address"
+            },
+            {
+                "name": "tokenA",
+                "type": "address"
+            },
+            {
+                "name": "tokenB",
+                "type": "address"
+            }
+        ],
+        "func": "function pairFor(\n        address factory,\n        address tokenA,\n        address tokenB\n    ) external pure returns (address lpt) {\n        return UniswapV2Library.pairFor(factory, tokenA, tokenB);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setDelay",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "delay_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setDelay(uint256 delay_) public {\n        require(\n            msg.sender == address(this),\n            'Timelock::setDelay: Call must come from Timelock.'\n        );\n        require(\n            delay_ >= MINIMUM_DELAY,\n            'Timelock::setDelay: Delay must exceed minimum delay.'\n        );\n        require(\n            delay_ <= MAXIMUM_DELAY,\n            'Timelock::setDelay: Delay must not exceed maximum delay.'\n        );\n        delay = delay_;\n\n        emit NewDelay(delay);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "acceptAdmin",
+        "visibility": "public",
+        "args": [],
+        "func": "function acceptAdmin() public {\n        require(\n            msg.sender == pendingAdmin,\n            'Timelock::acceptAdmin: Call must come from pendingAdmin.'\n        );\n        admin = msg.sender;\n        pendingAdmin = address(0);\n\n        emit NewAdmin(admin);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPendingAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pendingAdmin_",
+                "type": "address"
+            }
+        ],
+        "func": "function setPendingAdmin(address pendingAdmin_) public {\n        require(\n            msg.sender == address(this),\n            'Timelock::setPendingAdmin: Call must come from Timelock.'\n        );\n        pendingAdmin = pendingAdmin_;\n\n        emit NewPendingAdmin(pendingAdmin);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "queueTransaction",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "target",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "signature",
+                "type": "string memory"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            },
+            {
+                "name": "eta",
+                "type": "uint256"
+            }
+        ],
+        "func": "function queueTransaction(\n        address target,\n        uint256 value,\n        string memory signature,\n        bytes memory data,\n        uint256 eta\n    ) public returns (bytes32) {\n        require(\n            msg.sender == admin,\n            'Timelock::queueTransaction: Call must come from admin.'\n        );\n        require(\n            eta >= getBlockTimestamp().add(delay),\n            'Timelock::queueTransaction: Estimated execution block must satisfy delay.'\n        );\n\n        bytes32 txHash = keccak256(\n            abi.encode(target, value, signature, data, eta)\n        );\n        queuedTransactions[txHash] = true;\n\n        emit QueueTransaction(txHash, target, value, signature, data, eta);\n        return txHash;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancelTransaction",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "target",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "signature",
+                "type": "string memory"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            },
+            {
+                "name": "eta",
+                "type": "uint256"
+            }
+        ],
+        "func": "function cancelTransaction(\n        address target,\n        uint256 value,\n        string memory signature,\n        bytes memory data,\n        uint256 eta\n    ) public {\n        require(\n            msg.sender == admin,\n            'Timelock::cancelTransaction: Call must come from admin.'\n        );\n\n        bytes32 txHash = keccak256(\n            abi.encode(target, value, signature, data, eta)\n        );\n        queuedTransactions[txHash] = false;\n\n        emit CancelTransaction(txHash, target, value, signature, data, eta);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "executeTransaction",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "target",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "signature",
+                "type": "string memory"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            },
+            {
+                "name": "eta",
+                "type": "uint256"
+            }
+        ],
+        "func": "function executeTransaction(\n        address target,\n        uint256 value,\n        string memory signature,\n        bytes memory data,\n        uint256 eta\n    ) public payable returns (bytes memory) {\n        require(\n            msg.sender == admin,\n            'Timelock::executeTransaction: Call must come from admin.'\n        );\n\n        bytes32 txHash = keccak256(\n            abi.encode(target, value, signature, data, eta)\n        );\n        require(\n            queuedTransactions[txHash],\n            \"Timelock::executeTransaction: Transaction hasn't been queued.\"\n        );\n        require(\n            getBlockTimestamp() >= eta,\n            \"Timelock::executeTransaction: Transaction hasn't surpassed time lock.\"\n        );\n        require(\n            getBlockTimestamp() <= eta.add(GRACE_PERIOD),\n            'Timelock::executeTransaction: Transaction is stale.'\n        );\n\n        queuedTransactions[txHash] = false;\n\n        bytes memory callData;\n\n        if (bytes(signature).length == 0) {\n            callData = data;\n        } else {\n            callData = abi.encodePacked(\n                bytes4(keccak256(bytes(signature))),\n                data\n            );\n        }\n\n        // solium-disable-next-line security/no-call-value\n        (bool success, bytes memory returnData) = target.call{value: value}(\n            callData\n        );\n        require(\n            success,\n            'Timelock::executeTransaction: Transaction execution reverted.'\n        );\n\n        emit ExecuteTransaction(txHash, target, value, signature, data, eta);\n\n        return returnData;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "distribute",
+        "visibility": "public",
+        "args": [],
+        "func": "function distribute() public override {\n        require(\n            once,\n            'InitialShareDistributor: you cannot run this function twice'\n        );\n\n        share.transfer(address(daibacLPPool), daibacInitialBalance);\n        daibacLPPool.notifyRewardAmount(daibacInitialBalance);\n        emit Distributed(address(daibacLPPool), daibacInitialBalance);\n\n        share.transfer(address(daibasLPPool), daibasInitialBalance);\n        daibasLPPool.notifyRewardAmount(daibasInitialBalance);\n        emit Distributed(address(daibasLPPool), daibasInitialBalance);\n\n        once = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRewardDistribution",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_rewardDistribution",
+                "type": "address"
+            }
+        ],
+        "func": "function setRewardDistribution(address _rewardDistribution)\n        external\n        virtual\n        onlyOwner\n    {\n        rewardDistribution = _rewardDistribution;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [],
+        "func": "function lastTimeRewardApplicable() public view returns (uint256) {\n        return Math.min(block.timestamp, periodFinish);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function rewardPerToken() public view returns (uint256) {\n        if (totalSupply() == 0) {\n            return rewardPerTokenStored;\n        }\n        return\n            rewardPerTokenStored.add(\n                lastTimeRewardApplicable()\n                    .sub(lastUpdateTime)\n                    .mul(rewardRate)\n                    .mul(1e18)\n                    .div(totalSupply())\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function earned(address account) public view returns (uint256) {\n        return\n            balanceOf(account)\n                .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))\n                .div(1e18)\n                .add(rewards[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'DAIBASLPTokenSharePool: Cannot stake 0');\n        super.stake(amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    // stake visibility is public as overriding LPTokenWrapper's stake() function",
+            "    "
+        ],
+        "comt": "\n    // stake visibility is public as overriding LPTokenWrapper's stake() function\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'DAIBASLPTokenSharePool: Cannot withdraw 0');\n        super.withdraw(amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(balanceOf(msg.sender));\n        getReward();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function getReward() public updateReward(msg.sender) checkStart {\n        uint256 reward = earned(msg.sender);\n        if (reward > 0) {\n            rewards[msg.sender] = 0;\n            basisShare.safeTransfer(msg.sender, reward);\n            emit RewardPaid(msg.sender, reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "func": "function notifyRewardAmount(uint256 reward)\n        external\n        override\n        onlyRewardDistribution\n        updateReward(address(0))\n    {\n        if (block.timestamp > starttime) {\n            if (block.timestamp >= periodFinish) {\n                rewardRate = reward.div(DURATION);\n            } else {\n                uint256 remaining = periodFinish.sub(block.timestamp);\n                uint256 leftover = remaining.mul(rewardRate);\n                rewardRate = reward.add(leftover).div(DURATION);\n            }\n            lastUpdateTime = block.timestamp;\n            periodFinish = block.timestamp.add(DURATION);\n            emit RewardAdded(reward);\n        } else {\n            rewardRate = reward.div(DURATION);\n            lastUpdateTime = starttime;\n            periodFinish = starttime.add(DURATION);\n            emit RewardAdded(reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.add(amount);\n        _balances[msg.sender] = _balances[msg.sender].add(amount);\n        lpt.safeTransferFrom(msg.sender, address(this), amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.sub(amount);\n        _balances[msg.sender] = _balances[msg.sender].sub(amount);\n        lpt.safeTransfer(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [],
+        "func": "function lastTimeRewardApplicable() public view returns (uint256) {\n        return Math.min(block.timestamp, periodFinish);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function rewardPerToken() public view returns (uint256) {\n        if (totalSupply() == 0) {\n            return rewardPerTokenStored;\n        }\n        return\n            rewardPerTokenStored.add(\n                lastTimeRewardApplicable()\n                    .sub(lastUpdateTime)\n                    .mul(rewardRate)\n                    .mul(1e18)\n                    .div(totalSupply())\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function earned(address account) public view returns (uint256) {\n        return\n            balanceOf(account)\n                .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))\n                .div(1e18)\n                .add(rewards[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkhalve\n        checkStart\n    {\n        require(amount > 0, 'Cannot stake 0');\n        super.stake(amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    // stake visibility is public as overriding LPTokenWrapper's stake() function",
+            "    "
+        ],
+        "comt": "\n    // stake visibility is public as overriding LPTokenWrapper's stake() function\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkhalve\n        checkStart\n    {\n        require(amount > 0, 'Cannot withdraw 0');\n        super.withdraw(amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(balanceOf(msg.sender));\n        getReward();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function getReward() public updateReward(msg.sender) checkhalve checkStart {\n        uint256 reward = earned(msg.sender);\n        if (reward > 0) {\n            rewards[msg.sender] = 0;\n            basisShare.safeTransfer(msg.sender, reward);\n            emit RewardPaid(msg.sender, reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "func": "function notifyRewardAmount(uint256 reward)\n        external\n        override\n        onlyRewardDistribution\n        updateReward(address(0))\n    {\n        if (block.timestamp > starttime) {\n            if (block.timestamp >= periodFinish) {\n                rewardRate = reward.div(DURATION);\n            } else {\n                uint256 remaining = periodFinish.sub(block.timestamp);\n                uint256 leftover = remaining.mul(rewardRate);\n                rewardRate = reward.add(leftover).div(DURATION);\n            }\n            lastUpdateTime = block.timestamp;\n            periodFinish = block.timestamp.add(DURATION);\n            emit RewardAdded(reward);\n        } else {\n            rewardRate = initreward.div(DURATION);\n            lastUpdateTime = starttime;\n            periodFinish = starttime.add(DURATION);\n            emit RewardAdded(reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public virtual view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public virtual view returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.add(amount);\n        _balances[msg.sender] = _balances[msg.sender].add(amount);\n        ycrv.safeTransferFrom(msg.sender, address(this), amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.sub(amount);\n        _balances[msg.sender] = _balances[msg.sender].sub(amount);\n        ycrv.safeTransfer(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [],
+        "func": "function lastTimeRewardApplicable() public view returns (uint256) {\n        return Math.min(block.timestamp, periodFinish);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function rewardPerToken() public view returns (uint256) {\n        if (totalSupply() == 0) {\n            return rewardPerTokenStored;\n        }\n        return\n            rewardPerTokenStored.add(\n                lastTimeRewardApplicable()\n                    .sub(lastUpdateTime)\n                    .mul(rewardRate)\n                    .mul(1e18)\n                    .div(totalSupply())\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function earned(address account) public view returns (uint256) {\n        return\n            balanceOf(account)\n                .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))\n                .div(1e18)\n                .add(rewards[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACyCRVPool: Cannot stake 0');\n        uint256 newDeposit = deposits[msg.sender].add(amount);\n        require(\n            newDeposit <= 20000e18,\n            'BACyCRVPool: deposit amount exceeds maximum 20000'\n        );\n        deposits[msg.sender] = newDeposit;\n        super.stake(amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    // stake visibility is public as overriding LPTokenWrapper's stake() function",
+            "    "
+        ],
+        "comt": "\n    // stake visibility is public as overriding LPTokenWrapper's stake() function\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACyCRVPool: Cannot withdraw 0');\n        deposits[msg.sender] = deposits[msg.sender].sub(amount);\n        super.withdraw(amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(balanceOf(msg.sender));\n        getReward();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function getReward() public updateReward(msg.sender) checkStart {\n        uint256 reward = earned(msg.sender);\n        if (reward > 0) {\n            rewards[msg.sender] = 0;\n            basisCash.safeTransfer(msg.sender, reward);\n            emit RewardPaid(msg.sender, reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "func": "function notifyRewardAmount(uint256 reward)\n        external\n        override\n        onlyRewardDistribution\n        updateReward(address(0))\n    {\n        if (block.timestamp > starttime) {\n            if (block.timestamp >= periodFinish) {\n                rewardRate = reward.div(DURATION);\n            } else {\n                uint256 remaining = periodFinish.sub(block.timestamp);\n                uint256 leftover = remaining.mul(rewardRate);\n                rewardRate = reward.add(leftover).div(DURATION);\n            }\n            lastUpdateTime = block.timestamp;\n            periodFinish = block.timestamp.add(DURATION);\n            emit RewardAdded(reward);\n        } else {\n            rewardRate = reward.div(DURATION);\n            lastUpdateTime = starttime;\n            periodFinish = starttime.add(DURATION);\n            emit RewardAdded(reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "distribute",
+        "visibility": "public",
+        "args": [],
+        "func": "function distribute() public override {\n        require(\n            once,\n            'InitialCashDistributor: you cannot run this function twice'\n        );\n\n        for (uint256 i = 0; i < pools.length; i++) {\n            uint256 amount = totalInitialBalance.div(pools.length);\n\n            cash.transfer(address(pools[i]), amount);\n            pools[i].notifyRewardAmount(amount);\n\n            emit Distributed(address(pools[i]), amount);\n        }\n\n        once = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.add(amount);\n        _balances[msg.sender] = _balances[msg.sender].add(amount);\n        dai.safeTransferFrom(msg.sender, address(this), amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.sub(amount);\n        _balances[msg.sender] = _balances[msg.sender].sub(amount);\n        dai.safeTransfer(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [],
+        "func": "function lastTimeRewardApplicable() public view returns (uint256) {\n        return Math.min(block.timestamp, periodFinish);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function rewardPerToken() public view returns (uint256) {\n        if (totalSupply() == 0) {\n            return rewardPerTokenStored;\n        }\n        return\n            rewardPerTokenStored.add(\n                lastTimeRewardApplicable()\n                    .sub(lastUpdateTime)\n                    .mul(rewardRate)\n                    .mul(1e18)\n                    .div(totalSupply())\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function earned(address account) public view returns (uint256) {\n        return\n            balanceOf(account)\n                .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))\n                .div(1e18)\n                .add(rewards[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACDAIPool: Cannot stake 0');\n        uint256 newDeposit = deposits[msg.sender].add(amount);\n        require(\n            newDeposit <= 20000e18,\n            'BACDAIPool: deposit amount exceeds maximum 20000'\n        );\n        deposits[msg.sender] = newDeposit;\n        super.stake(amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    // stake visibility is public as overriding LPTokenWrapper's stake() function",
+            "    "
+        ],
+        "comt": "\n    // stake visibility is public as overriding LPTokenWrapper's stake() function\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACDAIPool: Cannot withdraw 0');\n        deposits[msg.sender] = deposits[msg.sender].sub(amount);\n        super.withdraw(amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(balanceOf(msg.sender));\n        getReward();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function getReward() public updateReward(msg.sender) checkStart {\n        uint256 reward = earned(msg.sender);\n        if (reward > 0) {\n            rewards[msg.sender] = 0;\n            basisCash.safeTransfer(msg.sender, reward);\n            emit RewardPaid(msg.sender, reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "func": "function notifyRewardAmount(uint256 reward)\n        external\n        override\n        onlyRewardDistribution\n        updateReward(address(0))\n    {\n        if (block.timestamp > starttime) {\n            if (block.timestamp >= periodFinish) {\n                rewardRate = reward.div(DURATION);\n            } else {\n                uint256 remaining = periodFinish.sub(block.timestamp);\n                uint256 leftover = remaining.mul(rewardRate);\n                rewardRate = reward.add(leftover).div(DURATION);\n            }\n            lastUpdateTime = block.timestamp;\n            periodFinish = block.timestamp.add(DURATION);\n            emit RewardAdded(reward);\n        } else {\n            rewardRate = reward.div(DURATION);\n            lastUpdateTime = starttime;\n            periodFinish = starttime.add(DURATION);\n            emit RewardAdded(reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.add(amount);\n        _balances[msg.sender] = _balances[msg.sender].add(amount);\n        SUSD.safeTransferFrom(msg.sender, address(this), amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.sub(amount);\n        _balances[msg.sender] = _balances[msg.sender].sub(amount);\n        SUSD.safeTransfer(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [],
+        "func": "function lastTimeRewardApplicable() public view returns (uint256) {\n        return Math.min(block.timestamp, periodFinish);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function rewardPerToken() public view returns (uint256) {\n        if (totalSupply() == 0) {\n            return rewardPerTokenStored;\n        }\n        return\n            rewardPerTokenStored.add(\n                lastTimeRewardApplicable()\n                    .sub(lastUpdateTime)\n                    .mul(rewardRate)\n                    .mul(1e18)\n                    .div(totalSupply())\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function earned(address account) public view returns (uint256) {\n        return\n            balanceOf(account)\n                .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))\n                .div(1e18)\n                .add(rewards[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACSUSDPool: Cannot stake 0');\n        uint256 newDeposit = deposits[msg.sender].add(amount);\n        require(\n            newDeposit <= 20000e18,\n            'BACSUSDPool: deposit amount exceeds maximum 20000'\n        );\n        deposits[msg.sender] = newDeposit;\n        super.stake(amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    // stake visibility is public as overriding LPTokenWrapper's stake() function",
+            "    "
+        ],
+        "comt": "\n    // stake visibility is public as overriding LPTokenWrapper's stake() function\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACSUSDPool: Cannot withdraw 0');\n        deposits[msg.sender] = deposits[msg.sender].sub(amount);\n        super.withdraw(amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(balanceOf(msg.sender));\n        getReward();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function getReward() public updateReward(msg.sender) checkStart {\n        uint256 reward = earned(msg.sender);\n        if (reward > 0) {\n            rewards[msg.sender] = 0;\n            basisCash.safeTransfer(msg.sender, reward);\n            emit RewardPaid(msg.sender, reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "func": "function notifyRewardAmount(uint256 reward)\n        external\n        override\n        onlyRewardDistribution\n        updateReward(address(0))\n    {\n        if (block.timestamp > starttime) {\n            if (block.timestamp >= periodFinish) {\n                rewardRate = reward.div(DURATION);\n            } else {\n                uint256 remaining = periodFinish.sub(block.timestamp);\n                uint256 leftover = remaining.mul(rewardRate);\n                rewardRate = reward.add(leftover).div(DURATION);\n            }\n            lastUpdateTime = block.timestamp;\n            periodFinish = block.timestamp.add(DURATION);\n            emit RewardAdded(reward);\n        } else {\n            rewardRate = reward.div(DURATION);\n            lastUpdateTime = starttime;\n            periodFinish = starttime.add(DURATION);\n            emit RewardAdded(reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.add(amount);\n        _balances[msg.sender] = _balances[msg.sender].add(amount);\n        usdc.safeTransferFrom(msg.sender, address(this), amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.sub(amount);\n        _balances[msg.sender] = _balances[msg.sender].sub(amount);\n        usdc.safeTransfer(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [],
+        "func": "function lastTimeRewardApplicable() public view returns (uint256) {\n        return Math.min(block.timestamp, periodFinish);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function rewardPerToken() public view returns (uint256) {\n        if (totalSupply() == 0) {\n            return rewardPerTokenStored;\n        }\n        return\n            rewardPerTokenStored.add(\n                lastTimeRewardApplicable()\n                    .sub(lastUpdateTime)\n                    .mul(rewardRate)\n                    .mul(1e18)\n                    .div(totalSupply())\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function earned(address account) public view returns (uint256) {\n        return\n            balanceOf(account)\n                .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))\n                .div(1e18)\n                .add(rewards[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACUSDCPool: Cannot stake 0');\n        uint256 newDeposit = deposits[msg.sender].add(amount);\n        require(\n            newDeposit <= 20000e6,\n            'BACUSDCPool: deposit amount exceeds maximum 20000'\n        );\n        deposits[msg.sender] = newDeposit;\n        super.stake(amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    // stake visibility is public as overriding LPTokenWrapper's stake() function",
+            "    "
+        ],
+        "comt": "\n    // stake visibility is public as overriding LPTokenWrapper's stake() function\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACUSDCPool: Cannot withdraw 0');\n        deposits[msg.sender] = deposits[msg.sender].sub(amount);\n        super.withdraw(amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(balanceOf(msg.sender));\n        getReward();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function getReward() public updateReward(msg.sender) checkStart {\n        uint256 reward = earned(msg.sender);\n        if (reward > 0) {\n            rewards[msg.sender] = 0;\n            basisCash.safeTransfer(msg.sender, reward);\n            emit RewardPaid(msg.sender, reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "func": "function notifyRewardAmount(uint256 reward)\n        external\n        override\n        onlyRewardDistribution\n        updateReward(address(0))\n    {\n        if (block.timestamp > starttime) {\n            if (block.timestamp >= periodFinish) {\n                rewardRate = reward.div(DURATION);\n            } else {\n                uint256 remaining = periodFinish.sub(block.timestamp);\n                uint256 leftover = remaining.mul(rewardRate);\n                rewardRate = reward.add(leftover).div(DURATION);\n            }\n            lastUpdateTime = block.timestamp;\n            periodFinish = block.timestamp.add(DURATION);\n            emit RewardAdded(reward);\n        } else {\n            rewardRate = reward.div(DURATION);\n            lastUpdateTime = starttime;\n            periodFinish = starttime.add(DURATION);\n            emit RewardAdded(reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.add(amount);\n        _balances[msg.sender] = _balances[msg.sender].add(amount);\n        usdt.safeTransferFrom(msg.sender, address(this), amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.sub(amount);\n        _balances[msg.sender] = _balances[msg.sender].sub(amount);\n        usdt.safeTransfer(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [],
+        "func": "function lastTimeRewardApplicable() public view returns (uint256) {\n        return Math.min(block.timestamp, periodFinish);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function rewardPerToken() public view returns (uint256) {\n        if (totalSupply() == 0) {\n            return rewardPerTokenStored;\n        }\n        return\n            rewardPerTokenStored.add(\n                lastTimeRewardApplicable()\n                    .sub(lastUpdateTime)\n                    .mul(rewardRate)\n                    .mul(1e18)\n                    .div(totalSupply())\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function earned(address account) public view returns (uint256) {\n        return\n            balanceOf(account)\n                .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))\n                .div(1e18)\n                .add(rewards[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACUSDTPool: Cannot stake 0');\n        uint256 newDeposit = deposits[msg.sender].add(amount);\n        require(\n            newDeposit <= 20000e6,\n            'BACUSDTPool: deposit amount exceeds maximum 20000'\n        );\n        deposits[msg.sender] = newDeposit;\n        super.stake(amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    // stake visibility is public as overriding LPTokenWrapper's stake() function",
+            "    "
+        ],
+        "comt": "\n    // stake visibility is public as overriding LPTokenWrapper's stake() function\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount)\n        public\n        override\n        updateReward(msg.sender)\n        checkStart\n    {\n        require(amount > 0, 'BACUSDTPool: Cannot withdraw 0');\n        deposits[msg.sender] = deposits[msg.sender].sub(amount);\n        super.withdraw(amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(balanceOf(msg.sender));\n        getReward();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function getReward() public updateReward(msg.sender) checkStart {\n        uint256 reward = earned(msg.sender);\n        if (reward > 0) {\n            rewards[msg.sender] = 0;\n            basisCash.safeTransfer(msg.sender, reward);\n            emit RewardPaid(msg.sender, reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "func": "function notifyRewardAmount(uint256 reward)\n        external\n        override\n        onlyRewardDistribution\n        updateReward(address(0))\n    {\n        if (block.timestamp > starttime) {\n            if (block.timestamp >= periodFinish) {\n                rewardRate = reward.div(DURATION);\n            } else {\n                uint256 remaining = periodFinish.sub(block.timestamp);\n                uint256 leftover = remaining.mul(rewardRate);\n                rewardRate = reward.add(leftover).div(DURATION);\n            }\n            lastUpdateTime = block.timestamp;\n            periodFinish = block.timestamp.add(DURATION);\n            emit RewardAdded(reward);\n        } else {\n            rewardRate = reward.div(DURATION);\n            lastUpdateTime = starttime;\n            periodFinish = starttime.add(DURATION);\n            emit RewardAdded(reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "distribute",
+        "visibility": "public",
+        "args": [],
+        "func": "function distribute() public {\n        for (uint256 i = 0; i < distributors.length; i++) {\n            distributors[i].distribute();\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the name of the token.\n     */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the symbol of the token, usually a shorter version of the",
+            "     * name.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the symbol of the token, usually a shorter version of the\n     * name.\n     */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of decimals used to get its user representation.",
+            "     * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "     * be displayed to a user as `5,05` (`505 / 10 ** 2`).",
+            "     *",
+            "     * Tokens usually opt for a value of 18, imitating the relationship between",
+            "     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is",
+            "     * called.",
+            "     *",
+            "     * NOTE: This information is only used for _display_ purposes: it in",
+            "     * no way affects any of the arithmetic of the contract, including",
+            "     * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of decimals used to get its user representation.\n     * For example, if `decimals` equals `2`, a balance of `505` tokens should\n     * be displayed to a user as `5,05` (`505 / 10 ** 2`).\n     *\n     * Tokens usually opt for a value of 18, imitating the relationship between\n     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is\n     * called.\n     *\n     * NOTE: This information is only used for _display_ purposes: it in\n     * no way affects any of the arithmetic of the contract, including\n     * {IERC20-balanceOf} and {IERC20-transfer}.\n     */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5,05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is * called. * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}.\n     */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address sender, address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, \"ERC20: transfer amount exceeds allowance\"));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20};",
+            "     *",
+            "     * Requirements:",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20};\n     *\n     * Requirements:\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}; * * Requirements: * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, \"ERC20: decreased allowance below zero\"));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 amount) public virtual {\n        _burn(_msgSender(), amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Destroys `amount` tokens from the caller.",
+            "     *",
+            "     * See {ERC20-_burn}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Destroys `amount` tokens from the caller.\n     *\n     * See {ERC20-_burn}.\n     */\n",
+        "@dev": "Destroys `amount` tokens from the caller. * * See {ERC20-_burn}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnFrom(address account, uint256 amount) public virtual {\n        uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, \"ERC20: burn amount exceeds allowance\");\n\n        _approve(account, _msgSender(), decreasedAllowance);\n        _burn(account, amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Destroys `amount` tokens from `account`, deducting from the caller's",
+            "     * allowance.",
+            "     *",
+            "     * See {ERC20-_burn} and {ERC20-allowance}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must have allowance for ``accounts``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Destroys `amount` tokens from `account`, deducting from the caller's\n     * allowance.\n     *\n     * See {ERC20-_burn} and {ERC20-allowance}.\n     *\n     * Requirements:\n     *\n     * - the caller must have allowance for ``accounts``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "Destroys `amount` tokens from `account`, deducting from the caller's * allowance. * * See {ERC20-_burn} and {ERC20-allowance}. * * Requirements: * * - the caller must have allowance for ``accounts``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient_",
+                "type": "address"
+            },
+            {
+                "name": "amount_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address recipient_, uint256 amount_)\n        public\n        onlyOperator\n        returns (bool)\n    {\n        uint256 balanceBefore = balanceOf(recipient_);\n        _mint(recipient_, amount_);\n        uint256 balanceAfter = balanceOf(recipient_);\n\n        return balanceAfter > balanceBefore;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Operator mints dino cash to a recipient",
+            "     * @param recipient_ The address of recipient",
+            "     * @param amount_ The amount of dino cash to mint to",
+            "     * @return whether the process has been done",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Operator mints dino cash to a recipient\n     * @param recipient_ The address of recipient\n     * @param amount_ The amount of dino cash to mint to\n     * @return whether the process has been done\n     */\n",
+        "@notice": "Operator mints dino cash to a recipient",
+        "@param1": "recipient_ The address of recipient",
+        "@param2": "amount_ The amount of dino cash to mint to",
+        "@return1": "whether the process has been done",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient_",
+                "type": "address"
+            },
+            {
+                "name": "amount_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address recipient_, uint256 amount_)\n        public\n        onlyOperator\n        returns (bool)\n    {\n        uint256 balanceBefore = balanceOf(recipient_);\n        _mint(recipient_, amount_);\n        uint256 balanceAfter = balanceOf(recipient_);\n        return balanceAfter >= balanceBefore;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Operator mints basis cash to a recipient",
+            "     * @param recipient_ The address of recipient",
+            "     * @param amount_ The amount of basis cash to mint to",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Operator mints basis cash to a recipient\n     * @param recipient_ The address of recipient\n     * @param amount_ The amount of basis cash to mint to\n     */\n",
+        "@notice": "Operator mints basis cash to a recipient",
+        "@param1": "recipient_ The address of recipient",
+        "@param2": "amount_ The amount of basis cash to mint to",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 amount) public override onlyOperator {\n        super.burn(amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnFrom(address account, uint256 amount)\n        public\n        override\n        onlyOperator\n    {\n        super.burnFrom(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient_",
+                "type": "address"
+            },
+            {
+                "name": "amount_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address recipient_, uint256 amount_)\n        public\n        onlyOperator\n        returns (bool)\n    {\n        uint256 balanceBefore = balanceOf(recipient_);\n        _mint(recipient_, amount_);\n        uint256 balanceAfter = balanceOf(recipient_);\n\n        return balanceAfter > balanceBefore;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Operator mints basis cash to a recipient",
+            "     * @param recipient_ The address of recipient",
+            "     * @param amount_ The amount of basis cash to mint to",
+            "     * @return whether the process has been done",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Operator mints basis cash to a recipient\n     * @param recipient_ The address of recipient\n     * @param amount_ The amount of basis cash to mint to\n     * @return whether the process has been done\n     */\n",
+        "@notice": "Operator mints basis cash to a recipient",
+        "@param1": "recipient_ The address of recipient",
+        "@param2": "amount_ The amount of basis cash to mint to",
+        "@return1": "whether the process has been done",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 amount) public override onlyOperator {\n        super.burn(amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnFrom(address account, uint256 amount)\n        public\n        override\n        onlyOperator\n    {\n        super.burnFrom(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient_",
+                "type": "address"
+            },
+            {
+                "name": "amount_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address recipient_, uint256 amount_)\n        public\n        onlyOperator\n        returns (bool)\n    {\n        uint256 balanceBefore = balanceOf(recipient_);\n        _mint(recipient_, amount_);\n        uint256 balanceAfter = balanceOf(recipient_);\n\n        return balanceAfter > balanceBefore;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Operator mints basis bonds to a recipient",
+            "     * @param recipient_ The address of recipient",
+            "     * @param amount_ The amount of basis bonds to mint to",
+            "     * @return whether the process has been done",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Operator mints basis bonds to a recipient\n     * @param recipient_ The address of recipient\n     * @param amount_ The amount of basis bonds to mint to\n     * @return whether the process has been done\n     */\n",
+        "@notice": "Operator mints basis bonds to a recipient",
+        "@param1": "recipient_ The address of recipient",
+        "@param2": "amount_ The amount of basis bonds to mint to",
+        "@return1": "whether the process has been done",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 amount) public override onlyOperator {\n        super.burn(amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnFrom(address account, uint256 amount)\n        public\n        override\n        onlyOperator\n    {\n        super.burnFrom(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setCompleted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "completed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setCompleted(uint256 completed) public restricted {\n        last_completed_migration = completed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,1690 @@
+[
+    {
+        "transactions": 1835,
+        "function_num": 69
+    },
+    {
+        "name": "sinlut",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "i",
+                "type": "int256"
+            }
+        ],
+        "func": "function sinlut(int256 i) external pure returns (int64) {\n        if (i <= 127) {\n            if (i <= 63) {\n                if (i <= 31) {\n                    if (i <= 15) {\n                        if (i <= 7) {\n                            if (i <= 3) {\n                                if (i <= 1) {\n                                    if (i == 0) {\n                                        return 0;\n                                    } else {\n                                        return 26456769;\n                                    }\n                                } else {\n                                    if (i == 2) {\n                                        return 52912534;\n                                    } else {\n                                        return 79366292;\n                                    }\n                                }\n                            } else {\n                                if (i <= 5) {\n                                    if (i == 4) {\n                                        return 105817038;\n                                    } else {\n                                        return 132263769;\n                                    }\n                                } else {\n                                    if (i == 6) {\n                                        return 158705481;\n                                    } else {\n                                        return 185141171;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 11) {\n                                if (i <= 9) {\n                                    if (i == 8) {\n                                        return 211569835;\n                                    } else {\n                                        return 237990472;\n                                    }\n                                } else {\n                                    if (i == 10) {\n                                        return 264402078;\n                                    } else {\n                                        return 290803651;\n                                    }\n                                }\n                            } else {\n                                if (i <= 13) {\n                                    if (i == 12) {\n                                        return 317194190;\n                                    } else {\n                                        return 343572692;\n                                    }\n                                } else {\n                                    if (i == 14) {\n                                        return 369938158;\n                                    } else {\n                                        return 396289586;\n                                    }\n                                }\n                            }\n                        }\n                    } else {\n                        if (i <= 23) {\n                            if (i <= 19) {\n                                if (i <= 17) {\n                                    if (i == 16) {\n                                        return 422625977;\n                                    } else {\n                                        return 448946331;\n                                    }\n                                } else {\n                                    if (i == 18) {\n                                        return 475249649;\n                                    } else {\n                                        return 501534935;\n                                    }\n                                }\n                            } else {\n                                if (i <= 21) {\n                                    if (i == 20) {\n                                        return 527801189;\n                                    } else {\n                                        return 554047416;\n                                    }\n                                } else {\n                                    if (i == 22) {\n                                        return 580272619;\n                                    } else {\n                                        return 606475804;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 27) {\n                                if (i <= 25) {\n                                    if (i == 24) {\n                                        return 632655975;\n                                    } else {\n                                        return 658812141;\n                                    }\n                                } else {\n                                    if (i == 26) {\n                                        return 684943307;\n                                    } else {\n                                        return 711048483;\n                                    }\n                                }\n                            } else {\n                                if (i <= 29) {\n                                    if (i == 28) {\n                                        return 737126679;\n                                    } else {\n                                        return 763176903;\n                                    }\n                                } else {\n                                    if (i == 30) {\n                                        return 789198169;\n                                    } else {\n                                        return 815189489;\n                                    }\n                                }\n                            }\n                        }\n                    }\n                } else {\n                    if (i <= 47) {\n                        if (i <= 39) {\n                            if (i <= 35) {\n                                if (i <= 33) {\n                                    if (i == 32) {\n                                        return 841149875;\n                                    } else {\n                                        return 867078344;\n                                    }\n                                } else {\n                                    if (i == 34) {\n                                        return 892973912;\n                                    } else {\n                                        return 918835595;\n                                    }\n                                }\n                            } else {\n                                if (i <= 37) {\n                                    if (i == 36) {\n                                        return 944662413;\n                                    } else {\n                                        return 970453386;\n                                    }\n                                } else {\n                                    if (i == 38) {\n                                        return 996207534;\n                                    } else {\n                                        return 1021923881;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 43) {\n                                if (i <= 41) {\n                                    if (i == 40) {\n                                        return 1047601450;\n                                    } else {\n                                        return 1073239268;\n                                    }\n                                } else {\n                                    if (i == 42) {\n                                        return 1098836362;\n                                    } else {\n                                        return 1124391760;\n                                    }\n                                }\n                            } else {\n                                if (i <= 45) {\n                                    if (i == 44) {\n                                        return 1149904493;\n                                    } else {\n                                        return 1175373592;\n                                    }\n                                } else {\n                                    if (i == 46) {\n                                        return 1200798091;\n                                    } else {\n                                        return 1226177026;\n                                    }\n                                }\n                            }\n                        }\n                    } else {\n                        if (i <= 55) {\n                            if (i <= 51) {\n                                if (i <= 49) {\n                                    if (i == 48) {\n                                        return 1251509433;\n                                    } else {\n                                        return 1276794351;\n                                    }\n                                } else {\n                                    if (i == 50) {\n                                        return 1302030821;\n                                    } else {\n                                        return 1327217884;\n                                    }\n                                }\n                            } else {\n                                if (i <= 53) {\n                                    if (i == 52) {\n                                        return 1352354586;\n                                    } else {\n                                        return 1377439973;\n                                    }\n                                } else {\n                                    if (i == 54) {\n                                        return 1402473092;\n                                    } else {\n                                        return 1427452994;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 59) {\n                                if (i <= 57) {\n                                    if (i == 56) {\n                                        return 1452378731;\n                                    } else {\n                                        return 1477249357;\n                                    }\n                                } else {\n                                    if (i == 58) {\n                                        return 1502063928;\n                                    } else {\n                                        return 1526821503;\n                                    }\n                                }\n                            } else {\n                                if (i <= 61) {\n                                    if (i == 60) {\n                                        return 1551521142;\n                                    } else {\n                                        return 1576161908;\n                                    }\n                                } else {\n                                    if (i == 62) {\n                                        return 1600742866;\n                                    } else {\n                                        return 1625263084;\n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            } else {\n                if (i <= 95) {\n                    if (i <= 79) {\n                        if (i <= 71) {\n                            if (i <= 67) {\n                                if (i <= 65) {\n                                    if (i == 64) {\n                                        return 1649721630;\n                                    } else {\n                                        return 1674117578;\n                                    }\n                                } else {\n                                    if (i == 66) {\n                                        return 1698450000;\n                                    } else {\n                                        return 1722717974;\n                                    }\n                                }\n                            } else {\n                                if (i <= 69) {\n                                    if (i == 68) {\n                                        return 1746920580;\n                                    } else {\n                                        return 1771056897;\n                                    }\n                                } else {\n                                    if (i == 70) {\n                                        return 1795126012;\n                                    } else {\n                                        return 1819127010;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 75) {\n                                if (i <= 73) {\n                                    if (i == 72) {\n                                        return 1843058980;\n                                    } else {\n                                        return 1866921015;\n                                    }\n                                } else {\n                                    if (i == 74) {\n                                        return 1890712210;\n                                    } else {\n                                        return 1914431660;\n                                    }\n                                }\n                            } else {\n                                if (i <= 77) {\n                                    if (i == 76) {\n                                        return 1938078467;\n                                    } else {\n                                        return 1961651733;\n                                    }\n                                } else {\n                                    if (i == 78) {\n                                        return 1985150563;\n                                    } else {\n                                        return 2008574067;\n                                    }\n                                }\n                            }\n                        }\n                    } else {\n                        if (i <= 87) {\n                            if (i <= 83) {\n                                if (i <= 81) {\n                                    if (i == 80) {\n                                        return 2031921354;\n                                    } else {\n                                        return 2055191540;\n                                    }\n                                } else {\n                                    if (i == 82) {\n                                        return 2078383740;\n                                    } else {\n                                        return 2101497076;\n                                    }\n                                }\n                            } else {\n                                if (i <= 85) {\n                                    if (i == 84) {\n                                        return 2124530670;\n                                    } else {\n                                        return 2147483647;\n                                    }\n                                } else {\n                                    if (i == 86) {\n                                        return 2170355138;\n                                    } else {\n                                        return 2193144275;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 91) {\n                                if (i <= 89) {\n                                    if (i == 88) {\n                                        return 2215850191;\n                                    } else {\n                                        return 2238472027;\n                                    }\n                                } else {\n                                    if (i == 90) {\n                                        return 2261008923;\n                                    } else {\n                                        return 2283460024;\n                                    }\n                                }\n                            } else {\n                                if (i <= 93) {\n                                    if (i == 92) {\n                                        return 2305824479;\n                                    } else {\n                                        return 2328101438;\n                                    }\n                                } else {\n                                    if (i == 94) {\n                                        return 2350290057;\n                                    } else {\n                                        return 2372389494;\n                                    }\n                                }\n                            }\n                        }\n                    }\n                } else {\n                    if (i <= 111) {\n                        if (i <= 103) {\n                            if (i <= 99) {\n                                if (i <= 97) {\n                                    if (i == 96) {\n                                        return 2394398909;\n                                    } else {\n                                        return 2416317469;\n                                    }\n                                } else {\n                                    if (i == 98) {\n                                        return 2438144340;\n                                    } else {\n                                        return 2459878695;\n                                    }\n                                }\n                            } else {\n                                if (i <= 101) {\n                                    if (i == 100) {\n                                        return 2481519710;\n                                    } else {\n                                        return 2503066562;\n                                    }\n                                } else {\n                                    if (i == 102) {\n                                        return 2524518435;\n                                    } else {\n                                        return 2545874514;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 107) {\n                                if (i <= 105) {\n                                    if (i == 104) {\n                                        return 2567133990;\n                                    } else {\n                                        return 2588296054;\n                                    }\n                                } else {\n                                    if (i == 106) {\n                                        return 2609359905;\n                                    } else {\n                                        return 2630324743;\n                                    }\n                                }\n                            } else {\n                                if (i <= 109) {\n                                    if (i == 108) {\n                                        return 2651189772;\n                                    } else {\n                                        return 2671954202;\n                                    }\n                                } else {\n                                    if (i == 110) {\n                                        return 2692617243;\n                                    } else {\n                                        return 2713178112;\n                                    }\n                                }\n                            }\n                        }\n                    } else {\n                        if (i <= 119) {\n                            if (i <= 115) {\n                                if (i <= 113) {\n                                    if (i == 112) {\n                                        return 2733636028;\n                                    } else {\n                                        return 2753990216;\n                                    }\n                                } else {\n                                    if (i == 114) {\n                                        return 2774239903;\n                                    } else {\n                                        return 2794384321;\n                                    }\n                                }\n                            } else {\n                                if (i <= 117) {\n                                    if (i == 116) {\n                                        return 2814422705;\n                                    } else {\n                                        return 2834354295;\n                                    }\n                                } else {\n                                    if (i == 118) {\n                                        return 2854178334;\n                                    } else {\n                                        return 2873894071;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 123) {\n                                if (i <= 121) {\n                                    if (i == 120) {\n                                        return 2893500756;\n                                    } else {\n                                        return 2912997648;\n                                    }\n                                } else {\n                                    if (i == 122) {\n                                        return 2932384004;\n                                    } else {\n                                        return 2951659090;\n                                    }\n                                }\n                            } else {\n                                if (i <= 125) {\n                                    if (i == 124) {\n                                        return 2970822175;\n                                    } else {\n                                        return 2989872531;\n                                    }\n                                } else {\n                                    if (i == 126) {\n                                        return 3008809435;\n                                    } else {\n                                        return 3027632170;\n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        } else {\n            if (i <= 191) {\n                if (i <= 159) {\n                    if (i <= 143) {\n                        if (i <= 135) {\n                            if (i <= 131) {\n                                if (i <= 129) {\n                                    if (i == 128) {\n                                        return 3046340019;\n                                    } else {\n                                        return 3064932275;\n                                    }\n                                } else {\n                                    if (i == 130) {\n                                        return 3083408230;\n                                    } else {\n                                        return 3101767185;\n                                    }\n                                }\n                            } else {\n                                if (i <= 133) {\n                                    if (i == 132) {\n                                        return 3120008443;\n                                    } else {\n                                        return 3138131310;\n                                    }\n                                } else {\n                                    if (i == 134) {\n                                        return 3156135101;\n                                    } else {\n                                        return 3174019130;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 139) {\n                                if (i <= 137) {\n                                    if (i == 136) {\n                                        return 3191782721;\n                                    } else {\n                                        return 3209425199;\n                                    }\n                                } else {\n                                    if (i == 138) {\n                                        return 3226945894;\n                                    } else {\n                                        return 3244344141;\n                                    }\n                                }\n                            } else {\n                                if (i <= 141) {\n                                    if (i == 140) {\n                                        return 3261619281;\n                                    } else {\n                                        return 3278770658;\n                                    }\n                                } else {\n                                    if (i == 142) {\n                                        return 3295797620;\n                                    } else {\n                                        return 3312699523;\n                                    }\n                                }\n                            }\n                        }\n                    } else {\n                        if (i <= 151) {\n                            if (i <= 147) {\n                                if (i <= 145) {\n                                    if (i == 144) {\n                                        return 3329475725;\n                                    } else {\n                                        return 3346125588;\n                                    }\n                                } else {\n                                    if (i == 146) {\n                                        return 3362648482;\n                                    } else {\n                                        return 3379043779;\n                                    }\n                                }\n                            } else {\n                                if (i <= 149) {\n                                    if (i == 148) {\n                                        return 3395310857;\n                                    } else {\n                                        return 3411449099;\n                                    }\n                                } else {\n                                    if (i == 150) {\n                                        return 3427457892;\n                                    } else {\n                                        return 3443336630;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 155) {\n                                if (i <= 153) {\n                                    if (i == 152) {\n                                        return 3459084709;\n                                    } else {\n                                        return 3474701532;\n                                    }\n                                } else {\n                                    if (i == 154) {\n                                        return 3490186507;\n                                    } else {\n                                        return 3505539045;\n                                    }\n                                }\n                            } else {\n                                if (i <= 157) {\n                                    if (i == 156) {\n                                        return 3520758565;\n                                    } else {\n                                        return 3535844488;\n                                    }\n                                } else {\n                                    if (i == 158) {\n                                        return 3550796243;\n                                    } else {\n                                        return 3565613262;\n                                    }\n                                }\n                            }\n                        }\n                    }\n                } else {\n                    if (i <= 175) {\n                        if (i <= 167) {\n                            if (i <= 163) {\n                                if (i <= 161) {\n                                    if (i == 160) {\n                                        return 3580294982;\n                                    } else {\n                                        return 3594840847;\n                                    }\n                                } else {\n                                    if (i == 162) {\n                                        return 3609250305;\n                                    } else {\n                                        return 3623522808;\n                                    }\n                                }\n                            } else {\n                                if (i <= 165) {\n                                    if (i == 164) {\n                                        return 3637657816;\n                                    } else {\n                                        return 3651654792;\n                                    }\n                                } else {\n                                    if (i == 166) {\n                                        return 3665513205;\n                                    } else {\n                                        return 3679232528;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 171) {\n                                if (i <= 169) {\n                                    if (i == 168) {\n                                        return 3692812243;\n                                    } else {\n                                        return 3706251832;\n                                    }\n                                } else {\n                                    if (i == 170) {\n                                        return 3719550786;\n                                    } else {\n                                        return 3732708601;\n                                    }\n                                }\n                            } else {\n                                if (i <= 173) {\n                                    if (i == 172) {\n                                        return 3745724777;\n                                    } else {\n                                        return 3758598821;\n                                    }\n                                } else {\n                                    if (i == 174) {\n                                        return 3771330243;\n                                    } else {\n                                        return 3783918561;\n                                    }\n                                }\n                            }\n                        }\n                    } else {\n                        if (i <= 183) {\n                            if (i <= 179) {\n                                if (i <= 177) {\n                                    if (i == 176) {\n                                        return 3796363297;\n                                    } else {\n                                        return 3808663979;\n                                    }\n                                } else {\n                                    if (i == 178) {\n                                        return 3820820141;\n                                    } else {\n                                        return 3832831319;\n                                    }\n                                }\n                            } else {\n                                if (i <= 181) {\n                                    if (i == 180) {\n                                        return 3844697060;\n                                    } else {\n                                        return 3856416913;\n                                    }\n                                } else {\n                                    if (i == 182) {\n                                        return 3867990433;\n                                    } else {\n                                        return 3879417181;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 187) {\n                                if (i <= 185) {\n                                    if (i == 184) {\n                                        return 3890696723;\n                                    } else {\n                                        return 3901828632;\n                                    }\n                                } else {\n                                    if (i == 186) {\n                                        return 3912812484;\n                                    } else {\n                                        return 3923647863;\n                                    }\n                                }\n                            } else {\n                                if (i <= 189) {\n                                    if (i == 188) {\n                                        return 3934334359;\n                                    } else {\n                                        return 3944871565;\n                                    }\n                                } else {\n                                    if (i == 190) {\n                                        return 3955259082;\n                                    } else {\n                                        return 3965496515;\n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            } else {\n                if (i <= 223) {\n                    if (i <= 207) {\n                        if (i <= 199) {\n                            if (i <= 195) {\n                                if (i <= 193) {\n                                    if (i == 192) {\n                                        return 3975583476;\n                                    } else {\n                                        return 3985519583;\n                                    }\n                                } else {\n                                    if (i == 194) {\n                                        return 3995304457;\n                                    } else {\n                                        return 4004937729;\n                                    }\n                                }\n                            } else {\n                                if (i <= 197) {\n                                    if (i == 196) {\n                                        return 4014419032;\n                                    } else {\n                                        return 4023748007;\n                                    }\n                                } else {\n                                    if (i == 198) {\n                                        return 4032924300;\n                                    } else {\n                                        return 4041947562;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 203) {\n                                if (i <= 201) {\n                                    if (i == 200) {\n                                        return 4050817451;\n                                    } else {\n                                        return 4059533630;\n                                    }\n                                } else {\n                                    if (i == 202) {\n                                        return 4068095769;\n                                    } else {\n                                        return 4076503544;\n                                    }\n                                }\n                            } else {\n                                if (i <= 205) {\n                                    if (i == 204) {\n                                        return 4084756634;\n                                    } else {\n                                        return 4092854726;\n                                    }\n                                } else {\n                                    if (i == 206) {\n                                        return 4100797514;\n                                    } else {\n                                        return 4108584696;\n                                    }\n                                }\n                            }\n                        }\n                    } else {\n                        if (i <= 215) {\n                            if (i <= 211) {\n                                if (i <= 209) {\n                                    if (i == 208) {\n                                        return 4116215977;\n                                    } else {\n                                        return 4123691067;\n                                    }\n                                } else {\n                                    if (i == 210) {\n                                        return 4131009681;\n                                    } else {\n                                        return 4138171544;\n                                    }\n                                }\n                            } else {\n                                if (i <= 213) {\n                                    if (i == 212) {\n                                        return 4145176382;\n                                    } else {\n                                        return 4152023930;\n                                    }\n                                } else {\n                                    if (i == 214) {\n                                        return 4158713929;\n                                    } else {\n                                        return 4165246124;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 219) {\n                                if (i <= 217) {\n                                    if (i == 216) {\n                                        return 4171620267;\n                                    } else {\n                                        return 4177836117;\n                                    }\n                                } else {\n                                    if (i == 218) {\n                                        return 4183893437;\n                                    } else {\n                                        return 4189791999;\n                                    }\n                                }\n                            } else {\n                                if (i <= 221) {\n                                    if (i == 220) {\n                                        return 4195531577;\n                                    } else {\n                                        return 4201111955;\n                                    }\n                                } else {\n                                    if (i == 222) {\n                                        return 4206532921;\n                                    } else {\n                                        return 4211794268;\n                                    }\n                                }\n                            }\n                        }\n                    }\n                } else {\n                    if (i <= 239) {\n                        if (i <= 231) {\n                            if (i <= 227) {\n                                if (i <= 225) {\n                                    if (i == 224) {\n                                        return 4216895797;\n                                    } else {\n                                        return 4221837315;\n                                    }\n                                } else {\n                                    if (i == 226) {\n                                        return 4226618635;\n                                    } else {\n                                        return 4231239573;\n                                    }\n                                }\n                            } else {\n                                if (i <= 229) {\n                                    if (i == 228) {\n                                        return 4235699957;\n                                    } else {\n                                        return 4239999615;\n                                    }\n                                } else {\n                                    if (i == 230) {\n                                        return 4244138385;\n                                    } else {\n                                        return 4248116110;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 235) {\n                                if (i <= 233) {\n                                    if (i == 232) {\n                                        return 4251932639;\n                                    } else {\n                                        return 4255587827;\n                                    }\n                                } else {\n                                    if (i == 234) {\n                                        return 4259081536;\n                                    } else {\n                                        return 4262413632;\n                                    }\n                                }\n                            } else {\n                                if (i <= 237) {\n                                    if (i == 236) {\n                                        return 4265583990;\n                                    } else {\n                                        return 4268592489;\n                                    }\n                                } else {\n                                    if (i == 238) {\n                                        return 4271439015;\n                                    } else {\n                                        return 4274123460;\n                                    }\n                                }\n                            }\n                        }\n                    } else {\n                        if (i <= 247) {\n                            if (i <= 243) {\n                                if (i <= 241) {\n                                    if (i == 240) {\n                                        return 4276645722;\n                                    } else {\n                                        return 4279005706;\n                                    }\n                                } else {\n                                    if (i == 242) {\n                                        return 4281203321;\n                                    } else {\n                                        return 4283238485;\n                                    }\n                                }\n                            } else {\n                                if (i <= 245) {\n                                    if (i == 244) {\n                                        return 4285111119;\n                                    } else {\n                                        return 4286821154;\n                                    }\n                                } else {\n                                    if (i == 246) {\n                                        return 4288368525;\n                                    } else {\n                                        return 4289753172;\n                                    }\n                                }\n                            }\n                        } else {\n                            if (i <= 251) {\n                                if (i <= 249) {\n                                    if (i == 248) {\n                                        return 4290975043;\n                                    } else {\n                                        return 4292034091;\n                                    }\n                                } else {\n                                    if (i == 250) {\n                                        return 4292930277;\n                                    } else {\n                                        return 4293663567;\n                                    }\n                                }\n                            } else {\n                                if (i <= 253) {\n                                    if (i == 252) {\n                                        return 4294233932;\n                                    } else {\n                                        return 4294641351;\n                                    }\n                                } else {\n                                    if (i == 254) {\n                                        return 4294885809;\n                                    } else {\n                                        return 4294967296;\n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Lookup tables for computing the sine value for a given angle.",
+            "     * @param i The clamped and rounded angle integral to index into the table.",
+            "     * @return The sine value in fixed-point (Q31.32) space.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Lookup tables for computing the sine value for a given angle.\n     * @param i The clamped and rounded angle integral to index into the table.\n     * @return The sine value in fixed-point (Q31.32) space.\n     */\n",
+        "@notice": "Lookup tables for computing the sine value for a given angle.",
+        "@param1": "i The clamped and rounded angle integral to index into the table.",
+        "@return1": "The sine value in fixed-point (Q31.32) space.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC165).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return\n            interfaceId == type(IERC721).interfaceId ||\n            interfaceId == type(IERC721Metadata).interfaceId ||\n            super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view virtual override returns (uint256) {\n        require(owner != address(0), \"ERC721: balance query for the zero address\");\n        return _balances[owner];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-balanceOf}.\n     */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view virtual override returns (address) {\n        address owner = _owners[tokenId];\n        require(owner != address(0), \"ERC721: owner query for nonexistent token\");\n        return owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-ownerOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-ownerOf}.\n     */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-name}.\n     */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-symbol}.\n     */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        require(_exists(tokenId), \"ERC721Metadata: URI query for nonexistent token\");\n\n        string memory baseURI = _baseURI();\n        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : \"\";\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-tokenURI}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-tokenURI}.\n     */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ERC721.ownerOf(tokenId);\n        require(to != owner, \"ERC721: approval to current owner\");\n\n        require(\n            _msgSender() == owner || isApprovedForAll(owner, _msgSender()),\n            \"ERC721: approve caller is not owner nor approved for all\"\n        );\n\n        _approve(to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-approve}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-approve}.\n     */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view virtual override returns (address) {\n        require(_exists(tokenId), \"ERC721: approved query for nonexistent token\");\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-getApproved}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-getApproved}.\n     */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        require(operator != _msgSender(), \"ERC721: approve to caller\");\n\n        _operatorApprovals[_msgSender()][operator] = approved;\n        emit ApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n\n        _transfer(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-transferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-transferFrom}.\n     */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId,\n        bytes memory _data\n    ) public virtual override {\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n        _safeTransfer(from, to, tokenId, _data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC721) returns (bool) {\n        return interfaceId == type(IERC721Enumerable).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenOfOwnerByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenOfOwnerByIndex(address owner, uint256 index) public view virtual override returns (uint256) {\n        require(index < ERC721.balanceOf(owner), \"ERC721Enumerable: owner index out of bounds\");\n        return _ownedTokens[owner][index];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n        return _allTokens.length;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-totalSupply}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenByIndex(uint256 index) public view virtual override returns (uint256) {\n        require(index < ERC721Enumerable.totalSupply(), \"ERC721Enumerable: global index out of bounds\");\n        return _allTokens[index];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenByIndex}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenByIndex}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "paused",
+        "visibility": "public",
+        "args": [],
+        "func": "function paused() public view virtual returns (bool) {\n        return _paused;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns true if the contract is paused, and false otherwise.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns true if the contract is paused, and false otherwise.\n     */\n",
+        "@dev": "Returns true if the contract is paused, and false otherwise.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 tokenId) public virtual {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721Burnable: caller is not owner nor approved\");\n        _burn(tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Burns `tokenId`. See {ERC721-_burn}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - The caller must own `tokenId` or be an approved operator.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Burns `tokenId`. See {ERC721-_burn}.\n     *\n     * Requirements:\n     *\n     * - The caller must own `tokenId` or be an approved operator.\n     */\n",
+        "@dev": "Burns `tokenId`. See {ERC721-_burn}. * * Requirements: * * - The caller must own `tokenId` or be an approved operator.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "foo",
+        "visibility": "public",
+        "args": [],
+        "func": "function foo() public {\n *     require(hasRole(MY_ROLE, msg.sender));\n *     ...\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IAccessControl).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "hasRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function hasRole(bytes32 role, address account) public view override returns (bool) {\n        return _roles[role].members[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns `true` if `account` has been granted `role`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns `true` if `account` has been granted `role`.\n     */\n",
+        "@dev": "Returns `true` if `account` has been granted `role`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoleAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getRoleAdmin(bytes32 role) public view override returns (bytes32) {\n        return _roles[role].adminRole;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the admin role that controls `role`. See {grantRole} and",
+            "     * {revokeRole}.",
+            "     *",
+            "     * To change a role's admin, use {_setRoleAdmin}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the admin role that controls `role`. See {grantRole} and\n     * {revokeRole}.\n     *\n     * To change a role's admin, use {_setRoleAdmin}.\n     */\n",
+        "@dev": "Returns the admin role that controls `role`. See {grantRole} and * {revokeRole}. * * To change a role's admin, use {_setRoleAdmin}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "grantRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function grantRole(bytes32 role, address account) public virtual override onlyRole(getRoleAdmin(role)) {\n        _grantRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Grants `role` to `account`.",
+            "     *",
+            "     * If `account` had not been already granted `role`, emits a {RoleGranted}",
+            "     * event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must have ``role``'s admin role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Grants `role` to `account`.\n     *\n     * If `account` had not been already granted `role`, emits a {RoleGranted}\n     * event.\n     *\n     * Requirements:\n     *\n     * - the caller must have ``role``'s admin role.\n     */\n",
+        "@dev": "Grants `role` to `account`. * * If `account` had not been already granted `role`, emits a {RoleGranted} * event. * * Requirements: * * - the caller must have ``role``'s admin role.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revokeRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function revokeRole(bytes32 role, address account) public virtual override onlyRole(getRoleAdmin(role)) {\n        _revokeRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Revokes `role` from `account`.",
+            "     *",
+            "     * If `account` had been granted `role`, emits a {RoleRevoked} event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must have ``role``'s admin role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Revokes `role` from `account`.\n     *\n     * If `account` had been granted `role`, emits a {RoleRevoked} event.\n     *\n     * Requirements:\n     *\n     * - the caller must have ``role``'s admin role.\n     */\n",
+        "@dev": "Revokes `role` from `account`. * * If `account` had been granted `role`, emits a {RoleRevoked} event. * * Requirements: * * - the caller must have ``role``'s admin role.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function renounceRole(bytes32 role, address account) public virtual override {\n        require(account == _msgSender(), \"AccessControl: can only renounce roles for self\");\n\n        _revokeRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Revokes `role` from the calling account.",
+            "     *",
+            "     * Roles are often managed via {grantRole} and {revokeRole}: this function's",
+            "     * purpose is to provide a mechanism for accounts to lose their privileges",
+            "     * if they are compromised (such as when a trusted device is misplaced).",
+            "     *",
+            "     * If the calling account had been granted `role`, emits a {RoleRevoked}",
+            "     * event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must be `account`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Revokes `role` from the calling account.\n     *\n     * Roles are often managed via {grantRole} and {revokeRole}: this function's\n     * purpose is to provide a mechanism for accounts to lose their privileges\n     * if they are compromised (such as when a trusted device is misplaced).\n     *\n     * If the calling account had been granted `role`, emits a {RoleRevoked}\n     * event.\n     *\n     * Requirements:\n     *\n     * - the caller must be `account`.\n     */\n",
+        "@dev": "Revokes `role` from the calling account. * * Roles are often managed via {grantRole} and {revokeRole}: this function's * purpose is to provide a mechanism for accounts to lose their privileges * if they are compromised (such as when a trusted device is misplaced). * * If the calling account had been granted `role`, emits a {RoleRevoked} * event. * * Requirements: * * - the caller must be `account`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IAccessControlEnumerable).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoleMember",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getRoleMember(bytes32 role, uint256 index) public view override returns (address) {\n        return _roleMembers[role].at(index);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns one of the accounts that have `role`. `index` must be a",
+            "     * value between 0 and {getRoleMemberCount}, non-inclusive.",
+            "     *",
+            "     * Role bearers are not sorted in any particular way, and their ordering may",
+            "     * change at any point.",
+            "     *",
+            "     * WARNING: When using {getRoleMember} and {getRoleMemberCount}, make sure",
+            "     * you perform all queries on the same block. See the following",
+            "     * https://forum.openzeppelin.com/t/iterating-over-elements-on-enumerableset-in-openzeppelin-contracts/2296[forum post]",
+            "     * for more information.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns one of the accounts that have `role`. `index` must be a\n     * value between 0 and {getRoleMemberCount}, non-inclusive.\n     *\n     * Role bearers are not sorted in any particular way, and their ordering may\n     * change at any point.\n     *\n     * WARNING: When using {getRoleMember} and {getRoleMemberCount}, make sure\n     * you perform all queries on the same block. See the following\n     * https://forum.openzeppelin.com/t/iterating-over-elements-on-enumerableset-in-openzeppelin-contracts/2296[forum post]\n     * for more information.\n     */\n",
+        "@dev": "Returns one of the accounts that have `role`. `index` must be a * value between 0 and {getRoleMemberCount}, non-inclusive. * * Role bearers are not sorted in any particular way, and their ordering may * change at any point. * * WARNING: When using {getRoleMember} and {getRoleMemberCount}, make sure * you perform all queries on the same block. See the following * https://forum.openzeppelin.com/t/iterating-over-elements-on-enumerableset-in-openzeppelin-contracts/2296[forum post] * for more information.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoleMemberCount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getRoleMemberCount(bytes32 role) public view override returns (uint256) {\n        return _roleMembers[role].length();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of accounts that have `role`. Can be used",
+            "     * together with {getRoleMember} to enumerate all bearers of a role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of accounts that have `role`. Can be used\n     * together with {getRoleMember} to enumerate all bearers of a role.\n     */\n",
+        "@dev": "Returns the number of accounts that have `role`. Can be used * together with {getRoleMember} to enumerate all bearers of a role.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "grantRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function grantRole(bytes32 role, address account) public virtual override(AccessControl, IAccessControl) {\n        super.grantRole(role, account);\n        _roleMembers[role].add(account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Overload {grantRole} to track enumerable memberships",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Overload {grantRole} to track enumerable memberships\n     */\n",
+        "@dev": "Overload {grantRole} to track enumerable memberships",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revokeRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function revokeRole(bytes32 role, address account) public virtual override(AccessControl, IAccessControl) {\n        super.revokeRole(role, account);\n        _roleMembers[role].remove(account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Overload {revokeRole} to track enumerable memberships",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Overload {revokeRole} to track enumerable memberships\n     */\n",
+        "@dev": "Overload {revokeRole} to track enumerable memberships",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function renounceRole(bytes32 role, address account) public virtual override(AccessControl, IAccessControl) {\n        super.renounceRole(role, account);\n        _roleMembers[role].remove(account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Overload {renounceRole} to track enumerable memberships",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Overload {renounceRole} to track enumerable memberships\n     */\n",
+        "@dev": "Overload {renounceRole} to track enumerable memberships",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "contractURI",
+        "visibility": "public",
+        "args": [],
+        "func": "function contractURI() public view returns (string memory) {\n        return _contractUri;\n    }",
+        "comments": [
+            "/*",
+            "    * @dev See: https://docs.opensea.io/docs/contract-level-metadata",
+            "    */",
+            ""
+        ],
+        "comt": "/*\n    * @dev See: https://docs.opensea.io/docs/contract-level-metadata\n    */\n",
+        "@dev": "See: https://docs.opensea.io/docs/contract-level-metadata",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateContractUri",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractUri",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateContractUri(string memory contractUri) public {\n        if(_msgSender() != _admin) revert AdminOnly();\n        _contractUri = contractUri;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newAdmin",
+                "type": "address"
+            }
+        ],
+        "func": "function updateAdmin(address newAdmin) public {\n        if(_msgSender() != _admin) revert AdminOnly();\n        if(newAdmin == address(0x0)) revert AddressMustBeSet();\n        _admin = newAdmin;       \n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateOwnerData",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "royalty",
+                "type": "uint8"
+            },
+            {
+                "name": "newAddress",
+                "type": "address payable"
+            }
+        ],
+        "func": "function updateOwnerData(uint8 royalty, address payable newAddress) public {\n        if(_msgSender() != _admin) revert AdminOnly();\n        if(newAddress == address(0x0)) revert AddressMustBeSet();\n        if(royalty == 0 || royalty > 100) revert InvalidOwnerRoyalty();        \n        ownerRoyalty = royalty;\n        ownerAddress = newAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPresale",
+        "visibility": "external",
+        "args": [],
+        "func": "function getPresale() external view returns (bool) {\n        return presale;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "togglePresale",
+        "visibility": "external",
+        "args": [],
+        "func": "function togglePresale() external {\n        if(_msgSender() != _admin) revert AdminOnly();\n        if(presale) {\n            presale = false;\n        } else {\n            presale = true;\n        }        \n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleLocked",
+        "visibility": "external",
+        "args": [],
+        "func": "function toggleLocked() external {\n        if(_msgSender() != _admin) revert AdminOnly();\n        if(locked) {\n            locked = false;\n        } else {\n            locked = true;\n        } \n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "togglePaused",
+        "visibility": "external",
+        "args": [],
+        "func": "function togglePaused() external {\n        if(_msgSender() != _admin) revert AdminOnly();\n        if(paused()) {\n            _unpause();\n        }\n        else {\n            _pause();\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPresalePrice",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "priceInWei",
+                "type": "uint"
+            }
+        ],
+        "func": "function setPresalePrice(uint priceInWei) public {\n        if(_msgSender() != _admin) revert AdminOnly();\n        presalePriceInWei = priceInWei;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPrice",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "priceInWei",
+                "type": "uint"
+            }
+        ],
+        "func": "function setPrice(uint priceInWei) public {\n        if(_msgSender() != _admin) revert AdminOnly();\n        collections[0].priceInWei = priceInWei;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId)\n        public\n        view\n        virtual\n        override(AccessControlEnumerable, ERC721, ERC721Enumerable)\n        returns (bool)\n    {\n        return super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCollection",
+        "visibility": "public",
+        "args": [],
+        "func": "function getCollection() public view returns (Collection memory collection) {        \n        return collections[0];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateCollection",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "collection",
+                "type": "Collection memory"
+            }
+        ],
+        "func": "function updateCollection(Collection memory collection) public {\n        if(_msgSender() != _admin) revert AdminOnly();\n        if(collection._renderer == address(0x0) || !collection._renderer.isContract()) revert InvalidRenderer();\n        collections[0] = collection;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSeed",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "int32"
+            }
+        ],
+        "func": "function setSeed(int32 seed) external {  \n        if(_msgSender() != _admin) revert AdminOnly();\n        if(seed == 0) revert InvalidSeed();\n        if(collections[0].seed != 0) revert SeedAlreadySet();\n        collections[0].seed = seed;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Sets the collection's unique seed. It cannot be modified once set.",
+            "     * @dev This is a source of external entropy, by the contract owner, to avoid determinism on PRNG that could exploit the mint's parameters.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Sets the collection's unique seed. It cannot be modified once set.\n     * @dev This is a source of external entropy, by the contract owner, to avoid determinism on PRNG that could exploit the mint's parameters.\n     */\n",
+        "@notice": "Sets the collection's unique seed. It cannot be modified once set.",
+        "@dev": "This is a source of external entropy, by the contract owner, to avoid determinism on PRNG that could exploit the mint's parameters.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSeed",
+        "visibility": "external",
+        "args": [],
+        "func": "function getSeed() external view returns (int32) {  \n        if(_msgSender() != _admin) revert AdminOnly();\n        if(collections[0].seed == 0) revert SeedNotSet();\n        return collections[0].seed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOwnership",
+        "visibility": "external",
+        "args": [],
+        "func": "function getOwnership() external view returns(address) {\n        if(_msgSender() != _admin) revert AdminOnly();\n        return _ownership;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setOwnership",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newOwnership",
+                "type": "address"
+            }
+        ],
+        "func": "function setOwnership(address newOwnership) external {\n        if(_msgSender() != _admin) revert AdminOnly();\n        _ownership = newOwnership;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "releaseControl",
+        "visibility": "external",
+        "args": [],
+        "func": "function releaseControl() external {\n        if(_msgSender() != _admin) revert AdminOnly();\n        IBloomList(_ownership).updateAdmin(_msgSender());\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "purchasePresale",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "count",
+                "type": "uint"
+            }
+        ],
+        "func": "function purchasePresale(uint count) external payable {\n        purchasePresaleFor(_msgSender(), count);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "purchasePresaleFor",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "count",
+                "type": "uint"
+            }
+        ],
+        "func": "function purchasePresaleFor(address recipient, uint count) public payable nonReentrant {\n        if(!presale) revert PresaleNotOpen();\n\n        address minter = _msgSender();\n        uint balance = IERC721(_ownership).balanceOf(minter);        \n        bool inBloomList = IBloomList(_ownership).isInBloomList(minter);\n        \n        // start with simple eligibility check\n        if(!inBloomList && balance < 1) revert NotEligibleForPresale();\n\n        // get count of all owned kintsugi tokens not already presold\n        uint presaleBalance = 0;\n        for(uint i = 0; i < balance; i++) {  \n            uint tokenId = IERC721Enumerable(_ownership).tokenOfOwnerByIndex(minter, i);\n            if(!presoldTokens[tokenId]) {\n                presaleBalance++;\n                presoldTokens[tokenId] = true;\n                if(presaleBalance >= count) {\n                    break; // have enough\n                }\n            }\n        }\n        \n        // if in bloom list, with no entitlements, give one if they haven't minted one\n        if(inBloomList && presaleBalance == 0 && presaleMints[minter] == 0) {\n            presaleBalance = 1;\n        }\n\n        // if minter's count is over their balance, adjust it down\n        count = uint(MathV1.min(int(count), int(presaleBalance)));\n\n        // final balance check before minting\n        if(count == 0) revert NoRemainingPresaleMints();\n\n        // edge case: minter wants to buy multiple but we have less supply than their count,\n        //            but don't want them to get nothing\n        int remaining = MathV1.max(0, int(collections[0].mintedMax) - MathV1.min(int(collections[0].lockAt), int(collections[0].minted)));\n        count = uint(MathV1.min(int(count), remaining));\n        if(count == 0) revert CollectionSoldOut();\n\n        presaleMints[minter] = presaleMints[minter] + count;\n        mint(minter, recipient, presalePriceInWei, count);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "purchase",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "count",
+                "type": "uint"
+            }
+        ],
+        "func": "function purchase(uint count) external payable {\n        purchaseFor(_msgSender(), count);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "purchaseFor",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "count",
+                "type": "uint"
+            }
+        ],
+        "func": "function purchaseFor(address recipient, uint count) public payable nonReentrant {        \n        if(presale) revert PublicSaleNotOpen();\n\n        address minter = _msgSender();\n\n        uint mintedMaxPerOwner = collections[0].mintedMaxPerOwner;\n        if(mintedMaxPerOwner != 0) {            \n            // reset for presale minters\n            uint totalMintsAllowed = mintedMaxPerOwner + presaleMints[minter];\n            if(ownerMints[minter] >= totalMintsAllowed) revert AccountExceedsMaxMints();\n        }\n\n        // edge case: minter wants to buy multiple but we have less supply than their count,\n        //            but don't want them to get nothing\n        int remaining = MathV1.max(0, int(collections[0].mintedMax) - MathV1.min(int(collections[0].lockAt), int(collections[0].minted)));\n        count = uint(MathV1.min(int(count), remaining));\n        if(count == 0) revert CollectionSoldOut();\n\n        mint(_msgSender(), recipient, collections[0].priceInWei, count);        \n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownsToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint"
+            }
+        ],
+        "func": "function ownsToken(address owner, uint tokenId) public view returns (bool) {\n        for(uint i = 0; i < balanceOf(owner); i++) {\n            if(tokenId == tokenOfOwnerByIndex(owner, i)) {\n                return true;\n            }            \n        }\n        return false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view override returns (string memory) {\n        require(_exists(tokenId), \"ERC721Metadata: URI query for nonexistent token\");\n        Collection memory collection = collections[0];\n        string memory baseURI = collection.baseTokenUri;\n        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, Strings.toString(tokenId))) : \"\";\n    }",
+        "comments": [
+            "/**",
+            "    * @dev See {IERC721Metadata-tokenURI}.",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev See {IERC721Metadata-tokenURI}.\n    */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRenderer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "renderer",
+                "type": "address"
+            }
+        ],
+        "func": "function setRenderer(address renderer) external {\n        if(_msgSender() != _admin) revert AdminOnly();\n        collections[0]._renderer = renderer;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAttributes",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getAttributes(uint tokenId) external view returns (string memory attributes) {\n        if(_msgSender() != _admin && !ownsToken(_msgSender(), tokenId)) revert RenderDisallowed();\n        return IAttributes(collections[0]._renderer).getAttributes(tokenSeed[tokenId]);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Retrieve's an artwork's attributes, given a token ID.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Retrieve's an artwork's attributes, given a token ID.\n     */\n",
+        "@notice": "Retrieve's an artwork's attributes, given a token ID.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "render",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint"
+            },
+            {
+                "name": "args",
+                "type": "IRenderer.RenderArgs memory"
+            }
+        ],
+        "func": "function render(uint tokenId, IRenderer.RenderArgs memory args) external view returns (IRenderer.RenderArgs memory results) {        \n        return _render(tokenId, args);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Continues rendering an artwork given a token ID and previous arguments. Token must be owned by the caller.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Continues rendering an artwork given a token ID and previous arguments. Token must be owned by the caller.\n     */\n",
+        "@notice": "Continues rendering an artwork given a token ID and previous arguments. Token must be owned by the caller.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "beginRender",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint"
+            }
+        ],
+        "func": "function beginRender(uint tokenId) external view returns (IRenderer.RenderArgs memory results) {        \n        uint32[20480] memory buffer;\n        RandomV1.PRNG memory prng;\n        return _render(tokenId, IRenderer.RenderArgs(0, 0, tokenSeed[tokenId], buffer, prng));\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Begins rendering an artwork given a token ID. Token must be owned by the caller.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Begins rendering an artwork given a token ID. Token must be owned by the caller.\n     */\n",
+        "@notice": "Begins rendering an artwork given a token ID. Token must be owned by the caller.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "edge",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "a",
+                "type": "TypesV1.Point2D memory"
+            },
+            {
+                "name": "b",
+                "type": "TypesV1.Point2D memory"
+            },
+            {
+                "name": "c",
+                "type": "TypesV1.Point2D memory"
+            }
+        ],
+        "func": "function edge(\n        TypesV1.Point2D memory a,\n        TypesV1.Point2D memory b,\n        TypesV1.Point2D memory c\n    ) external pure returns (int256) {\n        return ((b.y - a.y) * (c.x - a.x)) - ((b.x - a.x) * (c.y - a.y));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBoundingBox",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "vertices",
+                "type": "TypesV1.Point2D[] memory"
+            }
+        ],
+        "func": "function getBoundingBox(TypesV1.Point2D[] memory vertices)\n        external\n        pure\n        returns (TypesV1.Point2D memory tl, TypesV1.Point2D memory br)\n    {\n        int256 xMax = vertices[0].x;\n        int256 xMin = vertices[0].x;\n        int256 yMax = vertices[0].y;\n        int256 yMin = vertices[0].y;\n\n        for (uint256 i; i < vertices.length; i++) {\n            TypesV1.Point2D memory p = vertices[i];\n\n            if (p.x > xMax) xMax = p.x;\n            if (p.x < xMin) xMin = p.x;\n            if (p.y > yMax) yMax = p.y;\n            if (p.y < yMin) yMin = p.y;\n        }\n\n        return (TypesV1.Point2D(xMin, yMin), TypesV1.Point2D(xMax, yMax));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buildNoiseTable",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "int32"
+            }
+        ],
+        "func": "function buildNoiseTable(int32 seed) external pure returns (int64[4096] memory noiseTable){\n        for (uint16 i = 0; i < NOISE_TABLE_SIZE + 1; i++) {\n            (uint64 s, int64 v) = LCG64.next(uint32(seed));\n            noiseTable[i] = v;\n            seed = int32(uint32(s));\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "noise",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "noiseTable",
+                "type": "int64[NOISE_TABLE_SIZE + 1] memory"
+            },
+            {
+                "name": "x",
+                "type": "int64"
+            },
+            {
+                "name": "y",
+                "type": "int64"
+            }
+        ],
+        "func": "function noise(\n        int64[NOISE_TABLE_SIZE + 1] memory noiseTable,\n        int64 x,\n        int64 y\n    ) external pure returns (int64) {\n        return noise_impl(noiseFunction(noiseTable, x, y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "noise",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "f",
+                "type": "noiseFunction memory"
+            }
+        ],
+        "func": "function noise(noiseFunction memory f) external pure returns (int64) {\n        return noise_impl(f);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createSet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "f",
+                "type": "CreateParticleSet2D memory"
+            },
+            {
+                "name": "prng",
+                "type": "RandomV1.PRNG memory"
+            }
+        ],
+        "func": "function createSet(CreateParticleSet2D memory f, RandomV1.PRNG memory prng)\n        external\n        pure\n        returns (ParticleSetV1.ParticleSet2D memory set, RandomV1.PRNG memory)\n    {\n        ParticleV1.Particle2D[PARTICLE_TABLE_SIZE] memory particles;\n\n        for (uint16 i = 0; i < f.n; i++) {  \n\n            int256 px = RandomV1.next(\n                prng,\n                -int32(f.range),\n                int16(f.width) + int32(f.range)\n            );\n\n            int256 py = RandomV1.next(\n                prng,\n                -int32(f.range),\n                int16(f.height) + int32(f.range)\n            );\n\n            ParticleV1.Particle2D memory particle = ParticleV1.Particle2D(\n                int64(px),\n                int64(py),\n                0,\n                0,\n                int64(px),\n                int64(py),\n                0,\n                false,\n                TypesV1.Point2D(0, 0),\n                f.lifetime,\n                f.forceScale,\n                f.noiseScale\n            );\n            particles[i] = particle;\n        }\n\n        set.particles = particles;\n        return (set, prng);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,4080 @@
+[
+    {
+        "transactions": 123003,
+        "function_num": 155
+    },
+    {
+        "name": "setPeriods",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newRewardPeriod",
+                "type": "uint32"
+            },
+            {
+                "name": "newDeltaPeriod",
+                "type": "uint32"
+            }
+        ],
+        "func": "function setPeriods(uint32 newRewardPeriod, uint32 newDeltaPeriod) external onlyOwner {\n        require(\n            newRewardPeriod >= newDeltaPeriod && newRewardPeriod - newDeltaPeriod >= checkTime,\n            \"Incorrect Periods\"\n        );\n        rewardPeriod = newRewardPeriod;\n        deltaPeriod = newDeltaPeriod;\n    }",
+        "comments": [
+            "/**",
+            "     * Set reward and delta periods to new one, run only by owner. This function",
+            "     * only for tests.",
+            "     * @param newRewardPeriod - new Reward period",
+            "     * @param newDeltaPeriod - new Delta period",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * Set reward and delta periods to new one, run only by owner. This function\n     * only for tests.\n     * @param newRewardPeriod - new Reward period\n     * @param newDeltaPeriod - new Delta period\n     */\n",
+        "@param1": "newRewardPeriod - new Reward period",
+        "@param2": "newDeltaPeriod - new Delta period",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setCheckTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newCheckTime",
+                "type": "uint"
+            }
+        ],
+        "func": "function setCheckTime(uint newCheckTime) external onlyOwner {\n        require(rewardPeriod - deltaPeriod >= checkTime, \"Incorrect check time\");\n        checkTime = newCheckTime;\n    }",
+        "comments": [
+            "/**",
+            "     * Set new check time. This function only for tests.",
+            "     * @param newCheckTime - new check time",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * Set new check time. This function only for tests.\n     * @param newCheckTime - new check time\n     */\n",
+        "@param1": "newCheckTime - new check time",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setLatency",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAllowableLatency",
+                "type": "uint32"
+            }
+        ],
+        "func": "function setLatency(uint32 newAllowableLatency) external onlyOwner {\n        allowableLatency = newAllowableLatency;\n    }",
+        "comments": [
+            "/**",
+            "     * Set latency new one in ms, run only by owner. This function",
+            "     * only for tests.",
+            "     * @param newAllowableLatency - new Allowable Latency",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * Set latency new one in ms, run only by owner. This function\n     * only for tests.\n     * @param newAllowableLatency - new Allowable Latency\n     */\n",
+        "@param1": "newAllowableLatency - new Allowable Latency",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMSR",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newMSR",
+                "type": "uint"
+            }
+        ],
+        "func": "function setMSR(uint newMSR) external onlyOwner {\n        msr = newMSR;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setLaunchTimestamp",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "timestamp",
+                "type": "uint"
+            }
+        ],
+        "func": "function setLaunchTimestamp(uint timestamp) external onlyOwner {\n        require(now < launchTimestamp, \"Can't set network launch timestamp because network is already launched\");\n        launchTimestamp = timestamp;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRotationDelay",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newDelay",
+                "type": "uint"
+            }
+        ],
+        "func": "function setRotationDelay(uint newDelay) external onlyOwner {\n        rotationDelay = newDelay;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setProofOfUseLockUpPeriod",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "periodDays",
+                "type": "uint"
+            }
+        ],
+        "func": "function setProofOfUseLockUpPeriod(uint periodDays) external onlyOwner {\n        proofOfUseLockUpPeriodDays = periodDays;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setProofOfUseDelegationPercentage",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "percentage",
+                "type": "uint"
+            }
+        ],
+        "func": "function setProofOfUseDelegationPercentage(uint percentage) external onlyOwner {\n        require(percentage <= 100, \"Percentage value is incorrect\");\n        proofOfUseDelegationPercentage = percentage;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractsAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractsAddress) public override initializer {\n        Permissions.initialize(contractsAddress);\n\n        msr = 0;\n        rewardPeriod = 86400;\n        allowableLatency = 150000;\n        deltaPeriod = 3600;\n        checkTime = 300;\n        launchTimestamp = uint(-1);\n        rotationDelay = 12 hours;\n        proofOfUseLockUpPeriodDays = 90;\n        proofOfUseDelegationPercentage = 50;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev constructor in Permissions approach",
+            "     * @param contractsAddress needed in Permissions constructor",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev constructor in Permissions approach\n     * @param contractsAddress needed in Permissions constructor\n     */\n",
+        "@dev": "constructor in Permissions approach",
+        "@param1": "contractsAddress needed in Permissions constructor",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [],
+        "func": "function initialize() external initializer {\n        OwnableUpgradeSafe.__Ownable_init();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractsAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "contractsName",
+                "type": "string calldata"
+            },
+            {
+                "name": "newContractsAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractsAddress(string calldata contractsName, address newContractsAddress) external onlyOwner {\n        // check newContractsAddress is not equal to zero\n        require(newContractsAddress != address(0), \"New address is equal zero\");\n        // create hash of contractsName\n        bytes32 contractId = keccak256(abi.encodePacked(contractsName));\n        // check newContractsAddress is not equal the previous contract's address\n        require(contracts[contractId] != newContractsAddress, \"Contract is already added\");\n        require(newContractsAddress.isContract(), \"Given contracts address does not contain code\");\n        // add newContractsAddress to mapping of actual contract addresses\n        contracts[contractId] = newContractsAddress;\n        emit ContractUpgraded(contractsName, newContractsAddress);\n    }",
+        "comments": [
+            "/**",
+            "     * Adds actual contract to mapping of actual contract addresses",
+            "     * @param contractsName - contracts name in skale manager system",
+            "     * @param newContractsAddress - contracts address in skale manager system",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * Adds actual contract to mapping of actual contract addresses\n     * @param contractsName - contracts name in skale manager system\n     * @param newContractsAddress - contracts address in skale manager system\n     */\n",
+        "@param1": "contractsName - contracts name in skale manager system",
+        "@param2": "newContractsAddress - contracts address in skale manager system",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getContract",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "name",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function getContract(string calldata name) external view returns (address contractAddress) {\n        contractAddress = contracts[keccak256(abi.encodePacked(name))];\n        require(contractAddress != address(0), name.strConcat(\" contract has not been found\"));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateDelegatedToValidatorNow",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getAndUpdateDelegatedToValidatorNow(uint validatorId) external returns (uint) {\n        return getAndUpdateDelegatedToValidator(validatorId, _getCurrentMonth());\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateDelegatedAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateDelegatedAmount(address holder) external returns (uint) {\n        return _getAndUpdateDelegatedByHolder(holder);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateEffectiveDelegatedByHolderToValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "month",
+                "type": "uint"
+            }
+        ],
+        "func": "function getAndUpdateEffectiveDelegatedByHolderToValidator(address holder, uint validatorId, uint month) external\n        allow(\"Distributor\") returns (uint effectiveDelegated)\n    {\n        SlashingSignal[] memory slashingSignals = _processAllSlashesWithoutSignals(holder);\n        effectiveDelegated = _effectiveDelegatedByHolderToValidator[holder][validatorId]\n            .getAndUpdateValueInSequence(month);\n        _sendSlashingSignals(slashingSignals);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            },
+            {
+                "name": "delegationPeriod",
+                "type": "uint"
+            },
+            {
+                "name": "info",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function delegate(\n        uint validatorId,\n        uint amount,\n        uint delegationPeriod,\n        string calldata info\n    )\n        external\n    {\n\n        ValidatorService validatorService = ValidatorService(contractManager.getContract(\"ValidatorService\"));\n        DelegationPeriodManager delegationPeriodManager = DelegationPeriodManager(\n            contractManager.getContract(\"DelegationPeriodManager\"));\n        SkaleToken skaleToken = SkaleToken(contractManager.getContract(\"SkaleToken\"));\n        TokenState tokenState = TokenState(contractManager.getContract(\"TokenState\"));\n\n        require(\n            validatorService.checkMinimumDelegation(validatorId, amount),\n            \"Amount does not meet the validator's minimum delegation amount\");\n        require(\n            validatorService.isAuthorizedValidator(validatorId),\n            \"Validator is not authorized to accept delegation request\");\n        require(\n            delegationPeriodManager.isDelegationPeriodAllowed(delegationPeriod),\n            \"This delegation period is not allowed\");\n        require(\n            validatorService.isAcceptingNewRequests(validatorId),\n            \"The validator is not currently accepting new requests\");\n\n        SlashingSignal[] memory slashingSignals = _processAllSlashesWithoutSignals(msg.sender);\n\n        uint delegationId = _addDelegation(\n            msg.sender,\n            validatorId,\n            amount,\n            delegationPeriod,\n            info);\n\n        // check that there is enough money\n        uint holderBalance = skaleToken.balanceOf(msg.sender);\n        uint forbiddenForDelegation = tokenState.getAndUpdateForbiddenForDelegationAmount(msg.sender);\n        require(holderBalance >= forbiddenForDelegation, \"Token holder does not have enough tokens to delegate\");\n\n        emit DelegationProposed(delegationId);\n\n        _sendSlashingSignals(slashingSignals);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a token holder to create a delegation proposal of an `amount`",
+            "     * and `delegationPeriod` to a `validatorId`. Delegation must be accepted",
+            "     * by the validator before the UTC start of the month, otherwise the",
+            "     * delegation will be rejected.",
+            "     *",
+            "     * The token holder may add additional information in each proposal.",
+            "     *",
+            "     * @param validatorId uint ID of validator to receive delegation proposal",
+            "     * @param amount uint amount of proposed delegation",
+            "     * @param delegationPeriod uint period of proposed delegation",
+            "     * @param info string extra information provided by the token holder (if any)",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a token holder to create a delegation proposal of an `amount`\n     * and `delegationPeriod` to a `validatorId`. Delegation must be accepted\n     * by the validator before the UTC start of the month, otherwise the\n     * delegation will be rejected.\n     *\n     * The token holder may add additional information in each proposal.\n     *\n     * @param validatorId uint ID of validator to receive delegation proposal\n     * @param amount uint amount of proposed delegation\n     * @param delegationPeriod uint period of proposed delegation\n     * @param info string extra information provided by the token holder (if any)\n     */\n",
+        "@dev": "Allows a token holder to create a delegation proposal of an `amount` * and `delegationPeriod` to a `validatorId`. Delegation must be accepted * by the validator before the UTC start of the month, otherwise the * delegation will be rejected. * * The token holder may add additional information in each proposal.",
+        "@param1": "validatorId uint ID of validator to receive delegation proposal",
+        "@param2": "amount uint amount of proposed delegation",
+        "@param3": "delegationPeriod uint period of proposed delegation",
+        "@param4": "info string extra information provided by the token holder (if any)",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateLockedAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateLockedAmount(address wallet) external override returns (uint) {\n        return _getAndUpdateLockedAmount(wallet);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See ILocker.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See ILocker.\n     */\n",
+        "@dev": "See ILocker.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateForbiddenForDelegationAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateForbiddenForDelegationAmount(address wallet) external override returns (uint) {\n        return _getAndUpdateLockedAmount(wallet);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See ILocker.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See ILocker.\n     */\n",
+        "@dev": "See ILocker.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancelPendingDelegation",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegationId",
+                "type": "uint"
+            }
+        ],
+        "func": "function cancelPendingDelegation(uint delegationId) external checkDelegationExists(delegationId) {\n        require(msg.sender == delegations[delegationId].holder, \"Only token holders can cancel delegation request\");\n        require(getState(delegationId) == State.PROPOSED, \"Token holders are only able to cancel PROPOSED delegations\");\n\n        delegations[delegationId].finished = _getCurrentMonth();\n        _subtractFromLockedInPendingDelegations(delegations[delegationId].holder, delegations[delegationId].amount);\n\n        emit DelegationRequestCanceledByUser(delegationId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a token holder to cancel a delegation proposal.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the sender must be the token holder of the delegation proposal.",
+            "     * - the delegation must still be in a PROPOSED state.",
+            "     *",
+            "     * Emits a DelegationRequestCanceledByUser event.",
+            "     *",
+            "     * @param delegationId uint ID of delegation proposal",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a token holder to cancel a delegation proposal.\n     *\n     * Requirements:\n     *\n     * - the sender must be the token holder of the delegation proposal.\n     * - the delegation must still be in a PROPOSED state.\n     *\n     * Emits a DelegationRequestCanceledByUser event.\n     *\n     * @param delegationId uint ID of delegation proposal\n     */\n",
+        "@dev": "Allows a token holder to cancel a delegation proposal. * * Requirements: * * - the sender must be the token holder of the delegation proposal. * - the delegation must still be in a PROPOSED state. * * Emits a DelegationRequestCanceledByUser event.",
+        "@param1": "delegationId uint ID of delegation proposal",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "acceptPendingDelegation",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegationId",
+                "type": "uint"
+            }
+        ],
+        "func": "function acceptPendingDelegation(uint delegationId) external checkDelegationExists(delegationId) {\n        ValidatorService validatorService = ValidatorService(contractManager.getContract(\"ValidatorService\"));\n        require(\n            validatorService.checkValidatorAddressToId(msg.sender, delegations[delegationId].validatorId),\n            \"No permissions to accept request\");\n        \n        State currentState = getState(delegationId);\n        if (currentState != State.PROPOSED) {\n            if (currentState == State.ACCEPTED ||\n                currentState == State.DELEGATED ||\n                currentState == State.UNDELEGATION_REQUESTED ||\n                currentState == State.COMPLETED)\n            {\n                revert(\"The delegation has been already accepted\");\n            } else if (currentState == State.CANCELED) {\n                revert(\"The delegation has been cancelled by token holder\");\n            } else if (currentState == State.REJECTED) {\n                revert(\"The delegation request is outdated\");\n            }\n        }\n        require(currentState == State.PROPOSED, \"Cannot set delegation state to accepted\");\n        \n        TokenLaunchLocker tokenLaunchLocker = TokenLaunchLocker(contractManager.getContract(\"TokenLaunchLocker\"));\n\n        SlashingSignal[] memory slashingSignals = _processAllSlashesWithoutSignals(delegations[delegationId].holder);\n\n        _addToAllStatistics(delegationId);\n\n        tokenLaunchLocker.handleDelegationAdd(\n            delegations[delegationId].holder,\n            delegationId,\n            delegations[delegationId].amount,\n            delegations[delegationId].started);\n\n        _sendSlashingSignals(slashingSignals);\n\n        emit DelegationAccepted(delegationId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a validator to accept a proposed delegation.",
+            "     * Successful acceptance of delegations transition the tokens from a",
+            "     * PROPOSED state to ACCEPTED, and tokens are locked for the remainder of the",
+            "     * delegation period.",
+            "     *",
+            "     * Emits a DelegationAccepted event.",
+            "     *",
+            "     * @param delegationId uint ID of delegation proposal",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a validator to accept a proposed delegation.\n     * Successful acceptance of delegations transition the tokens from a\n     * PROPOSED state to ACCEPTED, and tokens are locked for the remainder of the\n     * delegation period.\n     *\n     * Emits a DelegationAccepted event.\n     *\n     * @param delegationId uint ID of delegation proposal\n     */\n",
+        "@dev": "Allows a validator to accept a proposed delegation. * Successful acceptance of delegations transition the tokens from a * PROPOSED state to ACCEPTED, and tokens are locked for the remainder of the * delegation period. * * Emits a DelegationAccepted event.",
+        "@param1": "delegationId uint ID of delegation proposal",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestUndelegation",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegationId",
+                "type": "uint"
+            }
+        ],
+        "func": "function requestUndelegation(uint delegationId) external checkDelegationExists(delegationId) {\n        require(getState(delegationId) == State.DELEGATED, \"Cannot request undelegation\");\n\n        ValidatorService validatorService = ValidatorService(contractManager.getContract(\"ValidatorService\"));\n        require(\n            delegations[delegationId].holder == msg.sender ||\n            (validatorService.validatorAddressExists(msg.sender) &&\n            delegations[delegationId].validatorId == validatorService.getValidatorId(msg.sender)),\n            \"Permission denied to request undelegation\");\n\n        TokenLaunchLocker tokenLaunchLocker = TokenLaunchLocker(contractManager.getContract(\"TokenLaunchLocker\"));\n        DelegationPeriodManager delegationPeriodManager = DelegationPeriodManager(\n            contractManager.getContract(\"DelegationPeriodManager\"));\n\n        processAllSlashes(msg.sender);\n        delegations[delegationId].finished = _calculateDelegationEndMonth(delegationId);\n        uint amountAfterSlashing = _calculateDelegationAmountAfterSlashing(delegationId);\n\n        _removeFromDelegatedToValidator(\n            delegations[delegationId].validatorId,\n            amountAfterSlashing,\n            delegations[delegationId].finished);\n        _removeFromDelegatedByHolder(\n            delegations[delegationId].holder,\n            amountAfterSlashing,\n            delegations[delegationId].finished);\n        _removeFromDelegatedByHolderToValidator(\n            delegations[delegationId].holder,\n            delegations[delegationId].validatorId,\n            amountAfterSlashing,\n            delegations[delegationId].finished);\n        uint effectiveAmount = amountAfterSlashing.mul(delegationPeriodManager.stakeMultipliers(\n            delegations[delegationId].delegationPeriod));\n        _removeFromEffectiveDelegatedToValidator(\n            delegations[delegationId].validatorId,\n            effectiveAmount,\n            delegations[delegationId].finished);\n        _removeFromEffectiveDelegatedByHolderToValidator(\n            delegations[delegationId].holder,\n            delegations[delegationId].validatorId,\n            effectiveAmount,\n            delegations[delegationId].finished);\n\n        tokenLaunchLocker.handleDelegationRemoving(\n            delegations[delegationId].holder,\n            delegationId,\n            delegations[delegationId].finished);\n\n        emit UndelegationRequested(delegationId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a delegator to undelegate a specific delegation.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the sender must be the delegator.",
+            "     * - the delegation must be in DELEGATED state.",
+            "     *",
+            "     * Emits an UndelegationRequested event.",
+            "     *",
+            "     * @param delegationId uint ID of delegation to undelegate",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a delegator to undelegate a specific delegation.\n     *\n     * Requirements:\n     *\n     * - the sender must be the delegator.\n     * - the delegation must be in DELEGATED state.\n     *\n     * Emits an UndelegationRequested event.\n     *\n     * @param delegationId uint ID of delegation to undelegate\n     */\n",
+        "@dev": "Allows a delegator to undelegate a specific delegation. * * Requirements: * * - the sender must be the delegator. * - the delegation must be in DELEGATED state. * * Emits an UndelegationRequested event.",
+        "@param1": "delegationId uint ID of delegation to undelegate",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "confiscate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function confiscate(uint validatorId, uint amount) external allow(\"Punisher\") {\n        uint currentMonth = _getCurrentMonth();\n        FractionUtils.Fraction memory coefficient =\n            _delegatedToValidator[validatorId].reduceValue(amount, currentMonth);\n        _effectiveDelegatedToValidator[validatorId].reduceSequence(coefficient, currentMonth);\n        _putToSlashingLog(_slashesOfValidator[validatorId], coefficient, currentMonth);\n        _slashes.push(SlashingEvent({reducingCoefficient: coefficient, validatorId: validatorId, month: currentMonth}));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows the Punisher to confiscate an `amount` of stake from",
+            "     * `validatorId` by slashing. This slashes all delegations of the validator,",
+            "     * which reduces the amount that the validator has staked. This consequence",
+            "     * may force the SKALE Manger to reduce the number of nodes a validator is",
+            "     * operating so the validator can meet the Minimum Staking Requirement.",
+            "     *",
+            "     * See Punisher.",
+            "     *",
+            "     * Emits a SlashingEvent.",
+            "     *",
+            "     * @param validatorId uint validator to slash",
+            "     * @param amount uint amount to slash",
+            "     *",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows the Punisher to confiscate an `amount` of stake from\n     * `validatorId` by slashing. This slashes all delegations of the validator,\n     * which reduces the amount that the validator has staked. This consequence\n     * may force the SKALE Manger to reduce the number of nodes a validator is\n     * operating so the validator can meet the Minimum Staking Requirement.\n     *\n     * See Punisher.\n     *\n     * Emits a SlashingEvent.\n     *\n     * @param validatorId uint validator to slash\n     * @param amount uint amount to slash\n     *\n     */\n",
+        "@dev": "Allows the Punisher to confiscate an `amount` of stake from * `validatorId` by slashing. This slashes all delegations of the validator, * which reduces the amount that the validator has staked. This consequence * may force the SKALE Manger to reduce the number of nodes a validator is * operating so the validator can meet the Minimum Staking Requirement. * * See Punisher. * * Emits a SlashingEvent.",
+        "@param1": "validatorId uint validator to slash",
+        "@param2": "amount uint amount to slash",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateEffectiveDelegatedToValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "month",
+                "type": "uint"
+            }
+        ],
+        "func": "function getAndUpdateEffectiveDelegatedToValidator(uint validatorId, uint month)\n        external allow(\"Distributor\") returns (uint)\n    {\n        return _effectiveDelegatedToValidator[validatorId].getAndUpdateValueInSequence(month);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateDelegatedByHolderToValidatorNow",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getAndUpdateDelegatedByHolderToValidatorNow(address holder, uint validatorId) external returns (uint) {\n        return _getAndUpdateDelegatedByHolderToValidator(holder, validatorId, _getCurrentMonth());\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDelegation",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegationId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getDelegation(uint delegationId)\n        external view checkDelegationExists(delegationId) returns (Delegation memory)\n    {\n        return delegations[delegationId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFirstDelegationMonth",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getFirstDelegationMonth(address holder, uint validatorId) external view returns(uint) {\n        return _firstDelegationMonth[holder].byValidator[validatorId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDelegationsByValidatorLength",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getDelegationsByValidatorLength(uint validatorId) external view returns (uint) {\n        return delegationsByValidator[validatorId].length;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDelegationsByHolderLength",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "func": "function getDelegationsByHolderLength(address holder) external view returns (uint) {\n        return delegationsByHolder[holder].length;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractsAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractsAddress) public override initializer {\n        Permissions.initialize(contractsAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateDelegatedToValidator",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "month",
+                "type": "uint"
+            }
+        ],
+        "func": "function getAndUpdateDelegatedToValidator(uint validatorId, uint month)\n        public allow(\"Nodes\") returns (uint)\n    {\n        return _delegatedToValidator[validatorId].getAndUpdateValue(month);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "processSlashes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "limit",
+                "type": "uint"
+            }
+        ],
+        "func": "function processSlashes(address holder, uint limit) public {\n        _sendSlashingSignals(_processSlashesWithoutSignals(holder, limit));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "processAllSlashes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "func": "function processAllSlashes(address holder) public {\n        processSlashes(holder, 0);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getState",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "delegationId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getState(uint delegationId) public view checkDelegationExists(delegationId) returns (State state) {\n        if (delegations[delegationId].started == 0) {\n            if (delegations[delegationId].finished == 0) {\n                TimeHelpers timeHelpers = TimeHelpers(contractManager.getContract(\"TimeHelpers\"));\n                if (_getCurrentMonth() == timeHelpers.timestampToMonth(delegations[delegationId].created)) {\n                    return State.PROPOSED;\n                } else {\n                    return State.REJECTED;\n                }\n            } else {\n                return State.CANCELED;\n            }\n        } else {\n            if (_getCurrentMonth() < delegations[delegationId].started) {\n                return State.ACCEPTED;\n            } else {\n                if (delegations[delegationId].finished == 0) {\n                    return State.DELEGATED;\n                } else {\n                    if (_getCurrentMonth() < delegations[delegationId].finished) {\n                        return State.UNDELEGATION_REQUESTED;\n                    } else {\n                        return State.COMPLETED;\n                    }\n                }\n            }\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the token state of a given delegation.",
+            "     *",
+            "     * @param delegationId uint ID of the delegation",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the token state of a given delegation.\n     *\n     * @param delegationId uint ID of the delegation\n     */\n",
+        "@dev": "Returns the token state of a given delegation.",
+        "@param1": "delegationId uint ID of the delegation",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getLockedInPendingDelegations",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "func": "function getLockedInPendingDelegations(address holder) public view returns (uint) {\n        uint currentMonth = _getCurrentMonth();\n        if (_lockedInPendingDelegations[holder].month < currentMonth) {\n            return 0;\n        } else {\n            return _lockedInPendingDelegations[holder].amount;\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "hasUnprocessedSlashes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "func": "function hasUnprocessedSlashes(address holder) public view returns (bool) {\n        return _everDelegated(holder) && _firstUnprocessedSlashByHolder[holder] < _slashes.length;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setDelegationPeriod",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "monthsCount",
+                "type": "uint"
+            },
+            {
+                "name": "stakeMultiplier",
+                "type": "uint"
+            }
+        ],
+        "func": "function setDelegationPeriod(uint monthsCount, uint stakeMultiplier) external onlyOwner {\n        stakeMultipliers[monthsCount] = stakeMultiplier;\n\n        emit DelegationPeriodWasSet(monthsCount, stakeMultiplier);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Creates a new available delegation period and return in the network.",
+            "     * Only the owner may set new delegation period and returns in the network.",
+            "     *",
+            "     * Emits a DelegationPeriodWasSet event.",
+            "     *",
+            "     * @param monthsCount uint delegation duration in months",
+            "     * @param stakeMultiplier uint return for delegation",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Creates a new available delegation period and return in the network.\n     * Only the owner may set new delegation period and returns in the network.\n     *\n     * Emits a DelegationPeriodWasSet event.\n     *\n     * @param monthsCount uint delegation duration in months\n     * @param stakeMultiplier uint return for delegation\n     */\n",
+        "@dev": "Creates a new available delegation period and return in the network. * Only the owner may set new delegation period and returns in the network. * * Emits a DelegationPeriodWasSet event.",
+        "@param1": "monthsCount uint delegation duration in months",
+        "@param2": "stakeMultiplier uint return for delegation",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isDelegationPeriodAllowed",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "monthsCount",
+                "type": "uint"
+            }
+        ],
+        "func": "function isDelegationPeriodAllowed(uint monthsCount) external view returns (bool) {\n        return stakeMultipliers[monthsCount] != 0 ? true : false;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Checks whether given delegation period is allowed.",
+            "     *",
+            "     * @param monthsCount uint delegation duration in months",
+            "     * @return bool True if delegation period is allowed",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Checks whether given delegation period is allowed.\n     *\n     * @param monthsCount uint delegation duration in months\n     * @return bool True if delegation period is allowed\n     */\n",
+        "@dev": "Checks whether given delegation period is allowed.",
+        "@param1": "monthsCount uint delegation duration in months",
+        "@return1": "bool True if delegation period is allowed",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractsAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractsAddress) public override initializer {\n        Permissions.initialize(contractsAddress);\n        stakeMultipliers[3] = 100;  // 3 months at 100\n        stakeMultipliers[6] = 150;  // 6 months at 150\n        stakeMultipliers[12] = 200; // 12 months at 200\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Initial delegation period and multiplier settings.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Initial delegation period and multiplier settings.\n     */\n",
+        "@dev": "Initial delegation period and multiplier settings.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-name}.\n     */\n",
+        "@dev": "See {IERC777-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-symbol}.\n     */\n",
+        "@dev": "See {IERC777-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public pure returns (uint8) {\n        return 18;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {ERC20-decimals}.",
+            "     *",
+            "     * Always returns 18, as per the",
+            "     * [ERC777 EIP](https://eips.ethereum.org/EIPS/eip-777#backward-compatibility).",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {ERC20-decimals}.\n     *\n     * Always returns 18, as per the\n     * [ERC777 EIP](https://eips.ethereum.org/EIPS/eip-777#backward-compatibility).\n     */\n",
+        "@dev": "See {ERC20-decimals}. * * Always returns 18, as per the * [ERC777 EIP](https://eips.ethereum.org/EIPS/eip-777#backward-compatibility).",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "granularity",
+        "visibility": "public",
+        "args": [],
+        "func": "function granularity() public view override returns (uint256) {\n        return 1;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-granularity}.",
+            "     *",
+            "     * This implementation always returns `1`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-granularity}.\n     *\n     * This implementation always returns `1`.\n     */\n",
+        "@dev": "See {IERC777-granularity}. * * This implementation always returns `1`.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override(IERC20, IERC777) returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-totalSupply}.\n     */\n",
+        "@dev": "See {IERC777-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenHolder",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address tokenHolder) public view override(IERC20, IERC777) returns (uint256) {\n        return _balances[tokenHolder];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the amount of tokens owned by an account (`tokenHolder`).",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the amount of tokens owned by an account (`tokenHolder`).\n     */\n",
+        "@dev": "Returns the amount of tokens owned by an account (`tokenHolder`).",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "send",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function send(address recipient, uint256 amount, bytes memory data) public override  {\n        _send(_msgSender(), recipient, amount, data, \"\", true);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-send}.",
+            "     *",
+            "     * Also emits a {IERC20-Transfer} event for ERC20 compatibility.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-send}.\n     *\n     * Also emits a {IERC20-Transfer} event for ERC20 compatibility.\n     */\n",
+        "@dev": "See {IERC777-send}. * * Also emits a {IERC20-Transfer} event for ERC20 compatibility.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public override returns (bool) {\n        require(recipient != address(0), \"ERC777: transfer to the zero address\");\n\n        address from = _msgSender();\n\n        _callTokensToSend(from, from, recipient, amount, \"\", \"\");\n\n        _move(from, from, recipient, amount, \"\", \"\");\n\n        _callTokensReceived(from, from, recipient, amount, \"\", \"\", false);\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Unlike `send`, `recipient` is _not_ required to implement the {IERC777Recipient}",
+            "     * interface if it is a contract.",
+            "     *",
+            "     * Also emits a {Sent} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Unlike `send`, `recipient` is _not_ required to implement the {IERC777Recipient}\n     * interface if it is a contract.\n     *\n     * Also emits a {Sent} event.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Unlike `send`, `recipient` is _not_ required to implement the {IERC777Recipient} * interface if it is a contract. * * Also emits a {Sent} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function burn(uint256 amount, bytes memory data) public override  {\n        _burn(_msgSender(), amount, data, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-burn}.",
+            "     *",
+            "     * Also emits a {IERC20-Transfer} event for ERC20 compatibility.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-burn}.\n     *\n     * Also emits a {IERC20-Transfer} event for ERC20 compatibility.\n     */\n",
+        "@dev": "See {IERC777-burn}. * * Also emits a {IERC20-Transfer} event for ERC20 compatibility.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isOperatorFor",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "tokenHolder",
+                "type": "address"
+            }
+        ],
+        "func": "function isOperatorFor(\n        address operator,\n        address tokenHolder\n    ) public view override returns (bool) {\n        return operator == tokenHolder ||\n            (_defaultOperators[operator] && !_revokedDefaultOperators[tokenHolder][operator]) ||\n            _operators[tokenHolder][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-isOperatorFor}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-isOperatorFor}.\n     */\n",
+        "@dev": "See {IERC777-isOperatorFor}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "authorizeOperator",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function authorizeOperator(address operator) public override  {\n        require(_msgSender() != operator, \"ERC777: authorizing self as operator\");\n\n        if (_defaultOperators[operator]) {\n            delete _revokedDefaultOperators[_msgSender()][operator];\n        } else {\n            _operators[_msgSender()][operator] = true;\n        }\n\n        emit AuthorizedOperator(operator, _msgSender());\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-authorizeOperator}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-authorizeOperator}.\n     */\n",
+        "@dev": "See {IERC777-authorizeOperator}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revokeOperator",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function revokeOperator(address operator) public override  {\n        require(operator != _msgSender(), \"ERC777: revoking self as operator\");\n\n        if (_defaultOperators[operator]) {\n            _revokedDefaultOperators[_msgSender()][operator] = true;\n        } else {\n            delete _operators[_msgSender()][operator];\n        }\n\n        emit RevokedOperator(operator, _msgSender());\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-revokeOperator}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-revokeOperator}.\n     */\n",
+        "@dev": "See {IERC777-revokeOperator}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "defaultOperators",
+        "visibility": "public",
+        "args": [],
+        "func": "function defaultOperators() public view override returns (address[] memory) {\n        return _defaultOperatorsArray;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-defaultOperators}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-defaultOperators}.\n     */\n",
+        "@dev": "See {IERC777-defaultOperators}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "operatorSend",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            },
+            {
+                "name": "operatorData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function operatorSend(\n        address sender,\n        address recipient,\n        uint256 amount,\n        bytes memory data,\n        bytes memory operatorData\n    )\n    public override\n    {\n        require(isOperatorFor(_msgSender(), sender), \"ERC777: caller is not an operator for holder\");\n        _send(sender, recipient, amount, data, operatorData, true);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-operatorSend}.",
+            "     *",
+            "     * Emits {Sent} and {IERC20-Transfer} events.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-operatorSend}.\n     *\n     * Emits {Sent} and {IERC20-Transfer} events.\n     */\n",
+        "@dev": "See {IERC777-operatorSend}. * * Emits {Sent} and {IERC20-Transfer} events.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "operatorBurn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            },
+            {
+                "name": "operatorData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function operatorBurn(address account, uint256 amount, bytes memory data, bytes memory operatorData) public override {\n        require(isOperatorFor(_msgSender(), account), \"ERC777: caller is not an operator for holder\");\n        _burn(account, amount, data, operatorData);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC777-operatorBurn}.",
+            "     *",
+            "     * Emits {Burned} and {IERC20-Transfer} events.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC777-operatorBurn}.\n     *\n     * Emits {Burned} and {IERC20-Transfer} events.\n     */\n",
+        "@dev": "See {IERC777-operatorBurn}. * * Emits {Burned} and {IERC20-Transfer} events.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address holder, address spender) public view override returns (uint256) {\n        return _allowances[holder][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     *",
+            "     * Note that operator and allowance concepts are orthogonal: operators may",
+            "     * not have allowance, and accounts with allowance may not be operators",
+            "     * themselves.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     *\n     * Note that operator and allowance concepts are orthogonal: operators may\n     * not have allowance, and accounts with allowance may not be operators\n     * themselves.\n     */\n",
+        "@dev": "See {IERC20-allowance}. * * Note that operator and allowance concepts are orthogonal: operators may * not have allowance, and accounts with allowance may not be operators * themselves.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 value) public override returns (bool) {\n        address holder = _msgSender();\n        _approve(holder, spender, value);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Note that accounts cannot have allowance issued by their operators.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Note that accounts cannot have allowance issued by their operators.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Note that accounts cannot have allowance issued by their operators.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address holder, address recipient, uint256 amount) public override returns (bool) {\n        require(recipient != address(0), \"ERC777: transfer to the zero address\");\n        require(holder != address(0), \"ERC777: transfer from the zero address\");\n\n        address spender = _msgSender();\n\n        _callTokensToSend(spender, holder, recipient, amount, \"\", \"\");\n\n        _move(spender, holder, recipient, amount, \"\", \"\");\n        _approve(holder, spender, _allowances[holder][spender].sub(amount, \"ERC777: transfer amount exceeds allowance\"));\n\n        _callTokensReceived(spender, holder, recipient, amount, \"\", \"\", false);\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev See {IERC20-transferFrom}.",
+            "    *",
+            "    * Note that operator and allowance concepts are orthogonal: operators cannot",
+            "    * call `transferFrom` (unless they have allowance), and accounts with",
+            "    * allowance cannot call `operatorSend` (unless they are operators).",
+            "    *",
+            "    * Emits {Sent}, {IERC20-Transfer} and {IERC20-Approval} events.",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev See {IERC20-transferFrom}.\n    *\n    * Note that operator and allowance concepts are orthogonal: operators cannot\n    * call `transferFrom` (unless they have allowance), and accounts with\n    * allowance cannot call `operatorSend` (unless they are operators).\n    *\n    * Emits {Sent}, {IERC20-Transfer} and {IERC20-Approval} events.\n    */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Note that operator and allowance concepts are orthogonal: operators cannot * call `transferFrom` (unless they have allowance), and accounts with * allowance cannot call `operatorSend` (unless they are operators). * * Emits {Sent}, {IERC20-Transfer} and {IERC20-Approval} events.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeSpaceFromNode",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            },
+            {
+                "name": "space",
+                "type": "uint8"
+            }
+        ],
+        "func": "function removeSpaceFromNode(uint nodeIndex, uint8 space)\n        external\n        allowTwo(\"NodeRotation\", \"SchainsInternal\")\n        returns (bool)\n    {\n        if (spaceOfNodes[nodeIndex].freeSpace < space) {\n            return false;\n        }\n        if (space > 0) {\n            _moveNodeToNewSpaceMap(\n                nodeIndex,\n                uint(spaceOfNodes[nodeIndex].freeSpace).sub(space).toUint8()\n            );\n        }\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev removeSpaceFromFractionalNode - occupies space from Fractional Node",
+            "     * function could be run only by Schains",
+            "     * @param nodeIndex - index of Node at array of Fractional Nodes",
+            "     * @param space - space which should be occupied",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev removeSpaceFromFractionalNode - occupies space from Fractional Node\n     * function could be run only by Schains\n     * @param nodeIndex - index of Node at array of Fractional Nodes\n     * @param space - space which should be occupied\n     */\n",
+        "@dev": "removeSpaceFromFractionalNode - occupies space from Fractional Node * function could be run only by Schains",
+        "@param1": "nodeIndex - index of Node at array of Fractional Nodes",
+        "@param2": "space - space which should be occupied",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addSpaceToNode",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            },
+            {
+                "name": "space",
+                "type": "uint8"
+            }
+        ],
+        "func": "function addSpaceToNode(uint nodeIndex, uint8 space) external allow(\"Schains\") {\n        if (space > 0) {\n            _moveNodeToNewSpaceMap(\n                nodeIndex,\n                uint(spaceOfNodes[nodeIndex].freeSpace).add(space).toUint8()\n            );\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev adSpaceToFractionalNode - returns space to Fractional Node",
+            "     * function could be run only be Schains",
+            "     * @param nodeIndex - index of Node at array of Fractional Nodes",
+            "     * @param space - space which should be returned",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev adSpaceToFractionalNode - returns space to Fractional Node\n     * function could be run only be Schains\n     * @param nodeIndex - index of Node at array of Fractional Nodes\n     * @param space - space which should be returned\n     */\n",
+        "@dev": "adSpaceToFractionalNode - returns space to Fractional Node * function could be run only be Schains",
+        "@param1": "nodeIndex - index of Node at array of Fractional Nodes",
+        "@param2": "space - space which should be returned",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeNodeLastRewardDate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function changeNodeLastRewardDate(uint nodeIndex) external allow(\"SkaleManager\") {\n        nodes[nodeIndex].lastRewardDate = block.timestamp;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev changeNodeLastRewardDate - changes Node's last reward date",
+            "     * function could be run only by SkaleManager",
+            "     * @param nodeIndex - index of Node",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev changeNodeLastRewardDate - changes Node's last reward date\n     * function could be run only by SkaleManager\n     * @param nodeIndex - index of Node\n     */\n",
+        "@dev": "changeNodeLastRewardDate - changes Node's last reward date * function could be run only by SkaleManager",
+        "@param1": "nodeIndex - index of Node",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeNodeFinishTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            },
+            {
+                "name": "time",
+                "type": "uint"
+            }
+        ],
+        "func": "function changeNodeFinishTime(uint nodeIndex, uint time) external allow(\"SkaleManager\") {\n        nodes[nodeIndex].finishTime = time;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createNode",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "params",
+                "type": "NodeCreationParams calldata"
+            }
+        ],
+        "func": "function createNode(address from, NodeCreationParams calldata params)\n        external\n        allow(\"SkaleManager\")\n        returns (uint nodeIndex)\n    {\n        // checks that Node has correct data\n        require(params.ip != 0x0 && !nodesIPCheck[params.ip], \"IP address is zero or is not available\");\n        require(!nodesNameCheck[keccak256(abi.encodePacked(params.name))], \"Name has already registered\");\n        require(params.port > 0, \"Port is zero\");\n\n        uint validatorId = ValidatorService(\n            contractManager.getContract(\"ValidatorService\")).getValidatorIdByNodeAddress(from);\n\n        // adds Node to Nodes contract\n        nodeIndex = _addNode(\n            from,\n            params.name,\n            params.ip,\n            params.publicIp,\n            params.port,\n            params.publicKey,\n            validatorId);\n\n        emit NodeCreated(\n            nodeIndex,\n            from,\n            params.name,\n            params.ip,\n            params.publicIp,\n            params.port,\n            params.nonce,\n            block.timestamp,\n            gasleft());\n    }",
+        "comments": [
+            "/**",
+            "     * @dev createNode - creates new Node and add it to the Nodes contract",
+            "     * function could be only run by SkaleManager",
+            "     * @param from - owner of Node",
+            "     * @return nodeIndex - index of Node",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev createNode - creates new Node and add it to the Nodes contract\n     * function could be only run by SkaleManager\n     * @param from - owner of Node\n     * @return nodeIndex - index of Node\n     */\n",
+        "@dev": "createNode - creates new Node and add it to the Nodes contract * function could be only run by SkaleManager",
+        "@param1": "from - owner of Node",
+        "@return1": "nodeIndex - index of Node",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initExit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function initExit(uint nodeIndex) external allow(\"SkaleManager\") returns (bool) {\n\n        _setNodeLeaving(nodeIndex);\n\n        emit ExitInited(\n            nodeIndex,\n            block.timestamp,\n            block.timestamp,\n            gasleft());\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev initExit - initiate a procedure of quitting the system",
+            "     * function could be only run by SkaleManager",
+            "     * @param nodeIndex - index of Node",
+            "     * @return true - if everything OK",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev initExit - initiate a procedure of quitting the system\n     * function could be only run by SkaleManager\n     * @param nodeIndex - index of Node\n     * @return true - if everything OK\n     */\n",
+        "@dev": "initExit - initiate a procedure of quitting the system * function could be only run by SkaleManager",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "true - if everything OK",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "completeExit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function completeExit(uint nodeIndex) external allow(\"SkaleManager\") returns (bool) {\n        require(isNodeLeaving(nodeIndex), \"Node is not Leaving\");\n\n        _setNodeLeft(nodeIndex);\n        _deleteNode(nodeIndex);\n\n        emit ExitCompleted(\n            nodeIndex,\n            block.timestamp,\n            gasleft());\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev completeExit - finish a procedure of quitting the system",
+            "     * function could be run only by SkaleManager",
+            "     * @param nodeIndex - index of Node",
+            "     * @return amount of SKL which be returned",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev completeExit - finish a procedure of quitting the system\n     * function could be run only by SkaleManager\n     * @param nodeIndex - index of Node\n     * @return amount of SKL which be returned\n     */\n",
+        "@dev": "completeExit - finish a procedure of quitting the system * function could be run only by SkaleManager",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "amount of SKL which be returned",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deleteNodeForValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function deleteNodeForValidator(uint validatorId, uint nodeIndex) external allow(\"SkaleManager\") {\n        ValidatorService validatorService = ValidatorService(contractManager.getContract(\"ValidatorService\"));\n        require(validatorService.validatorExists(validatorId), \"Validator with such ID does not exist\");\n        uint[] memory validatorNodes = validatorToNodeIndexes[validatorId];\n        uint position = _findNode(validatorNodes, nodeIndex);\n        if (position < validatorNodes.length) {\n            validatorToNodeIndexes[validatorId][position] =\n                validatorToNodeIndexes[validatorId][validatorNodes.length.sub(1)];\n        }\n        validatorToNodeIndexes[validatorId].pop();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkPossibilityCreatingNode",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function checkPossibilityCreatingNode(address nodeAddress) external allow(\"SkaleManager\") {\n        ValidatorService validatorService = ValidatorService(contractManager.getContract(\"ValidatorService\"));\n        DelegationController delegationController = DelegationController(\n            contractManager.getContract(\"DelegationController\")\n        );\n        uint validatorId = validatorService.getValidatorIdByNodeAddress(nodeAddress);\n        require(validatorService.isAuthorizedValidator(validatorId), \"Validator is not authorized to create a node\");\n        uint[] memory validatorNodes = validatorToNodeIndexes[validatorId];\n        uint delegationsTotal = delegationController.getAndUpdateDelegatedToValidatorNow(validatorId);\n        uint msr = ConstantsHolder(contractManager.getContract(\"ConstantsHolder\")).msr();\n        require(\n            validatorNodes.length.add(1).mul(msr) <= delegationsTotal,\n            \"Validator must meet the Minimum Staking Requirement\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkPossibilityToMaintainNode",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function checkPossibilityToMaintainNode(\n        uint validatorId,\n        uint nodeIndex\n    )\n        external\n        allow(\"Bounty\")\n        returns (bool)\n    {\n        DelegationController delegationController = DelegationController(\n            contractManager.getContract(\"DelegationController\")\n        );\n        ValidatorService validatorService = ValidatorService(contractManager.getContract(\"ValidatorService\"));\n        require(validatorService.validatorExists(validatorId), \"Validator with such ID does not exist\");\n        uint[] memory validatorNodes = validatorToNodeIndexes[validatorId];\n        uint position = _findNode(validatorNodes, nodeIndex);\n        require(position < validatorNodes.length, \"Node does not exist for this Validator\");\n        uint delegationsTotal = delegationController.getAndUpdateDelegatedToValidatorNow(validatorId);\n        uint msr = ConstantsHolder(contractManager.getContract(\"ConstantsHolder\")).msr();\n        return position.add(1).mul(msr) <= delegationsTotal;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodesWithFreeSpace",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "freeSpace",
+                "type": "uint8"
+            }
+        ],
+        "func": "function getNodesWithFreeSpace(uint8 freeSpace) external view returns (uint[] memory) {\n        ConstantsHolder constantsHolder = ConstantsHolder(contractManager.getContract(\"ConstantsHolder\"));\n        uint[] memory nodesWithFreeSpace = new uint[](countNodesWithFreeSpace(freeSpace));\n        uint cursor = 0;\n        for (uint8 i = freeSpace; i <= constantsHolder.TOTAL_SPACE_ON_NODE(); ++i) {\n            for (uint j = 0; j < spaceToNodes[i].length; j++) {\n                nodesWithFreeSpace[cursor] = spaceToNodes[i][j];\n                ++cursor;\n            }\n        }\n        return nodesWithFreeSpace;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isTimeForReward",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function isTimeForReward(uint nodeIndex) external view returns (bool) {\n        ConstantsHolder constantsHolder = ConstantsHolder(contractManager.getContract(\"ConstantsHolder\"));\n        return uint(nodes[nodeIndex].lastRewardDate).add(constantsHolder.rewardPeriod()) <= block.timestamp;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev isTimeForReward - checks if time for reward has come",
+            "     * @param nodeIndex - index of Node",
+            "     * @return if time for reward has come - true, else - false",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev isTimeForReward - checks if time for reward has come\n     * @param nodeIndex - index of Node\n     * @return if time for reward has come - true, else - false\n     */\n",
+        "@dev": "isTimeForReward - checks if time for reward has come",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "if time for reward has come - true, else - false",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isNodeExist",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function isNodeExist(address from, uint nodeIndex) external view returns (bool) {\n        return nodeIndexes[from].isNodeExist[nodeIndex];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev isNodeExist - checks existence of Node at this address",
+            "     * @param from - account address",
+            "     * @param nodeIndex - index of Node",
+            "     * @return if exist - true, else - false",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev isNodeExist - checks existence of Node at this address\n     * @param from - account address\n     * @param nodeIndex - index of Node\n     * @return if exist - true, else - false\n     */\n",
+        "@dev": "isNodeExist - checks existence of Node at this address",
+        "@param1": "from - account address",
+        "@param2": "nodeIndex - index of Node",
+        "@return1": "if exist - true, else - false",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodeIP",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getNodeIP(uint nodeIndex) external view returns (bytes4) {\n        require(nodeIndex < nodes.length, \"Node does not exist\");\n        return nodes[nodeIndex].ip;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getNodeIP - get ip address of Node",
+            "     * @param nodeIndex - index of Node",
+            "     * @return ip address",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getNodeIP - get ip address of Node\n     * @param nodeIndex - index of Node\n     * @return ip address\n     */\n",
+        "@dev": "getNodeIP - get ip address of Node",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "ip address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodePort",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getNodePort(uint nodeIndex) external view returns (uint16) {\n        return nodes[nodeIndex].port;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getNodePort - get Node's port",
+            "     * @param nodeIndex - index of Node",
+            "     * @return port",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getNodePort - get Node's port\n     * @param nodeIndex - index of Node\n     * @return port\n     */\n",
+        "@dev": "getNodePort - get Node's port",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "port",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodePublicKey",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getNodePublicKey(uint nodeIndex) external view returns (bytes32[2] memory) {\n        return nodes[nodeIndex].publicKey;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodeFinishTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getNodeFinishTime(uint nodeIndex) external view returns (uint) {\n        return nodes[nodeIndex].finishTime;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isNodeLeft",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function isNodeLeft(uint nodeIndex) external view returns (bool) {\n        return nodes[nodeIndex].status == NodeStatus.Left;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev isNodeLeft - checks if Node status Left",
+            "     * @param nodeIndex - index of Node",
+            "     * @return if Node status Left - true, else - false",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev isNodeLeft - checks if Node status Left\n     * @param nodeIndex - index of Node\n     * @return if Node status Left - true, else - false\n     */\n",
+        "@dev": "isNodeLeft - checks if Node status Left",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "if Node status Left - true, else - false",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodeLastRewardDate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getNodeLastRewardDate(uint nodeIndex) external view returns (uint) {\n        return nodes[nodeIndex].lastRewardDate;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getNodeLastRewardDate - get Node last reward date",
+            "     * @param nodeIndex - index of Node",
+            "     * @return Node last reward date",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getNodeLastRewardDate - get Node last reward date\n     * @param nodeIndex - index of Node\n     * @return Node last reward date\n     */\n",
+        "@dev": "getNodeLastRewardDate - get Node last reward date",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "Node last reward date",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodeNextRewardDate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getNodeNextRewardDate(uint nodeIndex) external view returns (uint) {\n        ConstantsHolder constantsHolder = ConstantsHolder(contractManager.getContract(\"ConstantsHolder\"));\n        return nodes[nodeIndex].lastRewardDate.add(constantsHolder.rewardPeriod());\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getNodeNextRewardDate - get Node next reward date",
+            "     * @param nodeIndex - index of Node",
+            "     * @return Node next reward date",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getNodeNextRewardDate - get Node next reward date\n     * @param nodeIndex - index of Node\n     * @return Node next reward date\n     */\n",
+        "@dev": "getNodeNextRewardDate - get Node next reward date",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "Node next reward date",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNumberOfNodes",
+        "visibility": "external",
+        "args": [],
+        "func": "function getNumberOfNodes() external view returns (uint) {\n        return nodes.length;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getNumberOfNodes - get number of Nodes",
+            "     * @return number of Nodes",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getNumberOfNodes - get number of Nodes\n     * @return number of Nodes\n     */\n",
+        "@dev": "getNumberOfNodes - get number of Nodes",
+        "@return1": "number of Nodes",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNumberOnlineNodes",
+        "visibility": "external",
+        "args": [],
+        "func": "function getNumberOnlineNodes() external view returns (uint) {\n        return numberOfActiveNodes.add(numberOfLeavingNodes);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getNumberOfFullNodes - get number Online Nodes",
+            "     * @return number of active nodes plus number of leaving nodes",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getNumberOfFullNodes - get number Online Nodes\n     * @return number of active nodes plus number of leaving nodes\n     */\n",
+        "@dev": "getNumberOfFullNodes - get number Online Nodes",
+        "@return1": "number of active nodes plus number of leaving nodes",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getActiveNodeIPs",
+        "visibility": "external",
+        "args": [],
+        "func": "function getActiveNodeIPs() external view returns (bytes4[] memory activeNodeIPs) {\n        activeNodeIPs = new bytes4[](numberOfActiveNodes);\n        uint indexOfActiveNodeIPs = 0;\n        for (uint indexOfNodes = 0; indexOfNodes < nodes.length; indexOfNodes++) {\n            if (isNodeActive(indexOfNodes)) {\n                activeNodeIPs[indexOfActiveNodeIPs] = nodes[indexOfNodes].ip;\n                indexOfActiveNodeIPs++;\n            }\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getActiveNodeIPs - get array of ips of Active Nodes",
+            "     * @return activeNodeIPs - array of ips of Active Nodes",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getActiveNodeIPs - get array of ips of Active Nodes\n     * @return activeNodeIPs - array of ips of Active Nodes\n     */\n",
+        "@dev": "getActiveNodeIPs - get array of ips of Active Nodes",
+        "@return1": "activeNodeIPs - array of ips of Active Nodes",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getActiveNodesByAddress",
+        "visibility": "external",
+        "args": [],
+        "func": "function getActiveNodesByAddress() external view returns (uint[] memory activeNodesByAddress) {\n        activeNodesByAddress = new uint[](nodeIndexes[msg.sender].numberOfNodes);\n        uint indexOfActiveNodesByAddress = 0;\n        for (uint indexOfNodes = 0; indexOfNodes < nodes.length; indexOfNodes++) {\n            if (nodeIndexes[msg.sender].isNodeExist[indexOfNodes] && isNodeActive(indexOfNodes)) {\n                activeNodesByAddress[indexOfActiveNodesByAddress] = indexOfNodes;\n                indexOfActiveNodesByAddress++;\n            }\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getActiveNodesByAddress - get array of indexes of Active Nodes, which were",
+            "     * created by msg.sender",
+            "     * @return activeNodesByAddress Array of indexes of Active Nodes, which were created by msg.sender",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getActiveNodesByAddress - get array of indexes of Active Nodes, which were\n     * created by msg.sender\n     * @return activeNodesByAddress Array of indexes of Active Nodes, which were created by msg.sender\n     */\n",
+        "@dev": "getActiveNodesByAddress - get array of indexes of Active Nodes, which were * created by msg.sender",
+        "@return1": "activeNodesByAddress Array of indexes of Active Nodes, which were created by msg.sender",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getActiveNodeIds",
+        "visibility": "external",
+        "args": [],
+        "func": "function getActiveNodeIds() external view returns (uint[] memory activeNodeIds) {\n        activeNodeIds = new uint[](numberOfActiveNodes);\n        uint indexOfActiveNodeIds = 0;\n        for (uint indexOfNodes = 0; indexOfNodes < nodes.length; indexOfNodes++) {\n            if (isNodeActive(indexOfNodes)) {\n                activeNodeIds[indexOfActiveNodeIds] = indexOfNodes;\n                indexOfActiveNodeIds++;\n            }\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev getActiveNodeIds - get array of indexes of Active Nodes",
+            "     * @return activeNodeIds - array of indexes of Active Nodes",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev getActiveNodeIds - get array of indexes of Active Nodes\n     * @return activeNodeIds - array of indexes of Active Nodes\n     */\n",
+        "@dev": "getActiveNodeIds - get array of indexes of Active Nodes",
+        "@return1": "activeNodeIds - array of indexes of Active Nodes",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getValidatorId",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getValidatorId(uint nodeIndex) external view returns (uint) {\n        require(nodeIndex < nodes.length, \"Node does not exist\");\n        return nodes[nodeIndex].validatorId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodeStatus",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getNodeStatus(uint nodeIndex) external view returns (NodeStatus) {\n        return nodes[nodeIndex].status;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getValidatorNodeIndexes",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getValidatorNodeIndexes(uint validatorId) external view returns (uint[] memory) {\n        ValidatorService validatorService = ValidatorService(contractManager.getContract(\"ValidatorService\"));\n        require(validatorService.validatorExists(validatorId), \"Validator with such ID does not exist\");\n        return validatorToNodeIndexes[validatorId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractsAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractsAddress) public override initializer {\n        Permissions.initialize(contractsAddress);\n\n        numberOfActiveNodes = 0;\n        numberOfLeavingNodes = 0;\n        numberOfLeftNodes = 0;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev constructor in Permissions approach",
+            "     * @param contractsAddress needed in Permissions constructor",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n     * @dev constructor in Permissions approach\n     * @param contractsAddress needed in Permissions constructor\n    */\n",
+        "@dev": "constructor in Permissions approach",
+        "@param1": "contractsAddress needed in Permissions constructor",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isNodeActive",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function isNodeActive(uint nodeIndex) public view returns (bool) {\n        return nodes[nodeIndex].status == NodeStatus.Active;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev isNodeActive - checks if Node status Active",
+            "     * @param nodeIndex - index of Node",
+            "     * @return if Node status Active - true, else - false",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev isNodeActive - checks if Node status Active\n     * @param nodeIndex - index of Node\n     * @return if Node status Active - true, else - false\n     */\n",
+        "@dev": "isNodeActive - checks if Node status Active",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "if Node status Active - true, else - false",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isNodeLeaving",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "nodeIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function isNodeLeaving(uint nodeIndex) public view returns (bool) {\n        return nodes[nodeIndex].status == NodeStatus.Leaving;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev isNodeLeaving - checks if Node status Leaving",
+            "     * @param nodeIndex - index of Node",
+            "     * @return if Node status Leaving - true, else - false",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev isNodeLeaving - checks if Node status Leaving\n     * @param nodeIndex - index of Node\n     * @return if Node status Leaving - true, else - false\n     */\n",
+        "@dev": "isNodeLeaving - checks if Node status Leaving",
+        "@param1": "nodeIndex - index of Node",
+        "@return1": "if Node status Leaving - true, else - false",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "countNodesWithFreeSpace",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "freeSpace",
+                "type": "uint8"
+            }
+        ],
+        "func": "function countNodesWithFreeSpace(uint8 freeSpace) public view returns (uint count) {\n        ConstantsHolder constantsHolder = ConstantsHolder(contractManager.getContract(\"ConstantsHolder\"));\n        count = 0;\n        for (uint8 i = freeSpace; i <= constantsHolder.TOTAL_SPACE_ON_NODE(); ++i) {\n            count = count.add(spaceToNodes[i].length);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_addNode",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "name",
+                "type": "string memory"
+            },
+            {
+                "name": "ip",
+                "type": "bytes4"
+            },
+            {
+                "name": "publicIP",
+                "type": "bytes4"
+            },
+            {
+                "name": "port",
+                "type": "uint16"
+            },
+            {
+                "name": "publicKey",
+                "type": "bytes32[2] memory"
+            },
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function _addNode(\n        address from,\n        string memory name,\n        bytes4 ip,\n        bytes4 publicIP,\n        uint16 port,\n        bytes32[2] memory publicKey,\n        uint validatorId\n    )\n        private\n        returns (uint nodeIndex)\n    {\n        ConstantsHolder constantsHolder = ConstantsHolder(contractManager.getContract(\"ConstantsHolder\"));\n        nodes.push(Node({\n            name: name,\n            ip: ip,\n            publicIP: publicIP,\n            port: port,\n            //owner: from,\n            publicKey: publicKey,\n            startBlock: block.number,\n            lastRewardDate: block.timestamp,\n            finishTime: 0,\n            status: NodeStatus.Active,\n            validatorId: validatorId\n        }));\n        nodeIndex = nodes.length.sub(1);\n        validatorToNodeIndexes[validatorId].push(nodeIndex);\n        bytes32 nodeId = keccak256(abi.encodePacked(name));\n        nodesIPCheck[ip] = true;\n        nodesNameCheck[nodeId] = true;\n        nodesNameToIndex[nodeId] = nodeIndex;\n        nodeIndexes[from].isNodeExist[nodeIndex] = true;\n        nodeIndexes[from].numberOfNodes++;\n        spaceOfNodes.push(SpaceManaging({\n            freeSpace: constantsHolder.TOTAL_SPACE_ON_NODE(),\n            indexInSpaceMap: spaceToNodes[constantsHolder.TOTAL_SPACE_ON_NODE()].length\n        }));\n        spaceToNodes[constantsHolder.TOTAL_SPACE_ON_NODE()].push(nodeIndex);\n        numberOfActiveNodes++;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev _addNode - adds Node to array",
+            "     * function could be run only by executor",
+            "     * @param from - owner of Node",
+            "     * @param name - Node name",
+            "     * @param ip - Node ip",
+            "     * @param publicIP - Node public ip",
+            "     * @param port - Node public port",
+            "     * @param publicKey - Ethereum public key",
+            "     * @return nodeIndex Index of Node",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev _addNode - adds Node to array\n     * function could be run only by executor\n     * @param from - owner of Node\n     * @param name - Node name\n     * @param ip - Node ip\n     * @param publicIP - Node public ip\n     * @param port - Node public port\n     * @param publicKey - Ethereum public key\n     * @return nodeIndex Index of Node\n     */\n",
+        "@dev": "_addNode - adds Node to array * function could be run only by executor",
+        "@param1": "from - owner of Node",
+        "@param2": "name - Node name",
+        "@param3": "ip - Node ip",
+        "@param4": "publicIP - Node public ip",
+        "@param5": "port - Node public port",
+        "@param6": "publicKey - Ethereum public key",
+        "@return1": "nodeIndex Index of Node",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "foo",
+        "visibility": "public",
+        "args": [],
+        "func": "function foo() public {\n *     require(hasRole(MY_ROLE, _msgSender()));\n *     ...\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "hasRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function hasRole(bytes32 role, address account) public view returns (bool) {\n        return _roles[role].members.contains(account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns `true` if `account` has been granted `role`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns `true` if `account` has been granted `role`.\n     */\n",
+        "@dev": "Returns `true` if `account` has been granted `role`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoleMemberCount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getRoleMemberCount(bytes32 role) public view returns (uint256) {\n        return _roles[role].members.length();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of accounts that have `role`. Can be used",
+            "     * together with {getRoleMember} to enumerate all bearers of a role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of accounts that have `role`. Can be used\n     * together with {getRoleMember} to enumerate all bearers of a role.\n     */\n",
+        "@dev": "Returns the number of accounts that have `role`. Can be used * together with {getRoleMember} to enumerate all bearers of a role.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoleMember",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getRoleMember(bytes32 role, uint256 index) public view returns (address) {\n        return _roles[role].members.at(index);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns one of the accounts that have `role`. `index` must be a",
+            "     * value between 0 and {getRoleMemberCount}, non-inclusive.",
+            "     *",
+            "     * Role bearers are not sorted in any particular way, and their ordering may",
+            "     * change at any point.",
+            "     *",
+            "     * WARNING: When using {getRoleMember} and {getRoleMemberCount}, make sure",
+            "     * you perform all queries on the same block. See the following",
+            "     * https://forum.openzeppelin.com/t/iterating-over-elements-on-enumerableset-in-openzeppelin-contracts/2296[forum post]",
+            "     * for more information.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns one of the accounts that have `role`. `index` must be a\n     * value between 0 and {getRoleMemberCount}, non-inclusive.\n     *\n     * Role bearers are not sorted in any particular way, and their ordering may\n     * change at any point.\n     *\n     * WARNING: When using {getRoleMember} and {getRoleMemberCount}, make sure\n     * you perform all queries on the same block. See the following\n     * https://forum.openzeppelin.com/t/iterating-over-elements-on-enumerableset-in-openzeppelin-contracts/2296[forum post]\n     * for more information.\n     */\n",
+        "@dev": "Returns one of the accounts that have `role`. `index` must be a * value between 0 and {getRoleMemberCount}, non-inclusive. * * Role bearers are not sorted in any particular way, and their ordering may * change at any point. * * WARNING: When using {getRoleMember} and {getRoleMemberCount}, make sure * you perform all queries on the same block. See the following * https://forum.openzeppelin.com/t/iterating-over-elements-on-enumerableset-in-openzeppelin-contracts/2296[forum post] * for more information.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoleAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getRoleAdmin(bytes32 role) public view returns (bytes32) {\n        return _roles[role].adminRole;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the admin role that controls `role`. See {grantRole} and",
+            "     * {revokeRole}.",
+            "     *",
+            "     * To change a role's admin, use {_setRoleAdmin}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the admin role that controls `role`. See {grantRole} and\n     * {revokeRole}.\n     *\n     * To change a role's admin, use {_setRoleAdmin}.\n     */\n",
+        "@dev": "Returns the admin role that controls `role`. See {grantRole} and * {revokeRole}. * * To change a role's admin, use {_setRoleAdmin}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "grantRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function grantRole(bytes32 role, address account) public virtual {\n        require(hasRole(_roles[role].adminRole, _msgSender()), \"AccessControl: sender must be an admin to grant\");\n\n        _grantRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Grants `role` to `account`.",
+            "     *",
+            "     * If `account` had not been already granted `role`, emits a {RoleGranted}",
+            "     * event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must have ``role``'s admin role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Grants `role` to `account`.\n     *\n     * If `account` had not been already granted `role`, emits a {RoleGranted}\n     * event.\n     *\n     * Requirements:\n     *\n     * - the caller must have ``role``'s admin role.\n     */\n",
+        "@dev": "Grants `role` to `account`. * * If `account` had not been already granted `role`, emits a {RoleGranted} * event. * * Requirements: * * - the caller must have ``role``'s admin role.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revokeRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function revokeRole(bytes32 role, address account) public virtual {\n        require(hasRole(_roles[role].adminRole, _msgSender()), \"AccessControl: sender must be an admin to revoke\");\n\n        _revokeRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Revokes `role` from `account`.",
+            "     *",
+            "     * If `account` had been granted `role`, emits a {RoleRevoked} event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must have ``role``'s admin role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Revokes `role` from `account`.\n     *\n     * If `account` had been granted `role`, emits a {RoleRevoked} event.\n     *\n     * Requirements:\n     *\n     * - the caller must have ``role``'s admin role.\n     */\n",
+        "@dev": "Revokes `role` from `account`. * * If `account` had been granted `role`, emits a {RoleRevoked} event. * * Requirements: * * - the caller must have ``role``'s admin role.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function renounceRole(bytes32 role, address account) public virtual {\n        require(account == _msgSender(), \"AccessControl: can only renounce roles for self\");\n\n        _revokeRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Revokes `role` from the calling account.",
+            "     *",
+            "     * Roles are often managed via {grantRole} and {revokeRole}: this function's",
+            "     * purpose is to provide a mechanism for accounts to lose their privileges",
+            "     * if they are compromised (such as when a trusted device is misplaced).",
+            "     *",
+            "     * If the calling account had been granted `role`, emits a {RoleRevoked}",
+            "     * event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must be `account`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Revokes `role` from the calling account.\n     *\n     * Roles are often managed via {grantRole} and {revokeRole}: this function's\n     * purpose is to provide a mechanism for accounts to lose their privileges\n     * if they are compromised (such as when a trusted device is misplaced).\n     *\n     * If the calling account had been granted `role`, emits a {RoleRevoked}\n     * event.\n     *\n     * Requirements:\n     *\n     * - the caller must be `account`.\n     */\n",
+        "@dev": "Revokes `role` from the calling account. * * Roles are often managed via {grantRole} and {revokeRole}: this function's * purpose is to provide a mechanism for accounts to lose their privileges * if they are compromised (such as when a trusted device is misplaced). * * If the calling account had been granted `role`, emits a {RoleRevoked} * event. * * Requirements: * * - the caller must be `account`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractManagerAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractManagerAddress) public virtual initializer {\n        AccessControlUpgradeSafe.__AccessControl_init();\n        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);\n        _setContractManager(contractManagerAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "slash",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function slash(uint validatorId, uint amount) external allow(\"SkaleDKG\") {\n        ValidatorService validatorService = ValidatorService(contractManager.getContract(\"ValidatorService\"));\n        DelegationController delegationController = DelegationController(\n            contractManager.getContract(\"DelegationController\"));\n\n        require(validatorService.validatorExists(validatorId), \"Validator does not exist\");\n\n        delegationController.confiscate(validatorId, amount);\n\n        emit Slash(validatorId, amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Executes slashing on a validator and its delegations by an `amount`",
+            "     * of tokens. Currently, SkaleDKG is the only service allowed to execute",
+            "     * slashing.",
+            "     *",
+            "     * Emits a Slash event.",
+            "     *",
+            "     * @param validatorId uint validator to be slashed",
+            "     * @param amount uint slashed amount",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Executes slashing on a validator and its delegations by an `amount`\n     * of tokens. Currently, SkaleDKG is the only service allowed to execute\n     * slashing.\n     *\n     * Emits a Slash event.\n     *\n     * @param validatorId uint validator to be slashed\n     * @param amount uint slashed amount\n    */\n",
+        "@dev": "Executes slashing on a validator and its delegations by an `amount` * of tokens. Currently, SkaleDKG is the only service allowed to execute * slashing. * * Emits a Slash event.",
+        "@param1": "validatorId uint validator to be slashed",
+        "@param2": "amount uint slashed amount",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "forgive",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function forgive(address holder, uint amount) external onlyAdmin {\n        DelegationController delegationController = DelegationController(\n            contractManager.getContract(\"DelegationController\"));\n\n        require(!delegationController.hasUnprocessedSlashes(holder), \"Not all slashes were calculated\");\n\n        if (amount > _locked[holder]) {\n            delete _locked[holder];\n        } else {\n            _locked[holder] = _locked[holder].sub(amount);\n        }\n\n        emit Forgive(holder, amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows the Owner to forgive a slashing condition.",
+            "     *",
+            "     * Emits a Forgive event.",
+            "     *",
+            "     * @param holder address of the slashed",
+            "     * @param amount uint amount to be forgiven",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows the Owner to forgive a slashing condition.\n     *\n     * Emits a Forgive event.\n     *\n     * @param holder address of the slashed\n     * @param amount uint amount to be forgiven\n     */\n",
+        "@dev": "Allows the Owner to forgive a slashing condition. * * Emits a Forgive event.",
+        "@param1": "holder address of the slashed",
+        "@param2": "amount uint amount to be forgiven",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateLockedAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateLockedAmount(address wallet) external override returns (uint) {\n        return _getAndUpdateLockedAmount(wallet);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See ILocker-getAndUpdateLockedAmount",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See ILocker-getAndUpdateLockedAmount\n     */\n",
+        "@dev": "See ILocker-getAndUpdateLockedAmount",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateForbiddenForDelegationAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateForbiddenForDelegationAmount(address wallet) external override returns (uint) {\n        return _getAndUpdateLockedAmount(wallet);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See ILocker-getAndUpdateForbiddenForDelegationAmount",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See ILocker-getAndUpdateForbiddenForDelegationAmount\n     */\n",
+        "@dev": "See ILocker-getAndUpdateForbiddenForDelegationAmount",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handleSlash",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function handleSlash(address holder, uint amount) external allow(\"DelegationController\") {\n        _locked[holder] = _locked[holder].add(amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractManagerAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractManagerAddress) public override initializer {\n        Permissions.initialize(contractManagerAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "operatorData",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function mint(\n        address account,\n        uint256 amount,\n        bytes calldata userData,\n        bytes calldata operatorData\n    )\n        external\n        allow(\"SkaleManager\")\n        //onlyAuthorized\n        returns (bool)\n    {\n        require(amount <= CAP.sub(totalSupply()), \"Amount is too big\");\n        _mint(\n            account,\n            amount,\n            userData,\n            operatorData\n        );\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev mint - create some amount of token and transfer it to the specified address",
+            "     * @param account - address where some amount of token would be created",
+            "     * @param amount - amount of tokens to mine",
+            "     * @param userData bytes extra information provided by the token holder (if any)",
+            "     * @param operatorData bytes extra information provided by the operator (if any)",
+            "     * @return returns success of function call.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev mint - create some amount of token and transfer it to the specified address\n     * @param account - address where some amount of token would be created\n     * @param amount - amount of tokens to mine\n     * @param userData bytes extra information provided by the token holder (if any)\n     * @param operatorData bytes extra information provided by the operator (if any)\n     * @return returns success of function call.\n     */\n",
+        "@dev": "mint - create some amount of token and transfer it to the specified address",
+        "@param1": "account - address where some amount of token would be created",
+        "@param2": "amount - amount of tokens to mine",
+        "@param3": "userData bytes extra information provided by the token holder (if any)",
+        "@param4": "operatorData bytes extra information provided by the operator (if any)",
+        "@return1": "returns success of function call.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateDelegatedAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateDelegatedAmount(address wallet) external override returns (uint) {\n        return DelegationController(contractManager.getContract(\"DelegationController\"))\n            .getAndUpdateDelegatedAmount(wallet);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateSlashedAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateSlashedAmount(address wallet) external override returns (uint) {\n        return Punisher(contractManager.getContract(\"Punisher\")).getAndUpdateLockedAmount(wallet);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateLockedAmount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateLockedAmount(address wallet) public override returns (uint) {\n        return TokenState(contractManager.getContract(\"TokenState\")).getAndUpdateLockedAmount(wallet);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calculateProofOfUseLockEndTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "month",
+                "type": "uint"
+            },
+            {
+                "name": "lockUpPeriodDays",
+                "type": "uint"
+            }
+        ],
+        "func": "function calculateProofOfUseLockEndTime(uint month, uint lockUpPeriodDays) external view returns (uint timestamp) {\n        timestamp = BokkyPooBahsDateTimeLibrary.addDays(monthToTimestamp(month), lockUpPeriodDays);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addMonths",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "fromTimestamp",
+                "type": "uint"
+            },
+            {
+                "name": "n",
+                "type": "uint"
+            }
+        ],
+        "func": "function addMonths(uint fromTimestamp, uint n) external pure returns (uint) {\n        return BokkyPooBahsDateTimeLibrary.addMonths(fromTimestamp, n);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCurrentMonth",
+        "visibility": "external",
+        "args": [],
+        "func": "function getCurrentMonth() external view virtual returns (uint) {\n        return timestampToMonth(now);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "timestampToMonth",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "timestamp",
+                "type": "uint"
+            }
+        ],
+        "func": "function timestampToMonth(uint timestamp) public view virtual returns (uint) {\n        uint year;\n        uint month;\n        (year, month, ) = BokkyPooBahsDateTimeLibrary.timestampToDate(timestamp);\n        require(year >= _ZERO_YEAR, \"Timestamp is too far in the past\");\n        month = month.sub(1).add(year.sub(_ZERO_YEAR).mul(12));\n        require(month > 0, \"Timestamp is too far in the past\");\n        return month;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "monthToTimestamp",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "month",
+                "type": "uint"
+            }
+        ],
+        "func": "function monthToTimestamp(uint month) public view virtual returns (uint timestamp) {\n        uint year = _ZERO_YEAR;\n        uint _month = month;\n        year = year.add(_month.div(12));\n        _month = _month.mod(12);\n        _month = _month.add(1);\n        return BokkyPooBahsDateTimeLibrary.timestampFromDate(year, _month, 1);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lock",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function lock(address holder, uint amount) external allow(\"TokenLaunchManager\") {\n        _locked[holder] = _locked[holder].add(amount);\n\n        emit Locked(holder, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handleDelegationAdd",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "delegationId",
+                "type": "uint"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            },
+            {
+                "name": "month",
+                "type": "uint"
+            }
+        ],
+        "func": "function handleDelegationAdd(\n        address holder, uint delegationId, uint amount, uint month)\n        external allow(\"DelegationController\")\n    {\n        if (_locked[holder] > 0) {\n            TimeHelpers timeHelpers = TimeHelpers(contractManager.getContract(\"TimeHelpers\"));\n\n            uint currentMonth = timeHelpers.getCurrentMonth();\n            uint fromLocked = amount;\n            uint locked = _locked[holder].boundedSub(_getAndUpdateDelegatedAmount(holder, currentMonth));\n            if (fromLocked > locked) {\n                fromLocked = locked;\n            }\n            if (fromLocked > 0) {\n                require(_delegationAmount[delegationId] == 0, \"Delegation was already added\");\n                _addToDelegatedAmount(holder, fromLocked, month);\n                _addToTotalDelegatedAmount(holder, fromLocked, month);\n                _delegationAmount[delegationId] = fromLocked;\n            }\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handleDelegationRemoving",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "delegationId",
+                "type": "uint"
+            },
+            {
+                "name": "month",
+                "type": "uint"
+            }
+        ],
+        "func": "function handleDelegationRemoving(\n        address holder,\n        uint delegationId,\n        uint month)\n        external allow(\"DelegationController\")\n    {\n        if (_delegationAmount[delegationId] > 0) {\n            if (_locked[holder] > 0) {\n                _removeFromDelegatedAmount(holder, _delegationAmount[delegationId], month);\n            }\n            delete _delegationAmount[delegationId];\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateLockedAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateLockedAmount(address wallet) external override returns (uint) {\n        if (_locked[wallet] > 0) {\n            DelegationController delegationController = DelegationController(\n                contractManager.getContract(\"DelegationController\"));\n            TimeHelpers timeHelpers = TimeHelpers(contractManager.getContract(\"TimeHelpers\"));\n            ConstantsHolder constantsHolder = ConstantsHolder(contractManager.getContract(\"ConstantsHolder\"));\n\n            uint currentMonth = timeHelpers.getCurrentMonth();\n            if (_totalDelegatedSatisfiesProofOfUserCondition(wallet) &&\n                timeHelpers.calculateProofOfUseLockEndTime(\n                    _totalDelegatedAmount[wallet].month,\n                    constantsHolder.proofOfUseLockUpPeriodDays()\n                ) <= now) {\n                _unlock(wallet);\n                return 0;\n            } else {\n                uint lockedByDelegationController = _getAndUpdateDelegatedAmount(wallet, currentMonth)\n                    .add(delegationController.getLockedInPendingDelegations(wallet));\n                if (_locked[wallet] > lockedByDelegationController) {\n                    return _locked[wallet].boundedSub(lockedByDelegationController);\n                } else {\n                    return 0;\n                }\n            }\n        } else {\n            return 0;\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateForbiddenForDelegationAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateForbiddenForDelegationAmount(address) external override returns (uint) {\n        return 0;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractManagerAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractManagerAddress) public override initializer {\n        Permissions.initialize(contractManagerAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateLockedAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateLockedAmount(address holder) external override returns (uint) {\n        uint locked = 0;\n        for (uint i = 0; i < _lockers.length; ++i) {\n            ILocker locker = ILocker(contractManager.getContract(_lockers[i]));\n            locked = locked.add(locker.getAndUpdateLockedAmount(holder));\n        }\n        return locked;\n    }",
+        "comments": [
+            "/**",
+            "     *  @dev Return and update the total locked amount of a given `holder`.",
+            "     *",
+            "     *  @param holder address of the token holder",
+            "     *  @return total locked amount",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n     *  @dev Return and update the total locked amount of a given `holder`.\n     *\n     *  @param holder address of the token holder\n     *  @return total locked amount\n    */\n",
+        "@dev": "Return and update the total locked amount of a given `holder`.",
+        "@param1": "holder address of the token holder",
+        "@return1": "total locked amount",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateForbiddenForDelegationAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "func": "function getAndUpdateForbiddenForDelegationAmount(address holder) external override returns (uint amount) {\n        uint forbidden = 0;\n        for (uint i = 0; i < _lockers.length; ++i) {\n            ILocker locker = ILocker(contractManager.getContract(_lockers[i]));\n            forbidden = forbidden.add(locker.getAndUpdateForbiddenForDelegationAmount(holder));\n        }\n        return forbidden;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Return and update the total locked and un-delegatable amount of a given `holder`.",
+            "     *",
+            "     * @param holder address of the token holder",
+            "     * @return amount total slashed amount (non-transferable and non-delegatable)",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Return and update the total locked and un-delegatable amount of a given `holder`.\n     *\n     * @param holder address of the token holder\n     * @return amount total slashed amount (non-transferable and non-delegatable)\n    */\n",
+        "@dev": "Return and update the total locked and un-delegatable amount of a given `holder`.",
+        "@param1": "holder address of the token holder",
+        "@return1": "amount total slashed amount (non-transferable and non-delegatable)",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeLocker",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "locker",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function removeLocker(string calldata locker) external onlyOwner {\n        uint index;\n        bytes32 hash = keccak256(abi.encodePacked(locker));\n        for (index = 0; index < _lockers.length; ++index) {\n            if (keccak256(abi.encodePacked(_lockers[index])) == hash) {\n                break;\n            }\n        }\n        if (index < _lockers.length) {\n            if (index < _lockers.length.sub(1)) {\n                _lockers[index] = _lockers[_lockers.length.sub(1)];\n            }\n            delete _lockers[_lockers.length.sub(1)];\n            _lockers.pop();\n            emit LockerWasRemoved(locker);\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows the Owner to remove a contract from the locker.",
+            "     *",
+            "     * Emits a LockerWasRemoved event.",
+            "     *",
+            "     * @param locker string name of contract to remove from locker",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows the Owner to remove a contract from the locker.\n     *\n     * Emits a LockerWasRemoved event.\n     *\n     * @param locker string name of contract to remove from locker\n     */\n",
+        "@dev": "Allows the Owner to remove a contract from the locker. * * Emits a LockerWasRemoved event.",
+        "@param1": "locker string name of contract to remove from locker",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractManagerAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractManagerAddress) public override initializer {\n        Permissions.initialize(contractManagerAddress);\n        addLocker(\"DelegationController\");\n        addLocker(\"Punisher\");\n        addLocker(\"TokenLaunchLocker\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addLocker",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "locker",
+                "type": "string memory"
+            }
+        ],
+        "func": "function addLocker(string memory locker) public onlyOwner {\n        _lockers.push(locker);\n        emit LockerWasAdded(locker);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows the Owner to add a contract to the Locker.",
+            "     *",
+            "     * Emits a LockerWasAdded event.",
+            "     *",
+            "     * @param locker string name of contract to add to locker",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows the Owner to add a contract to the Locker.\n     *\n     * Emits a LockerWasAdded event.\n     *\n     * @param locker string name of contract to add to locker\n     */\n",
+        "@dev": "Allows the Owner to add a contract to the Locker. * * Emits a LockerWasAdded event.",
+        "@param1": "locker string name of contract to add to locker",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "registerValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "name",
+                "type": "string calldata"
+            },
+            {
+                "name": "description",
+                "type": "string calldata"
+            },
+            {
+                "name": "feeRate",
+                "type": "uint"
+            },
+            {
+                "name": "minimumDelegationAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function registerValidator(\n        string calldata name,\n        string calldata description,\n        uint feeRate,\n        uint minimumDelegationAmount\n    )\n        external\n        returns (uint validatorId)\n    {\n        require(!validatorAddressExists(msg.sender), \"Validator with such address already exists\");\n        require(feeRate < 1000, \"Fee rate of validator should be lower than 100%\");\n        validatorId = ++numberOfValidators;\n        validators[validatorId] = Validator(\n            name,\n            msg.sender,\n            address(0),\n            description,\n            feeRate,\n            now,\n            minimumDelegationAmount,\n            true\n        );\n        _setValidatorAddress(validatorId, msg.sender);\n\n        emit ValidatorRegistered(validatorId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Creates a new validator Id.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - sender must not already have registered a validator Id.",
+            "     * - fee rate must be between 0 - 1000\u2030. Note: per mille!",
+            "     *",
+            "     * Emits ValidatorRegistered event.",
+            "     *",
+            "     * @param name string",
+            "     * @param description string",
+            "     * @param feeRate uint Fee charged on delegations by the validator per mille",
+            "     * @param minimumDelegationAmount uint Minimum delegation amount accepted by the validator",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Creates a new validator Id.\n     *\n     * Requirements:\n     *\n     * - sender must not already have registered a validator Id.\n     * - fee rate must be between 0 - 1000\u2030. Note: per mille!\n     *\n     * Emits ValidatorRegistered event.\n     *\n     * @param name string\n     * @param description string\n     * @param feeRate uint Fee charged on delegations by the validator per mille\n     * @param minimumDelegationAmount uint Minimum delegation amount accepted by the validator\n     */\n",
+        "@dev": "Creates a new validator Id. * * Requirements: * * - sender must not already have registered a validator Id. * - fee rate must be between 0 - 1000\u2030. Note: per mille! * * Emits ValidatorRegistered event.",
+        "@param1": "name string",
+        "@param2": "description string",
+        "@param3": "feeRate uint Fee charged on delegations by the validator per mille",
+        "@param4": "minimumDelegationAmount uint Minimum delegation amount accepted by the validator",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enableValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function enableValidator(uint validatorId) external checkValidatorExists(validatorId) onlyAdmin {\n        require(!_trustedValidators[validatorId], \"Validator is already enabled\");\n        _trustedValidators[validatorId] = true;\n        trustedValidatorsList.push(validatorId);\n        emit ValidatorWasEnabled(validatorId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "disableValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function disableValidator(uint validatorId) external checkValidatorExists(validatorId) onlyAdmin {\n        require(_trustedValidators[validatorId], \"Validator is already disabled\");\n        _trustedValidators[validatorId] = false;\n        uint position = _find(trustedValidatorsList, validatorId);\n        if (position < trustedValidatorsList.length) {\n            trustedValidatorsList[position] =\n                trustedValidatorsList[trustedValidatorsList.length.sub(1)];\n        }\n        trustedValidatorsList.pop();\n        emit ValidatorWasDisabled(validatorId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "disableWhitelist",
+        "visibility": "external",
+        "args": [],
+        "func": "function disableWhitelist() external onlyOwner {\n        useWhitelist = false;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Owner can disable the validator whitelist. Once turned off the",
+            "     * whitelist cannot be re-enabled.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Owner can disable the validator whitelist. Once turned off the\n     * whitelist cannot be re-enabled.\n     */\n",
+        "@dev": "Owner can disable the validator whitelist. Once turned off the * whitelist cannot be re-enabled.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestForNewAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newValidatorAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function requestForNewAddress(address newValidatorAddress) external {\n        require(newValidatorAddress != address(0), \"New address cannot be null\");\n        require(_validatorAddressToId[newValidatorAddress] == 0, \"Address already registered\");\n        // check Validator Exist inside getValidatorId\n        uint validatorId = getValidatorId(msg.sender);\n\n        validators[validatorId].requestedAddress = newValidatorAddress;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a validator to request a new address.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - new address must not be null",
+            "     * - new address must not be already registered as a validator",
+            "     *",
+            "     * @param newValidatorAddress address",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a validator to request a new address.\n     *\n     * Requirements:\n     *\n     * - new address must not be null\n     * - new address must not be already registered as a validator\n     *\n     * @param newValidatorAddress address\n     */\n",
+        "@dev": "Allows a validator to request a new address. * * Requirements: * * - new address must not be null * - new address must not be already registered as a validator",
+        "@param1": "newValidatorAddress address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "confirmNewAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function confirmNewAddress(uint validatorId)\n        external\n        checkValidatorExists(validatorId)\n    {\n        require(\n            getValidator(validatorId).requestedAddress == msg.sender,\n            \"The validator address cannot be changed because it is not the actual owner\"\n        );\n        delete validators[validatorId].requestedAddress;\n        _setValidatorAddress(validatorId, msg.sender);\n\n        emit ValidatorAddressChanged(validatorId, validators[validatorId].validatorAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "linkNodeAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeAddress",
+                "type": "address"
+            },
+            {
+                "name": "sig",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function linkNodeAddress(address nodeAddress, bytes calldata sig) external {\n        // check Validator Exist inside getValidatorId\n        uint validatorId = getValidatorId(msg.sender);\n        require(\n            keccak256(abi.encodePacked(validatorId)).toEthSignedMessageHash().recover(sig) == nodeAddress,\n            \"Signature is not pass\"\n        );\n        require(_validatorAddressToId[nodeAddress] == 0, \"Node address is a validator\");\n\n        _addNodeAddress(validatorId, nodeAddress);\n        emit NodeAddressWasAdded(validatorId, nodeAddress);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Links a given node address.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the given signature must be valid.",
+            "     * - the address must not be assigned to a validator.",
+            "     *",
+            "     * Emits NodeAddressWasAdded event.",
+            "     *",
+            "     * @param nodeAddress address",
+            "     * @param sig bytes signature of validator Id by node operator.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Links a given node address.\n     *\n     * Requirements:\n     *\n     * - the given signature must be valid.\n     * - the address must not be assigned to a validator.\n     *\n     * Emits NodeAddressWasAdded event.\n     *\n     * @param nodeAddress address\n     * @param sig bytes signature of validator Id by node operator.\n     */\n",
+        "@dev": "Links a given node address. * * Requirements: * * - the given signature must be valid. * - the address must not be assigned to a validator. * * Emits NodeAddressWasAdded event.",
+        "@param1": "nodeAddress address",
+        "@param2": "sig bytes signature of validator Id by node operator.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unlinkNodeAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function unlinkNodeAddress(address nodeAddress) external {\n        // check Validator Exist inside getValidatorId\n        uint validatorId = getValidatorId(msg.sender);\n\n        _removeNodeAddress(validatorId, nodeAddress);\n        emit NodeAddressWasRemoved(validatorId, nodeAddress);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Unlinks a given node address from a validator.",
+            "     *",
+            "     * Emits NodeAddressWasRemoved event.",
+            "     *",
+            "     * @param nodeAddress address",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Unlinks a given node address from a validator.\n     *\n     * Emits NodeAddressWasRemoved event.\n     *\n     * @param nodeAddress address\n     */\n",
+        "@dev": "Unlinks a given node address from a validator. * * Emits NodeAddressWasRemoved event.",
+        "@param1": "nodeAddress address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setValidatorMDA",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "minimumDelegationAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function setValidatorMDA(uint minimumDelegationAmount) external {\n        // check Validator Exist inside getValidatorId\n        uint validatorId = getValidatorId(msg.sender);\n\n        validators[validatorId].minimumDelegationAmount = minimumDelegationAmount;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setValidatorName",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newName",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function setValidatorName(string calldata newName) external {\n        // check Validator Exist inside getValidatorId\n        uint validatorId = getValidatorId(msg.sender);\n\n        validators[validatorId].name = newName;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a validator to set a new validator name.",
+            "     *",
+            "     * @param newName string",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a validator to set a new validator name.\n     *\n     * @param newName string\n     */\n",
+        "@dev": "Allows a validator to set a new validator name.",
+        "@param1": "newName string",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setValidatorDescription",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newDescription",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function setValidatorDescription(string calldata newDescription) external {\n        // check Validator Exist inside getValidatorId\n        uint validatorId = getValidatorId(msg.sender);\n\n        validators[validatorId].description = newDescription;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a validator to set a new validator description.",
+            "     *",
+            "     * @param newDescription string",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a validator to set a new validator description.\n     *\n     * @param newDescription string\n     */\n",
+        "@dev": "Allows a validator to set a new validator description.",
+        "@param1": "newDescription string",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "startAcceptingNewRequests",
+        "visibility": "external",
+        "args": [],
+        "func": "function startAcceptingNewRequests() external {\n        // check Validator Exist inside getValidatorId\n        uint validatorId = getValidatorId(msg.sender);\n        require(!isAcceptingNewRequests(validatorId), \"Accepting request is already enabled\");\n\n        validators[validatorId].acceptNewRequests = true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a validator to start accepting new delegation requests.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - validator must not have already enabled accepting new requests",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a validator to start accepting new delegation requests.\n     *\n     * Requirements:\n     *\n     * - validator must not have already enabled accepting new requests\n     */\n",
+        "@dev": "Allows a validator to start accepting new delegation requests. * * Requirements: * * - validator must not have already enabled accepting new requests",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stopAcceptingNewRequests",
+        "visibility": "external",
+        "args": [],
+        "func": "function stopAcceptingNewRequests() external {\n        // check Validator Exist inside getValidatorId\n        uint validatorId = getValidatorId(msg.sender);\n        require(isAcceptingNewRequests(validatorId), \"Accepting request is already disabled\");\n\n        validators[validatorId].acceptNewRequests = false;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows a validator to stop accepting new delegation requests.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - validator must not have already stopped accepting new requests",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows a validator to stop accepting new delegation requests.\n     *\n     * Requirements:\n     *\n     * - validator must not have already stopped accepting new requests\n     */\n",
+        "@dev": "Allows a validator to stop accepting new delegation requests. * * Requirements: * * - validator must not have already stopped accepting new requests",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAndUpdateBondAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getAndUpdateBondAmount(uint validatorId)\n        external\n        returns (uint)\n    {\n        DelegationController delegationController = DelegationController(\n            contractManager.getContract(\"DelegationController\")\n        );\n        return delegationController.getAndUpdateDelegatedByHolderToValidatorNow(\n            getValidator(validatorId).validatorAddress,\n            validatorId\n        );\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the amount of validator bond.",
+            "     *",
+            "     * @param validatorId uint ID of validator to return the amount of locked funds",
+            "     * @return bondAmount uint the amount of self-delegated funds by the validator",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the amount of validator bond.\n     *\n     * @param validatorId uint ID of validator to return the amount of locked funds\n     * @return bondAmount uint the amount of self-delegated funds by the validator\n    */\n",
+        "@dev": "Returns the amount of validator bond.",
+        "@param1": "validatorId uint ID of validator to return the amount of locked funds",
+        "@return1": "bondAmount uint the amount of self-delegated funds by the validator",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMyNodesAddresses",
+        "visibility": "external",
+        "args": [],
+        "func": "function getMyNodesAddresses() external view returns (address[] memory) {\n        return getNodeAddresses(getValidatorId(msg.sender));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTrustedValidators",
+        "visibility": "external",
+        "args": [],
+        "func": "function getTrustedValidators() external view returns (uint[] memory) {\n        return trustedValidatorsList;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns a list of trusted validators.",
+            "     *",
+            "     * @return uint[] trusted validators",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns a list of trusted validators.\n     *\n     * @return uint[] trusted validators\n     */\n",
+        "@dev": "Returns a list of trusted validators.",
+        "@return1": "uint[] trusted validators",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkMinimumDelegation",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function checkMinimumDelegation(uint validatorId, uint amount)\n        external\n        view\n        checkValidatorExists(validatorId)\n        allow(\"DelegationController\")\n        returns (bool)\n    {\n        return validators[validatorId].minimumDelegationAmount <= amount ? true : false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkValidatorAddressToId",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorAddress",
+                "type": "address"
+            },
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function checkValidatorAddressToId(address validatorAddress, uint validatorId)\n        external\n        view\n        returns (bool)\n    {\n        return getValidatorId(validatorAddress) == validatorId ? true : false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getValidatorIdByNodeAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "nodeAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function getValidatorIdByNodeAddress(address nodeAddress) external view returns (uint validatorId) {\n        validatorId = _nodeAddressToValidatorId[nodeAddress];\n        require(validatorId != 0, \"Node address is not assigned to a validator\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isAuthorizedValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function isAuthorizedValidator(uint validatorId) external view checkValidatorExists(validatorId) returns (bool) {\n        return _trustedValidators[validatorId] || !useWhitelist;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contractManagerAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address contractManagerAddress) public override initializer {\n        Permissions.initialize(contractManagerAddress);\n        useWhitelist = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNodeAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getNodeAddresses(uint validatorId) public view returns (address[] memory) {\n        return _nodeAddresses[validatorId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "validatorExists",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function validatorExists(uint validatorId) public view returns (bool) {\n        return validatorId <= numberOfValidators && validatorId != 0;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "validatorAddressExists",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "validatorAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function validatorAddressExists(address validatorAddress) public view returns (bool) {\n        return _validatorAddressToId[validatorAddress] != 0;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkIfValidatorAddressExists",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "validatorAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function checkIfValidatorAddressExists(address validatorAddress) public view {\n        require(validatorAddressExists(validatorAddress), \"Validator with given address does not exist\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getValidator",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getValidator(uint validatorId) public view checkValidatorExists(validatorId) returns (Validator memory) {\n        return validators[validatorId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getValidatorId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "validatorAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function getValidatorId(address validatorAddress) public view returns (uint) {\n        checkIfValidatorAddressExists(validatorAddress);\n        return _validatorAddressToId[validatorAddress];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isAcceptingNewRequests",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "validatorId",
+                "type": "uint"
+            }
+        ],
+        "func": "function isAcceptingNewRequests(uint validatorId) public view checkValidatorExists(validatorId) returns (bool) {\n        return validators[validatorId].acceptNewRequests;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

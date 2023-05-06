@@ -1,0 +1,3482 @@
+[
+    {
+        "transactions": 39666,
+        "function_num": 148
+    },
+    {
+        "name": "getUint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getUint(bytes32 key) public view returns (uint256) {\n        return _uintStorage[key];\n    }",
+        "comments": [
+            "",
+            "    // *** Getter Methods ***",
+            "    "
+        ],
+        "comt": "\n    // *** Getter Methods ***\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getString(bytes32 key) public view returns (string memory) {\n        return _stringStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getAddress(bytes32 key) public view returns (address) {\n        return _addressStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBytes(bytes32 key) public view returns (bytes memory) {\n        return _bytesStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBool(bytes32 key) public view returns (bool) {\n        return _boolStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getInt(bytes32 key) public view returns (int256) {\n        return _intStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), allowance[sender][_msgSender()] - amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] + addedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] - subtractedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), 'ZERO_ADDR');\n\n        emit OwnershipTransferred(owner, newOwner);\n        owner = newOwner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getUint(bytes32 key) public view returns (uint256) {\n        return _uintStorage[key];\n    }",
+        "comments": [
+            "",
+            "    // *** Getter Methods ***",
+            "    "
+        ],
+        "comt": "\n    // *** Getter Methods ***\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getString(bytes32 key) public view returns (string memory) {\n        return _stringStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getAddress(bytes32 key) public view returns (address) {\n        return _addressStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBytes(bytes32 key) public view returns (bytes memory) {\n        return _bytesStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBool(bytes32 key) public view returns (bool) {\n        return _boolStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getInt(bytes32 key) public view returns (int256) {\n        return _intStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function depositAddress(bytes32 salt) public view returns (address) {\n        // This would be easier, cheaper, simpler, and result in  globally consistent deposit addresses for any salt (all chains, all tokens).\n        // return address(uint160(uint256(keccak256(abi.encodePacked(bytes32(0x000000000000000000000000000000000000000000000000000000000000dead), salt)))));\n\n        /* Convert a hash which is bytes32 to an address which is 20-byte long\n        according to https://docs.soliditylang.org/en/v0.8.1/control-structures.html?highlight=create2#salted-contract-creations-create2 */\n        return\n            address(\n                uint160(\n                    uint256(\n                        keccak256(\n                            abi.encodePacked(\n                                bytes1(0xff),\n                                owner,\n                                salt,\n                                keccak256(abi.encodePacked(type(Burner).creationCode, abi.encode(address(this)), salt))\n                            )\n                        )\n                    )\n                )\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address account, uint256 amount) public onlyOwner {\n        uint256 capacity = cap;\n        require(capacity == 0 || totalSupply + amount <= capacity, 'CAP_EXCEEDED');\n\n        _mint(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function burn(bytes32 salt) public onlyOwner {\n        address account = depositAddress(salt);\n        _burn(account, balanceOf[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allTokensFrozen",
+        "visibility": "public",
+        "args": [],
+        "func": "function allTokensFrozen() public view override returns (bool) {\n        return getBool(KEY_ALL_TOKENS_FROZEN);\n    }",
+        "comments": [
+            "/***********\\",
+            "    |* Getters *|",
+            "    \\***********/",
+            ""
+        ],
+        "comt": "/***********\\\n    |* Getters *|\n    \\***********/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "implementation",
+        "visibility": "public",
+        "args": [],
+        "func": "function implementation() public view override returns (address) {\n        return getAddress(KEY_IMPLEMENTATION);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function tokenAddresses(string memory symbol) public view override returns (address) {\n        return getAddress(_getTokenAddressKey(symbol));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenFrozen",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function tokenFrozen(string memory symbol) public view override returns (bool) {\n        return getBool(_getFreezeTokenKey(symbol));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isCommandExecuted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "commandId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function isCommandExecuted(bytes32 commandId) public view override returns (bool) {\n        return getBool(_getIsCommandExecutedKey(commandId));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freezeToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function freezeToken(string memory symbol) external override onlyAdmin {\n        _setBool(_getFreezeTokenKey(symbol), true);\n\n        emit TokenFrozen(symbol);\n    }",
+        "comments": [
+            "/*******************\\",
+            "    |* Admin Functions *|",
+            "    \\*******************/",
+            ""
+        ],
+        "comt": "/*******************\\\n    |* Admin Functions *|\n    \\*******************/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreezeToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function unfreezeToken(string memory symbol) external override onlyAdmin {\n        _setBool(_getFreezeTokenKey(symbol), false);\n\n        emit TokenUnfrozen(symbol);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freezeAllTokens",
+        "visibility": "external",
+        "args": [],
+        "func": "function freezeAllTokens() external override onlyAdmin {\n        _setBool(KEY_ALL_TOKENS_FROZEN, true);\n\n        emit AllTokensFrozen();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreezeAllTokens",
+        "visibility": "external",
+        "args": [],
+        "func": "function unfreezeAllTokens() external override onlyAdmin {\n        _setBool(KEY_ALL_TOKENS_FROZEN, false);\n\n        emit AllTokensUnfrozen();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "name": "setupParams",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function upgrade(address newImplementation, bytes calldata setupParams) external override onlyAdmin {\n        emit Upgraded(newImplementation);\n\n        // AUDIT: If `newImplementation.setup` performs `selfdestruct`, it will result in the loss of _this_ implementation (thereby losing the gateway)\n        //        if `upgrade` is entered within the context of _this_ implementation itself.\n        (bool success, ) = newImplementation.delegatecall(\n            abi.encodeWithSelector(IAxelarGateway.setup.selector, setupParams)\n        );\n        require(success, 'SETUP_FAILED');\n\n        _setImplementation(newImplementation);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), allowance[sender][_msgSender()] - amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] + addedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] - subtractedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), 'ZERO_ADDR');\n\n        emit OwnershipTransferred(owner, newOwner);\n        owner = newOwner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getUint(bytes32 key) public view returns (uint256) {\n        return _uintStorage[key];\n    }",
+        "comments": [
+            "",
+            "    // *** Getter Methods ***",
+            "    "
+        ],
+        "comt": "\n    // *** Getter Methods ***\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getString(bytes32 key) public view returns (string memory) {\n        return _stringStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getAddress(bytes32 key) public view returns (address) {\n        return _addressStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBytes(bytes32 key) public view returns (bytes memory) {\n        return _bytesStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBool(bytes32 key) public view returns (bool) {\n        return _boolStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getInt(bytes32 key) public view returns (int256) {\n        return _intStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function depositAddress(bytes32 salt) public view returns (address) {\n        // This would be easier, cheaper, simpler, and result in  globally consistent deposit addresses for any salt (all chains, all tokens).\n        // return address(uint160(uint256(keccak256(abi.encodePacked(bytes32(0x000000000000000000000000000000000000000000000000000000000000dead), salt)))));\n\n        /* Convert a hash which is bytes32 to an address which is 20-byte long\n        according to https://docs.soliditylang.org/en/v0.8.1/control-structures.html?highlight=create2#salted-contract-creations-create2 */\n        return\n            address(\n                uint160(\n                    uint256(\n                        keccak256(\n                            abi.encodePacked(\n                                bytes1(0xff),\n                                owner,\n                                salt,\n                                keccak256(abi.encodePacked(type(Burner).creationCode, abi.encode(address(this)), salt))\n                            )\n                        )\n                    )\n                )\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address account, uint256 amount) public onlyOwner {\n        uint256 capacity = cap;\n        require(capacity == 0 || totalSupply + amount <= capacity, 'CAP_EXCEEDED');\n\n        _mint(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function burn(bytes32 salt) public onlyOwner {\n        address account = depositAddress(salt);\n        _burn(account, balanceOf[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allTokensFrozen",
+        "visibility": "public",
+        "args": [],
+        "func": "function allTokensFrozen() public view override returns (bool) {\n        return getBool(KEY_ALL_TOKENS_FROZEN);\n    }",
+        "comments": [
+            "/***********\\",
+            "    |* Getters *|",
+            "    \\***********/",
+            ""
+        ],
+        "comt": "/***********\\\n    |* Getters *|\n    \\***********/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "implementation",
+        "visibility": "public",
+        "args": [],
+        "func": "function implementation() public view override returns (address) {\n        return getAddress(KEY_IMPLEMENTATION);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function tokenAddresses(string memory symbol) public view override returns (address) {\n        return getAddress(_getTokenAddressKey(symbol));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenFrozen",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function tokenFrozen(string memory symbol) public view override returns (bool) {\n        return getBool(_getFreezeTokenKey(symbol));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isCommandExecuted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "commandId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function isCommandExecuted(bytes32 commandId) public view override returns (bool) {\n        return getBool(_getIsCommandExecutedKey(commandId));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freezeToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function freezeToken(string memory symbol) external override onlyAdmin {\n        _setBool(_getFreezeTokenKey(symbol), true);\n\n        emit TokenFrozen(symbol);\n    }",
+        "comments": [
+            "/*******************\\",
+            "    |* Admin Functions *|",
+            "    \\*******************/",
+            ""
+        ],
+        "comt": "/*******************\\\n    |* Admin Functions *|\n    \\*******************/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreezeToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function unfreezeToken(string memory symbol) external override onlyAdmin {\n        _setBool(_getFreezeTokenKey(symbol), false);\n\n        emit TokenUnfrozen(symbol);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freezeAllTokens",
+        "visibility": "external",
+        "args": [],
+        "func": "function freezeAllTokens() external override onlyAdmin {\n        _setBool(KEY_ALL_TOKENS_FROZEN, true);\n\n        emit AllTokensFrozen();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreezeAllTokens",
+        "visibility": "external",
+        "args": [],
+        "func": "function unfreezeAllTokens() external override onlyAdmin {\n        _setBool(KEY_ALL_TOKENS_FROZEN, false);\n\n        emit AllTokensUnfrozen();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "name": "setupParams",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function upgrade(address newImplementation, bytes calldata setupParams) external override onlyAdmin {\n        emit Upgraded(newImplementation);\n\n        // AUDIT: If `newImplementation.setup` performs `selfdestruct`, it will result in the loss of _this_ implementation (thereby losing the gateway)\n        //        if `upgrade` is entered within the context of _this_ implementation itself.\n        (bool success, ) = newImplementation.delegatecall(\n            abi.encodeWithSelector(IAxelarGateway.setup.selector, setupParams)\n        );\n        require(success, 'SETUP_FAILED');\n\n        _setImplementation(newImplementation);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owners",
+        "visibility": "public",
+        "args": [],
+        "func": "function owners() public view override returns (address[] memory results) {\n        uint256 ownerEpoch = _ownerEpoch();\n        uint256 ownerCount = _getOwnerCount(ownerEpoch);\n        results = new address[](ownerCount);\n\n        for (uint256 i; i < ownerCount; i++) {\n            results[i] = _getOwner(ownerEpoch, i);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns the array of owners within the current `ownerEpoch`.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns the array of owners within the current `ownerEpoch`.\n    ",
+        "@dev": "Returns the array of owners within the current `ownerEpoch`.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "operators",
+        "visibility": "public",
+        "args": [],
+        "func": "function operators() public view override returns (address[] memory results) {\n        uint256 operatorEpoch = _operatorEpoch();\n        uint256 operatorCount = _getOperatorCount(operatorEpoch);\n        results = new address[](operatorCount);\n\n        for (uint256 i; i < operatorCount; i++) {\n            results[i] = _getOperator(operatorEpoch, i);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns the array of operators within the current `operatorEpoch`.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns the array of operators within the current `operatorEpoch`.\n    ",
+        "@dev": "Returns the array of operators within the current `operatorEpoch`.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deployToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function deployToken(bytes calldata params) external onlySelf {\n        (string memory name, string memory symbol, uint8 decimals, uint256 cap) = abi.decode(\n            params,\n            (string, string, uint8, uint256)\n        );\n\n        _deployToken(name, symbol, decimals, cap);\n    }",
+        "comments": [
+            "/**********************\\",
+            "    |* Self Functionality *|",
+            "    \\**********************/",
+            ""
+        ],
+        "comt": "/**********************\\\n    |* Self Functionality *|\n    \\**********************/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function mintToken(bytes calldata params) external onlySelf {\n        (string memory symbol, address account, uint256 amount) = abi.decode(params, (string, address, uint256));\n\n        _mintToken(symbol, account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function burnToken(bytes calldata params) external onlySelf {\n        (string memory symbol, bytes32 salt) = abi.decode(params, (string, bytes32));\n\n        _burnToken(symbol, salt);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function transferOwnership(bytes calldata params) external onlySelf {\n        (address[] memory newOwners, uint256 newThreshold) = abi.decode(params, (address[], uint256));\n\n        uint256 ownerEpoch = _ownerEpoch();\n\n        emit OwnershipTransferred(owners(), _getOwnerThreshold(ownerEpoch), newOwners, newThreshold);\n\n        _setOwnerEpoch(++ownerEpoch);\n        _setOwners(ownerEpoch, newOwners, newThreshold);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOperatorship",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function transferOperatorship(bytes calldata params) external onlySelf {\n        (address[] memory newOperators, uint256 newThreshold) = abi.decode(params, (address[], uint256));\n\n        uint256 ownerEpoch = _ownerEpoch();\n\n        emit OperatorshipTransferred(operators(), _getOperatorThreshold(ownerEpoch), newOperators, newThreshold);\n\n        uint256 operatorEpoch = _operatorEpoch();\n        _setOperatorEpoch(++operatorEpoch);\n        _setOperators(operatorEpoch, newOperators, newThreshold);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setup",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function setup(bytes calldata params) external override {\n        // Prevent setup from being called on a non-proxy (the implementation).\n        require(implementation() != address(0), 'NOT_PROXY');\n\n        (\n            address[] memory adminAddresses,\n            uint256 adminThreshold,\n            address[] memory ownerAddresses,\n            uint256 ownerThreshold,\n            address[] memory operatorAddresses,\n            uint256 operatorThreshold\n        ) = abi.decode(params, (address[], uint256, address[], uint256, address[], uint256));\n\n        uint256 adminEpoch = _adminEpoch() + uint256(1);\n        _setAdminEpoch(adminEpoch);\n        _setAdmins(adminEpoch, adminAddresses, adminThreshold);\n\n        uint256 ownerEpoch = _ownerEpoch() + uint256(1);\n        _setOwnerEpoch(ownerEpoch);\n        _setOwners(ownerEpoch, ownerAddresses, ownerThreshold);\n\n        uint256 operatorEpoch = _operatorEpoch() + uint256(1);\n        _setOperatorEpoch(operatorEpoch);\n        _setOperators(operatorEpoch, operatorAddresses, operatorThreshold);\n\n        emit OwnershipTransferred(new address[](uint256(0)), uint256(0), ownerAddresses, ownerThreshold);\n        emit OperatorshipTransferred(new address[](uint256(0)), uint256(0), operatorAddresses, operatorThreshold);\n    }",
+        "comments": [
+            "/**************************\\",
+            "    |* External Functionality *|",
+            "    \\**************************/",
+            ""
+        ],
+        "comt": "/**************************\\\n    |* External Functionality *|\n    \\**************************/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "execute",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "input",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function execute(bytes calldata input) external override {\n        (bytes memory data, bytes[] memory signatures) = abi.decode(input, (bytes, bytes[]));\n\n        _execute(data, signatures);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getUint(bytes32 key) public view returns (uint256) {\n        return _uintStorage[key];\n    }",
+        "comments": [
+            "",
+            "    // *** Getter Methods ***",
+            "    "
+        ],
+        "comt": "\n    // *** Getter Methods ***\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getString(bytes32 key) public view returns (string memory) {\n        return _stringStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getAddress(bytes32 key) public view returns (address) {\n        return _addressStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBytes(bytes32 key) public view returns (bytes memory) {\n        return _bytesStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBool(bytes32 key) public view returns (bool) {\n        return _boolStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getInt(bytes32 key) public view returns (int256) {\n        return _intStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getUint(bytes32 key) public view returns (uint256) {\n        return _uintStorage[key];\n    }",
+        "comments": [
+            "",
+            "    // *** Getter Methods ***",
+            "    "
+        ],
+        "comt": "\n    // *** Getter Methods ***\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getString(bytes32 key) public view returns (string memory) {\n        return _stringStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getAddress(bytes32 key) public view returns (address) {\n        return _addressStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBytes(bytes32 key) public view returns (bytes memory) {\n        return _bytesStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBool(bytes32 key) public view returns (bool) {\n        return _boolStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getInt(bytes32 key) public view returns (int256) {\n        return _intStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), allowance[sender][_msgSender()] - amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] + addedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] - subtractedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), 'ZERO_ADDR');\n\n        emit OwnershipTransferred(owner, newOwner);\n        owner = newOwner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function depositAddress(bytes32 salt) public view returns (address) {\n        // This would be easier, cheaper, simpler, and result in  globally consistent deposit addresses for any salt (all chains, all tokens).\n        // return address(uint160(uint256(keccak256(abi.encodePacked(bytes32(0x000000000000000000000000000000000000000000000000000000000000dead), salt)))));\n\n        /* Convert a hash which is bytes32 to an address which is 20-byte long\n        according to https://docs.soliditylang.org/en/v0.8.1/control-structures.html?highlight=create2#salted-contract-creations-create2 */\n        return\n            address(\n                uint160(\n                    uint256(\n                        keccak256(\n                            abi.encodePacked(\n                                bytes1(0xff),\n                                owner,\n                                salt,\n                                keccak256(abi.encodePacked(type(Burner).creationCode, abi.encode(address(this)), salt))\n                            )\n                        )\n                    )\n                )\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address account, uint256 amount) public onlyOwner {\n        uint256 capacity = cap;\n        require(capacity == 0 || totalSupply + amount <= capacity, 'CAP_EXCEEDED');\n\n        _mint(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function burn(bytes32 salt) public onlyOwner {\n        address account = depositAddress(salt);\n        _burn(account, balanceOf[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allTokensFrozen",
+        "visibility": "public",
+        "args": [],
+        "func": "function allTokensFrozen() public view override returns (bool) {\n        return getBool(KEY_ALL_TOKENS_FROZEN);\n    }",
+        "comments": [
+            "/***********\\",
+            "    |* Getters *|",
+            "    \\***********/",
+            ""
+        ],
+        "comt": "/***********\\\n    |* Getters *|\n    \\***********/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "implementation",
+        "visibility": "public",
+        "args": [],
+        "func": "function implementation() public view override returns (address) {\n        return getAddress(KEY_IMPLEMENTATION);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function tokenAddresses(string memory symbol) public view override returns (address) {\n        return getAddress(_getTokenAddressKey(symbol));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenFrozen",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function tokenFrozen(string memory symbol) public view override returns (bool) {\n        return getBool(_getFreezeTokenKey(symbol));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isCommandExecuted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "commandId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function isCommandExecuted(bytes32 commandId) public view override returns (bool) {\n        return getBool(_getIsCommandExecutedKey(commandId));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freezeToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function freezeToken(string memory symbol) external override onlyAdmin {\n        _setBool(_getFreezeTokenKey(symbol), true);\n\n        emit TokenFrozen(symbol);\n    }",
+        "comments": [
+            "/*******************\\",
+            "    |* Admin Functions *|",
+            "    \\*******************/",
+            ""
+        ],
+        "comt": "/*******************\\\n    |* Admin Functions *|\n    \\*******************/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreezeToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "symbol",
+                "type": "string memory"
+            }
+        ],
+        "func": "function unfreezeToken(string memory symbol) external override onlyAdmin {\n        _setBool(_getFreezeTokenKey(symbol), false);\n\n        emit TokenUnfrozen(symbol);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freezeAllTokens",
+        "visibility": "external",
+        "args": [],
+        "func": "function freezeAllTokens() external override onlyAdmin {\n        _setBool(KEY_ALL_TOKENS_FROZEN, true);\n\n        emit AllTokensFrozen();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreezeAllTokens",
+        "visibility": "external",
+        "args": [],
+        "func": "function unfreezeAllTokens() external override onlyAdmin {\n        _setBool(KEY_ALL_TOKENS_FROZEN, false);\n\n        emit AllTokensUnfrozen();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "name": "setupParams",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function upgrade(address newImplementation, bytes calldata setupParams) external override onlyAdmin {\n        emit Upgraded(newImplementation);\n\n        // AUDIT: If `newImplementation.setup` performs `selfdestruct`, it will result in the loss of _this_ implementation (thereby losing the gateway)\n        //        if `upgrade` is entered within the context of _this_ implementation itself.\n        (bool success, ) = newImplementation.delegatecall(\n            abi.encodeWithSelector(IAxelarGateway.setup.selector, setupParams)\n        );\n        require(success, 'SETUP_FAILED');\n\n        _setImplementation(newImplementation);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owners",
+        "visibility": "public",
+        "args": [],
+        "func": "function owners() public view override returns (address[] memory results) {\n        uint256 ownerEpoch = _ownerEpoch();\n        uint256 ownerCount = _getOwnerCount(ownerEpoch);\n        results = new address[](ownerCount);\n\n        for (uint256 i; i < ownerCount; i++) {\n            results[i] = _getOwner(ownerEpoch, i);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns the array of owners within the current `ownerEpoch`.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns the array of owners within the current `ownerEpoch`.\n    ",
+        "@dev": "Returns the array of owners within the current `ownerEpoch`.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "operators",
+        "visibility": "public",
+        "args": [],
+        "func": "function operators() public view override returns (address[] memory results) {\n        uint256 operatorEpoch = _operatorEpoch();\n        uint256 operatorCount = _getOperatorCount(operatorEpoch);\n        results = new address[](operatorCount);\n\n        for (uint256 i; i < operatorCount; i++) {\n            results[i] = _getOperator(operatorEpoch, i);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns the array of operators within the current `operatorEpoch`.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns the array of operators within the current `operatorEpoch`.\n    ",
+        "@dev": "Returns the array of operators within the current `operatorEpoch`.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deployToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function deployToken(bytes calldata params) external onlySelf {\n        (string memory name, string memory symbol, uint8 decimals, uint256 cap) = abi.decode(\n            params,\n            (string, string, uint8, uint256)\n        );\n\n        _deployToken(name, symbol, decimals, cap);\n    }",
+        "comments": [
+            "/**********************\\",
+            "    |* Self Functionality *|",
+            "    \\**********************/",
+            ""
+        ],
+        "comt": "/**********************\\\n    |* Self Functionality *|\n    \\**********************/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function mintToken(bytes calldata params) external onlySelf {\n        (string memory symbol, address account, uint256 amount) = abi.decode(params, (string, address, uint256));\n\n        _mintToken(symbol, account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function burnToken(bytes calldata params) external onlySelf {\n        (string memory symbol, bytes32 salt) = abi.decode(params, (string, bytes32));\n\n        _burnToken(symbol, salt);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function transferOwnership(bytes calldata params) external onlySelf {\n        (address[] memory newOwners, uint256 newThreshold) = abi.decode(params, (address[], uint256));\n\n        uint256 ownerEpoch = _ownerEpoch();\n\n        emit OwnershipTransferred(owners(), _getOwnerThreshold(ownerEpoch), newOwners, newThreshold);\n\n        _setOwnerEpoch(++ownerEpoch);\n        _setOwners(ownerEpoch, newOwners, newThreshold);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOperatorship",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function transferOperatorship(bytes calldata params) external onlySelf {\n        (address[] memory newOperators, uint256 newThreshold) = abi.decode(params, (address[], uint256));\n\n        uint256 ownerEpoch = _ownerEpoch();\n\n        emit OperatorshipTransferred(operators(), _getOperatorThreshold(ownerEpoch), newOperators, newThreshold);\n\n        uint256 operatorEpoch = _operatorEpoch();\n        _setOperatorEpoch(++operatorEpoch);\n        _setOperators(operatorEpoch, newOperators, newThreshold);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setup",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function setup(bytes calldata params) external override {\n        // Prevent setup from being called on a non-proxy (the implementation).\n        require(implementation() != address(0), 'NOT_PROXY');\n\n        (\n            address[] memory adminAddresses,\n            uint256 adminThreshold,\n            address[] memory ownerAddresses,\n            uint256 ownerThreshold,\n            address[] memory operatorAddresses,\n            uint256 operatorThreshold\n        ) = abi.decode(params, (address[], uint256, address[], uint256, address[], uint256));\n\n        uint256 adminEpoch = _adminEpoch() + uint256(1);\n        _setAdminEpoch(adminEpoch);\n        _setAdmins(adminEpoch, adminAddresses, adminThreshold);\n\n        uint256 ownerEpoch = _ownerEpoch() + uint256(1);\n        _setOwnerEpoch(ownerEpoch);\n        _setOwners(ownerEpoch, ownerAddresses, ownerThreshold);\n\n        uint256 operatorEpoch = _operatorEpoch() + uint256(1);\n        _setOperatorEpoch(operatorEpoch);\n        _setOperators(operatorEpoch, operatorAddresses, operatorThreshold);\n\n        emit OwnershipTransferred(new address[](uint256(0)), uint256(0), ownerAddresses, ownerThreshold);\n        emit OperatorshipTransferred(new address[](uint256(0)), uint256(0), operatorAddresses, operatorThreshold);\n    }",
+        "comments": [
+            "/**************************\\",
+            "    |* External Functionality *|",
+            "    \\**************************/",
+            ""
+        ],
+        "comt": "/**************************\\\n    |* External Functionality *|\n    \\**************************/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "execute",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "input",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function execute(bytes calldata input) external override {\n        (bytes memory data, bytes[] memory signatures) = abi.decode(input, (bytes, bytes[]));\n\n        _execute(data, signatures);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setup",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "params",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function setup(bytes calldata params) external {}",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), allowance[sender][_msgSender()] - amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] + addedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] - subtractedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), 'ZERO_ADDR');\n\n        emit OwnershipTransferred(owner, newOwner);\n        owner = newOwner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getUint(bytes32 key) public view returns (uint256) {\n        return _uintStorage[key];\n    }",
+        "comments": [
+            "",
+            "    // *** Getter Methods ***",
+            "    "
+        ],
+        "comt": "\n    // *** Getter Methods ***\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getString(bytes32 key) public view returns (string memory) {\n        return _stringStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getAddress(bytes32 key) public view returns (address) {\n        return _addressStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBytes(bytes32 key) public view returns (bytes memory) {\n        return _bytesStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBool(bytes32 key) public view returns (bool) {\n        return _boolStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getInt(bytes32 key) public view returns (int256) {\n        return _intStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function depositAddress(bytes32 salt) public view returns (address) {\n        // This would be easier, cheaper, simpler, and result in  globally consistent deposit addresses for any salt (all chains, all tokens).\n        // return address(uint160(uint256(keccak256(abi.encodePacked(bytes32(0x000000000000000000000000000000000000000000000000000000000000dead), salt)))));\n\n        /* Convert a hash which is bytes32 to an address which is 20-byte long\n        according to https://docs.soliditylang.org/en/v0.8.1/control-structures.html?highlight=create2#salted-contract-creations-create2 */\n        return\n            address(\n                uint160(\n                    uint256(\n                        keccak256(\n                            abi.encodePacked(\n                                bytes1(0xff),\n                                owner,\n                                salt,\n                                keccak256(abi.encodePacked(type(Burner).creationCode, abi.encode(address(this)), salt))\n                            )\n                        )\n                    )\n                )\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address account, uint256 amount) public onlyOwner {\n        uint256 capacity = cap;\n        require(capacity == 0 || totalSupply + amount <= capacity, 'CAP_EXCEEDED');\n\n        _mint(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function burn(bytes32 salt) public onlyOwner {\n        address account = depositAddress(salt);\n        _burn(account, balanceOf[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), allowance[sender][_msgSender()] - amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] + addedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] - subtractedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), 'ZERO_ADDR');\n\n        emit OwnershipTransferred(owner, newOwner);\n        owner = newOwner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getUint(bytes32 key) public view returns (uint256) {\n        return _uintStorage[key];\n    }",
+        "comments": [
+            "",
+            "    // *** Getter Methods ***",
+            "    "
+        ],
+        "comt": "\n    // *** Getter Methods ***\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getString(bytes32 key) public view returns (string memory) {\n        return _stringStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getAddress(bytes32 key) public view returns (address) {\n        return _addressStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBytes(bytes32 key) public view returns (bytes memory) {\n        return _bytesStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBool(bytes32 key) public view returns (bool) {\n        return _boolStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getInt(bytes32 key) public view returns (int256) {\n        return _intStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function depositAddress(bytes32 salt) public view returns (address) {\n        // This would be easier, cheaper, simpler, and result in  globally consistent deposit addresses for any salt (all chains, all tokens).\n        // return address(uint160(uint256(keccak256(abi.encodePacked(bytes32(0x000000000000000000000000000000000000000000000000000000000000dead), salt)))));\n\n        /* Convert a hash which is bytes32 to an address which is 20-byte long\n        according to https://docs.soliditylang.org/en/v0.8.1/control-structures.html?highlight=create2#salted-contract-creations-create2 */\n        return\n            address(\n                uint160(\n                    uint256(\n                        keccak256(\n                            abi.encodePacked(\n                                bytes1(0xff),\n                                owner,\n                                salt,\n                                keccak256(abi.encodePacked(type(Burner).creationCode, abi.encode(address(this)), salt))\n                            )\n                        )\n                    )\n                )\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address account, uint256 amount) public onlyOwner {\n        uint256 capacity = cap;\n        require(capacity == 0 || totalSupply + amount <= capacity, 'CAP_EXCEEDED');\n\n        _mint(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function burn(bytes32 salt) public onlyOwner {\n        address account = depositAddress(salt);\n        _burn(account, balanceOf[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), allowance[sender][_msgSender()] - amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] + addedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, allowance[_msgSender()][spender] - subtractedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getUint(bytes32 key) public view returns (uint256) {\n        return _uintStorage[key];\n    }",
+        "comments": [
+            "",
+            "    // *** Getter Methods ***",
+            "    "
+        ],
+        "comt": "\n    // *** Getter Methods ***\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getString(bytes32 key) public view returns (string memory) {\n        return _stringStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getAddress(bytes32 key) public view returns (address) {\n        return _addressStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBytes(bytes32 key) public view returns (bytes memory) {\n        return _bytesStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getBool(bytes32 key) public view returns (bool) {\n        return _boolStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "key",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getInt(bytes32 key) public view returns (int256) {\n        return _intStorage[key];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), 'ZERO_ADDR');\n\n        emit OwnershipTransferred(owner, newOwner);\n        owner = newOwner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

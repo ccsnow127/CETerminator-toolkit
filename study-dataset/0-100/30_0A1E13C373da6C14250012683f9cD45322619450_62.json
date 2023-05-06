@@ -1,0 +1,730 @@
+[
+    {
+        "transactions": 62,
+        "function_num": 30
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return supply.current();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "quantity",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(uint256 quantity) public payable {\n        require(!paused, \"The contract is paused!\");\n        require(quantity + totalSupply() <= maxSupply, \"ERROR: Sold out\");\n            if(balanceOf(_msgSender()) == 0) {\n                require(msg.value >= price * (quantity - 1), \"ERROR: Incorrect value\");\n            } else {\n                require(msg.value >= price * quantity, \"ERROR: Incorrect value\");\n            }\n            _mintLoop(msg.sender, quantity);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "devMint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint"
+            }
+        ],
+        "func": "function devMint(address to, uint quantity) external onlyOwner {\n        require(quantity + totalSupply() <= maxSupply, \"ERROR: Sold out\");\n        _mintLoop(to, quantity);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "rate",
+                "type": "uint256"
+            },
+            {
+                "name": "tokenAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setRate(uint256 rate, address tokenAddress) external onlyOwner  {\n        rates[tokenAddress] = rate; // * 10 ** 18\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "collabMint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "qty",
+                "type": "uint"
+            },
+            {
+                "name": "tokenAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function collabMint(uint qty, address tokenAddress) external payable {\n        require(qty+ totalSupply() <= maxSupply, \"ERROR: Sold out\");\n        uint256 rate = rates[tokenAddress];\n        require(rate > 0, \"ERROR: Invalid Token\");\n        IERC20(tokenAddress).transferFrom(msg.sender, address(this), rate * qty);         //pay $clay or other currency\n        _mintLoop(_msgSender(), qty);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawERC20",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokAddress",
+                "type": "address"
+            },
+            {
+                "name": "treasuryWallet",
+                "type": "address"
+            },
+            {
+                "name": "amt",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdrawERC20(address _tokAddress, address treasuryWallet, uint256 amt) external onlyOwner {\n        IERC20(_tokAddress).transfer(treasuryWallet, amt); \n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawOwner",
+        "visibility": "external",
+        "args": [],
+        "func": "function withdrawOwner() external onlyOwner {\n        (bool os, ) = payable(owner()).call{value: address(this).balance}(\"\");\n        require(os);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPrice",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_p",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setPrice(uint256 _p) public onlyOwner {\n        price = _p;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUriPrefix",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_uriPrefix",
+                "type": "string memory"
+            }
+        ],
+        "func": "function setUriPrefix(string memory _uriPrefix) external onlyOwner {\n        uriPrefix = _uriPrefix;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 _tokenId)\n        public\n        view\n        virtual\n        override\n        returns (string memory)\n    {\n        require(\n        _exists(_tokenId),\n        \"ERC721Metadata: URI query for nonexistent token\"\n        );\n\n        string memory currentBaseURI = _baseURI();\n        return bytes(currentBaseURI).length > 0\n            ? string(abi.encodePacked(currentBaseURI, _tokenId.toString()))\n            : \"\";\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPaused",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_state",
+                "type": "bool"
+            }
+        ],
+        "func": "function setPaused(bool _state) public onlyOwner {\n        paused = _state;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMaxSupply",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_supply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setMaxSupply(uint256 _supply) external onlyOwner {\n        maxSupply = _supply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return\n            interfaceId == type(IERC721).interfaceId ||\n            interfaceId == type(IERC721Metadata).interfaceId ||\n            super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view virtual override returns (uint256) {\n        require(owner != address(0), \"ERC721: address zero is not a valid owner\");\n        return _balances[owner];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-balanceOf}.\n     */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view virtual override returns (address) {\n        address owner = _owners[tokenId];\n        require(owner != address(0), \"ERC721: invalid token ID\");\n        return owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-ownerOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-ownerOf}.\n     */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-name}.\n     */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-symbol}.\n     */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        _requireMinted(tokenId);\n\n        string memory baseURI = _baseURI();\n        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : \"\";\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-tokenURI}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-tokenURI}.\n     */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ERC721.ownerOf(tokenId);\n        require(to != owner, \"ERC721: approval to current owner\");\n\n        require(\n            _msgSender() == owner || isApprovedForAll(owner, _msgSender()),\n            \"ERC721: approve caller is not token owner nor approved for all\"\n        );\n\n        _approve(to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-approve}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-approve}.\n     */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view virtual override returns (address) {\n        _requireMinted(tokenId);\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-getApproved}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-getApproved}.\n     */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        _setApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: caller is not token owner nor approved\");\n\n        _transfer(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-transferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-transferFrom}.\n     */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId,\n        bytes memory data\n    ) public virtual override {\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: caller is not token owner nor approved\");\n        _safeTransfer(from, to, tokenId, data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC165).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

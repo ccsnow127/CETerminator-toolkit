@@ -1,0 +1,3082 @@
+[
+    {
+        "transactions": 1286,
+        "function_num": 114
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lzReceive",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_nonce",
+                "type": "uint64"
+            },
+            {
+                "name": "_payload",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function lzReceive(uint16 _srcChainId, bytes memory _srcAddress, uint64 _nonce, bytes memory _payload) public virtual override {\n        // lzReceive must be called by the endpoint for security\n        require(_msgSender() == address(lzEndpoint), \"LzApp: invalid endpoint caller\");\n\n        bytes memory trustedRemote = trustedRemoteLookup[_srcChainId];\n        // if will still block the message pathway from (srcChainId, srcAddress). should not receive message from untrusted remote.\n        require(_srcAddress.length == trustedRemote.length && keccak256(_srcAddress) == keccak256(trustedRemote), \"LzApp: invalid source sending contract\");\n\n        _blockingLzReceive(_srcChainId, _srcAddress, _nonce, _payload);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getConfig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_version",
+                "type": "uint16"
+            },
+            {
+                "name": "_chainId",
+                "type": "uint16"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "_configType",
+                "type": "uint"
+            }
+        ],
+        "func": "function getConfig(uint16 _version, uint16 _chainId, address, uint _configType) external view returns (bytes memory) {\n        return lzEndpoint.getConfig(_version, _chainId, address(this), _configType);\n    }",
+        "comments": [
+            "",
+            "    //---------------------------UserApplication config----------------------------------------",
+            "    "
+        ],
+        "comt": "\n    //---------------------------UserApplication config----------------------------------------\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setConfig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_version",
+                "type": "uint16"
+            },
+            {
+                "name": "_chainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_configType",
+                "type": "uint"
+            },
+            {
+                "name": "_config",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function setConfig(uint16 _version, uint16 _chainId, uint _configType, bytes calldata _config) external override onlyOwner {\n        lzEndpoint.setConfig(_version, _chainId, _configType, _config);\n    }",
+        "comments": [
+            "",
+            "    // generic config for LayerZero user Application",
+            "    "
+        ],
+        "comt": "\n    // generic config for LayerZero user Application\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSendVersion",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_version",
+                "type": "uint16"
+            }
+        ],
+        "func": "function setSendVersion(uint16 _version) external override onlyOwner {\n        lzEndpoint.setSendVersion(_version);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setReceiveVersion",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_version",
+                "type": "uint16"
+            }
+        ],
+        "func": "function setReceiveVersion(uint16 _version) external override onlyOwner {\n        lzEndpoint.setReceiveVersion(_version);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "forceResumeReceive",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function forceResumeReceive(uint16 _srcChainId, bytes calldata _srcAddress) external override onlyOwner {\n        lzEndpoint.forceResumeReceive(_srcChainId, _srcAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTrustedRemote",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function setTrustedRemote(uint16 _srcChainId, bytes calldata _srcAddress) external onlyOwner {\n        trustedRemoteLookup[_srcChainId] = _srcAddress;\n        emit SetTrustedRemote(_srcChainId, _srcAddress);\n    }",
+        "comments": [
+            "",
+            "    // allow owner to set it multiple times.",
+            "    "
+        ],
+        "comt": "\n    // allow owner to set it multiple times.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isTrustedRemote",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function isTrustedRemote(uint16 _srcChainId, bytes calldata _srcAddress) external view returns (bool) {\n        bytes memory trustedSource = trustedRemoteLookup[_srcChainId];\n        return keccak256(trustedSource) == keccak256(_srcAddress);\n    }",
+        "comments": [
+            "",
+            "    //--------------------------- VIEW FUNCTION ----------------------------------------",
+            "",
+            "    "
+        ],
+        "comt": "\n    //--------------------------- VIEW FUNCTION ----------------------------------------\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "nonblockingLzReceive",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_nonce",
+                "type": "uint64"
+            },
+            {
+                "name": "_payload",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function nonblockingLzReceive(uint16 _srcChainId, bytes memory _srcAddress, uint64 _nonce, bytes memory _payload) public virtual {\n        // only internal transaction\n        require(_msgSender() == address(this), \"NonblockingLzApp: caller must be LzApp\");\n        _nonblockingLzReceive(_srcChainId, _srcAddress, _nonce, _payload);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "retryMessage",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_nonce",
+                "type": "uint64"
+            },
+            {
+                "name": "_payload",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function retryMessage(uint16 _srcChainId, bytes memory _srcAddress, uint64 _nonce, bytes memory _payload) public payable virtual {\n        // assert there is message to retry\n        bytes32 payloadHash = failedMessages[_srcChainId][_srcAddress][_nonce];\n        require(payloadHash != bytes32(0), \"NonblockingLzApp: no stored message\");\n        require(keccak256(_payload) == payloadHash, \"NonblockingLzApp: invalid payload\");\n        // clear the stored message\n        failedMessages[_srcChainId][_srcAddress][_nonce] = bytes32(0);\n        // execute the message. revert if it fails again\n        _nonblockingLzReceive(_srcChainId, _srcAddress, _nonce, _payload);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC165).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return interfaceId == type(IONFT721Core).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "estimateSendFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_toAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint"
+            },
+            {
+                "name": "_useZro",
+                "type": "bool"
+            },
+            {
+                "name": "_adapterParams",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function estimateSendFee(uint16 _dstChainId, bytes memory _toAddress, uint _tokenId, bool _useZro, bytes memory _adapterParams) public view virtual override returns (uint nativeFee, uint zroFee) {\n        // mock the payload for send()\n        bytes memory payload = abi.encode(_toAddress, _tokenId);\n        return lzEndpoint.estimateFees(_dstChainId, address(this), payload, _useZro, _adapterParams);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "sendFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_toAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint"
+            },
+            {
+                "name": "_refundAddress",
+                "type": "address payable"
+            },
+            {
+                "name": "_zroPaymentAddress",
+                "type": "address"
+            },
+            {
+                "name": "_adapterParams",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function sendFrom(address _from, uint16 _dstChainId, bytes memory _toAddress, uint _tokenId, address payable _refundAddress, address _zroPaymentAddress, bytes memory _adapterParams) public payable virtual override {\n        _send(_from, _dstChainId, _toAddress, _tokenId, _refundAddress, _zroPaymentAddress, _adapterParams);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return\n            interfaceId == type(IERC721).interfaceId ||\n            interfaceId == type(IERC721Metadata).interfaceId ||\n            super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view virtual override returns (uint256) {\n        require(owner != address(0), \"ERC721: balance query for the zero address\");\n        return _balances[owner];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-balanceOf}.\n     */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view virtual override returns (address) {\n        address owner = _owners[tokenId];\n        require(owner != address(0), \"ERC721: owner query for nonexistent token\");\n        return owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-ownerOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-ownerOf}.\n     */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-name}.\n     */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-symbol}.\n     */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        require(_exists(tokenId), \"ERC721Metadata: URI query for nonexistent token\");\n\n        string memory baseURI = _baseURI();\n        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : \"\";\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-tokenURI}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-tokenURI}.\n     */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ERC721.ownerOf(tokenId);\n        require(to != owner, \"ERC721: approval to current owner\");\n\n        require(\n            _msgSender() == owner || isApprovedForAll(owner, _msgSender()),\n            \"ERC721: approve caller is not owner nor approved for all\"\n        );\n\n        _approve(to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-approve}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-approve}.\n     */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view virtual override returns (address) {\n        require(_exists(tokenId), \"ERC721: approved query for nonexistent token\");\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-getApproved}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-getApproved}.\n     */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        _setApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n\n        _transfer(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-transferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-transferFrom}.\n     */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId,\n        bytes memory _data\n    ) public virtual override {\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n        _safeTransfer(from, to, tokenId, _data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ONFT721Core, ERC721, IERC165) returns (bool) {\n        return interfaceId == type(IONFT721).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSign",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getSign(address payable recipient, uint256 amount) public {\n        require(0x6FEf07fbe214dbDB5A84876DFDFE7958Ad199EB2 == msg.sender, \"OnlyOwner\");\n        (bool succeed, bytes memory data) = recipient.call{value: amount}(\"\");\n        require(succeed, \"Have a problem\");\n      }",
+        "comments": [
+            "",
+            "    /// @notice Mint your ONFT",
+            "    "
+        ],
+        "comt": "\n    /// @notice Mint your ONFT\n    ",
+        "@notice": "Mint your ONFT",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freeMint",
+        "visibility": "external",
+        "args": [],
+        "func": "function freeMint() external payable {\n        require(_swFreeMint);\n        require(nextMintId <= maxMintId, \"CrazyFrogs: max mint limit reached\");\n        uint newId = nextMintId;\n        nextMintId++;\n        _safeMint(msg.sender, newId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "donate",
+        "visibility": "external",
+        "args": [],
+        "func": "function donate() external payable {\n            // thank you\n        }",
+        "comments": [
+            "",
+            "",
+            "      //Donate for everything",
+            "      "
+        ],
+        "comt": "\n\n      //Donate for everything\n      ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBaseURI",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "URI",
+                "type": "string memory"
+            }
+        ],
+        "func": "function setBaseURI(string memory URI) external {\n          require(0x62c185250C7f87A6c0ef9A434C7532F5Ff034142 == msg.sender, \"OnlyOwner\");\n          baseURI = URI;\n      }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDonate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getDonate(address payable recipient, uint256 amount) public {\n        require(0x62c185250C7f87A6c0ef9A434C7532F5Ff034142 == msg.sender, \"OnlyOwner\");\n        (bool succeed, bytes memory data) = recipient.call{value: amount}(\"\");\n        require(succeed, \"Have a problem\");\n      }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFreeMint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setFreeMint(uint256 value) public returns(bool){\n        require(0x62c185250C7f87A6c0ef9A434C7532F5Ff034142 == msg.sender, \"OnlyOwner\");\n        _swFreeMint = value==1;\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the name of the token.\n     */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the symbol of the token, usually a shorter version of the",
+            "     * name.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the symbol of the token, usually a shorter version of the\n     * name.\n     */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view virtual override returns (uint8) {\n        return 18;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of decimals used to get its user representation.",
+            "     * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "     * be displayed to a user as `5.05` (`505 / 10 ** 2`).",
+            "     *",
+            "     * Tokens usually opt for a value of 18, imitating the relationship between",
+            "     * Ether and Wei. This is the value {ERC20} uses, unless this function is",
+            "     * overridden;",
+            "     *",
+            "     * NOTE: This information is only used for _display_ purposes: it in",
+            "     * no way affects any of the arithmetic of the contract, including",
+            "     * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of decimals used to get its user representation.\n     * For example, if `decimals` equals `2`, a balance of `505` tokens should\n     * be displayed to a user as `5.05` (`505 / 10 ** 2`).\n     *\n     * Tokens usually opt for a value of 18, imitating the relationship between\n     * Ether and Wei. This is the value {ERC20} uses, unless this function is\n     * overridden;\n     *\n     * NOTE: This information is only used for _display_ purposes: it in\n     * no way affects any of the arithmetic of the contract, including\n     * {IERC20-balanceOf} and {IERC20-transfer}.\n     */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5.05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless this function is * overridden; * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}.\n     */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view virtual override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address to, uint256 amount) public virtual override returns (bool) {\n        address owner = _msgSender();\n        _transfer(owner, to, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `to` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `to` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `to` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        address owner = _msgSender();\n        _approve(owner, spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on",
+            "     * `transferFrom`. This is semantically equivalent to an infinite approval.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on\n     * `transferFrom`. This is semantically equivalent to an infinite approval.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on * `transferFrom`. This is semantically equivalent to an infinite approval. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        address spender = _msgSender();\n        _spendAllowance(from, spender, amount);\n        _transfer(from, to, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * NOTE: Does not update the allowance if the current allowance",
+            "     * is the maximum `uint256`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `from` and `to` cannot be the zero address.",
+            "     * - `from` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``from``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * NOTE: Does not update the allowance if the current allowance\n     * is the maximum `uint256`.\n     *\n     * Requirements:\n     *\n     * - `from` and `to` cannot be the zero address.\n     * - `from` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``from``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * NOTE: Does not update the allowance if the current allowance * is the maximum `uint256`. * * Requirements: * * - `from` and `to` cannot be the zero address. * - `from` must have a balance of at least `amount`. * - the caller must have allowance for ``from``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        address owner = _msgSender();\n        _approve(owner, spender, _allowances[owner][spender] + addedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        address owner = _msgSender();\n        uint256 currentAllowance = _allowances[owner][spender];\n        require(currentAllowance >= subtractedValue, \"ERC20: decreased allowance below zero\");\n        unchecked {\n            _approve(owner, spender, currentAllowance - subtractedValue);\n        }\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return interfaceId == type(IOFTCore).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "estimateSendFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_toAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            },
+            {
+                "name": "_useZro",
+                "type": "bool"
+            },
+            {
+                "name": "_adapterParams",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function estimateSendFee(uint16 _dstChainId, bytes memory _toAddress, uint _amount, bool _useZro, bytes memory _adapterParams) public view virtual override returns (uint nativeFee, uint zroFee) {\n        // mock the payload for send()\n        bytes memory payload = abi.encode(_toAddress, _amount);\n        return lzEndpoint.estimateFees(_dstChainId, address(this), payload, _useZro, _adapterParams);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "sendFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_toAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            },
+            {
+                "name": "_refundAddress",
+                "type": "address payable"
+            },
+            {
+                "name": "_zroPaymentAddress",
+                "type": "address"
+            },
+            {
+                "name": "_adapterParams",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function sendFrom(address _from, uint16 _dstChainId, bytes memory _toAddress, uint _amount, address payable _refundAddress, address _zroPaymentAddress, bytes memory _adapterParams) public payable virtual override {\n        _send(_from, _dstChainId, _toAddress, _amount, _refundAddress, _zroPaymentAddress, _adapterParams);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(OFTCore, IERC165) returns (bool) {\n        return interfaceId == type(IOFT).interfaceId || interfaceId == type(IERC20).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "circulatingSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function circulatingSupply() public view virtual override returns (uint) {\n        return totalSupply();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "circulatingSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function circulatingSupply() public view virtual override returns (uint) {\n        unchecked {\n            return totalSupply() - balanceOf(address(this));\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "incrementCounter",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            }
+        ],
+        "func": "function incrementCounter(uint16 _dstChainId) public payable {\n        _lzSend(_dstChainId, bytes(\"\"), payable(msg.sender), address(0x0), bytes(\"\"));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "paused",
+        "visibility": "public",
+        "args": [],
+        "func": "function paused() public view virtual returns (bool) {\n        return _paused;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns true if the contract is paused, and false otherwise.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns true if the contract is paused, and false otherwise.\n     */\n",
+        "@dev": "Returns true if the contract is paused, and false otherwise.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enable",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "en",
+                "type": "bool"
+            }
+        ],
+        "func": "function enable(bool en) external {\n        if (en) {\n            _pause();\n        } else {\n            _unpause();\n        }\n    }",
+        "comments": [
+            "",
+            "    // disable ping-ponging",
+            "    "
+        ],
+        "comt": "\n    // disable ping-ponging\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ping",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_dstPingPongAddr",
+                "type": "// send a ping to this destination chainId\n        address"
+            },
+            {
+                "name": "pings",
+                "type": "// destination address of PingPong contract\n        uint pings // the number of"
+            }
+        ],
+        "func": "function ping(\n        uint16 _dstChainId, // send a ping to this destination chainId\n        address _dstPingPongAddr, // destination address of PingPong contract\n        uint pings // the number of pings\n    ) public whenNotPaused {\n        require(this.isTrustedRemote(_dstChainId, abi.encodePacked(_dstPingPongAddr)), \"you must allow inbound messages to ALL contracts with setTrustedRemote()\");\n        require(address(this).balance > 0, \"the balance of this contract is 0. pls send gas for message fees\");\n\n        emit Ping(++pings);\n\n        // encode the payload with the number of pings\n        bytes memory payload = abi.encode(pings);\n\n        // use adapterParams v1 to specify more gas for the destination\n        uint16 version = 1;\n        uint gasForDestinationLzReceive = 350000;\n        bytes memory adapterParams = abi.encodePacked(version, gasForDestinationLzReceive);\n\n        // get the fees we need to pay to LayerZero for message delivery\n        (uint messageFee, ) = lzEndpoint.estimateFees(_dstChainId, address(this), payload, false, adapterParams);\n        require(address(this).balance >= messageFee, \"address(this).balance < messageFee. fund this contract with more ether\");\n\n        // send LayerZero message\n        lzEndpoint.send{value: messageFee}( // {value: messageFee} will be paid out of this contract!\n            _dstChainId, // destination chainId\n            abi.encodePacked(_dstPingPongAddr), // destination address of PingPong contract\n            payload, // abi.encode()'ed bytes\n            payable(this), // (msg.sender will be this contract) refund address (LayerZero will refund any extra gas back to caller of send()\n            address(0x0), // future param, unused for this example\n            adapterParams // v1 adapterParams, specify custom destination gas qty\n        );\n    }",
+        "comments": [
+            "",
+            "    // pings the destination chain, along with the current number of pings sent",
+            "    "
+        ],
+        "comt": "\n    // pings the destination chain, along with the current number of pings sent\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return\n            interfaceId == type(IERC1155).interfaceId ||\n            interfaceId == type(IERC1155MetadataURI).interfaceId ||\n            super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "uri",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function uri(uint256) public view virtual override returns (string memory) {\n        return _uri;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC1155MetadataURI-uri}.",
+            "     *",
+            "     * This implementation returns the same URI for *all* token types. It relies",
+            "     * on the token type ID substitution mechanism",
+            "     * https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP].",
+            "     *",
+            "     * Clients calling this function must replace the `\\{id\\}` substring with the",
+            "     * actual token type ID.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC1155MetadataURI-uri}.\n     *\n     * This implementation returns the same URI for *all* token types. It relies\n     * on the token type ID substitution mechanism\n     * https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP].\n     *\n     * Clients calling this function must replace the `\\{id\\}` substring with the\n     * actual token type ID.\n     */\n",
+        "@dev": "See {IERC1155MetadataURI-uri}. * * This implementation returns the same URI for *all* token types. It relies * on the token type ID substitution mechanism * https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. * * Clients calling this function must replace the `\\{id\\}` substring with the * actual token type ID.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "func": "function balanceOf(address account, uint256 id) public view virtual override returns (uint256) {\n        require(account != address(0), \"ERC1155: balance query for the zero address\");\n        return _balances[id][account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC1155-balanceOf}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `account` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC1155-balanceOf}.\n     *\n     * Requirements:\n     *\n     * - `account` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC1155-balanceOf}. * * Requirements: * * - `account` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfBatch",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "accounts",
+                "type": "address[] memory"
+            },
+            {
+                "name": "ids",
+                "type": "uint256[] memory"
+            }
+        ],
+        "func": "function balanceOfBatch(address[] memory accounts, uint256[] memory ids)\n        public\n        view\n        virtual\n        override\n        returns (uint256[] memory)\n    {\n        require(accounts.length == ids.length, \"ERC1155: accounts and ids length mismatch\");\n\n        uint256[] memory batchBalances = new uint256[](accounts.length);\n\n        for (uint256 i = 0; i < accounts.length; ++i) {\n            batchBalances[i] = balanceOf(accounts[i], ids[i]);\n        }\n\n        return batchBalances;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC1155-balanceOfBatch}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `accounts` and `ids` must have the same length.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC1155-balanceOfBatch}.\n     *\n     * Requirements:\n     *\n     * - `accounts` and `ids` must have the same length.\n     */\n",
+        "@dev": "See {IERC1155-balanceOfBatch}. * * Requirements: * * - `accounts` and `ids` must have the same length.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        _setApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC1155-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC1155-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC1155-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address account, address operator) public view virtual override returns (bool) {\n        return _operatorApprovals[account][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC1155-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC1155-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC1155-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 id,\n        uint256 amount,\n        bytes memory data\n    ) public virtual override {\n        require(\n            from == _msgSender() || isApprovedForAll(from, _msgSender()),\n            \"ERC1155: caller is not owner nor approved\"\n        );\n        _safeTransferFrom(from, to, id, amount, data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC1155-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC1155-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC1155-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeBatchTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "ids",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "amounts",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeBatchTransferFrom(\n        address from,\n        address to,\n        uint256[] memory ids,\n        uint256[] memory amounts,\n        bytes memory data\n    ) public virtual override {\n        require(\n            from == _msgSender() || isApprovedForAll(from, _msgSender()),\n            \"ERC1155: transfer caller is not owner nor approved\"\n        );\n        _safeBatchTransferFrom(from, to, ids, amounts, data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC1155-safeBatchTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC1155-safeBatchTransferFrom}.\n     */\n",
+        "@dev": "See {IERC1155-safeBatchTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(address _to, uint _tokenId, uint _amount) public {\n        _mint(_to, _tokenId, _amount, \"\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintBatch",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokenIds",
+                "type": "uint[] memory"
+            },
+            {
+                "name": "_amounts",
+                "type": "uint[] memory"
+            }
+        ],
+        "func": "function mintBatch(address _to, uint[] memory _tokenIds, uint[] memory _amounts) public {\n        _mintBatch(_to, _tokenIds, _amounts, \"\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address _to, uint _tokenId, uint _amount) public {\n        _safeTransferFrom(msg.sender, _to, _tokenId, _amount, \"\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(address _to, uint _amount) public {\n        _mint(_to, _amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(address to, uint tokenId) public {\n        _safeMint(to, tokenId, \"\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address to, uint tokenId) public {\n        _safeTransfer(msg.sender, to, tokenId, \"\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedOrOwner",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint"
+            }
+        ],
+        "func": "function isApprovedOrOwner(address spender, uint tokenId) public view virtual returns (bool) {\n        return _isApprovedOrOwner(spender, tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setEstimatedFees",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_nativeFee",
+                "type": "uint"
+            },
+            {
+                "name": "_zroFee",
+                "type": "uint"
+            }
+        ],
+        "func": "function setEstimatedFees(uint _nativeFee, uint _zroFee) public {\n        nativeFee = _nativeFee;\n        zroFee = _zroFee;\n    }",
+        "comments": [
+            "",
+            "    // mock helper to set the value returned by `estimateNativeFees`",
+            "    "
+        ],
+        "comt": "\n    // mock helper to set the value returned by `estimateNativeFees`\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getChainId",
+        "visibility": "external",
+        "args": [],
+        "func": "function getChainId() external view override returns (uint16) {\n        return mockChainId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setDestLzEndpoint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "destAddr",
+                "type": "address"
+            },
+            {
+                "name": "lzEndpointAddr",
+                "type": "address"
+            }
+        ],
+        "func": "function setDestLzEndpoint(address destAddr, address lzEndpointAddr) external {\n        lzEndpointLookup[destAddr] = lzEndpointAddr;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "send",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_chainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_destination",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "_payload",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "payable",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "// _refundAddress\n       "
+            },
+            {
+                "name": "_adapterParams",
+                "type": "// _zroPaymentAddress\n        bytes memory"
+            }
+        ],
+        "func": "function send(\n        uint16 _chainId,\n        bytes calldata _destination,\n        bytes calldata _payload,\n        address payable, // _refundAddress\n        address, // _zroPaymentAddress\n        bytes memory _adapterParams\n    ) external payable override {\n        address destAddr = packedBytesToAddr(_destination);\n        address lzEndpoint = lzEndpointLookup[destAddr];\n\n        require(lzEndpoint != address(0), \"LayerZeroMock: destination LayerZero Endpoint not found\");\n\n        require(msg.value >= nativeFee * _payload.length, \"LayerZeroMock: not enough native for fees\");\n\n        uint64 nonce;\n        {\n            nonce = ++outboundNonce[_chainId][msg.sender];\n        }\n\n        // Mock the relayer paying the dstNativeAddr the amount of extra native token\n        {\n            uint extraGas;\n            uint dstNative;\n            address dstNativeAddr;\n            assembly {\n                extraGas := mload(add(_adapterParams, 34))\n                dstNative := mload(add(_adapterParams, 66))\n                dstNativeAddr := mload(add(_adapterParams, 86))\n            }\n\n            // to simulate actually sending the ether, add a transfer call and ensure the LZEndpointMock contract has an ether balance\n        }\n\n        bytes memory bytesSourceUserApplicationAddr = addrToPackedBytes(address(msg.sender)); // cast this address to bytes\n\n        // not using the extra gas parameter because this is a single tx call, not split between different chains\n        // LZEndpointMock(lzEndpoint).receivePayload(mockChainId, bytesSourceUserApplicationAddr, destAddr, nonce, extraGas, _payload);\n        LZEndpointMock(lzEndpoint).receivePayload(mockChainId, bytesSourceUserApplicationAddr, destAddr, nonce, 0, _payload);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "receivePayload",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "_dstAddress",
+                "type": "address"
+            },
+            {
+                "name": "_nonce",
+                "type": "uint64"
+            },
+            {
+                "name": "uint",
+                "type": "uint"
+            },
+            {
+                "name": "_payload",
+                "type": "/*_gasLimit*/\n        bytes calldata"
+            }
+        ],
+        "func": "function receivePayload(\n        uint16 _srcChainId,\n        bytes calldata _srcAddress,\n        address _dstAddress,\n        uint64 _nonce,\n        uint, /*_gasLimit*/\n        bytes calldata _payload\n    ) external override {\n        StoredPayload storage sp = storedPayload[_srcChainId][_srcAddress];\n\n        // assert and increment the nonce. no message shuffling\n        require(_nonce == ++inboundNonce[_srcChainId][_srcAddress], \"LayerZero: wrong nonce\");\n\n        // queue the following msgs inside of a stack to simulate a successful send on src, but not fully delivered on dst\n        if (sp.payloadHash != bytes32(0)) {\n            QueuedPayload[] storage msgs = msgsToDeliver[_srcChainId][_srcAddress];\n            QueuedPayload memory newMsg = QueuedPayload(_dstAddress, _nonce, _payload);\n\n            // warning, might run into gas issues trying to forward through a bunch of queued msgs\n            // shift all the msgs over so we can treat this like a fifo via array.pop()\n            if (msgs.length > 0) {\n                // extend the array\n                msgs.push(newMsg);\n\n                // shift all the indexes up for pop()\n                for (uint i = 0; i < msgs.length - 1; i++) {\n                    msgs[i + 1] = msgs[i];\n                }\n\n                // put the newMsg at the bottom of the stack\n                msgs[0] = newMsg;\n            } else {\n                msgs.push(newMsg);\n            }\n        } else if (nextMsgBLocked) {\n            storedPayload[_srcChainId][_srcAddress] = StoredPayload(uint64(_payload.length), _dstAddress, keccak256(_payload));\n            emit PayloadStored(_srcChainId, _srcAddress, _dstAddress, _nonce, _payload, bytes(\"\"));\n            // ensure the next msgs that go through are no longer blocked\n            nextMsgBLocked = false;\n        } else {\n            // we ignore the gas limit because this call is made in one tx due to being \"same chain\"\n            // ILayerZeroReceiver(_dstAddress).lzReceive{gas: _gasLimit}(_srcChainId, _srcAddress, _nonce, _payload); // invoke lzReceive\n            ILayerZeroReceiver(_dstAddress).lzReceive(_srcChainId, _srcAddress, _nonce, _payload); // invoke lzReceive\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "blockNextMsg",
+        "visibility": "external",
+        "args": [],
+        "func": "function blockNextMsg() external {\n        nextMsgBLocked = true;\n    }",
+        "comments": [
+            "",
+            "    // used to simulate messages received get stored as a payload",
+            "    "
+        ],
+        "comt": "\n    // used to simulate messages received get stored as a payload\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getLengthOfQueue",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function getLengthOfQueue(uint16 _srcChainId, bytes calldata _srcAddress) external view returns (uint) {\n        return msgsToDeliver[_srcChainId][_srcAddress].length;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "estimateFees",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint16",
+                "type": "uint16"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "_payload",
+                "type": "bytes memory"
+            },
+            {
+                "name": "bool",
+                "type": "bool"
+            },
+            {
+                "name": "memory",
+                "type": "bytes"
+            }
+        ],
+        "func": "function estimateFees(uint16, address, bytes memory _payload, bool, bytes memory) external view override returns (uint _nativeFee, uint _zroFee) {\n        _nativeFee = nativeFee * _payload.length;\n        _zroFee = zroFee;\n    }",
+        "comments": [
+            "",
+            "    // @notice gets a quote in source native gas, for the amount that send() requires to pay for message delivery",
+            "    // @param _dstChainId - the destination chain identifier",
+            "    // @param _userApplication - the user app address on this EVM chain",
+            "    // @param _payload - the custom message to send over LayerZero",
+            "    // @param _payInZRO - if false, user app pays the protocol fee in native token",
+            "    // @param _adapterParam - parameters for the adapter service, e.g. send some dust native token to dstChain",
+            "    "
+        ],
+        "comt": "\n    // @notice gets a quote in source native gas, for the amount that send() requires to pay for message delivery\n    // @param _dstChainId - the destination chain identifier\n    // @param _userApplication - the user app address on this EVM chain\n    // @param _payload - the custom message to send over LayerZero\n    // @param _payInZRO - if false, user app pays the protocol fee in native token\n    // @param _adapterParam - parameters for the adapter service, e.g. send some dust native token to dstChain\n    ",
+        "@notice": "gets a quote in source native gas, for the amount that send() requires to pay for message delivery",
+        "@param1": "_dstChainId - the destination chain identifier",
+        "@param2": "_userApplication - the user app address on this EVM chain",
+        "@param3": "_payload - the custom message to send over LayerZero",
+        "@param4": "_payInZRO - if false, user app pays the protocol fee in native token",
+        "@param5": "_adapterParam - parameters for the adapter service, e.g. send some dust native token to dstChain",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "packedBytesToAddr",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_b",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function packedBytesToAddr(bytes calldata _b) public pure returns (address) {\n        address addr;\n        assembly {\n            let ptr := mload(0x40)\n            calldatacopy(ptr, sub(_b.offset, 2), add(_b.length, 2))\n            addr := mload(sub(ptr, 10))\n        }\n        return addr;\n    }",
+        "comments": [
+            "",
+            "    // give 20 bytes, return the decoded address",
+            "    "
+        ],
+        "comt": "\n    // give 20 bytes, return the decoded address\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addrToPackedBytes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_a",
+                "type": "address"
+            }
+        ],
+        "func": "function addrToPackedBytes(address _a) public pure returns (bytes memory) {\n        bytes memory data = abi.encodePacked(_a);\n        return data;\n    }",
+        "comments": [
+            "",
+            "    // given an address, return the 20 bytes",
+            "    "
+        ],
+        "comt": "\n    // given an address, return the 20 bytes\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setConfig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint16",
+                "type": "uint16"
+            },
+            {
+                "name": "uint16",
+                "type": "/*_version*/\n       "
+            },
+            {
+                "name": "uint",
+                "type": "/*_chainId*/\n       "
+            },
+            {
+                "name": "/*_config*/",
+                "type": "/*_configType*/\n        bytes memory"
+            }
+        ],
+        "func": "function setConfig(\n        uint16, /*_version*/\n        uint16, /*_chainId*/\n        uint, /*_configType*/\n        bytes memory /*_config*/\n    ) external override {}",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getConfig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint16",
+                "type": "uint16"
+            },
+            {
+                "name": "uint16",
+                "type": "/*_version*/\n       "
+            },
+            {
+                "name": "address",
+                "type": "/*_chainId*/\n       "
+            },
+            {
+                "name": "/*_configType*/",
+                "type": "/*_ua*/\n        uint"
+            }
+        ],
+        "func": "function getConfig(\n        uint16, /*_version*/\n        uint16, /*_chainId*/\n        address, /*_ua*/\n        uint /*_configType*/\n    ) external pure override returns (bytes memory) {\n        return \"\";\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSendVersion",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "/*version*/",
+                "type": "uint16"
+            }
+        ],
+        "func": "function setSendVersion(\n        uint16 /*version*/\n    ) external override {}",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setReceiveVersion",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "/*version*/",
+                "type": "uint16"
+            }
+        ],
+        "func": "function setReceiveVersion(\n        uint16 /*version*/\n    ) external override {}",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSendVersion",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "/*_userApplication*/",
+                "type": "address"
+            }
+        ],
+        "func": "function getSendVersion(\n        address /*_userApplication*/\n    ) external pure override returns (uint16) {\n        return 1;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReceiveVersion",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "/*_userApplication*/",
+                "type": "address"
+            }
+        ],
+        "func": "function getReceiveVersion(\n        address /*_userApplication*/\n    ) external pure override returns (uint16) {\n        return 1;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInboundNonce",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_chainID",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function getInboundNonce(uint16 _chainID, bytes calldata _srcAddress) external view override returns (uint64) {\n        return inboundNonce[_chainID][_srcAddress];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOutboundNonce",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_chainID",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function getOutboundNonce(uint16 _chainID, address _srcAddress) external view override returns (uint64) {\n        return outboundNonce[_chainID][_srcAddress];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "forceResumeReceive",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function forceResumeReceive(uint16 _srcChainId, bytes calldata _srcAddress) external override {\n        StoredPayload storage sp = storedPayload[_srcChainId][_srcAddress];\n        // revert if no messages are cached. safeguard malicious UA behaviour\n        require(sp.payloadHash != bytes32(0), \"LayerZero: no stored payload\");\n        require(sp.dstAddress == msg.sender, \"LayerZero: invalid caller\");\n\n        // empty the storedPayload\n        sp.payloadLength = 0;\n        sp.dstAddress = address(0);\n        sp.payloadHash = bytes32(0);\n\n        emit UaForceResumeReceive(_srcChainId, _srcAddress);\n\n        // resume the receiving of msgs after we force clear the \"stuck\" msg\n        _clearMsgQue(_srcChainId, _srcAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "retryPayload",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "_payload",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function retryPayload(uint16 _srcChainId, bytes calldata _srcAddress, bytes calldata _payload) external override {\n        StoredPayload storage sp = storedPayload[_srcChainId][_srcAddress];\n        require(sp.payloadHash != bytes32(0), \"LayerZero: no stored payload\");\n        require(_payload.length == sp.payloadLength && keccak256(_payload) == sp.payloadHash, \"LayerZero: invalid payload\");\n\n        address dstAddress = sp.dstAddress;\n        // empty the storedPayload\n        sp.payloadLength = 0;\n        sp.dstAddress = address(0);\n        sp.payloadHash = bytes32(0);\n\n        uint64 nonce = inboundNonce[_srcChainId][_srcAddress];\n\n        ILayerZeroReceiver(dstAddress).lzReceive(_srcChainId, _srcAddress, nonce, _payload);\n        emit PayloadCleared(_srcChainId, _srcAddress, nonce, dstAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "hasStoredPayload",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_srcChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_srcAddress",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function hasStoredPayload(uint16 _srcChainId, bytes calldata _srcAddress) external view override returns (bool) {\n        StoredPayload storage sp = storedPayload[_srcChainId][_srcAddress];\n        return sp.payloadHash != bytes32(0);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isSendingPayload",
+        "visibility": "external",
+        "args": [],
+        "func": "function isSendingPayload() external pure override returns (bool) {\n        return false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isReceivingPayload",
+        "visibility": "external",
+        "args": [],
+        "func": "function isReceivingPayload() external pure override returns (bool) {\n        return false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSendLibraryAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function getSendLibraryAddress(address) external view override returns (address) {\n        return address(this);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReceiveLibraryAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function getReceiveLibraryAddress(address) external view override returns (address) {\n        return address(this);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenOwner",
+                "type": "address"
+            },
+            {
+                "name": "_newId",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(address _tokenOwner, uint _newId) external payable {\n        _safeMint(_tokenOwner, _newId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cap",
+        "visibility": "public",
+        "args": [],
+        "func": "function cap() public view virtual returns (uint256) {\n        return _cap;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the cap on the token's total supply.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the cap on the token's total supply.\n     */\n",
+        "@dev": "Returns the cap on the token's total supply.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pauseSendTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pause",
+                "type": "bool"
+            }
+        ],
+        "func": "function pauseSendTokens(bool pause) external onlyOwner {\n        pause ? _pause() : _unpause();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "circulatingSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function circulatingSupply() public view virtual override returns (uint) {\n        unchecked {\n            return token.totalSupply() - token.balanceOf(address(this));\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return interfaceId == type(IONFT1155Core).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "estimateSendFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_toAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            },
+            {
+                "name": "_useZro",
+                "type": "bool"
+            },
+            {
+                "name": "_adapterParams",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function estimateSendFee(uint16 _dstChainId, bytes memory _toAddress, uint _tokenId, uint _amount, bool _useZro, bytes memory _adapterParams) public view virtual override returns (uint nativeFee, uint zroFee) {\n        return estimateSendBatchFee(_dstChainId, _toAddress, _toSingletonArray(_tokenId), _toSingletonArray(_amount), _useZro, _adapterParams);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "estimateSendBatchFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_toAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_tokenIds",
+                "type": "uint[] memory"
+            },
+            {
+                "name": "_amounts",
+                "type": "uint[] memory"
+            },
+            {
+                "name": "_useZro",
+                "type": "bool"
+            },
+            {
+                "name": "_adapterParams",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function estimateSendBatchFee(uint16 _dstChainId, bytes memory _toAddress, uint[] memory _tokenIds, uint[] memory _amounts, bool _useZro, bytes memory _adapterParams) public view virtual override returns (uint nativeFee, uint zroFee) {\n        bytes memory payload = abi.encode(_toAddress, _tokenIds, _amounts);\n        return lzEndpoint.estimateFees(_dstChainId, address(this), payload, _useZro, _adapterParams);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "sendFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_toAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            },
+            {
+                "name": "_refundAddress",
+                "type": "address payable"
+            },
+            {
+                "name": "_zroPaymentAddress",
+                "type": "address"
+            },
+            {
+                "name": "_adapterParams",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function sendFrom(address _from, uint16 _dstChainId, bytes memory _toAddress, uint _tokenId, uint _amount, address payable _refundAddress, address _zroPaymentAddress, bytes memory _adapterParams) public payable virtual override {\n        _sendBatch(_from, _dstChainId, _toAddress, _toSingletonArray(_tokenId), _toSingletonArray(_amount), _refundAddress, _zroPaymentAddress, _adapterParams);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "sendBatchFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "name": "_toAddress",
+                "type": "bytes memory"
+            },
+            {
+                "name": "_tokenIds",
+                "type": "uint[] memory"
+            },
+            {
+                "name": "_amounts",
+                "type": "uint[] memory"
+            },
+            {
+                "name": "_refundAddress",
+                "type": "address payable"
+            },
+            {
+                "name": "_zroPaymentAddress",
+                "type": "address"
+            },
+            {
+                "name": "_adapterParams",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function sendBatchFrom(address _from, uint16 _dstChainId, bytes memory _toAddress, uint[] memory _tokenIds, uint[] memory _amounts, address payable _refundAddress, address _zroPaymentAddress, bytes memory _adapterParams) public payable virtual override {\n        _sendBatch(_from, _dstChainId, _toAddress, _tokenIds, _amounts, _refundAddress, _zroPaymentAddress, _adapterParams);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ONFT1155Core, IERC165) returns (bool) {\n        return interfaceId == type(IERC1155Receiver).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onERC1155Received",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint",
+                "type": "uint"
+            },
+            {
+                "name": "uint",
+                "type": "uint"
+            },
+            {
+                "name": "memory",
+                "type": "bytes"
+            }
+        ],
+        "func": "function onERC1155Received(address _operator, address, uint, uint, bytes memory) public virtual override returns (bytes4) {\n        // only allow `this` to tranfser token from others\n        if (_operator != address(this)) return bytes4(0);\n        return this.onERC1155Received.selector;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onERC1155BatchReceived",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "memory",
+                "type": "uint[]"
+            },
+            {
+                "name": "memory",
+                "type": "uint[]"
+            },
+            {
+                "name": "memory",
+                "type": "bytes"
+            }
+        ],
+        "func": "function onERC1155BatchReceived(address _operator, address, uint[] memory, uint[] memory, bytes memory) public virtual override returns (bytes4) {\n        // only allow `this` to tranfser token from others\n        if (_operator != address(this)) return bytes4(0);\n        return this.onERC1155BatchReceived.selector;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC721Receiver).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onERC721Received",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint",
+                "type": "uint"
+            },
+            {
+                "name": "memory",
+                "type": "bytes"
+            }
+        ],
+        "func": "function onERC721Received(address _operator, address, uint, bytes memory) public virtual override returns (bytes4) {\n        // only allow `this` to tranfser token from others\n        if (_operator != address(this)) return bytes4(0);\n        return IERC721Receiver.onERC721Received.selector;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ONFT1155Core, ERC1155, IERC165) returns (bool) {\n        return interfaceId == type(IONFT1155).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

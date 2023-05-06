@@ -1,0 +1,1071 @@
+[
+    {
+        "transactions": 215734,
+        "function_num": 34
+    },
+    {
+        "name": "_setImplementation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "implementation_",
+                "type": "address"
+            },
+            {
+                "name": "allowResign",
+                "type": "bool"
+            },
+            {
+                "name": "becomeImplementationData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function _setImplementation(address implementation_, bool allowResign, bytes memory becomeImplementationData) public {\n require(msg.sender == admin, \"CErc20Delegator::_setImplementation: Caller must be admin\");\n\n if (allowResign) {\n delegateToImplementation(abi.encodeWithSignature(\"_resignImplementation()\"));\n }\n\n address oldImplementation = implementation;\n implementation = implementation_;\n\n delegateToImplementation(abi.encodeWithSignature(\"_becomeImplementation(bytes)\", becomeImplementationData));\n\n emit NewImplementation(oldImplementation, implementation);\n }",
+        "comments": [
+            "/**",
+            " * @notice Called by the admin to update the implementation of the delegator",
+            " * @param implementation_ The address of the new implementation for delegation",
+            " * @param allowResign Flag to indicate whether to call _resignImplementation on the old implementation",
+            " * @param becomeImplementationData The encoded bytes data to be passed to _becomeImplementation",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Called by the admin to update the implementation of the delegator\n * @param implementation_ The address of the new implementation for delegation\n * @param allowResign Flag to indicate whether to call _resignImplementation on the old implementation\n * @param becomeImplementationData The encoded bytes data to be passed to _becomeImplementation\n */\n",
+        "@notice": "Called by the admin to update the implementation of the delegator",
+        "@param1": "implementation_ The address of the new implementation for delegation",
+        "@param2": "allowResign Flag to indicate whether to call _resignImplementation on the old implementation",
+        "@param3": "becomeImplementationData The encoded bytes data to be passed to _becomeImplementation",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "mintAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(uint mintAmount) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"mint(uint256)\", mintAmount));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender supplies assets into the market and receives cTokens in exchange",
+            " * @dev Accrues interest whether or not the operation succeeds, unless reverted",
+            " * @param mintAmount The amount of the underlying asset to supply",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender supplies assets into the market and receives cTokens in exchange\n * @dev Accrues interest whether or not the operation succeeds, unless reverted\n * @param mintAmount The amount of the underlying asset to supply\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender supplies assets into the market and receives cTokens in exchange",
+        "@dev": "Accrues interest whether or not the operation succeeds, unless reverted",
+        "@param1": "mintAmount The amount of the underlying asset to supply",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeem",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "redeemTokens",
+                "type": "uint"
+            }
+        ],
+        "func": "function redeem(uint redeemTokens) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"redeem(uint256)\", redeemTokens));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender redeems cTokens in exchange for the underlying asset",
+            " * @dev Accrues interest whether or not the operation succeeds, unless reverted",
+            " * @param redeemTokens The number of cTokens to redeem into underlying",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender redeems cTokens in exchange for the underlying asset\n * @dev Accrues interest whether or not the operation succeeds, unless reverted\n * @param redeemTokens The number of cTokens to redeem into underlying\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender redeems cTokens in exchange for the underlying asset",
+        "@dev": "Accrues interest whether or not the operation succeeds, unless reverted",
+        "@param1": "redeemTokens The number of cTokens to redeem into underlying",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeemUnderlying",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "redeemAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function redeemUnderlying(uint redeemAmount) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"redeemUnderlying(uint256)\", redeemAmount));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender redeems cTokens in exchange for a specified amount of underlying asset",
+            " * @dev Accrues interest whether or not the operation succeeds, unless reverted",
+            " * @param redeemAmount The amount of underlying to redeem",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender redeems cTokens in exchange for a specified amount of underlying asset\n * @dev Accrues interest whether or not the operation succeeds, unless reverted\n * @param redeemAmount The amount of underlying to redeem\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender redeems cTokens in exchange for a specified amount of underlying asset",
+        "@dev": "Accrues interest whether or not the operation succeeds, unless reverted",
+        "@param1": "redeemAmount The amount of underlying to redeem",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "borrow",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "borrowAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function borrow(uint borrowAmount) external returns (uint) {\n  bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"borrow(uint256)\", borrowAmount));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender borrows assets from the protocol to their own address",
+            " * @param borrowAmount The amount of the underlying asset to borrow",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender borrows assets from the protocol to their own address\n * @param borrowAmount The amount of the underlying asset to borrow\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender borrows assets from the protocol to their own address",
+        "@param1": "borrowAmount The amount of the underlying asset to borrow",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "repayBorrow",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "repayAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function repayBorrow(uint repayAmount) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"repayBorrow(uint256)\", repayAmount));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender repays their own borrow",
+            " * @param repayAmount The amount to repay",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender repays their own borrow\n * @param repayAmount The amount to repay\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender repays their own borrow",
+        "@param1": "repayAmount The amount to repay",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "repayBorrowBehalf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "name": "repayAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function repayBorrowBehalf(address borrower, uint repayAmount) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"repayBorrowBehalf(address,uint256)\", borrower, repayAmount));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender repays a borrow belonging to borrower",
+            " * @param borrower the account with the debt being payed off",
+            " * @param repayAmount The amount to repay",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender repays a borrow belonging to borrower\n * @param borrower the account with the debt being payed off\n * @param repayAmount The amount to repay\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender repays a borrow belonging to borrower",
+        "@param1": "borrower the account with the debt being payed off",
+        "@param2": "repayAmount The amount to repay",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "liquidateBorrow",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "name": "repayAmount",
+                "type": "uint"
+            },
+            {
+                "name": "cTokenCollateral",
+                "type": "CTokenInterface"
+            }
+        ],
+        "func": "function liquidateBorrow(address borrower, uint repayAmount, CTokenInterface cTokenCollateral) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"liquidateBorrow(address,uint256,address)\", borrower, repayAmount, cTokenCollateral));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice The sender liquidates the borrowers collateral.",
+            " * The collateral seized is transferred to the liquidator.",
+            " * @param borrower The borrower of this cToken to be liquidated",
+            " * @param cTokenCollateral The market in which to seize collateral from the borrower",
+            " * @param repayAmount The amount of the underlying borrowed asset to repay",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice The sender liquidates the borrowers collateral.\n * The collateral seized is transferred to the liquidator.\n * @param borrower The borrower of this cToken to be liquidated\n * @param cTokenCollateral The market in which to seize collateral from the borrower\n * @param repayAmount The amount of the underlying borrowed asset to repay\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "The sender liquidates the borrowers collateral. * The collateral seized is transferred to the liquidator.",
+        "@param1": "borrower The borrower of this cToken to be liquidated",
+        "@param2": "cTokenCollateral The market in which to seize collateral from the borrower",
+        "@param3": "repayAmount The amount of the underlying borrowed asset to repay",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address dst, uint amount) external returns (bool) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"transfer(address,uint256)\", dst, amount));\n return abi.decode(data, (bool));\n }",
+        "comments": [
+            "/**",
+            " * @notice Transfer `amount` tokens from `msg.sender` to `dst`",
+            " * @param dst The address of the destination account",
+            " * @param amount The number of tokens to transfer",
+            " * @return Whether or not the transfer succeeded",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Transfer `amount` tokens from `msg.sender` to `dst`\n * @param dst The address of the destination account\n * @param amount The number of tokens to transfer\n * @return Whether or not the transfer succeeded\n */\n",
+        "@notice": "Transfer `amount` tokens from `msg.sender` to `dst`",
+        "@param1": "dst The address of the destination account",
+        "@param2": "amount The number of tokens to transfer",
+        "@return1": "Whether or not the transfer succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address src, address dst, uint256 amount) external returns (bool) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"transferFrom(address,address,uint256)\", src, dst, amount));\n return abi.decode(data, (bool));\n }",
+        "comments": [
+            "/**",
+            " * @notice Transfer `amount` tokens from `src` to `dst`",
+            " * @param src The address of the source account",
+            " * @param dst The address of the destination account",
+            " * @param amount The number of tokens to transfer",
+            " * @return Whether or not the transfer succeeded",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Transfer `amount` tokens from `src` to `dst`\n * @param src The address of the source account\n * @param dst The address of the destination account\n * @param amount The number of tokens to transfer\n * @return Whether or not the transfer succeeded\n */\n",
+        "@notice": "Transfer `amount` tokens from `src` to `dst`",
+        "@param1": "src The address of the source account",
+        "@param2": "dst The address of the destination account",
+        "@param3": "amount The number of tokens to transfer",
+        "@return1": "Whether or not the transfer succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) external returns (bool) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"approve(address,uint256)\", spender, amount));\n return abi.decode(data, (bool));\n }",
+        "comments": [
+            "/**",
+            " * @notice Approve `spender` to transfer up to `amount` from `src`",
+            " * @dev This will overwrite the approval amount for `spender`",
+            " * and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)",
+            " * @param spender The address of the account which may transfer tokens",
+            " * @param amount The number of tokens that are approved (-1 means infinite)",
+            " * @return Whether or not the approval succeeded",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Approve `spender` to transfer up to `amount` from `src`\n * @dev This will overwrite the approval amount for `spender`\n * and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)\n * @param spender The address of the account which may transfer tokens\n * @param amount The number of tokens that are approved (-1 means infinite)\n * @return Whether or not the approval succeeded\n */\n",
+        "@notice": "Approve `spender` to transfer up to `amount` from `src`",
+        "@dev": "This will overwrite the approval amount for `spender` * and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)",
+        "@param1": "spender The address of the account which may transfer tokens",
+        "@param2": "amount The number of tokens that are approved (-1 means infinite)",
+        "@return1": "Whether or not the approval succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) external view returns (uint) {\n bytes memory data = delegateToViewImplementation(abi.encodeWithSignature(\"allowance(address,address)\", owner, spender));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Get the current allowance from `owner` for `spender`",
+            " * @param owner The address of the account which owns the tokens to be spent",
+            " * @param spender The address of the account which may transfer tokens",
+            " * @return The number of tokens allowed to be spent (-1 means infinite)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get the current allowance from `owner` for `spender`\n * @param owner The address of the account which owns the tokens to be spent\n * @param spender The address of the account which may transfer tokens\n * @return The number of tokens allowed to be spent (-1 means infinite)\n */\n",
+        "@notice": "Get the current allowance from `owner` for `spender`",
+        "@param1": "owner The address of the account which owns the tokens to be spent",
+        "@param2": "spender The address of the account which may transfer tokens",
+        "@return1": "The number of tokens allowed to be spent (-1 means infinite)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) external view returns (uint) {\n bytes memory data = delegateToViewImplementation(abi.encodeWithSignature(\"balanceOf(address)\", owner));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Get the token balance of the `owner`",
+            " * @param owner The address of the account to query",
+            " * @return The number of tokens owned by `owner`",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get the token balance of the `owner`\n * @param owner The address of the account to query\n * @return The number of tokens owned by `owner`\n */\n",
+        "@notice": "Get the token balance of the `owner`",
+        "@param1": "owner The address of the account to query",
+        "@return1": "The number of tokens owned by `owner`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfUnderlying",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOfUnderlying(address owner) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"balanceOfUnderlying(address)\", owner));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Get the underlying balance of the `owner`",
+            " * @dev This also accrues interest in a transaction",
+            " * @param owner The address of the account to query",
+            " * @return The amount of underlying owned by `owner`",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get the underlying balance of the `owner`\n * @dev This also accrues interest in a transaction\n * @param owner The address of the account to query\n * @return The amount of underlying owned by `owner`\n */\n",
+        "@notice": "Get the underlying balance of the `owner`",
+        "@dev": "This also accrues interest in a transaction",
+        "@param1": "owner The address of the account to query",
+        "@return1": "The amount of underlying owned by `owner`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAccountSnapshot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function getAccountSnapshot(address account) external view returns (uint, uint, uint, uint) {\n bytes memory data = delegateToViewImplementation(abi.encodeWithSignature(\"getAccountSnapshot(address)\", account));\n return abi.decode(data, (uint, uint, uint, uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Get a snapshot of the account's balances, and the cached exchange rate",
+            " * @dev This is used by comptroller to more efficiently perform liquidity checks.",
+            " * @param account Address of the account to snapshot",
+            " * @return (possible error, token balance, borrow balance, exchange rate mantissa)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get a snapshot of the account's balances, and the cached exchange rate\n * @dev This is used by comptroller to more efficiently perform liquidity checks.\n * @param account Address of the account to snapshot\n * @return (possible error, token balance, borrow balance, exchange rate mantissa)\n */\n",
+        "@notice": "Get a snapshot of the account's balances, and the cached exchange rate",
+        "@dev": "This is used by comptroller to more efficiently perform liquidity checks.",
+        "@param1": "account Address of the account to snapshot",
+        "@return1": "(possible error, token balance, borrow balance, exchange rate mantissa)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "borrowRatePerBlock",
+        "visibility": "external",
+        "args": [],
+        "func": "function borrowRatePerBlock() external view returns (uint) {\n bytes memory data = delegateToViewImplementation(abi.encodeWithSignature(\"borrowRatePerBlock()\"));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the current per-block borrow interest rate for this cToken",
+            " * @return The borrow interest rate per block, scaled by 1e18",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the current per-block borrow interest rate for this cToken\n * @return The borrow interest rate per block, scaled by 1e18\n */\n",
+        "@notice": "Returns the current per-block borrow interest rate for this cToken",
+        "@return1": "The borrow interest rate per block, scaled by 1e18",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supplyRatePerBlock",
+        "visibility": "external",
+        "args": [],
+        "func": "function supplyRatePerBlock() external view returns (uint) {\n bytes memory data = delegateToViewImplementation(abi.encodeWithSignature(\"supplyRatePerBlock()\"));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the current per-block supply interest rate for this cToken",
+            " * @return The supply interest rate per block, scaled by 1e18",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the current per-block supply interest rate for this cToken\n * @return The supply interest rate per block, scaled by 1e18\n */\n",
+        "@notice": "Returns the current per-block supply interest rate for this cToken",
+        "@return1": "The supply interest rate per block, scaled by 1e18",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalBorrowsCurrent",
+        "visibility": "external",
+        "args": [],
+        "func": "function totalBorrowsCurrent() external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"totalBorrowsCurrent()\"));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the current total borrows plus accrued interest",
+            " * @return The total borrows with interest",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the current total borrows plus accrued interest\n * @return The total borrows with interest\n */\n",
+        "@notice": "Returns the current total borrows plus accrued interest",
+        "@return1": "The total borrows with interest",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "borrowBalanceCurrent",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function borrowBalanceCurrent(address account) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"borrowBalanceCurrent(address)\", account));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Accrue interest to updated borrowIndex and then calculate account's borrow balance using the updated borrowIndex",
+            " * @param account The address whose balance should be calculated after updating borrowIndex",
+            " * @return The calculated balance",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accrue interest to updated borrowIndex and then calculate account's borrow balance using the updated borrowIndex\n * @param account The address whose balance should be calculated after updating borrowIndex\n * @return The calculated balance\n */\n",
+        "@notice": "Accrue interest to updated borrowIndex and then calculate account's borrow balance using the updated borrowIndex",
+        "@param1": "account The address whose balance should be calculated after updating borrowIndex",
+        "@return1": "The calculated balance",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "borrowBalanceStored",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function borrowBalanceStored(address account) public view returns (uint) {\n bytes memory data = delegateToViewImplementation(abi.encodeWithSignature(\"borrowBalanceStored(address)\", account));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Return the borrow balance of account based on stored data",
+            " * @param account The address whose balance should be calculated",
+            " * @return The calculated balance",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Return the borrow balance of account based on stored data\n * @param account The address whose balance should be calculated\n * @return The calculated balance\n */\n",
+        "@notice": "Return the borrow balance of account based on stored data",
+        "@param1": "account The address whose balance should be calculated",
+        "@return1": "The calculated balance",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exchangeRateCurrent",
+        "visibility": "public",
+        "args": [],
+        "func": "function exchangeRateCurrent() public returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"exchangeRateCurrent()\"));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Accrue interest then return the up-to-date exchange rate",
+            " * @return Calculated exchange rate scaled by 1e18",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accrue interest then return the up-to-date exchange rate\n * @return Calculated exchange rate scaled by 1e18\n */\n",
+        "@notice": "Accrue interest then return the up-to-date exchange rate",
+        "@return1": "Calculated exchange rate scaled by 1e18",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exchangeRateStored",
+        "visibility": "public",
+        "args": [],
+        "func": "function exchangeRateStored() public view returns (uint) {\n bytes memory data = delegateToViewImplementation(abi.encodeWithSignature(\"exchangeRateStored()\"));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Calculates the exchange rate from the underlying to the CToken",
+            " * @dev This function does not accrue interest before calculating the exchange rate",
+            " * @return Calculated exchange rate scaled by 1e18",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Calculates the exchange rate from the underlying to the CToken\n * @dev This function does not accrue interest before calculating the exchange rate\n * @return Calculated exchange rate scaled by 1e18\n */\n",
+        "@notice": "Calculates the exchange rate from the underlying to the CToken",
+        "@dev": "This function does not accrue interest before calculating the exchange rate",
+        "@return1": "Calculated exchange rate scaled by 1e18",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCash",
+        "visibility": "external",
+        "args": [],
+        "func": "function getCash() external view returns (uint) {\n bytes memory data = delegateToViewImplementation(abi.encodeWithSignature(\"getCash()\"));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Get cash balance of this cToken in the underlying asset",
+            " * @return The quantity of underlying asset owned by this contract",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get cash balance of this cToken in the underlying asset\n * @return The quantity of underlying asset owned by this contract\n */\n",
+        "@notice": "Get cash balance of this cToken in the underlying asset",
+        "@return1": "The quantity of underlying asset owned by this contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "accrueInterest",
+        "visibility": "public",
+        "args": [],
+        "func": "function accrueInterest() public returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"accrueInterest()\"));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Applies accrued interest to total borrows and reserves.",
+            " * @dev This calculates interest accrued from the last checkpointed block",
+            " * up to the current block and writes new checkpoint to storage.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Applies accrued interest to total borrows and reserves.\n * @dev This calculates interest accrued from the last checkpointed block\n * up to the current block and writes new checkpoint to storage.\n */\n",
+        "@notice": "Applies accrued interest to total borrows and reserves.",
+        "@dev": "This calculates interest accrued from the last checkpointed block * up to the current block and writes new checkpoint to storage.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "seize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "liquidator",
+                "type": "address"
+            },
+            {
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "name": "seizeTokens",
+                "type": "uint"
+            }
+        ],
+        "func": "function seize(address liquidator, address borrower, uint seizeTokens) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"seize(address,address,uint256)\", liquidator, borrower, seizeTokens));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Transfers collateral tokens (this market) to the liquidator.",
+            " * @dev Will fail unless called by another cToken during the process of liquidation.",
+            " * Its absolutely critical to use msg.sender as the borrowed cToken and not a parameter.",
+            " * @param liquidator The account receiving seized collateral",
+            " * @param borrower The account having collateral seized",
+            " * @param seizeTokens The number of cTokens to seize",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Transfers collateral tokens (this market) to the liquidator.\n * @dev Will fail unless called by another cToken during the process of liquidation.\n * Its absolutely critical to use msg.sender as the borrowed cToken and not a parameter.\n * @param liquidator The account receiving seized collateral\n * @param borrower The account having collateral seized\n * @param seizeTokens The number of cTokens to seize\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Transfers collateral tokens (this market) to the liquidator.",
+        "@dev": "Will fail unless called by another cToken during the process of liquidation. * Its absolutely critical to use msg.sender as the borrowed cToken and not a parameter.",
+        "@param1": "liquidator The account receiving seized collateral",
+        "@param2": "borrower The account having collateral seized",
+        "@param3": "seizeTokens The number of cTokens to seize",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setPendingAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newPendingAdmin",
+                "type": "address payable"
+            }
+        ],
+        "func": "function _setPendingAdmin(address payable newPendingAdmin) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"_setPendingAdmin(address)\", newPendingAdmin));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+            " * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+            " * @param newPendingAdmin New pending admin.",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.\n * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.\n * @param newPendingAdmin New pending admin.\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+        "@dev": "Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+        "@param1": "newPendingAdmin New pending admin.",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setComptroller",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newComptroller",
+                "type": "ComptrollerInterface"
+            }
+        ],
+        "func": "function _setComptroller(ComptrollerInterface newComptroller) public returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"_setComptroller(address)\", newComptroller));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Sets a new comptroller for the market",
+            " * @dev Admin function to set a new comptroller",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sets a new comptroller for the market\n * @dev Admin function to set a new comptroller\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sets a new comptroller for the market",
+        "@dev": "Admin function to set a new comptroller",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setReserveFactor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newReserveFactorMantissa",
+                "type": "uint"
+            }
+        ],
+        "func": "function _setReserveFactor(uint newReserveFactorMantissa) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"_setReserveFactor(uint256)\", newReserveFactorMantissa));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice accrues interest and sets a new reserve factor for the protocol using _setReserveFactorFresh",
+            " * @dev Admin function to accrue interest and set a new reserve factor",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice accrues interest and sets a new reserve factor for the protocol using _setReserveFactorFresh\n * @dev Admin function to accrue interest and set a new reserve factor\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "accrues interest and sets a new reserve factor for the protocol using _setReserveFactorFresh",
+        "@dev": "Admin function to accrue interest and set a new reserve factor",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_acceptAdmin",
+        "visibility": "external",
+        "args": [],
+        "func": "function _acceptAdmin() external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"_acceptAdmin()\"));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Accepts transfer of admin rights. msg.sender must be pendingAdmin",
+            " * @dev Admin function for pending admin to accept role and update admin",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accepts transfer of admin rights. msg.sender must be pendingAdmin\n * @dev Admin function for pending admin to accept role and update admin\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Accepts transfer of admin rights. msg.sender must be pendingAdmin",
+        "@dev": "Admin function for pending admin to accept role and update admin",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_addReserves",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function _addReserves(uint addAmount) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"_addReserves(uint256)\", addAmount));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Accrues interest and adds reserves by transferring from admin",
+            " * @param addAmount Amount of reserves to add",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accrues interest and adds reserves by transferring from admin\n * @param addAmount Amount of reserves to add\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Accrues interest and adds reserves by transferring from admin",
+        "@param1": "addAmount Amount of reserves to add",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_reduceReserves",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reduceAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function _reduceReserves(uint reduceAmount) external returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"_reduceReserves(uint256)\", reduceAmount));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Accrues interest and reduces reserves by transferring to admin",
+            " * @param reduceAmount Amount of reduction to reserves",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accrues interest and reduces reserves by transferring to admin\n * @param reduceAmount Amount of reduction to reserves\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Accrues interest and reduces reserves by transferring to admin",
+        "@param1": "reduceAmount Amount of reduction to reserves",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setInterestRateModel",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newInterestRateModel",
+                "type": "InterestRateModel"
+            }
+        ],
+        "func": "function _setInterestRateModel(InterestRateModel newInterestRateModel) public returns (uint) {\n bytes memory data = delegateToImplementation(abi.encodeWithSignature(\"_setInterestRateModel(address)\", newInterestRateModel));\n return abi.decode(data, (uint));\n }",
+        "comments": [
+            "/**",
+            " * @notice Accrues interest and updates the interest rate model using _setInterestRateModelFresh",
+            " * @dev Admin function to accrue interest and update the interest rate model",
+            " * @param newInterestRateModel the new interest rate model to use",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accrues interest and updates the interest rate model using _setInterestRateModelFresh\n * @dev Admin function to accrue interest and update the interest rate model\n * @param newInterestRateModel the new interest rate model to use\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Accrues interest and updates the interest rate model using _setInterestRateModelFresh",
+        "@dev": "Admin function to accrue interest and update the interest rate model",
+        "@param1": "newInterestRateModel the new interest rate model to use",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateToImplementation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function delegateToImplementation(bytes memory data) public returns (bytes memory) {\n return delegateTo(implementation, data);\n }",
+        "comments": [
+            "/**",
+            " * @notice Delegates execution to the implementation contract",
+            " * @dev It returns to the external caller whatever the implementation returns or forwards reverts",
+            " * @param data The raw data to delegatecall",
+            " * @return The returned bytes from the delegatecall",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Delegates execution to the implementation contract\n * @dev It returns to the external caller whatever the implementation returns or forwards reverts\n * @param data The raw data to delegatecall\n * @return The returned bytes from the delegatecall\n */\n",
+        "@notice": "Delegates execution to the implementation contract",
+        "@dev": "It returns to the external caller whatever the implementation returns or forwards reverts",
+        "@param1": "data The raw data to delegatecall",
+        "@return1": "The returned bytes from the delegatecall",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateToViewImplementation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function delegateToViewImplementation(bytes memory data) public view returns (bytes memory) {\n (bool success, bytes memory returnData) = address(this).staticcall(abi.encodeWithSignature(\"delegateToImplementation(bytes)\", data));\n assembly {\n if eq(success, 0) {\n revert(add(returnData, 0x20), returndatasize)\n }\n }\n return abi.decode(returnData, (bytes));\n }",
+        "comments": [
+            "/**",
+            " * @notice Delegates execution to an implementation contract",
+            " * @dev It returns to the external caller whatever the implementation returns or forwards reverts",
+            " * There are an additional 2 prefix uints from the wrapper returndata, which we ignore since we make an extra hop.",
+            " * @param data The raw data to delegatecall",
+            " * @return The returned bytes from the delegatecall",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Delegates execution to an implementation contract\n * @dev It returns to the external caller whatever the implementation returns or forwards reverts\n * There are an additional 2 prefix uints from the wrapper returndata, which we ignore since we make an extra hop.\n * @param data The raw data to delegatecall\n * @return The returned bytes from the delegatecall\n */\n",
+        "@notice": "Delegates execution to an implementation contract",
+        "@dev": "It returns to the external caller whatever the implementation returns or forwards reverts * There are an additional 2 prefix uints from the wrapper returndata, which we ignore since we make an extra hop.",
+        "@param1": "data The raw data to delegatecall",
+        "@return1": "The returned bytes from the delegatecall",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

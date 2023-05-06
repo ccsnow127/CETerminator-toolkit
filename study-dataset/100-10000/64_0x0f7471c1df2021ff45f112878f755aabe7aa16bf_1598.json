@@ -1,0 +1,1971 @@
+[
+    {
+        "transactions": 1598,
+        "function_num": 64
+    },
+    {
+        "name": "ensureCurrentTerm",
+        "visibility": "external",
+        "args": [],
+        "func": "function ensureCurrentTerm() external returns (uint64) {\n        return _ensureCurrentTerm();\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Ensure that the current term of the Court is up-to-date. If the Court is outdated by more than `MAX_AUTO_TERM_TRANSITIONS_ALLOWED`",
+            "    *         terms, the heartbeat function must be called manually instead.",
+            "    * @return Identification number of the current term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Ensure that the current term of the Court is up-to-date. If the Court is outdated by more than `MAX_AUTO_TERM_TRANSITIONS_ALLOWED`\n    *         terms, the heartbeat function must be called manually instead.\n    * @return Identification number of the current term\n    */\n",
+        "@notice": "Ensure that the current term of the Court is up-to-date. If the Court is outdated by more than `MAX_AUTO_TERM_TRANSITIONS_ALLOWED` * terms, the heartbeat function must be called manually instead.",
+        "@return1": "Identification number of the current term",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "heartbeat",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_maxRequestedTransitions",
+                "type": "uint64"
+            }
+        ],
+        "func": "function heartbeat(uint64 _maxRequestedTransitions) external returns (uint64) {\n        return _heartbeat(_maxRequestedTransitions);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Transition up to `_maxRequestedTransitions` terms",
+            "    * @param _maxRequestedTransitions Max number of term transitions allowed by the sender",
+            "    * @return Identification number of the term ID after executing the heartbeat transitions",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Transition up to `_maxRequestedTransitions` terms\n    * @param _maxRequestedTransitions Max number of term transitions allowed by the sender\n    * @return Identification number of the term ID after executing the heartbeat transitions\n    */\n",
+        "@notice": "Transition up to `_maxRequestedTransitions` terms",
+        "@param1": "_maxRequestedTransitions Max number of term transitions allowed by the sender",
+        "@return1": "Identification number of the term ID after executing the heartbeat transitions",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ensureCurrentTermRandomness",
+        "visibility": "external",
+        "args": [],
+        "func": "function ensureCurrentTermRandomness() external returns (bytes32) {\n        // If the randomness for the given term was already computed, return\n        uint64 currentTermId = termId;\n        Term storage term = terms[currentTermId];\n        bytes32 termRandomness = term.randomness;\n        if (termRandomness != bytes32(0)) {\n            return termRandomness;\n        }\n\n        // Compute term randomness\n        bytes32 newRandomness = _computeTermRandomness(currentTermId);\n        require(newRandomness != bytes32(0), ERROR_TERM_RANDOMNESS_UNAVAILABLE);\n        term.randomness = newRandomness;\n        return newRandomness;\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Ensure that a certain term has its randomness set. As we allow to draft disputes requested for previous terms, if there",
+            "    *      were mined more than 256 blocks for the current term, the blockhash of its randomness BN is no longer available, given",
+            "    *      round will be able to be drafted in the following term.",
+            "    * @return Randomness of the current term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Ensure that a certain term has its randomness set. As we allow to draft disputes requested for previous terms, if there\n    *      were mined more than 256 blocks for the current term, the blockhash of its randomness BN is no longer available, given\n    *      round will be able to be drafted in the following term.\n    * @return Randomness of the current term\n    */\n",
+        "@notice": "Ensure that a certain term has its randomness set. As we allow to draft disputes requested for previous terms, if there * were mined more than 256 blocks for the current term, the blockhash of its randomness BN is no longer available, given * round will be able to be drafted in the following term.",
+        "@return1": "Randomness of the current term",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "getTermDuration",
+        "visibility": "external",
+        "args": [],
+        "func": "function getTermDuration() external view returns (uint64) {\n        return termDuration;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the term duration of the Court",
+            "    * @return Duration in seconds of the Court term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the term duration of the Court\n    * @return Duration in seconds of the Court term\n    */\n",
+        "@dev": "Tell the term duration of the Court",
+        "@return1": "Duration in seconds of the Court term",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getLastEnsuredTermId",
+        "visibility": "external",
+        "args": [],
+        "func": "function getLastEnsuredTermId() external view returns (uint64) {\n        return _lastEnsuredTermId();\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the last ensured term identification number",
+            "    * @return Identification number of the last ensured term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the last ensured term identification number\n    * @return Identification number of the last ensured term\n    */\n",
+        "@dev": "Tell the last ensured term identification number",
+        "@return1": "Identification number of the last ensured term",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCurrentTermId",
+        "visibility": "external",
+        "args": [],
+        "func": "function getCurrentTermId() external view returns (uint64) {\n        return _currentTermId();\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the current term identification number. Note that there may be pending term transitions.",
+            "    * @return Identification number of the current term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the current term identification number. Note that there may be pending term transitions.\n    * @return Identification number of the current term\n    */\n",
+        "@dev": "Tell the current term identification number. Note that there may be pending term transitions.",
+        "@return1": "Identification number of the current term",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNeededTermTransitions",
+        "visibility": "external",
+        "args": [],
+        "func": "function getNeededTermTransitions() external view returns (uint64) {\n        return _neededTermTransitions();\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the number of terms the Court should transition to be up-to-date",
+            "    * @return Number of terms the Court should transition to be up-to-date",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the number of terms the Court should transition to be up-to-date\n    * @return Number of terms the Court should transition to be up-to-date\n    */\n",
+        "@dev": "Tell the number of terms the Court should transition to be up-to-date",
+        "@return1": "Number of terms the Court should transition to be up-to-date",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTerm",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function getTerm(uint64 _termId) external view returns (uint64 startTime, uint64 randomnessBN, bytes32 randomness) {\n        Term storage term = terms[_termId];\n        return (term.startTime, term.randomnessBN, term.randomness);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the information related to a term based on its ID. Note that if the term has not been reached, the",
+            "    *      information returned won't be computed yet. This function allows querying future terms that were not computed yet.",
+            "    * @param _termId ID of the term being queried",
+            "    * @return startTime Term start time",
+            "    * @return randomnessBN Block number used for randomness in the requested term",
+            "    * @return randomness Randomness computed for the requested term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the information related to a term based on its ID. Note that if the term has not been reached, the\n    *      information returned won't be computed yet. This function allows querying future terms that were not computed yet.\n    * @param _termId ID of the term being queried\n    * @return startTime Term start time\n    * @return randomnessBN Block number used for randomness in the requested term\n    * @return randomness Randomness computed for the requested term\n    */\n",
+        "@dev": "Tell the information related to a term based on its ID. Note that if the term has not been reached, the * information returned won't be computed yet. This function allows querying future terms that were not computed yet.",
+        "@param1": "_termId ID of the term being queried",
+        "@return1": "startTime Term start time",
+        "@return2": "randomnessBN Block number used for randomness in the requested term",
+        "@return3": "randomness Randomness computed for the requested term",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTermRandomness",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function getTermRandomness(uint64 _termId) external view termExists(_termId) returns (bytes32) {\n        return _computeTermRandomness(_termId);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the randomness of a term even if it wasn't computed yet",
+            "    * @param _termId Identification number of the term being queried",
+            "    * @return Randomness of the requested term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the randomness of a term even if it wasn't computed yet\n    * @param _termId Identification number of the term being queried\n    * @return Randomness of the requested term\n    */\n",
+        "@dev": "Tell the randomness of a term even if it wasn't computed yet",
+        "@param1": "_termId Identification number of the term being queried",
+        "@return1": "Randomness of the requested term",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAutomaticWithdrawals",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_allowed",
+                "type": "bool"
+            }
+        ],
+        "func": "function setAutomaticWithdrawals(bool _allowed) external {\n        withdrawalsAllowed[msg.sender] = _allowed;\n        emit AutomaticWithdrawalsAllowedChanged(msg.sender, _allowed);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Set the automatic withdrawals config for the sender to `_allowed`",
+            "    * @param _allowed Whether or not the automatic withdrawals are allowed by the sender",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Set the automatic withdrawals config for the sender to `_allowed`\n    * @param _allowed Whether or not the automatic withdrawals are allowed by the sender\n    */\n",
+        "@notice": "Set the automatic withdrawals config for the sender to `_allowed`",
+        "@param1": "_allowed Whether or not the automatic withdrawals are allowed by the sender",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "areWithdrawalsAllowedFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_holder",
+                "type": "address"
+            }
+        ],
+        "func": "function areWithdrawalsAllowedFor(address _holder) external view returns (bool) {\n        return withdrawalsAllowed[_holder];\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell whether a certain holder accepts automatic withdrawals of tokens or not",
+            "    * @param _holder Address of the token holder querying if withdrawals are allowed for",
+            "    * @return True if the given holder accepts automatic withdrawals of their tokens, false otherwise",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell whether a certain holder accepts automatic withdrawals of tokens or not\n    * @param _holder Address of the token holder querying if withdrawals are allowed for\n    * @return True if the given holder accepts automatic withdrawals of their tokens, false otherwise\n    */\n",
+        "@dev": "Tell whether a certain holder accepts automatic withdrawals of tokens or not",
+        "@param1": "_holder Address of the token holder querying if withdrawals are allowed for",
+        "@return1": "True if the given holder accepts automatic withdrawals of their tokens, false otherwise",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getConfigChangeTermId",
+        "visibility": "external",
+        "args": [],
+        "func": "function getConfigChangeTermId() external view returns (uint64) {\n        return configChangeTermId;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the term identification number of the next scheduled config change",
+            "    * @return Term identification number of the next scheduled config change",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the term identification number of the next scheduled config change\n    * @return Term identification number of the next scheduled config change\n    */\n",
+        "@dev": "Tell the term identification number of the next scheduled config change",
+        "@return1": "Term identification number of the next scheduled config change",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setConfig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_fromTermId",
+                "type": "uint64"
+            },
+            {
+                "name": "_feeToken",
+                "type": "ERC20"
+            },
+            {
+                "name": "_fees",
+                "type": "uint256[3] calldata"
+            },
+            {
+                "name": "_roundStateDurations",
+                "type": "uint64[5] calldata"
+            },
+            {
+                "name": "_pcts",
+                "type": "uint16[2] calldata"
+            },
+            {
+                "name": "_roundParams",
+                "type": "uint64[4] calldata"
+            },
+            {
+                "name": "_appealCollateralParams",
+                "type": "uint256[2] calldata"
+            },
+            {
+                "name": "_minActiveBalance",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setConfig(\n        uint64 _fromTermId,\n        ERC20 _feeToken,\n        uint256[3] calldata _fees,\n        uint64[5] calldata _roundStateDurations,\n        uint16[2] calldata _pcts,\n        uint64[4] calldata _roundParams,\n        uint256[2] calldata _appealCollateralParams,\n        uint256 _minActiveBalance\n    )\n        external\n        onlyConfigGovernor\n    {\n        uint64 currentTermId = _ensureCurrentTerm();\n        _setConfig(\n            currentTermId,\n            _fromTermId,\n            _feeToken,\n            _fees,\n            _roundStateDurations,\n            _pcts,\n            _roundParams,\n            _appealCollateralParams,\n            _minActiveBalance\n        );\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Change Court configuration params",
+            "    * @param _fromTermId Identification number of the term in which the config will be effective at",
+            "    * @param _feeToken Address of the token contract that is used to pay for fees",
+            "    * @param _fees Array containing:",
+            "    *        0. jurorFee Amount of fee tokens that is paid per juror per dispute",
+            "    *        1. draftFee Amount of fee tokens per juror to cover the drafting cost",
+            "    *        2. settleFee Amount of fee tokens per juror to cover round settlement cost",
+            "    * @param _roundStateDurations Array containing the durations in terms of the different phases of a dispute:",
+            "    *        0. evidenceTerms Max submitting evidence period duration in terms",
+            "    *        1. commitTerms Commit period duration in terms",
+            "    *        2. revealTerms Reveal period duration in terms",
+            "    *        3. appealTerms Appeal period duration in terms",
+            "    *        4. appealConfirmationTerms Appeal confirmation period duration in terms",
+            "    * @param _pcts Array containing:",
+            "    *        0. penaltyPct Permyriad of min active tokens balance to be locked to each drafted jurors (\u2031 - 1/10,000)",
+            "    *        1. finalRoundReduction Permyriad of fee reduction for the last appeal round (\u2031 - 1/10,000)",
+            "    * @param _roundParams Array containing params for rounds:",
+            "    *        0. firstRoundJurorsNumber Number of jurors to be drafted for the first round of disputes",
+            "    *        1. appealStepFactor Increasing factor for the number of jurors of each round of a dispute",
+            "    *        2. maxRegularAppealRounds Number of regular appeal rounds before the final round is triggered",
+            "    *        3. finalRoundLockTerms Number of terms that a coherent juror in a final round is disallowed to withdraw (to prevent 51% attacks)",
+            "    * @param _appealCollateralParams Array containing params for appeal collateral:",
+            "    *        1. appealCollateralFactor Permyriad multiple of dispute fees required to appeal a preliminary ruling",
+            "    *        2. appealConfirmCollateralFactor Permyriad multiple of dispute fees required to confirm appeal",
+            "    * @param _minActiveBalance Minimum amount of juror tokens that can be activated",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Change Court configuration params\n    * @param _fromTermId Identification number of the term in which the config will be effective at\n    * @param _feeToken Address of the token contract that is used to pay for fees\n    * @param _fees Array containing:\n    *        0. jurorFee Amount of fee tokens that is paid per juror per dispute\n    *        1. draftFee Amount of fee tokens per juror to cover the drafting cost\n    *        2. settleFee Amount of fee tokens per juror to cover round settlement cost\n    * @param _roundStateDurations Array containing the durations in terms of the different phases of a dispute:\n    *        0. evidenceTerms Max submitting evidence period duration in terms\n    *        1. commitTerms Commit period duration in terms\n    *        2. revealTerms Reveal period duration in terms\n    *        3. appealTerms Appeal period duration in terms\n    *        4. appealConfirmationTerms Appeal confirmation period duration in terms\n    * @param _pcts Array containing:\n    *        0. penaltyPct Permyriad of min active tokens balance to be locked to each drafted jurors (\u2031 - 1/10,000)\n    *        1. finalRoundReduction Permyriad of fee reduction for the last appeal round (\u2031 - 1/10,000)\n    * @param _roundParams Array containing params for rounds:\n    *        0. firstRoundJurorsNumber Number of jurors to be drafted for the first round of disputes\n    *        1. appealStepFactor Increasing factor for the number of jurors of each round of a dispute\n    *        2. maxRegularAppealRounds Number of regular appeal rounds before the final round is triggered\n    *        3. finalRoundLockTerms Number of terms that a coherent juror in a final round is disallowed to withdraw (to prevent 51% attacks)\n    * @param _appealCollateralParams Array containing params for appeal collateral:\n    *        1. appealCollateralFactor Permyriad multiple of dispute fees required to appeal a preliminary ruling\n    *        2. appealConfirmCollateralFactor Permyriad multiple of dispute fees required to confirm appeal\n    * @param _minActiveBalance Minimum amount of juror tokens that can be activated\n    */\n",
+        "@notice": "Change Court configuration params",
+        "@param1": "_fromTermId Identification number of the term in which the config will be effective at",
+        "@param2": "_feeToken Address of the token contract that is used to pay for fees",
+        "@param3": "_fees Array containing: * 0. jurorFee Amount of fee tokens that is paid per juror per dispute * 1. draftFee Amount of fee tokens per juror to cover the drafting cost * 2. settleFee Amount of fee tokens per juror to cover round settlement cost",
+        "@param4": "_roundStateDurations Array containing the durations in terms of the different phases of a dispute: * 0. evidenceTerms Max submitting evidence period duration in terms * 1. commitTerms Commit period duration in terms * 2. revealTerms Reveal period duration in terms * 3. appealTerms Appeal period duration in terms * 4. appealConfirmationTerms Appeal confirmation period duration in terms",
+        "@param5": "_pcts Array containing: * 0. penaltyPct Permyriad of min active tokens balance to be locked to each drafted jurors (\u2031 - 1/10,000) * 1. finalRoundReduction Permyriad of fee reduction for the last appeal round (\u2031 - 1/10,000)",
+        "@param6": "_roundParams Array containing params for rounds: * 0. firstRoundJurorsNumber Number of jurors to be drafted for the first round of disputes * 1. appealStepFactor Increasing factor for the number of jurors of each round of a dispute * 2. maxRegularAppealRounds Number of regular appeal rounds before the final round is triggered * 3. finalRoundLockTerms Number of terms that a coherent juror in a final round is disallowed to withdraw (to prevent 51% attacks)",
+        "@param7": "_appealCollateralParams Array containing params for appeal collateral: * 1. appealCollateralFactor Permyriad multiple of dispute fees required to appeal a preliminary ruling * 2. appealConfirmCollateralFactor Permyriad multiple of dispute fees required to confirm appeal",
+        "@param8": "_minActiveBalance Minimum amount of juror tokens that can be activated",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delayStartTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_newFirstTermStartTime",
+                "type": "uint64"
+            }
+        ],
+        "func": "function delayStartTime(uint64 _newFirstTermStartTime) external onlyConfigGovernor {\n        _delayStartTime(_newFirstTermStartTime);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Delay the Court start time to `_newFirstTermStartTime`",
+            "    * @param _newFirstTermStartTime New timestamp in seconds when the court will open",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Delay the Court start time to `_newFirstTermStartTime`\n    * @param _newFirstTermStartTime New timestamp in seconds when the court will open\n    */\n",
+        "@notice": "Delay the Court start time to `_newFirstTermStartTime`",
+        "@param1": "_newFirstTermStartTime New timestamp in seconds when the court will open",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeFundsGovernor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_newFundsGovernor",
+                "type": "address"
+            }
+        ],
+        "func": "function changeFundsGovernor(address _newFundsGovernor) external onlyFundsGovernor {\n        require(_newFundsGovernor != ZERO_ADDRESS, ERROR_INVALID_GOVERNOR_ADDRESS);\n        _setFundsGovernor(_newFundsGovernor);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Change funds governor address to `_newFundsGovernor`",
+            "    * @param _newFundsGovernor Address of the new funds governor to be set",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Change funds governor address to `_newFundsGovernor`\n    * @param _newFundsGovernor Address of the new funds governor to be set\n    */\n",
+        "@notice": "Change funds governor address to `_newFundsGovernor`",
+        "@param1": "_newFundsGovernor Address of the new funds governor to be set",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeConfigGovernor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_newConfigGovernor",
+                "type": "address"
+            }
+        ],
+        "func": "function changeConfigGovernor(address _newConfigGovernor) external onlyConfigGovernor {\n        require(_newConfigGovernor != ZERO_ADDRESS, ERROR_INVALID_GOVERNOR_ADDRESS);\n        _setConfigGovernor(_newConfigGovernor);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Change config governor address to `_newConfigGovernor`",
+            "    * @param _newConfigGovernor Address of the new config governor to be set",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Change config governor address to `_newConfigGovernor`\n    * @param _newConfigGovernor Address of the new config governor to be set\n    */\n",
+        "@notice": "Change config governor address to `_newConfigGovernor`",
+        "@param1": "_newConfigGovernor Address of the new config governor to be set",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeModulesGovernor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_newModulesGovernor",
+                "type": "address"
+            }
+        ],
+        "func": "function changeModulesGovernor(address _newModulesGovernor) external onlyModulesGovernor {\n        require(_newModulesGovernor != ZERO_ADDRESS, ERROR_INVALID_GOVERNOR_ADDRESS);\n        _setModulesGovernor(_newModulesGovernor);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Change modules governor address to `_newModulesGovernor`",
+            "    * @param _newModulesGovernor Address of the new governor to be set",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Change modules governor address to `_newModulesGovernor`\n    * @param _newModulesGovernor Address of the new governor to be set\n    */\n",
+        "@notice": "Change modules governor address to `_newModulesGovernor`",
+        "@param1": "_newModulesGovernor Address of the new governor to be set",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ejectFundsGovernor",
+        "visibility": "external",
+        "args": [],
+        "func": "function ejectFundsGovernor() external onlyFundsGovernor {\n        _setFundsGovernor(ZERO_ADDRESS);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Remove the funds governor. Set the funds governor to the zero address.",
+            "    * @dev This action cannot be rolled back, once the funds governor has been unset, funds cannot be recovered from recoverable modules anymore",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Remove the funds governor. Set the funds governor to the zero address.\n    * @dev This action cannot be rolled back, once the funds governor has been unset, funds cannot be recovered from recoverable modules anymore\n    */\n",
+        "@notice": "Remove the funds governor. Set the funds governor to the zero address.",
+        "@dev": "This action cannot be rolled back, once the funds governor has been unset, funds cannot be recovered from recoverable modules anymore",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ejectModulesGovernor",
+        "visibility": "external",
+        "args": [],
+        "func": "function ejectModulesGovernor() external onlyModulesGovernor {\n        _setModulesGovernor(ZERO_ADDRESS);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Remove the modules governor. Set the modules governor to the zero address.",
+            "    * @dev This action cannot be rolled back, once the modules governor has been unset, system modules cannot be changed anymore",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Remove the modules governor. Set the modules governor to the zero address.\n    * @dev This action cannot be rolled back, once the modules governor has been unset, system modules cannot be changed anymore\n    */\n",
+        "@notice": "Remove the modules governor. Set the modules governor to the zero address.",
+        "@dev": "This action cannot be rolled back, once the modules governor has been unset, system modules cannot be changed anymore",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setModule",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_id",
+                "type": "bytes32"
+            },
+            {
+                "name": "_addr",
+                "type": "address"
+            }
+        ],
+        "func": "function setModule(bytes32 _id, address _addr) external onlyModulesGovernor {\n        _setModule(_id, _addr);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Set module `_id` to `_addr`",
+            "    * @param _id ID of the module to be set",
+            "    * @param _addr Address of the module to be set",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Set module `_id` to `_addr`\n    * @param _id ID of the module to be set\n    * @param _addr Address of the module to be set\n    */\n",
+        "@notice": "Set module `_id` to `_addr`",
+        "@param1": "_id ID of the module to be set",
+        "@param2": "_addr Address of the module to be set",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setModules",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_ids",
+                "type": "bytes32[] calldata"
+            },
+            {
+                "name": "_addresses",
+                "type": "address[] calldata"
+            }
+        ],
+        "func": "function setModules(bytes32[] calldata _ids, address[] calldata _addresses) external onlyModulesGovernor {\n        require(_ids.length == _addresses.length, ERROR_INVALID_IMPLS_INPUT_LENGTH);\n\n        for (uint256 i = 0; i < _ids.length; i++) {\n            _setModule(_ids[i], _addresses[i]);\n        }\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Set many modules at once",
+            "    * @param _ids List of ids of each module to be set",
+            "    * @param _addresses List of addressed of each the module to be set",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Set many modules at once\n    * @param _ids List of ids of each module to be set\n    * @param _addresses List of addressed of each the module to be set\n    */\n",
+        "@notice": "Set many modules at once",
+        "@param1": "_ids List of ids of each module to be set",
+        "@param2": "_addresses List of addressed of each the module to be set",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getConfig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function getConfig(uint64 _termId) external view\n        returns (\n            ERC20 feeToken,\n            uint256[3] memory fees,\n            uint64[5] memory roundStateDurations,\n            uint16[2] memory pcts,\n            uint64[4] memory roundParams,\n            uint256[2] memory appealCollateralParams,\n            uint256 minActiveBalance\n        )\n    {\n        uint64 lastEnsuredTermId = _lastEnsuredTermId();\n        return _getConfigAt(_termId, lastEnsuredTermId);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the full Court configuration parameters at a certain term",
+            "    * @param _termId Identification number of the term querying the Court config of",
+            "    * @return token Address of the token used to pay for fees",
+            "    * @return fees Array containing:",
+            "    *         0. jurorFee Amount of fee tokens that is paid per juror per dispute",
+            "    *         1. draftFee Amount of fee tokens per juror to cover the drafting cost",
+            "    *         2. settleFee Amount of fee tokens per juror to cover round settlement cost",
+            "    * @return roundStateDurations Array containing the durations in terms of the different phases of a dispute:",
+            "    *         0. evidenceTerms Max submitting evidence period duration in terms",
+            "    *         1. commitTerms Commit period duration in terms",
+            "    *         2. revealTerms Reveal period duration in terms",
+            "    *         3. appealTerms Appeal period duration in terms",
+            "    *         4. appealConfirmationTerms Appeal confirmation period duration in terms",
+            "    * @return pcts Array containing:",
+            "    *         0. penaltyPct Permyriad of min active tokens balance to be locked for each drafted juror (\u2031 - 1/10,000)",
+            "    *         1. finalRoundReduction Permyriad of fee reduction for the last appeal round (\u2031 - 1/10,000)",
+            "    * @return roundParams Array containing params for rounds:",
+            "    *         0. firstRoundJurorsNumber Number of jurors to be drafted for the first round of disputes",
+            "    *         1. appealStepFactor Increasing factor for the number of jurors of each round of a dispute",
+            "    *         2. maxRegularAppealRounds Number of regular appeal rounds before the final round is triggered",
+            "    *         3. finalRoundLockTerms Number of terms that a coherent juror in a final round is disallowed to withdraw (to prevent 51% attacks)",
+            "    * @return appealCollateralParams Array containing params for appeal collateral:",
+            "    *         0. appealCollateralFactor Multiple of dispute fees required to appeal a preliminary ruling",
+            "    *         1. appealConfirmCollateralFactor Multiple of dispute fees required to confirm appeal",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the full Court configuration parameters at a certain term\n    * @param _termId Identification number of the term querying the Court config of\n    * @return token Address of the token used to pay for fees\n    * @return fees Array containing:\n    *         0. jurorFee Amount of fee tokens that is paid per juror per dispute\n    *         1. draftFee Amount of fee tokens per juror to cover the drafting cost\n    *         2. settleFee Amount of fee tokens per juror to cover round settlement cost\n    * @return roundStateDurations Array containing the durations in terms of the different phases of a dispute:\n    *         0. evidenceTerms Max submitting evidence period duration in terms\n    *         1. commitTerms Commit period duration in terms\n    *         2. revealTerms Reveal period duration in terms\n    *         3. appealTerms Appeal period duration in terms\n    *         4. appealConfirmationTerms Appeal confirmation period duration in terms\n    * @return pcts Array containing:\n    *         0. penaltyPct Permyriad of min active tokens balance to be locked for each drafted juror (\u2031 - 1/10,000)\n    *         1. finalRoundReduction Permyriad of fee reduction for the last appeal round (\u2031 - 1/10,000)\n    * @return roundParams Array containing params for rounds:\n    *         0. firstRoundJurorsNumber Number of jurors to be drafted for the first round of disputes\n    *         1. appealStepFactor Increasing factor for the number of jurors of each round of a dispute\n    *         2. maxRegularAppealRounds Number of regular appeal rounds before the final round is triggered\n    *         3. finalRoundLockTerms Number of terms that a coherent juror in a final round is disallowed to withdraw (to prevent 51% attacks)\n    * @return appealCollateralParams Array containing params for appeal collateral:\n    *         0. appealCollateralFactor Multiple of dispute fees required to appeal a preliminary ruling\n    *         1. appealConfirmCollateralFactor Multiple of dispute fees required to confirm appeal\n    */\n",
+        "@dev": "Tell the full Court configuration parameters at a certain term",
+        "@param1": "_termId Identification number of the term querying the Court config of",
+        "@return1": "token Address of the token used to pay for fees",
+        "@return2": "fees Array containing: * 0. jurorFee Amount of fee tokens that is paid per juror per dispute * 1. draftFee Amount of fee tokens per juror to cover the drafting cost * 2. settleFee Amount of fee tokens per juror to cover round settlement cost",
+        "@return3": "roundStateDurations Array containing the durations in terms of the different phases of a dispute: * 0. evidenceTerms Max submitting evidence period duration in terms * 1. commitTerms Commit period duration in terms * 2. revealTerms Reveal period duration in terms * 3. appealTerms Appeal period duration in terms * 4. appealConfirmationTerms Appeal confirmation period duration in terms",
+        "@return4": "pcts Array containing: * 0. penaltyPct Permyriad of min active tokens balance to be locked for each drafted juror (\u2031 - 1/10,000) * 1. finalRoundReduction Permyriad of fee reduction for the last appeal round (\u2031 - 1/10,000)",
+        "@return5": "roundParams Array containing params for rounds: * 0. firstRoundJurorsNumber Number of jurors to be drafted for the first round of disputes * 1. appealStepFactor Increasing factor for the number of jurors of each round of a dispute * 2. maxRegularAppealRounds Number of regular appeal rounds before the final round is triggered * 3. finalRoundLockTerms Number of terms that a coherent juror in a final round is disallowed to withdraw (to prevent 51% attacks)",
+        "@return6": "appealCollateralParams Array containing params for appeal collateral: * 0. appealCollateralFactor Multiple of dispute fees required to appeal a preliminary ruling * 1. appealConfirmCollateralFactor Multiple of dispute fees required to confirm appeal",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDraftConfig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function getDraftConfig(uint64 _termId) external view returns (ERC20 feeToken, uint256 draftFee, uint16 penaltyPct) {\n        uint64 lastEnsuredTermId = _lastEnsuredTermId();\n        return _getDraftConfig(_termId, lastEnsuredTermId);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the draft config at a certain term",
+            "    * @param _termId Identification number of the term querying the draft config of",
+            "    * @return feeToken Address of the token used to pay for fees",
+            "    * @return draftFee Amount of fee tokens per juror to cover the drafting cost",
+            "    * @return penaltyPct Permyriad of min active tokens balance to be locked for each drafted juror (\u2031 - 1/10,000)",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the draft config at a certain term\n    * @param _termId Identification number of the term querying the draft config of\n    * @return feeToken Address of the token used to pay for fees\n    * @return draftFee Amount of fee tokens per juror to cover the drafting cost\n    * @return penaltyPct Permyriad of min active tokens balance to be locked for each drafted juror (\u2031 - 1/10,000)\n    */\n",
+        "@dev": "Tell the draft config at a certain term",
+        "@param1": "_termId Identification number of the term querying the draft config of",
+        "@return1": "feeToken Address of the token used to pay for fees",
+        "@return2": "draftFee Amount of fee tokens per juror to cover the drafting cost",
+        "@return3": "penaltyPct Permyriad of min active tokens balance to be locked for each drafted juror (\u2031 - 1/10,000)",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMinActiveBalance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function getMinActiveBalance(uint64 _termId) external view returns (uint256) {\n        uint64 lastEnsuredTermId = _lastEnsuredTermId();\n        return _getMinActiveBalance(_termId, lastEnsuredTermId);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the min active balance config at a certain term",
+            "    * @param _termId Identification number of the term querying the min active balance config of",
+            "    * @return Minimum amount of tokens jurors have to activate to participate in the Court",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the min active balance config at a certain term\n    * @param _termId Identification number of the term querying the min active balance config of\n    * @return Minimum amount of tokens jurors have to activate to participate in the Court\n    */\n",
+        "@dev": "Tell the min active balance config at a certain term",
+        "@param1": "_termId Identification number of the term querying the min active balance config of",
+        "@return1": "Minimum amount of tokens jurors have to activate to participate in the Court",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFundsGovernor",
+        "visibility": "external",
+        "args": [],
+        "func": "function getFundsGovernor() external view returns (address) {\n        return governor.funds;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the funds governor",
+            "    * @return Address of the funds governor",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the funds governor\n    * @return Address of the funds governor\n    */\n",
+        "@dev": "Tell the address of the funds governor",
+        "@return1": "Address of the funds governor",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getConfigGovernor",
+        "visibility": "external",
+        "args": [],
+        "func": "function getConfigGovernor() external view returns (address) {\n        return governor.config;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the config governor",
+            "    * @return Address of the config governor",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the config governor\n    * @return Address of the config governor\n    */\n",
+        "@dev": "Tell the address of the config governor",
+        "@return1": "Address of the config governor",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getModulesGovernor",
+        "visibility": "external",
+        "args": [],
+        "func": "function getModulesGovernor() external view returns (address) {\n        return governor.modules;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the modules governor",
+            "    * @return Address of the modules governor",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the modules governor\n    * @return Address of the modules governor\n    */\n",
+        "@dev": "Tell the address of the modules governor",
+        "@return1": "Address of the modules governor",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getModule",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_id",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getModule(bytes32 _id) external view returns (address) {\n        return _getModule(_id);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell address of a module based on a given ID",
+            "    * @param _id ID of the module being queried",
+            "    * @return Address of the requested module",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell address of a module based on a given ID\n    * @param _id ID of the module being queried\n    * @return Address of the requested module\n    */\n",
+        "@dev": "Tell address of a module based on a given ID",
+        "@param1": "_id ID of the module being queried",
+        "@return1": "Address of the requested module",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDisputeManager",
+        "visibility": "external",
+        "args": [],
+        "func": "function getDisputeManager() external view returns (address) {\n        return _getDisputeManager();\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the DisputeManager module",
+            "    * @return Address of the DisputeManager module",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the DisputeManager module\n    * @return Address of the DisputeManager module\n    */\n",
+        "@dev": "Tell the address of the DisputeManager module",
+        "@return1": "Address of the DisputeManager module",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTreasury",
+        "visibility": "external",
+        "args": [],
+        "func": "function getTreasury() external view returns (address) {\n        return _getModule(TREASURY);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the Treasury module",
+            "    * @return Address of the Treasury module",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the Treasury module\n    * @return Address of the Treasury module\n    */\n",
+        "@dev": "Tell the address of the Treasury module",
+        "@return1": "Address of the Treasury module",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVoting",
+        "visibility": "external",
+        "args": [],
+        "func": "function getVoting() external view returns (address) {\n        return _getModule(VOTING);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the Voting module",
+            "    * @return Address of the Voting module",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the Voting module\n    * @return Address of the Voting module\n    */\n",
+        "@dev": "Tell the address of the Voting module",
+        "@return1": "Address of the Voting module",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getJurorsRegistry",
+        "visibility": "external",
+        "args": [],
+        "func": "function getJurorsRegistry() external view returns (address) {\n        return _getModule(JURORS_REGISTRY);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the JurorsRegistry module",
+            "    * @return Address of the JurorsRegistry module",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the JurorsRegistry module\n    * @return Address of the JurorsRegistry module\n    */\n",
+        "@dev": "Tell the address of the JurorsRegistry module",
+        "@return1": "Address of the JurorsRegistry module",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSubscriptions",
+        "visibility": "external",
+        "args": [],
+        "func": "function getSubscriptions() external view returns (address) {\n        return _getSubscriptions();\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the Subscriptions module",
+            "    * @return Address of the Subscriptions module",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the Subscriptions module\n    * @return Address of the Subscriptions module\n    */\n",
+        "@dev": "Tell the address of the Subscriptions module",
+        "@return1": "Address of the Subscriptions module",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 _interfaceId) external pure returns (bool) {\n        return _interfaceId == ARBITRABLE_INTERFACE_ID || _interfaceId == ERC165_INTERFACE_ID;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev ERC165 - Query if a contract implements a certain interface",
+            "    * @param _interfaceId The interface identifier being queried, as specified in ERC-165",
+            "    * @return True if this contract supports the given interface, false otherwise",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev ERC165 - Query if a contract implements a certain interface\n    * @param _interfaceId The interface identifier being queried, as specified in ERC-165\n    * @return True if this contract supports the given interface, false otherwise\n    */\n",
+        "@dev": "ERC165 - Query if a contract implements a certain interface",
+        "@param1": "_interfaceId The interface identifier being queried, as specified in ERC-165",
+        "@return1": "True if this contract supports the given interface, false otherwise",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getController",
+        "visibility": "external",
+        "args": [],
+        "func": "function getController() external view returns (Controller) {\n        return controller;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the address of the controller",
+            "    * @return Address of the controller",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the address of the controller\n    * @return Address of the controller\n    */\n",
+        "@dev": "Tell the address of the controller",
+        "@return1": "Address of the controller",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "recoverFunds",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_token",
+                "type": "ERC20"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            }
+        ],
+        "func": "function recoverFunds(ERC20 _token, address _to) external onlyFundsGovernor {\n        uint256 balance = _token.balanceOf(address(this));\n        require(balance > 0, ERROR_INSUFFICIENT_RECOVER_FUNDS);\n        require(_token.safeTransfer(_to, balance), ERROR_RECOVER_TOKEN_FUNDS_FAILED);\n        emit RecoverFunds(_token, _to, balance);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Transfer all `_token` tokens to `_to`",
+            "    * @param _token ERC20 token to be recovered",
+            "    * @param _to Address of the recipient that will be receive all the funds of the requested token",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Transfer all `_token` tokens to `_to`\n    * @param _token ERC20 token to be recovered\n    * @param _to Address of the recipient that will be receive all the funds of the requested token\n    */\n",
+        "@notice": "Transfer all `_token` tokens to `_to`",
+        "@param1": "_token ERC20 token to be recovered",
+        "@param2": "_to Address of the recipient that will be receive all the funds of the requested token",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "activate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function activate(uint256 _amount) external {\n        _activateTokens(msg.sender, _amount, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Activate `_amount == 0 ? 'all available tokens' : @tokenAmount(self.token(), _amount)` for the next term",
+            "    * @param _amount Amount of juror tokens to be activated for the next term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Activate `_amount == 0 ? 'all available tokens' : @tokenAmount(self.token(), _amount)` for the next term\n    * @param _amount Amount of juror tokens to be activated for the next term\n    */\n",
+        "@notice": "Activate `_amount == 0 ? 'all available tokens' :",
+        "@tokenAmount(self.token(),": "_amount)` for the next term",
+        "@param1": "_amount Amount of juror tokens to be activated for the next term",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deactivate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function deactivate(uint256 _amount) external {\n        uint64 termId = _ensureCurrentTerm();\n        Juror storage juror = jurorsByAddress[msg.sender];\n        uint256 unlockedActiveBalance = _lastUnlockedActiveBalanceOf(juror);\n        uint256 amountToDeactivate = _amount == 0 ? unlockedActiveBalance : _amount;\n        require(amountToDeactivate > 0, ERROR_INVALID_ZERO_AMOUNT);\n        require(amountToDeactivate <= unlockedActiveBalance, ERROR_INVALID_DEACTIVATION_AMOUNT);\n\n        // No need for SafeMath: we already checked values above\n        uint256 futureActiveBalance = unlockedActiveBalance - amountToDeactivate;\n        uint256 minActiveBalance = _getMinActiveBalance(termId);\n        require(futureActiveBalance == 0 || futureActiveBalance >= minActiveBalance, ERROR_INVALID_DEACTIVATION_AMOUNT);\n\n        _createDeactivationRequest(msg.sender, amountToDeactivate);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Deactivate `_amount == 0 ? 'all unlocked tokens' : @tokenAmount(self.token(), _amount)` for the next term",
+            "    * @param _amount Amount of juror tokens to be deactivated for the next term",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Deactivate `_amount == 0 ? 'all unlocked tokens' : @tokenAmount(self.token(), _amount)` for the next term\n    * @param _amount Amount of juror tokens to be deactivated for the next term\n    */\n",
+        "@notice": "Deactivate `_amount == 0 ? 'all unlocked tokens' :",
+        "@tokenAmount(self.token(),": "_amount)` for the next term",
+        "@param1": "_amount Amount of juror tokens to be deactivated for the next term",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function stake(uint256 _amount, bytes calldata _data) external {\n        _stake(msg.sender, msg.sender, _amount, _data);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Stake `@tokenAmount(self.token(), _amount)` for the sender to the Court",
+            "    * @param _amount Amount of tokens to be staked",
+            "    * @param _data Optional data that can be used to request the activation of the transferred tokens",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Stake `@tokenAmount(self.token(), _amount)` for the sender to the Court\n    * @param _amount Amount of tokens to be staked\n    * @param _data Optional data that can be used to request the activation of the transferred tokens\n    */\n",
+        "@notice": "Stake `@tokenAmount(self.token(), _amount)` for the sender to the Court",
+        "@param1": "_amount Amount of tokens to be staked",
+        "@param2": "_data Optional data that can be used to request the activation of the transferred tokens",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stakeFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function stakeFor(address _to, uint256 _amount, bytes calldata _data) external {\n        _stake(msg.sender, _to, _amount, _data);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Stake `@tokenAmount(self.token(), _amount)` for `_to` to the Court",
+            "    * @param _to Address to stake an amount of tokens to",
+            "    * @param _amount Amount of tokens to be staked",
+            "    * @param _data Optional data that can be used to request the activation of the transferred tokens",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Stake `@tokenAmount(self.token(), _amount)` for `_to` to the Court\n    * @param _to Address to stake an amount of tokens to\n    * @param _amount Amount of tokens to be staked\n    * @param _data Optional data that can be used to request the activation of the transferred tokens\n    */\n",
+        "@notice": "Stake `@tokenAmount(self.token(), _amount)` for `_to` to the Court",
+        "@param1": "_to Address to stake an amount of tokens to",
+        "@param2": "_amount Amount of tokens to be staked",
+        "@param3": "_data Optional data that can be used to request the activation of the transferred tokens",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unstake",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function unstake(uint256 _amount, bytes calldata _data) external {\n        _unstake(msg.sender, _amount, _data);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Unstake `@tokenAmount(self.token(), _amount)` for `_to` from the Court",
+            "    * @param _amount Amount of tokens to be unstaked",
+            "    * @param _data Optional data is never used by this function, only logged",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Unstake `@tokenAmount(self.token(), _amount)` for `_to` from the Court\n    * @param _amount Amount of tokens to be unstaked\n    * @param _data Optional data is never used by this function, only logged\n    */\n",
+        "@notice": "Unstake `@tokenAmount(self.token(), _amount)` for `_to` from the Court",
+        "@param1": "_amount Amount of tokens to be unstaked",
+        "@param2": "_data Optional data is never used by this function, only logged",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "receiveApproval",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "name": "_data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function receiveApproval(address _from, uint256 _amount, address _token, bytes calldata _data) external {\n        require(msg.sender == _token && _token == address(jurorsToken), ERROR_TOKEN_APPROVE_NOT_ALLOWED);\n        _stake(_from, _from, _amount, _data);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Callback of approveAndCall, allows staking directly with a transaction to the token contract.",
+            "    * @param _from Address making the transfer",
+            "    * @param _amount Amount of tokens to transfer",
+            "    * @param _token Address of the token",
+            "    * @param _data Optional data that can be used to request the activation of the transferred tokens",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Callback of approveAndCall, allows staking directly with a transaction to the token contract.\n    * @param _from Address making the transfer\n    * @param _amount Amount of tokens to transfer\n    * @param _token Address of the token\n    * @param _data Optional data that can be used to request the activation of the transferred tokens\n    */\n",
+        "@dev": "Callback of approveAndCall, allows staking directly with a transaction to the token contract.",
+        "@param1": "_from Address making the transfer",
+        "@param2": "_amount Amount of tokens to transfer",
+        "@param3": "_token Address of the token",
+        "@param4": "_data Optional data that can be used to request the activation of the transferred tokens",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "processDeactivationRequest",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            }
+        ],
+        "func": "function processDeactivationRequest(address _juror) external {\n        uint64 termId = _ensureCurrentTerm();\n        _processDeactivationRequest(_juror, termId);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Process a token deactivation requested for `_juror` if there is any",
+            "    * @param _juror Address of the juror to process the deactivation request of",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Process a token deactivation requested for `_juror` if there is any\n    * @param _juror Address of the juror to process the deactivation request of\n    */\n",
+        "@notice": "Process a token deactivation requested for `_juror` if there is any",
+        "@param1": "_juror Address of the juror to process the deactivation request of",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "assignTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function assignTokens(address _juror, uint256 _amount) external onlyDisputeManager {\n        if (_amount > 0) {\n            _updateAvailableBalanceOf(_juror, _amount, true);\n            emit JurorTokensAssigned(_juror, _amount);\n        }\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Assign `@tokenAmount(self.token(), _amount)` to the available balance of `_juror`",
+            "    * @param _juror Juror to add an amount of tokens to",
+            "    * @param _amount Amount of tokens to be added to the available balance of a juror",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Assign `@tokenAmount(self.token(), _amount)` to the available balance of `_juror`\n    * @param _juror Juror to add an amount of tokens to\n    * @param _amount Amount of tokens to be added to the available balance of a juror\n    */\n",
+        "@notice": "Assign `@tokenAmount(self.token(), _amount)` to the available balance of `_juror`",
+        "@param1": "_juror Juror to add an amount of tokens to",
+        "@param2": "_amount Amount of tokens to be added to the available balance of a juror",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnTokens(uint256 _amount) external onlyDisputeManager {\n        if (_amount > 0) {\n            _updateAvailableBalanceOf(BURN_ACCOUNT, _amount, true);\n            emit JurorTokensBurned(_amount);\n        }\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Burn `@tokenAmount(self.token(), _amount)`",
+            "    * @param _amount Amount of tokens to be burned",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Burn `@tokenAmount(self.token(), _amount)`\n    * @param _amount Amount of tokens to be burned\n    */\n",
+        "@notice": "Burn `@tokenAmount(self.token(), _amount)`",
+        "@param1": "_amount Amount of tokens to be burned",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "draft",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_params",
+                "type": "uint256[7] calldata"
+            }
+        ],
+        "func": "function draft(uint256[7] calldata _params) external onlyDisputeManager returns (address[] memory jurors, uint256 length) {\n        DraftParams memory draftParams = _buildDraftParams(_params);\n        jurors = new address[](draftParams.batchRequestedJurors);\n\n        // Jurors returned by the tree multi-sortition may not have enough unlocked active balance to be drafted. Thus,\n        // we compute several sortitions until all the requested jurors are selected. To guarantee a different set of\n        // jurors on each sortition, the iteration number will be part of the random seed to be used in the sortition.\n        // Note that we are capping the number of iterations to avoid an OOG error, which means that this function could\n        // return less jurors than the requested number.\n\n        for (draftParams.iteration = 0;\n             length < draftParams.batchRequestedJurors && draftParams.iteration < MAX_DRAFT_ITERATIONS;\n             draftParams.iteration++\n        ) {\n            (uint256[] memory jurorIds, uint256[] memory activeBalances) = _treeSearch(draftParams);\n\n            for (uint256 i = 0; i < jurorIds.length && length < draftParams.batchRequestedJurors; i++) {\n                // We assume the selected jurors are registered in the registry, we are not checking their addresses exist\n                address jurorAddress = jurorsAddressById[jurorIds[i]];\n                Juror storage juror = jurorsByAddress[jurorAddress];\n\n                // Compute new locked balance for a juror based on the penalty applied when being drafted\n                uint256 newLockedBalance = juror.lockedBalance.add(draftParams.draftLockAmount);\n\n                // Check if there is any deactivation requests for the next term. Drafts are always computed for the current term\n                // but we have to make sure we are locking an amount that will exist in the next term.\n                uint256 nextTermDeactivationRequestAmount = _deactivationRequestedAmountForTerm(juror, draftParams.termId + 1);\n\n                // Check if juror has enough active tokens to lock the requested amount for the draft, skip it otherwise.\n                uint256 currentActiveBalance = activeBalances[i];\n                if (currentActiveBalance >= newLockedBalance) {\n\n                    // Check if the amount of active tokens for the next term is enough to lock the required amount for\n                    // the draft. Otherwise, reduce the requested deactivation amount of the next term.\n                    // Next term deactivation amount should always be less than current active balance, but we make sure using SafeMath\n                    uint256 nextTermActiveBalance = currentActiveBalance.sub(nextTermDeactivationRequestAmount);\n                    if (nextTermActiveBalance < newLockedBalance) {\n                        // No need for SafeMath: we already checked values above\n                        _reduceDeactivationRequest(jurorAddress, newLockedBalance - nextTermActiveBalance, draftParams.termId);\n                    }\n\n                    // Update the current active locked balance of the juror\n                    juror.lockedBalance = newLockedBalance;\n                    jurors[length++] = jurorAddress;\n                    emit JurorBalanceLocked(jurorAddress, draftParams.draftLockAmount);\n                }\n            }\n        }\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Draft a set of jurors based on given requirements for a term id",
+            "    * @param _params Array containing draft requirements:",
+            "    *        0. bytes32 Term randomness",
+            "    *        1. uint256 Dispute id",
+            "    *        2. uint64  Current term id",
+            "    *        3. uint256 Number of seats already filled",
+            "    *        4. uint256 Number of seats left to be filled",
+            "    *        5. uint64  Number of jurors required for the draft",
+            "    *        6. uint16  Permyriad of the minimum active balance to be locked for the draft",
+            "    *",
+            "    * @return jurors List of jurors selected for the draft",
+            "    * @return length Size of the list of the draft result",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Draft a set of jurors based on given requirements for a term id\n    * @param _params Array containing draft requirements:\n    *        0. bytes32 Term randomness\n    *        1. uint256 Dispute id\n    *        2. uint64  Current term id\n    *        3. uint256 Number of seats already filled\n    *        4. uint256 Number of seats left to be filled\n    *        5. uint64  Number of jurors required for the draft\n    *        6. uint16  Permyriad of the minimum active balance to be locked for the draft\n    *\n    * @return jurors List of jurors selected for the draft\n    * @return length Size of the list of the draft result\n    */\n",
+        "@notice": "Draft a set of jurors based on given requirements for a term id",
+        "@param1": "_params Array containing draft requirements: * 0. bytes32 Term randomness * 1. uint256 Dispute id * 2. uint64 Current term id * 3. uint256 Number of seats already filled * 4. uint256 Number of seats left to be filled * 5. uint64 Number of jurors required for the draft * 6. uint16 Permyriad of the minimum active balance to be locked for the draft",
+        "@return1": "jurors List of jurors selected for the draft",
+        "@return2": "length Size of the list of the draft result",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "slashOrUnlock",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_termId",
+                "type": "uint64"
+            },
+            {
+                "name": "_jurors",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "_lockedAmounts",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "_rewardedJurors",
+                "type": "bool[] calldata"
+            }
+        ],
+        "func": "function slashOrUnlock(uint64 _termId, address[] calldata _jurors, uint256[] calldata _lockedAmounts, bool[] calldata _rewardedJurors)\n        external\n        onlyDisputeManager\n        returns (uint256)\n    {\n        require(_jurors.length == _lockedAmounts.length, ERROR_INVALID_LOCKED_AMOUNTS_LENGTH);\n        require(_jurors.length == _rewardedJurors.length, ERROR_INVALID_REWARDED_JURORS_LENGTH);\n\n        uint64 nextTermId = _termId + 1;\n        uint256 collectedTokens;\n\n        for (uint256 i = 0; i < _jurors.length; i++) {\n            uint256 lockedAmount = _lockedAmounts[i];\n            address jurorAddress = _jurors[i];\n            Juror storage juror = jurorsByAddress[jurorAddress];\n            juror.lockedBalance = juror.lockedBalance.sub(lockedAmount);\n\n            // Slash juror if requested. Note that there's no need to check if there was a deactivation\n            // request since we're working with already locked balances.\n            if (_rewardedJurors[i]) {\n                emit JurorBalanceUnlocked(jurorAddress, lockedAmount);\n            } else {\n                collectedTokens = collectedTokens.add(lockedAmount);\n                tree.update(juror.id, nextTermId, lockedAmount, false);\n                emit JurorSlashed(jurorAddress, lockedAmount, nextTermId);\n            }\n        }\n\n        return collectedTokens;\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Slash a set of jurors based on their votes compared to the winning ruling. This function will unlock the",
+            "    *         corresponding locked balances of those jurors that are set to be slashed.",
+            "    * @param _termId Current term id",
+            "    * @param _jurors List of juror addresses to be slashed",
+            "    * @param _lockedAmounts List of amounts locked for each corresponding juror that will be either slashed or returned",
+            "    * @param _rewardedJurors List of booleans to tell whether a juror's active balance has to be slashed or not",
+            "    * @return Total amount of slashed tokens",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Slash a set of jurors based on their votes compared to the winning ruling. This function will unlock the\n    *         corresponding locked balances of those jurors that are set to be slashed.\n    * @param _termId Current term id\n    * @param _jurors List of juror addresses to be slashed\n    * @param _lockedAmounts List of amounts locked for each corresponding juror that will be either slashed or returned\n    * @param _rewardedJurors List of booleans to tell whether a juror's active balance has to be slashed or not\n    * @return Total amount of slashed tokens\n    */\n",
+        "@notice": "Slash a set of jurors based on their votes compared to the winning ruling. This function will unlock the * corresponding locked balances of those jurors that are set to be slashed.",
+        "@param1": "_termId Current term id",
+        "@param2": "_jurors List of juror addresses to be slashed",
+        "@param3": "_lockedAmounts List of amounts locked for each corresponding juror that will be either slashed or returned",
+        "@param4": "_rewardedJurors List of booleans to tell whether a juror's active balance has to be slashed or not",
+        "@return1": "Total amount of slashed tokens",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "collectTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function collectTokens(address _juror, uint256 _amount, uint64 _termId) external onlyDisputeManager returns (bool) {\n        if (_amount == 0) {\n            return true;\n        }\n\n        uint64 nextTermId = _termId + 1;\n        Juror storage juror = jurorsByAddress[_juror];\n        uint256 unlockedActiveBalance = _lastUnlockedActiveBalanceOf(juror);\n        uint256 nextTermDeactivationRequestAmount = _deactivationRequestedAmountForTerm(juror, nextTermId);\n\n        // Check if the juror has enough unlocked tokens to collect the requested amount\n        // Note that we're also considering the deactivation request if there is any\n        uint256 totalUnlockedActiveBalance = unlockedActiveBalance.add(nextTermDeactivationRequestAmount);\n        if (_amount > totalUnlockedActiveBalance) {\n            return false;\n        }\n\n        // Check if the amount of active tokens is enough to collect the requested amount, otherwise reduce the requested deactivation amount of\n        // the next term. Note that this behaviour is different to the one when drafting jurors since this function is called as a side effect\n        // of a juror deliberately voting in a final round, while drafts occur randomly.\n        if (_amount > unlockedActiveBalance) {\n            // No need for SafeMath: amounts were already checked above\n            uint256 amountToReduce = _amount - unlockedActiveBalance;\n            _reduceDeactivationRequest(_juror, amountToReduce, _termId);\n        }\n        tree.update(juror.id, nextTermId, _amount, false);\n\n        emit JurorTokensCollected(_juror, _amount, nextTermId);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Try to collect `@tokenAmount(self.token(), _amount)` from `_juror` for the term #`_termId + 1`.",
+            "    * @dev This function tries to decrease the active balance of a juror for the next term based on the requested",
+            "    *      amount. It can be seen as a way to early-slash a juror's active balance.",
+            "    * @param _juror Juror to collect the tokens from",
+            "    * @param _amount Amount of tokens to be collected from the given juror and for the requested term id",
+            "    * @param _termId Current term id",
+            "    * @return True if the juror has enough unlocked tokens to be collected for the requested term, false otherwise",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Try to collect `@tokenAmount(self.token(), _amount)` from `_juror` for the term #`_termId + 1`.\n    * @dev This function tries to decrease the active balance of a juror for the next term based on the requested\n    *      amount. It can be seen as a way to early-slash a juror's active balance.\n    * @param _juror Juror to collect the tokens from\n    * @param _amount Amount of tokens to be collected from the given juror and for the requested term id\n    * @param _termId Current term id\n    * @return True if the juror has enough unlocked tokens to be collected for the requested term, false otherwise\n    */\n",
+        "@notice": "Try to collect `",
+        "@tokenAmount(self.token(),": "_amount)` from `_juror` for the term #`_termId + 1`.",
+        "@dev": "This function tries to decrease the active balance of a juror for the next term based on the requested * amount. It can be seen as a way to early-slash a juror's active balance.",
+        "@param1": "_juror Juror to collect the tokens from",
+        "@param2": "_amount Amount of tokens to be collected from the given juror and for the requested term id",
+        "@param3": "_termId Current term id",
+        "@return1": "True if the juror has enough unlocked tokens to be collected for the requested term, false otherwise",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lockWithdrawals",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            },
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function lockWithdrawals(address _juror, uint64 _termId) external onlyDisputeManager {\n        Juror storage juror = jurorsByAddress[_juror];\n        juror.withdrawalsLockTermId = _termId;\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Lock `_juror`'s withdrawals until term #`_termId`",
+            "    * @dev This is intended for jurors who voted in a final round and were coherent with the final ruling to prevent 51% attacks",
+            "    * @param _juror Address of the juror to be locked",
+            "    * @param _termId Term ID until which the juror's withdrawals will be locked",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Lock `_juror`'s withdrawals until term #`_termId`\n    * @dev This is intended for jurors who voted in a final round and were coherent with the final ruling to prevent 51% attacks\n    * @param _juror Address of the juror to be locked\n    * @param _termId Term ID until which the juror's withdrawals will be locked\n    */\n",
+        "@notice": "Lock `_juror`'s withdrawals until term #`_termId`",
+        "@dev": "This is intended for jurors who voted in a final round and were coherent with the final ruling to prevent 51% attacks",
+        "@param1": "_juror Address of the juror to be locked",
+        "@param2": "_termId Term ID until which the juror's withdrawals will be locked",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTotalActiveBalanceLimit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_totalActiveBalanceLimit",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setTotalActiveBalanceLimit(uint256 _totalActiveBalanceLimit) external onlyConfigGovernor {\n        _setTotalActiveBalanceLimit(_totalActiveBalanceLimit);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Set new limit of total active balance of juror tokens",
+            "    * @param _totalActiveBalanceLimit New limit of total active balance of juror tokens",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Set new limit of total active balance of juror tokens\n    * @param _totalActiveBalanceLimit New limit of total active balance of juror tokens\n    */\n",
+        "@notice": "Set new limit of total active balance of juror tokens",
+        "@param1": "_totalActiveBalanceLimit New limit of total active balance of juror tokens",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "token",
+        "visibility": "external",
+        "args": [],
+        "func": "function token() external view returns (address) {\n        return address(jurorsToken);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev ERC900 - Tell the address of the token used for staking",
+            "    * @return Address of the token used for staking",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev ERC900 - Tell the address of the token used for staking\n    * @return Address of the token used for staking\n    */\n",
+        "@dev": "ERC900 - Tell the address of the token used for staking",
+        "@return1": "Address of the token used for staking",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalStaked",
+        "visibility": "external",
+        "args": [],
+        "func": "function totalStaked() external view returns (uint256) {\n        return jurorsToken.balanceOf(address(this));\n    }",
+        "comments": [
+            "/**",
+            "    * @dev ERC900 - Tell the total amount of juror tokens held by the registry contract",
+            "    * @return Amount of juror tokens held by the registry contract",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev ERC900 - Tell the total amount of juror tokens held by the registry contract\n    * @return Amount of juror tokens held by the registry contract\n    */\n",
+        "@dev": "ERC900 - Tell the total amount of juror tokens held by the registry contract",
+        "@return1": "Amount of juror tokens held by the registry contract",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalActiveBalance",
+        "visibility": "external",
+        "args": [],
+        "func": "function totalActiveBalance() external view returns (uint256) {\n        return tree.getTotal();\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the total amount of active juror tokens",
+            "    * @return Total amount of active juror tokens",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the total amount of active juror tokens\n    * @return Total amount of active juror tokens\n    */\n",
+        "@dev": "Tell the total amount of active juror tokens",
+        "@return1": "Total amount of active juror tokens",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalActiveBalanceAt",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function totalActiveBalanceAt(uint64 _termId) external view returns (uint256) {\n        return _totalActiveBalanceAt(_termId);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the total amount of active juror tokens at the given term id",
+            "    * @param _termId Term ID querying the total active balance for",
+            "    * @return Total amount of active juror tokens at the given term id",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the total amount of active juror tokens at the given term id\n    * @param _termId Term ID querying the total active balance for\n    * @return Total amount of active juror tokens at the given term id\n    */\n",
+        "@dev": "Tell the total amount of active juror tokens at the given term id",
+        "@param1": "_termId Term ID querying the total active balance for",
+        "@return1": "Total amount of active juror tokens at the given term id",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalStakedFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            }
+        ],
+        "func": "function totalStakedFor(address _juror) external view returns (uint256) {\n        return _totalStakedFor(_juror);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev ERC900 - Tell the total amount of tokens of juror. This includes the active balance, the available",
+            "    *      balances, and the pending balance for deactivation. Note that we don't have to include the locked",
+            "    *      balances since these represent the amount of active tokens that are locked for drafts, i.e. these",
+            "    *      are included in the active balance of the juror.",
+            "    * @param _juror Address of the juror querying the total amount of tokens staked of",
+            "    * @return Total amount of tokens of a juror",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev ERC900 - Tell the total amount of tokens of juror. This includes the active balance, the available\n    *      balances, and the pending balance for deactivation. Note that we don't have to include the locked\n    *      balances since these represent the amount of active tokens that are locked for drafts, i.e. these\n    *      are included in the active balance of the juror.\n    * @param _juror Address of the juror querying the total amount of tokens staked of\n    * @return Total amount of tokens of a juror\n    */\n",
+        "@dev": "ERC900 - Tell the total amount of tokens of juror. This includes the active balance, the available * balances, and the pending balance for deactivation. Note that we don't have to include the locked * balances since these represent the amount of active tokens that are locked for drafts, i.e. these * are included in the active balance of the juror.",
+        "@param1": "_juror Address of the juror querying the total amount of tokens staked of",
+        "@return1": "Total amount of tokens of a juror",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _juror) external view returns (uint256 active, uint256 available, uint256 locked, uint256 pendingDeactivation) {\n        return _balanceOf(_juror);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the balance information of a juror",
+            "    * @param _juror Address of the juror querying the balance information of",
+            "    * @return active Amount of active tokens of a juror",
+            "    * @return available Amount of available tokens of a juror",
+            "    * @return locked Amount of active tokens that are locked due to ongoing disputes",
+            "    * @return pendingDeactivation Amount of active tokens that were requested for deactivation",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the balance information of a juror\n    * @param _juror Address of the juror querying the balance information of\n    * @return active Amount of active tokens of a juror\n    * @return available Amount of available tokens of a juror\n    * @return locked Amount of active tokens that are locked due to ongoing disputes\n    * @return pendingDeactivation Amount of active tokens that were requested for deactivation\n    */\n",
+        "@dev": "Tell the balance information of a juror",
+        "@param1": "_juror Address of the juror querying the balance information of",
+        "@return1": "active Amount of active tokens of a juror",
+        "@return2": "available Amount of available tokens of a juror",
+        "@return3": "locked Amount of active tokens that are locked due to ongoing disputes",
+        "@return4": "pendingDeactivation Amount of active tokens that were requested for deactivation",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfAt",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            },
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function balanceOfAt(address _juror, uint64 _termId) external view\n        returns (uint256 active, uint256 available, uint256 locked, uint256 pendingDeactivation)\n    {\n        Juror storage juror = jurorsByAddress[_juror];\n\n        active = _existsJuror(juror) ? tree.getItemAt(juror.id, _termId) : 0;\n        (available, locked, pendingDeactivation) = _getBalances(juror);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the balance information of a juror, fecthing tree one at a given term",
+            "    * @param _juror Address of the juror querying the balance information of",
+            "    * @param _termId Term ID querying the active balance for",
+            "    * @return active Amount of active tokens of a juror",
+            "    * @return available Amount of available tokens of a juror",
+            "    * @return locked Amount of active tokens that are locked due to ongoing disputes",
+            "    * @return pendingDeactivation Amount of active tokens that were requested for deactivation",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the balance information of a juror, fecthing tree one at a given term\n    * @param _juror Address of the juror querying the balance information of\n    * @param _termId Term ID querying the active balance for\n    * @return active Amount of active tokens of a juror\n    * @return available Amount of available tokens of a juror\n    * @return locked Amount of active tokens that are locked due to ongoing disputes\n    * @return pendingDeactivation Amount of active tokens that were requested for deactivation\n    */\n",
+        "@dev": "Tell the balance information of a juror, fecthing tree one at a given term",
+        "@param1": "_juror Address of the juror querying the balance information of",
+        "@param2": "_termId Term ID querying the active balance for",
+        "@return1": "active Amount of active tokens of a juror",
+        "@return2": "available Amount of available tokens of a juror",
+        "@return3": "locked Amount of active tokens that are locked due to ongoing disputes",
+        "@return4": "pendingDeactivation Amount of active tokens that were requested for deactivation",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "activeBalanceOfAt",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            },
+            {
+                "name": "_termId",
+                "type": "uint64"
+            }
+        ],
+        "func": "function activeBalanceOfAt(address _juror, uint64 _termId) external view returns (uint256) {\n        return _activeBalanceOfAt(_juror, _termId);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the active balance of a juror for a given term id",
+            "    * @param _juror Address of the juror querying the active balance of",
+            "    * @param _termId Term ID querying the active balance for",
+            "    * @return Amount of active tokens for juror in the requested past term id",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the active balance of a juror for a given term id\n    * @param _juror Address of the juror querying the active balance of\n    * @param _termId Term ID querying the active balance for\n    * @return Amount of active tokens for juror in the requested past term id\n    */\n",
+        "@dev": "Tell the active balance of a juror for a given term id",
+        "@param1": "_juror Address of the juror querying the active balance of",
+        "@param2": "_termId Term ID querying the active balance for",
+        "@return1": "Amount of active tokens for juror in the requested past term id",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unlockedActiveBalanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            }
+        ],
+        "func": "function unlockedActiveBalanceOf(address _juror) external view returns (uint256) {\n        Juror storage juror = jurorsByAddress[_juror];\n        return _currentUnlockedActiveBalanceOf(juror);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the amount of active tokens of a juror at the last ensured term that are not locked due to ongoing disputes",
+            "    * @param _juror Address of the juror querying the unlocked balance of",
+            "    * @return Amount of active tokens of a juror that are not locked due to ongoing disputes",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the amount of active tokens of a juror at the last ensured term that are not locked due to ongoing disputes\n    * @param _juror Address of the juror querying the unlocked balance of\n    * @return Amount of active tokens of a juror that are not locked due to ongoing disputes\n    */\n",
+        "@dev": "Tell the amount of active tokens of a juror at the last ensured term that are not locked due to ongoing disputes",
+        "@param1": "_juror Address of the juror querying the unlocked balance of",
+        "@return1": "Amount of active tokens of a juror that are not locked due to ongoing disputes",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDeactivationRequest",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            }
+        ],
+        "func": "function getDeactivationRequest(address _juror) external view returns (uint256 amount, uint64 availableTermId) {\n        DeactivationRequest storage request = jurorsByAddress[_juror].deactivationRequest;\n        return (request.amount, request.availableTermId);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the pending deactivation details for a juror",
+            "    * @param _juror Address of the juror whose info is requested",
+            "    * @return amount Amount to be deactivated",
+            "    * @return availableTermId Term in which the deactivated amount will be available",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the pending deactivation details for a juror\n    * @param _juror Address of the juror whose info is requested\n    * @return amount Amount to be deactivated\n    * @return availableTermId Term in which the deactivated amount will be available\n    */\n",
+        "@dev": "Tell the pending deactivation details for a juror",
+        "@param1": "_juror Address of the juror whose info is requested",
+        "@return1": "amount Amount to be deactivated",
+        "@return2": "availableTermId Term in which the deactivated amount will be available",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getWithdrawalsLockTermId",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            }
+        ],
+        "func": "function getWithdrawalsLockTermId(address _juror) external view returns (uint64) {\n        return jurorsByAddress[_juror].withdrawalsLockTermId;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the withdrawals lock term ID for a juror",
+            "    * @param _juror Address of the juror whose info is requested",
+            "    * @return Term ID until which the juror's withdrawals will be locked",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the withdrawals lock term ID for a juror\n    * @param _juror Address of the juror whose info is requested\n    * @return Term ID until which the juror's withdrawals will be locked\n    */\n",
+        "@dev": "Tell the withdrawals lock term ID for a juror",
+        "@param1": "_juror Address of the juror whose info is requested",
+        "@return1": "Term ID until which the juror's withdrawals will be locked",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getJurorId",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_juror",
+                "type": "address"
+            }
+        ],
+        "func": "function getJurorId(address _juror) external view returns (uint256) {\n        return jurorsByAddress[_juror].id;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the identification number associated to a juror address",
+            "    * @param _juror Address of the juror querying the identification number of",
+            "    * @return Identification number associated to a juror address, zero in case it wasn't registered yet",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the identification number associated to a juror address\n    * @param _juror Address of the juror querying the identification number of\n    * @return Identification number associated to a juror address, zero in case it wasn't registered yet\n    */\n",
+        "@dev": "Tell the identification number associated to a juror address",
+        "@param1": "_juror Address of the juror querying the identification number of",
+        "@return1": "Identification number associated to a juror address, zero in case it wasn't registered yet",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalJurorsActiveBalanceLimit",
+        "visibility": "external",
+        "args": [],
+        "func": "function totalJurorsActiveBalanceLimit() external view returns (uint256) {\n        return totalActiveBalanceLimit;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Tell the maximum amount of total active balance that can be held in the registry",
+            "    * @return Maximum amount of total active balance that can be held in the registry",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Tell the maximum amount of total active balance that can be held in the registry\n    * @return Maximum amount of total active balance that can be held in the registry\n    */\n",
+        "@dev": "Tell the maximum amount of total active balance that can be held in the registry",
+        "@return1": "Maximum amount of total active balance that can be held in the registry",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsHistory",
+        "visibility": "external",
+        "args": [],
+        "func": "function supportsHistory() external pure returns (bool) {\n        return false;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev ERC900 - Tell if the current registry supports historic information or not",
+            "    * @return Always false",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev ERC900 - Tell if the current registry supports historic information or not\n    * @return Always false\n    */\n",
+        "@dev": "ERC900 - Tell if the current registry supports historic information or not",
+        "@return1": "Always false",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

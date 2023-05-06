@@ -1,0 +1,232 @@
+[
+    {
+        "transactions": 209540,
+        "function_num": 8
+    },
+    {
+        "name": "Telcoin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_distributor",
+                "type": "address"
+            }
+        ],
+        "func": "function Telcoin(address _distributor) public {\n        balances[_distributor] = totalSupply;\n        Transfer(0x0, _distributor, totalSupply);\n    }",
+        "comments": [
+            "",
+            "    /// The initial distributor is responsible for allocating the supply",
+            "    /// into the various pools described in the whitepaper. This can be",
+            "    /// verified later from the event log.",
+            "    "
+        ],
+        "comt": "\n    /// The initial distributor is responsible for allocating the supply\n    /// into the various pools described in the whitepaper. This can be\n    /// verified later from the event log.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public view returns (uint256) {\n        return balances[_owner];\n    }",
+        "comments": [
+            "",
+            "    /// ERC20 balanceOf().",
+            "    "
+        ],
+        "comt": "\n    /// ERC20 balanceOf().\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) public returns (bool) {\n        require(_to != address(0));\n        require(_value <= balances[msg.sender]);\n\n        // SafeMath.sub will throw if there is not enough balance.\n        balances[msg.sender] = balances[msg.sender].sub(_value);\n        balances[_to] = balances[_to].add(_value);\n        Transfer(msg.sender, _to, _value);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// ERC20 transfer().",
+            "    "
+        ],
+        "comt": "\n    /// ERC20 transfer().\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {\n        require(_to != address(0));\n        require(_value <= balances[_from]);\n        require(_value <= allowed[_from][msg.sender]);\n\n        balances[_from] = balances[_from].sub(_value);\n        balances[_to] = balances[_to].add(_value);\n        allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);\n        Transfer(_from, _to, _value);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// ERC20 transferFrom().",
+            "    "
+        ],
+        "comt": "\n    /// ERC20 transferFrom().\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _value) public returns (bool) {\n        allowed[msg.sender][_spender] = _value;\n        Approval(msg.sender, _spender, _value);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// ERC20 approve(). Comes with the standard caveat that an approval",
+            "    /// meant to limit spending may actually allow more to be spent due to",
+            "    /// unfortunate ordering of transactions. For safety, this method",
+            "    /// should only be called if the current allowance is 0. Alternatively,",
+            "    /// non-ERC20 increaseApproval() and decreaseApproval() can be used.",
+            "    "
+        ],
+        "comt": "\n    /// ERC20 approve(). Comes with the standard caveat that an approval\n    /// meant to limit spending may actually allow more to be spent due to\n    /// unfortunate ordering of transactions. For safety, this method\n    /// should only be called if the current allowance is 0. Alternatively,\n    /// non-ERC20 increaseApproval() and decreaseApproval() can be used.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint256) {\n        return allowed[_owner][_spender];\n    }",
+        "comments": [
+            "",
+            "    /// ERC20 allowance().",
+            "    "
+        ],
+        "comt": "\n    /// ERC20 allowance().\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function increaseApproval(address _spender, uint _addedValue) public returns (bool) {\n        allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);\n        Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// Not officially ERC20. Allows an allowance to be increased safely.",
+            "    "
+        ],
+        "comt": "\n    /// Not officially ERC20. Allows an allowance to be increased safely.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function decreaseApproval(address _spender, uint _subtractedValue) public returns (bool) {\n        uint oldValue = allowed[msg.sender][_spender];\n        if (_subtractedValue > oldValue) {\n            allowed[msg.sender][_spender] = 0;\n        } else {\n            allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);\n        }\n        Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// Not officially ERC20. Allows an allowance to be decreased safely.",
+            "    "
+        ],
+        "comt": "\n    /// Not officially ERC20. Allows an allowance to be decreased safely.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,650 @@
+[
+    {
+        "transactions": 75690,
+        "function_num": 23
+    },
+    {
+        "name": "MultiSigWallet",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owners",
+                "type": "address[]"
+            },
+            {
+                "name": "_required",
+                "type": "uint"
+            }
+        ],
+        "func": "function MultiSigWallet(address[] _owners, uint _required)\n        public\n        validRequirement(_owners.length, _required)\n    {\n        for (uint i=0; i<_owners.length; i++) {\n            if (isOwner[_owners[i]] || _owners[i] == 0) throw;\n            isOwner[_owners[i]] = true;\n        }\n        isMultiSigWallet = true;\n        owners = _owners;\n        required = _required;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addOwner",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function addOwner(address owner)\n        public\n        onlyWallet\n        ownerDoesNotExist(owner)\n        notNull(owner)\n        validRequirement(owners.length + 1, required)\n    {\n        isOwner[owner] = true;\n        owners.push(owner);\n        OwnerAddition(owner);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Allows to add a new owner. Transaction has to be sent by wallet.",
+            "    /// @param owner Address of new owner.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Allows to add a new owner. Transaction has to be sent by wallet.\n    /// @param owner Address of new owner.\n    ",
+        "@dev": "Allows to add a new owner. Transaction has to be sent by wallet.",
+        "@param1": "owner Address of new owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeOwner",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function removeOwner(address owner)\n        public\n        onlyWallet\n        ownerExists(owner)\n    {\n        isOwner[owner] = false;\n        for (uint i=0; i<owners.length - 1; i++)\n            if (owners[i] == owner) {\n                owners[i] = owners[owners.length - 1];\n                break;\n            }\n        owners.length -= 1;\n        if (required > owners.length)\n            changeRequirement(owners.length);\n        OwnerRemoval(owner);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Allows to remove an owner. Transaction has to be sent by wallet.",
+            "    /// @param owner Address of owner.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Allows to remove an owner. Transaction has to be sent by wallet.\n    /// @param owner Address of owner.\n    ",
+        "@dev": "Allows to remove an owner. Transaction has to be sent by wallet.",
+        "@param1": "owner Address of owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "replaceOwnerIndexed",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "newOwner",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint"
+            }
+        ],
+        "func": "function replaceOwnerIndexed(address owner, address newOwner, uint index)\n        public\n        onlyWallet\n        ownerExists(owner)\n        ownerDoesNotExist(newOwner)\n    {\n        if (owners[index] != owner) throw;\n        owners[index] = newOwner;\n        isOwner[owner] = false;\n        isOwner[newOwner] = true;\n        OwnerRemoval(owner);\n        OwnerAddition(newOwner);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Allows to replace an owner with a new owner. Transaction has to be sent by wallet.",
+            "    /// @param owner Address of owner to be replaced.",
+            "    /// @param newOwner Address of new owner.",
+            "    /// @param index the indx of the owner to be replaced",
+            "    "
+        ],
+        "comt": "\n    /// @dev Allows to replace an owner with a new owner. Transaction has to be sent by wallet.\n    /// @param owner Address of owner to be replaced.\n    /// @param newOwner Address of new owner.\n    /// @param index the indx of the owner to be replaced\n    ",
+        "@dev": "Allows to replace an owner with a new owner. Transaction has to be sent by wallet.",
+        "@param1": "owner Address of owner to be replaced.",
+        "@param2": "newOwner Address of new owner.",
+        "@param3": "index the indx of the owner to be replaced",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeRequirement",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_required",
+                "type": "uint"
+            }
+        ],
+        "func": "function changeRequirement(uint _required)\n        public\n        onlyWallet\n        validRequirement(owners.length, _required)\n    {\n        required = _required;\n        RequirementChange(_required);\n    }",
+        "comments": [
+            "",
+            "",
+            "    /// @dev Allows to change the number of required confirmations. Transaction has to be sent by wallet.",
+            "    /// @param _required Number of required confirmations.",
+            "    "
+        ],
+        "comt": "\n\n    /// @dev Allows to change the number of required confirmations. Transaction has to be sent by wallet.\n    /// @param _required Number of required confirmations.\n    ",
+        "@dev": "Allows to change the number of required confirmations. Transaction has to be sent by wallet.",
+        "@param1": "_required Number of required confirmations.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "submitTransaction",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "destination",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint"
+            },
+            {
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "func": "function submitTransaction(address destination, uint value, bytes data)\n        public\n        returns (uint transactionId)\n    {\n        transactionId = addTransaction(destination, value, data);\n        confirmTransaction(transactionId);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Allows an owner to submit and confirm a transaction.",
+            "    /// @param destination Transaction target address.",
+            "    /// @param value Transaction ether value.",
+            "    /// @param data Transaction data payload.",
+            "    /// @return Returns transaction ID.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Allows an owner to submit and confirm a transaction.\n    /// @param destination Transaction target address.\n    /// @param value Transaction ether value.\n    /// @param data Transaction data payload.\n    /// @return Returns transaction ID.\n    ",
+        "@dev": "Allows an owner to submit and confirm a transaction.",
+        "@param1": "destination Transaction target address.",
+        "@param2": "value Transaction ether value.",
+        "@param3": "data Transaction data payload.",
+        "@return1": "Returns transaction ID.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "confirmTransaction",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "transactionId",
+                "type": "uint"
+            }
+        ],
+        "func": "function confirmTransaction(uint transactionId)\n        public\n        ownerExists(msg.sender)\n        transactionExists(transactionId)\n        notConfirmed(transactionId, msg.sender)\n    {\n        confirmations[transactionId][msg.sender] = true;\n        Confirmation(msg.sender, transactionId);\n        executeTransaction(transactionId);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Allows an owner to confirm a transaction.",
+            "    /// @param transactionId Transaction ID.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Allows an owner to confirm a transaction.\n    /// @param transactionId Transaction ID.\n    ",
+        "@dev": "Allows an owner to confirm a transaction.",
+        "@param1": "transactionId Transaction ID.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revokeConfirmation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "transactionId",
+                "type": "uint"
+            }
+        ],
+        "func": "function revokeConfirmation(uint transactionId)\n        public\n        ownerExists(msg.sender)\n        confirmed(transactionId, msg.sender)\n        notExecuted(transactionId)\n    {\n        confirmations[transactionId][msg.sender] = false;\n        Revocation(msg.sender, transactionId);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Allows an owner to revoke a confirmation for a transaction.",
+            "    /// @param transactionId Transaction ID.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Allows an owner to revoke a confirmation for a transaction.\n    /// @param transactionId Transaction ID.\n    ",
+        "@dev": "Allows an owner to revoke a confirmation for a transaction.",
+        "@param1": "transactionId Transaction ID.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isConfirmed",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "transactionId",
+                "type": "uint"
+            }
+        ],
+        "func": "function isConfirmed(uint transactionId)\n        public\n        constant\n        returns (bool)\n    {\n        uint count = 0;\n        for (uint i=0; i<owners.length; i++) {\n            if (confirmations[transactionId][owners[i]])\n                count += 1;\n            if (count == required)\n                return true;\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns the confirmation status of a transaction.",
+            "    /// @param transactionId Transaction ID.",
+            "    /// @return Confirmation status.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns the confirmation status of a transaction.\n    /// @param transactionId Transaction ID.\n    /// @return Confirmation status.\n    ",
+        "@dev": "Returns the confirmation status of a transaction.",
+        "@param1": "transactionId Transaction ID.",
+        "@return1": "Confirmation status.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getConfirmationCount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "transactionId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getConfirmationCount(uint transactionId)\n        public\n        constant\n        returns (uint count)\n    {\n        for (uint i=0; i<owners.length; i++)\n            if (confirmations[transactionId][owners[i]])\n                count += 1;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTransactionCount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pending",
+                "type": "bool"
+            },
+            {
+                "name": "executed",
+                "type": "bool"
+            }
+        ],
+        "func": "function getTransactionCount(bool pending, bool executed)\n        public\n        constant\n        returns (uint count)\n    {\n        for (uint i=0; i<transactionCount; i++)\n            if ((pending && !transactions[i].executed) ||\n                (executed && transactions[i].executed))\n                count += 1;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns total number of transactions after filers are applied.",
+            "    /// @param pending Include pending transactions.",
+            "    /// @param executed Include executed transactions.",
+            "    /// @return Total number of transactions after filters are applied.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns total number of transactions after filers are applied.\n    /// @param pending Include pending transactions.\n    /// @param executed Include executed transactions.\n    /// @return Total number of transactions after filters are applied.\n    ",
+        "@dev": "Returns total number of transactions after filers are applied.",
+        "@param1": "pending Include pending transactions.",
+        "@param2": "executed Include executed transactions.",
+        "@return1": "Total number of transactions after filters are applied.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOwners",
+        "visibility": "public",
+        "args": [],
+        "func": "function getOwners()\n        public\n        constant\n        returns (address[])\n    {\n        return owners;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns list of owners.",
+            "    /// @return List of owner addresses.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns list of owners.\n    /// @return List of owner addresses.\n    ",
+        "@dev": "Returns list of owners.",
+        "@return1": "List of owner addresses.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getConfirmations",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "transactionId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getConfirmations(uint transactionId)\n        public\n        constant\n        returns (address[] _confirmations)\n    {\n        address[] memory confirmationsTemp = new address[](owners.length);\n        uint count = 0;\n        uint i;\n        for (i=0; i<owners.length; i++)\n            if (confirmations[transactionId][owners[i]]) {\n                confirmationsTemp[count] = owners[i];\n                count += 1;\n            }\n        _confirmations = new address[](count);\n        for (i=0; i<count; i++)\n            _confirmations[i] = confirmationsTemp[i];\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns array with owner addresses, which confirmed transaction.",
+            "    /// @param transactionId Transaction ID.",
+            "    /// @return Returns array of owner addresses.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns array with owner addresses, which confirmed transaction.\n    /// @param transactionId Transaction ID.\n    /// @return Returns array of owner addresses.\n    ",
+        "@dev": "Returns array with owner addresses, which confirmed transaction.",
+        "@param1": "transactionId Transaction ID.",
+        "@return1": "Returns array of owner addresses.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTransactionIds",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "uint"
+            },
+            {
+                "name": "to",
+                "type": "uint"
+            },
+            {
+                "name": "pending",
+                "type": "bool"
+            },
+            {
+                "name": "executed",
+                "type": "bool"
+            }
+        ],
+        "func": "function getTransactionIds(uint from, uint to, bool pending, bool executed)\n        public\n        constant\n        returns (uint[] _transactionIds)\n    {\n        uint[] memory transactionIdsTemp = new uint[](transactionCount);\n        uint count = 0;\n        uint i;\n        for (i=0; i<transactionCount; i++)\n          if ((pending && !transactions[i].executed) ||\n              (executed && transactions[i].executed))\n            {\n                transactionIdsTemp[count] = i;\n                count += 1;\n            }\n        _transactionIds = new uint[](to - from);\n        for (i=from; i<to; i++)\n            _transactionIds[i - from] = transactionIdsTemp[i];\n    }",
+        "comments": [
+            "",
+            "    /// @dev Returns list of transaction IDs in defined range.",
+            "    /// @param from Index start position of transaction array.",
+            "    /// @param to Index end position of transaction array.",
+            "    /// @param pending Include pending transactions.",
+            "    /// @param executed Include executed transactions.",
+            "    /// @return Returns array of transaction IDs.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Returns list of transaction IDs in defined range.\n    /// @param from Index start position of transaction array.\n    /// @param to Index end position of transaction array.\n    /// @param pending Include pending transactions.\n    /// @param executed Include executed transactions.\n    /// @return Returns array of transaction IDs.\n    ",
+        "@dev": "Returns list of transaction IDs in defined range.",
+        "@param1": "from Index start position of transaction array.",
+        "@param2": "to Index end position of transaction array.",
+        "@param3": "pending Include pending transactions.",
+        "@param4": "executed Include executed transactions.",
+        "@return1": "Returns array of transaction IDs.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unlock",
+        "visibility": "external",
+        "args": [],
+        "func": "function unlock() external {\n        // Wait your turn!\n        if (block.number < unlockedAtBlockNumber) throw;\n        // Will fail if allocation (and therefore toTransfer) is 0.\n        if (!lunyrToken.transfer(lunyrMultisig, lunyrToken.balanceOf(this))) throw;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Transfer locked tokens to Lunyr's multisig wallet",
+            "    "
+        ],
+        "comt": "\n    /// @notice Transfer locked tokens to Lunyr's multisig wallet\n    ",
+        "@notice": "Transfer locked tokens to Lunyr's multisig wallet",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function upgrade(uint256 value) external {\n        if (getState() != State.Success) throw; // Abort if not in Success state.\n        if (upgradeAgent.owner() == 0x0) throw; // need a real upgradeAgent address\n\n        // Validate input value.\n        if (value == 0) throw;\n        if (value > balances[msg.sender]) throw;\n\n        // update the balances here first before calling out (reentrancy)\n        balances[msg.sender] = safeSub(balances[msg.sender], value);\n        totalSupply = safeSub(totalSupply, value);\n        totalUpgraded = safeAdd(totalUpgraded, value);\n        upgradeAgent.upgradeFrom(msg.sender, value);\n        Upgrade(msg.sender, upgradeAgent, value);\n    }",
+        "comments": [
+            "",
+            "    // Token upgrade functionality",
+            "",
+            "    /// @notice Upgrade tokens to the new token contract.",
+            "    /// @dev Required state: Success",
+            "    /// @param value The number of tokens to upgrade",
+            "    "
+        ],
+        "comt": "\n    // Token upgrade functionality\n\n    /// @notice Upgrade tokens to the new token contract.\n    /// @dev Required state: Success\n    /// @param value The number of tokens to upgrade\n    ",
+        "@notice": "Upgrade tokens to the new token contract.",
+        "@dev": "Required state: Success",
+        "@param1": "value The number of tokens to upgrade",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUpgradeAgent",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "agent",
+                "type": "address"
+            }
+        ],
+        "func": "function setUpgradeAgent(address agent) external {\n        if (getState() != State.Success) throw; // Abort if not in Success state.\n        if (agent == 0x0) throw; // don't set agent to nothing\n        if (msg.sender != upgradeMaster) throw; // Only a master can designate the next agent\n        if (address(upgradeAgent) != 0x0 && upgradeAgent.upgradeHasBegun()) throw; // Don't change the upgrade agent\n        upgradeAgent = UpgradeAgent(agent);\n        // upgradeAgent must be created and linked to LunyrToken after crowdfunding is over\n        if (upgradeAgent.originalSupply() != totalSupply) throw;\n        UpgradeAgentSet(upgradeAgent);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set address of upgrade target contract and enable upgrade",
+            "    /// process.",
+            "    /// @dev Required state: Success",
+            "    /// @param agent The address of the UpgradeAgent contract",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set address of upgrade target contract and enable upgrade\n    /// process.\n    /// @dev Required state: Success\n    /// @param agent The address of the UpgradeAgent contract\n    ",
+        "@notice": "Set address of upgrade target contract and enable upgrade /// process.",
+        "@dev": "Required state: Success",
+        "@param1": "agent The address of the UpgradeAgent contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUpgradeMaster",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "master",
+                "type": "address"
+            }
+        ],
+        "func": "function setUpgradeMaster(address master) external {\n        if (getState() != State.Success) throw; // Abort if not in Success state.\n        if (master == 0x0) throw;\n        if (msg.sender != upgradeMaster) throw; // Only a master can designate the next master\n        upgradeMaster = master;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set address of upgrade target contract and enable upgrade",
+            "    /// process.",
+            "    /// @dev Required state: Success",
+            "    /// @param master The address that will manage upgrades, not the upgradeAgent contract address",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set address of upgrade target contract and enable upgrade\n    /// process.\n    /// @dev Required state: Success\n    /// @param master The address that will manage upgrades, not the upgradeAgent contract address\n    ",
+        "@notice": "Set address of upgrade target contract and enable upgrade /// process.",
+        "@dev": "Required state: Success",
+        "@param1": "master The address that will manage upgrades, not the upgradeAgent contract address",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMultiSigWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newWallet",
+                "type": "address"
+            }
+        ],
+        "func": "function setMultiSigWallet(address newWallet) external {\n      if (msg.sender != lunyrMultisig) throw;\n      MultiSigWallet wallet = MultiSigWallet(newWallet);\n      if (!wallet.isMultiSigWallet()) throw;\n      lunyrMultisig = newWallet;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "create",
+        "visibility": "external",
+        "args": [],
+        "func": "function create() payable external {\n        // Abort if not in Funding Active state.\n        // The checks are split (instead of using or operator) because it is\n        // cheaper this way.\n        if (getState() != State.Funding) throw;\n\n        // Do not allow creating 0 or more than the cap tokens.\n        if (msg.value == 0) throw;\n\n        // multiply by exchange rate to get newly created token amount\n        uint256 createdTokens = safeMul(msg.value, tokensPerEther);\n\n        // we are creating tokens, so increase the totalSupply\n        totalSupply = safeAdd(totalSupply, createdTokens);\n\n        // don't go over the limit!\n        if (totalSupply > tokenCreationMax) throw;\n\n        // Assign new tokens to the sender\n        balances[msg.sender] = safeAdd(balances[msg.sender], createdTokens);\n\n        // Log token creation event\n        Transfer(0, msg.sender, createdTokens);\n    }",
+        "comments": [
+            "",
+            "",
+            "    /// @notice Create tokens when funding is active.",
+            "    /// @dev Required state: Funding",
+            "    /// @dev State transition: -> Funding Success (only if cap reached)",
+            "    "
+        ],
+        "comt": "\n\n    /// @notice Create tokens when funding is active.\n    /// @dev Required state: Funding\n    /// @dev State transition: -> Funding Success (only if cap reached)\n    ",
+        "@notice": "Create tokens when funding is active.",
+        "@dev": "Required state: Funding * State transition: -> Funding Success (only if cap reached)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finalizeCrowdfunding",
+        "visibility": "external",
+        "args": [],
+        "func": "function finalizeCrowdfunding() external {\n        // Abort if not in Funding Success state.\n        if (getState() != State.Success) throw; // don't finalize unless we won\n        if (finalizedCrowdfunding) throw; // can't finalize twice (so sneaky!)\n\n        // prevent more creation of tokens\n        finalizedCrowdfunding = true;\n\n        // Endowment: 15% of total goes to vault, timelocked for 6 months\n        // uint256 vaultTokens = safeDiv(safeMul(totalSupply, vaultPercentOfTotal), hundredPercent);\n        uint256 vaultTokens = safeDiv(safeMul(totalSupply, vaultPercentOfTotal), crowdfundPercentOfTotal);\n        balances[timeVault] = safeAdd(balances[timeVault], vaultTokens);\n        Transfer(0, timeVault, vaultTokens);\n\n        // Endowment: 7% of total goes to lunyr for marketing and bug bounty\n        uint256 lunyrTokens = safeDiv(safeMul(totalSupply, lunyrPercentOfTotal), crowdfundPercentOfTotal);\n        balances[lunyrMultisig] = safeAdd(balances[lunyrMultisig], lunyrTokens);\n        Transfer(0, lunyrMultisig, lunyrTokens);\n\n        totalSupply = safeAdd(safeAdd(totalSupply, vaultTokens), lunyrTokens);\n\n        // Transfer ETH to the Lunyr Multisig address.\n        if (!lunyrMultisig.send(this.balance)) throw;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Finalize crowdfunding",
+            "    /// @dev If cap was reached or crowdfunding has ended then:",
+            "    /// create LUN for the Lunyr Multisig and developer,",
+            "    /// transfer ETH to the Lunyr Multisig address.",
+            "    /// @dev Required state: Success",
+            "    "
+        ],
+        "comt": "\n    /// @notice Finalize crowdfunding\n    /// @dev If cap was reached or crowdfunding has ended then:\n    /// create LUN for the Lunyr Multisig and developer,\n    /// transfer ETH to the Lunyr Multisig address.\n    /// @dev Required state: Success\n    ",
+        "@notice": "Finalize crowdfunding",
+        "@dev": "If cap was reached or crowdfunding has ended then: /// create LUN for the Lunyr Multisig and developer, /// transfer ETH to the Lunyr Multisig address. * Required state: Success",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "refund",
+        "visibility": "external",
+        "args": [],
+        "func": "function refund() external {\n        // Abort if not in Funding Failure state.\n        if (getState() != State.Failure) throw;\n\n        uint256 lunValue = balances[msg.sender];\n        if (lunValue == 0) throw;\n        balances[msg.sender] = 0;\n        totalSupply = safeSub(totalSupply, lunValue);\n\n        uint256 ethValue = safeDiv(lunValue, tokensPerEther); // lunValue % tokensPerEther == 0\n        Refund(msg.sender, ethValue);\n        if (!msg.sender.send(ethValue)) throw;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Get back the ether sent during the funding in case the funding",
+            "    /// has not reached the minimum level.",
+            "    /// @dev Required state: Failure",
+            "    "
+        ],
+        "comt": "\n    /// @notice Get back the ether sent during the funding in case the funding\n    /// has not reached the minimum level.\n    /// @dev Required state: Failure\n    ",
+        "@notice": "Get back the ether sent during the funding in case the funding /// has not reached the minimum level.",
+        "@dev": "Required state: Failure",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getState",
+        "visibility": "public",
+        "args": [],
+        "func": "function getState() public constant returns (State){\n      // once we reach success, lock in the state\n      if (finalizedCrowdfunding) return State.Success;\n      if (block.number < fundingStartBlock) return State.PreFunding;\n      else if (block.number <= fundingEndBlock && totalSupply < tokenCreationMax) return State.Funding;\n      else if (totalSupply >= tokenCreationMin) return State.Success;\n      else return State.Failure;\n    }",
+        "comments": [
+            "",
+            "    /// @notice This manages the crowdfunding state machine",
+            "    /// We make it a function and do not assign the result to a variable",
+            "    /// So there is no chance of the variable being stale",
+            "    "
+        ],
+        "comt": "\n    /// @notice This manages the crowdfunding state machine\n    /// We make it a function and do not assign the result to a variable\n    /// So there is no chance of the variable being stale\n    ",
+        "@notice": "This manages the crowdfunding state machine /// We make it a function and do not assign the result to a variable /// So there is no chance of the variable being stale",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    }
+]

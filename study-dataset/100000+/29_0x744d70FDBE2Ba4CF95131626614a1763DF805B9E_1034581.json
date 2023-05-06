@@ -1,0 +1,933 @@
+[
+    {
+        "transactions": 1034581,
+        "function_num": 29
+    },
+    {
+        "name": "setHiddenCurves",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_curveHashes",
+                "type": "bytes32[]"
+            }
+        ],
+        "func": "function setHiddenCurves(bytes32[] _curveHashes) public onlyOwner {\n        require(curves.length == 0);\n\n        curves.length = _curveHashes.length;\n        for (uint256 i = 0; i < _curveHashes.length; i = i.add(1)) {\n            curves[i].hash = _curveHashes[i];\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice This should be called by the creator of the contract to commit",
+            "    ///  all the curves.",
+            "    /// @param _curveHashes Array of hashes of each curve. Each hash is calculated",
+            "    ///  by the `calculateHash` method. More hashes than actual curves can be",
+            "    ///  committed in order to hide also the number of curves.",
+            "    ///  The remaining hashes can be just random numbers.",
+            "    "
+        ],
+        "comt": "\n    /// @notice This should be called by the creator of the contract to commit\n    ///  all the curves.\n    /// @param _curveHashes Array of hashes of each curve. Each hash is calculated\n    ///  by the `calculateHash` method. More hashes than actual curves can be\n    ///  committed in order to hide also the number of curves.\n    ///  The remaining hashes can be just random numbers.\n    ",
+        "@notice": "This should be called by the creator of the contract to commit /// all the curves.",
+        "@param1": "_curveHashes Array of hashes of each curve. Each hash is calculated /// by the `calculateHash` method. More hashes than actual curves can be /// committed in order to hide also the number of curves. /// The remaining hashes can be just random numbers.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revealCurve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_limit",
+                "type": "uint256"
+            },
+            {
+                "name": "_slopeFactor",
+                "type": "uint256"
+            },
+            {
+                "name": "_collectMinimum",
+                "type": "uint256"
+            },
+            {
+                "name": "_last",
+                "type": "bool"
+            },
+            {
+                "name": "_salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function revealCurve(uint256 _limit, uint256 _slopeFactor, uint256 _collectMinimum,\n                         bool _last, bytes32 _salt) public {\n        require(!allRevealed);\n\n        require(curves[revealedCurves].hash == calculateHash(_limit, _slopeFactor, _collectMinimum,\n                                                             _last, _salt));\n\n        require(_limit != 0 && _slopeFactor != 0 && _collectMinimum != 0);\n        if (revealedCurves > 0) {\n            require(_limit >= curves[revealedCurves.sub(1)].limit);\n        }\n\n        curves[revealedCurves].limit = _limit;\n        curves[revealedCurves].slopeFactor = _slopeFactor;\n        curves[revealedCurves].collectMinimum = _collectMinimum;\n        revealedCurves = revealedCurves.add(1);\n\n        if (_last) allRevealed = true;\n    }",
+        "comments": [
+            "",
+            "",
+            "    /// @notice Anybody can reveal the next curve if he knows it.",
+            "    /// @param _limit Ceiling cap.",
+            "    ///  (must be greater or equal to the previous one).",
+            "    /// @param _last `true` if it's the last curve.",
+            "    /// @param _salt Random number used to commit the curve",
+            "    "
+        ],
+        "comt": "\n\n    /// @notice Anybody can reveal the next curve if he knows it.\n    /// @param _limit Ceiling cap.\n    ///  (must be greater or equal to the previous one).\n    /// @param _last `true` if it's the last curve.\n    /// @param _salt Random number used to commit the curve\n    ",
+        "@notice": "Anybody can reveal the next curve if he knows it.",
+        "@param1": "_limit Ceiling cap. /// (must be greater or equal to the previous one).",
+        "@param2": "_last `true` if it's the last curve.",
+        "@param3": "_salt Random number used to commit the curve",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revealMulti",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_limits",
+                "type": "uint256[]"
+            },
+            {
+                "name": "_slopeFactors",
+                "type": "uint256[]"
+            },
+            {
+                "name": "_collectMinimums",
+                "type": "uint256[]"
+            },
+            {
+                "name": "_lasts",
+                "type": "bool[]"
+            },
+            {
+                "name": "_salts",
+                "type": "bytes32[]"
+            }
+        ],
+        "func": "function revealMulti(uint256[] _limits, uint256[] _slopeFactors, uint256[] _collectMinimums,\n                         bool[] _lasts, bytes32[] _salts) public {\n        // Do not allow none and needs to be same length for all parameters\n        require(_limits.length != 0 &&\n                _limits.length == _slopeFactors.length &&\n                _limits.length == _collectMinimums.length &&\n                _limits.length == _lasts.length &&\n                _limits.length == _salts.length);\n\n        for (uint256 i = 0; i < _limits.length; i = i.add(1)) {\n            revealCurve(_limits[i], _slopeFactors[i], _collectMinimums[i],\n                        _lasts[i], _salts[i]);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Reveal multiple curves at once",
+            "    "
+        ],
+        "comt": "\n    /// @notice Reveal multiple curves at once\n    ",
+        "@notice": "Reveal multiple curves at once",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "moveTo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function moveTo(uint256 _index) public onlyOwner {\n        require(_index < revealedCurves &&       // No more curves\n                _index == currentIndex.add(1));  // Only move one index at a time\n        currentIndex = _index;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Move to curve, used as a failsafe",
+            "    "
+        ],
+        "comt": "\n    /// @notice Move to curve, used as a failsafe\n    ",
+        "@notice": "Move to curve, used as a failsafe",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toCollect",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "collected",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toCollect(uint256 collected) public onlyContribution returns (uint256) {\n        if (revealedCurves == 0) return 0;\n\n        // Move to the next curve\n        if (collected >= curves[currentIndex].limit) {  // Catches `limit == 0`\n            uint256 nextIndex = currentIndex.add(1);\n            if (nextIndex >= revealedCurves) return 0;  // No more curves\n            currentIndex = nextIndex;\n            if (collected >= curves[currentIndex].limit) return 0;  // Catches `limit == 0`\n        }\n\n        // Everything left to collect from this limit\n        uint256 difference = curves[currentIndex].limit.sub(collected);\n\n        // Current point on the curve\n        uint256 collect = difference.div(curves[currentIndex].slopeFactor);\n\n        // Prevents paying too much fees vs to be collected; breaks long tail\n        if (collect <= curves[currentIndex].collectMinimum) {\n            if (difference > curves[currentIndex].collectMinimum) {\n                return curves[currentIndex].collectMinimum;\n            } else {\n                return difference;\n            }\n        } else {\n            return collect;\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @return Return the funds to collect for the current point on the curve",
+            "    ///  (or 0 if no curves revealed yet)",
+            "    "
+        ],
+        "comt": "\n    /// @return Return the funds to collect for the current point on the curve\n    ///  (or 0 if no curves revealed yet)\n    ",
+        "@return1": "Return the funds to collect for the current point on the curve /// (or 0 if no curves revealed yet)",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calculateHash",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_limit",
+                "type": "uint256"
+            },
+            {
+                "name": "_slopeFactor",
+                "type": "uint256"
+            },
+            {
+                "name": "_collectMinimum",
+                "type": "uint256"
+            },
+            {
+                "name": "_last",
+                "type": "bool"
+            },
+            {
+                "name": "_salt",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function calculateHash(uint256 _limit, uint256 _slopeFactor, uint256 _collectMinimum,\n                           bool _last, bytes32 _salt) public constant returns (bytes32) {\n        return keccak256(_limit, _slopeFactor, _collectMinimum, _last, _salt);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Calculates the hash of a curve.",
+            "    /// @param _limit Ceiling cap.",
+            "    /// @param _last `true` if it's the last curve.",
+            "    /// @param _salt Random number that will be needed to reveal this curve.",
+            "    /// @return The calculated hash of this curve to be used in the `setHiddenCurves` method",
+            "    "
+        ],
+        "comt": "\n    /// @notice Calculates the hash of a curve.\n    /// @param _limit Ceiling cap.\n    /// @param _last `true` if it's the last curve.\n    /// @param _salt Random number that will be needed to reveal this curve.\n    /// @return The calculated hash of this curve to be used in the `setHiddenCurves` method\n    ",
+        "@notice": "Calculates the hash of a curve.",
+        "@param1": "_limit Ceiling cap.",
+        "@param2": "_last `true` if it's the last curve.",
+        "@param3": "_salt Random number that will be needed to reveal this curve.",
+        "@return1": "The calculated hash of this curve to be used in the `setHiddenCurves` method",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "nCurves",
+        "visibility": "public",
+        "args": [],
+        "func": "function nCurves() public constant returns (uint256) {\n        return curves.length;\n    }",
+        "comments": [
+            "",
+            "    /// @return Return the total number of curves committed",
+            "    ///  (can be larger than the number of actual curves on the curve to hide",
+            "    ///  the real number of curves)",
+            "    "
+        ],
+        "comt": "\n    /// @return Return the total number of curves committed\n    ///  (can be larger than the number of actual curves on the curve to hide\n    ///  the real number of curves)\n    ",
+        "@return1": "Return the total number of curves committed /// (can be larger than the number of actual curves on the curve to hide /// the real number of curves)",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_snt",
+                "type": "address"
+            },
+            {
+                "name": "_sntController",
+                "type": "address"
+            },
+            {
+                "name": "_startBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "_endBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "_dynamicCeiling",
+                "type": "address"
+            },
+            {
+                "name": "_destEthDevs",
+                "type": "address"
+            },
+            {
+                "name": "_destTokensReserve",
+                "type": "address"
+            },
+            {
+                "name": "_destTokensSgt",
+                "type": "address"
+            },
+            {
+                "name": "_destTokensDevs",
+                "type": "address"
+            },
+            {
+                "name": "_sgt",
+                "type": "address"
+            },
+            {
+                "name": "_maxSGTSupply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function initialize(\n        address _snt,\n        address _sntController,\n\n        uint256 _startBlock,\n        uint256 _endBlock,\n\n        address _dynamicCeiling,\n\n        address _destEthDevs,\n\n        address _destTokensReserve,\n        address _destTokensSgt,\n        address _destTokensDevs,\n\n        address _sgt,\n        uint256 _maxSGTSupply\n    ) public onlyOwner {\n        // Initialize only once\n        require(address(SNT) == 0x0);\n\n        SNT = MiniMeToken(_snt);\n        require(SNT.totalSupply() == 0);\n        require(SNT.controller() == address(this));\n        require(SNT.decimals() == 18);  // Same amount of decimals as ETH\n\n        require(_sntController != 0x0);\n        sntController = _sntController;\n\n        require(_startBlock >= getBlockNumber());\n        require(_startBlock < _endBlock);\n        startBlock = _startBlock;\n        endBlock = _endBlock;\n\n        require(_dynamicCeiling != 0x0);\n        dynamicCeiling = DynamicCeiling(_dynamicCeiling);\n\n        require(_destEthDevs != 0x0);\n        destEthDevs = _destEthDevs;\n\n        require(_destTokensReserve != 0x0);\n        destTokensReserve = _destTokensReserve;\n\n        require(_destTokensSgt != 0x0);\n        destTokensSgt = _destTokensSgt;\n\n        require(_destTokensDevs != 0x0);\n        destTokensDevs = _destTokensDevs;\n\n        require(_sgt != 0x0);\n        SGT = MiniMeToken(_sgt);\n\n        require(_maxSGTSupply >= MiniMeToken(SGT).totalSupply());\n        maxSGTSupply = _maxSGTSupply;\n    }",
+        "comments": [
+            "",
+            "",
+            "    /// @notice This method should be called by the owner before the contribution",
+            "    ///  period starts This initializes most of the parameters",
+            "    /// @param _snt Address of the SNT token contract",
+            "    /// @param _sntController Token controller for the SNT that will be transferred after",
+            "    ///  the contribution finalizes.",
+            "    /// @param _startBlock Block when the contribution period starts",
+            "    /// @param _endBlock The last block that the contribution period is active",
+            "    /// @param _dynamicCeiling Address of the contract that controls the ceiling",
+            "    /// @param _destEthDevs Destination address where the contribution ether is sent",
+            "    /// @param _destTokensReserve Address where the tokens for the reserve are sent",
+            "    /// @param _destTokensSgt Address of the exchanger SGT-SNT where the SNT are sent",
+            "    ///  to be distributed to the SGT holders.",
+            "    /// @param _destTokensDevs Address where the tokens for the dev are sent",
+            "    /// @param _sgt Address of the SGT token contract",
+            "    /// @param _maxSGTSupply Quantity of SGT tokens that would represent 10% of status.",
+            "    "
+        ],
+        "comt": "\n\n    /// @notice This method should be called by the owner before the contribution\n    ///  period starts This initializes most of the parameters\n    /// @param _snt Address of the SNT token contract\n    /// @param _sntController Token controller for the SNT that will be transferred after\n    ///  the contribution finalizes.\n    /// @param _startBlock Block when the contribution period starts\n    /// @param _endBlock The last block that the contribution period is active\n    /// @param _dynamicCeiling Address of the contract that controls the ceiling\n    /// @param _destEthDevs Destination address where the contribution ether is sent\n    /// @param _destTokensReserve Address where the tokens for the reserve are sent\n    /// @param _destTokensSgt Address of the exchanger SGT-SNT where the SNT are sent\n    ///  to be distributed to the SGT holders.\n    /// @param _destTokensDevs Address where the tokens for the dev are sent\n    /// @param _sgt Address of the SGT token contract\n    /// @param _maxSGTSupply Quantity of SGT tokens that would represent 10% of status.\n    ",
+        "@notice": "This method should be called by the owner before the contribution /// period starts This initializes most of the parameters",
+        "@param1": "_snt Address of the SNT token contract",
+        "@param2": "_sntController Token controller for the SNT that will be transferred after /// the contribution finalizes.",
+        "@param3": "_startBlock Block when the contribution period starts",
+        "@param4": "_endBlock The last block that the contribution period is active",
+        "@param5": "_dynamicCeiling Address of the contract that controls the ceiling",
+        "@param6": "_destEthDevs Destination address where the contribution ether is sent",
+        "@param7": "_destTokensReserve Address where the tokens for the reserve are sent",
+        "@param8": "_destTokensSgt Address of the exchanger SGT-SNT where the SNT are sent /// to be distributed to the SGT holders.",
+        "@param9": "_destTokensDevs Address where the tokens for the dev are sent",
+        "@param10": "_sgt Address of the SGT token contract",
+        "@param11": "_maxSGTSupply Quantity of SGT tokens that would represent 10% of status.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setGuaranteedAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_th",
+                "type": "address"
+            },
+            {
+                "name": "_limit",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setGuaranteedAddress(address _th, uint256 _limit) public initialized onlyOwner {\n        require(getBlockNumber() < startBlock);\n        require(_limit > 0 && _limit <= maxGuaranteedLimit);\n        guaranteedBuyersLimit[_th] = _limit;\n        GuaranteedAddress(_th, _limit);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Sets the limit for a guaranteed address. All the guaranteed addresses",
+            "    ///  will be able to get SNTs during the contribution period with his own",
+            "    ///  specific limit.",
+            "    ///  This method should be called by the owner after the initialization",
+            "    ///  and before the contribution starts.",
+            "    /// @param _th Guaranteed address",
+            "    /// @param _limit Limit for the guaranteed address.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Sets the limit for a guaranteed address. All the guaranteed addresses\n    ///  will be able to get SNTs during the contribution period with his own\n    ///  specific limit.\n    ///  This method should be called by the owner after the initialization\n    ///  and before the contribution starts.\n    /// @param _th Guaranteed address\n    /// @param _limit Limit for the guaranteed address.\n    ",
+        "@notice": "Sets the limit for a guaranteed address. All the guaranteed addresses /// will be able to get SNTs during the contribution period with his own /// specific limit. /// This method should be called by the owner after the initialization /// and before the contribution starts.",
+        "@param1": "_th Guaranteed address",
+        "@param2": "_limit Limit for the guaranteed address.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "proxyPayment",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_th",
+                "type": "address"
+            }
+        ],
+        "func": "function proxyPayment(address _th) public payable notPaused initialized contributionOpen returns (bool) {\n        require(_th != 0x0);\n        if (guaranteedBuyersLimit[_th] > 0) {\n            buyGuaranteed(_th);\n        } else {\n            buyNormal(_th);\n        }\n        return true;\n    }",
+        "comments": [
+            "",
+            "",
+            "    //////////",
+            "    // MiniMe Controller functions",
+            "    //////////",
+            "",
+            "    /// @notice This method will generally be called by the SNT token contract to",
+            "    ///  acquire SNTs. Or directly from third parties that want to acquire SNTs in",
+            "    ///  behalf of a token holder.",
+            "    /// @param _th SNT holder where the SNTs will be minted.",
+            "    "
+        ],
+        "comt": "\n\n    //////////\n    // MiniMe Controller functions\n    //////////\n\n    /// @notice This method will generally be called by the SNT token contract to\n    ///  acquire SNTs. Or directly from third parties that want to acquire SNTs in\n    ///  behalf of a token holder.\n    /// @param _th SNT holder where the SNTs will be minted.\n    ",
+        "@notice": "This method will generally be called by the SNT token contract to /// acquire SNTs. Or directly from third parties that want to acquire SNTs in /// behalf of a token holder.",
+        "@param1": "_th SNT holder where the SNTs will be minted.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onTransfer(address, address, uint256) public returns (bool) {\n        return false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onApprove",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onApprove(address, address, uint256) public returns (bool) {\n        return false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finalize",
+        "visibility": "public",
+        "args": [],
+        "func": "function finalize() public initialized {\n        require(getBlockNumber() >= startBlock);\n        require(msg.sender == owner || getBlockNumber() > endBlock);\n        require(finalizedBlock == 0);\n\n        // Do not allow termination until all curves revealed.\n        require(dynamicCeiling.allRevealed());\n\n        // Allow premature finalization if final limit is reached\n        if (getBlockNumber() <= endBlock) {\n            var (,lastLimit,,) = dynamicCeiling.curves(dynamicCeiling.revealedCurves().sub(1));\n            require(totalNormalCollected >= lastLimit);\n        }\n\n        finalizedBlock = getBlockNumber();\n        finalizedTime = now;\n\n        uint256 percentageToSgt;\n        if (SGT.totalSupply() >= maxSGTSupply) {\n            percentageToSgt = percent(10);  // 10%\n        } else {\n\n            //\n            //                           SGT.totalSupply()\n            //  percentageToSgt = 10% * -------------------\n            //                             maxSGTSupply\n            //\n            percentageToSgt = percent(10).mul(SGT.totalSupply()).div(maxSGTSupply);\n        }\n\n        uint256 percentageToDevs = percent(20);  // 20%\n\n\n        //\n        //  % To Contributors = 41% + (10% - % to SGT holders)\n        //\n        uint256 percentageToContributors = percent(41).add(percent(10).sub(percentageToSgt));\n\n        uint256 percentageToReserve = percent(29);\n\n\n        // SNT.totalSupply() -> Tokens minted during the contribution\n        //  totalTokens  -> Total tokens that should be after the allocation\n        //                   of devTokens, sgtTokens and reserve\n        //  percentageToContributors -> Which percentage should go to the\n        //                               contribution participants\n        //                               (x per 10**18 format)\n        //  percent(100) -> 100% in (x per 10**18 format)\n        //\n        //                       percentageToContributors\n        //  SNT.totalSupply() = -------------------------- * totalTokens  =>\n        //                             percent(100)\n        //\n        //\n        //                            percent(100)\n        //  =>  totalTokens = ---------------------------- * SNT.totalSupply()\n        //                      percentageToContributors\n        //\n        uint256 totalTokens = SNT.totalSupply().mul(percent(100)).div(percentageToContributors);\n\n\n        // Generate tokens for SGT Holders.\n\n        //\n        //                    percentageToReserve\n        //  reserveTokens = ----------------------- * totalTokens\n        //                      percentage(100)\n        //\n        assert(SNT.generateTokens(\n            destTokensReserve,\n            totalTokens.mul(percentageToReserve).div(percent(100))));\n\n        //\n        //                  percentageToSgt\n        //  sgtTokens = ----------------------- * totalTokens\n        //                   percentage(100)\n        //\n        assert(SNT.generateTokens(\n            destTokensSgt,\n            totalTokens.mul(percentageToSgt).div(percent(100))));\n\n\n        //\n        //                   percentageToDevs\n        //  devTokens = ----------------------- * totalTokens\n        //                   percentage(100)\n        //\n        assert(SNT.generateTokens(\n            destTokensDevs,\n            totalTokens.mul(percentageToDevs).div(percent(100))));\n\n        SNT.changeController(sntController);\n\n        Finalized();\n    }",
+        "comments": [
+            "",
+            "    // NOTE on Percentage format",
+            "    // Right now, Solidity does not support decimal numbers. (This will change very soon)",
+            "    //  So in this contract we use a representation of a percentage that consist in",
+            "    //  expressing the percentage in \"x per 10**18\"",
+            "    // This format has a precision of 16 digits for a percent.",
+            "    // Examples:",
+            "    //  3%   =   3*(10**16)",
+            "    //  100% = 100*(10**16) = 10**18",
+            "    //",
+            "    // To get a percentage of a value we do it by first multiplying it by the percentage in  (x per 10^18)",
+            "    //  and then divide it by 10**18",
+            "    //",
+            "    //              Y * X(in x per 10**18)",
+            "    //  X% of Y = -------------------------",
+            "    //               100(in x per 10**18)",
+            "    //",
+            "",
+            "",
+            "    /// @notice This method will can be called by the owner before the contribution period",
+            "    ///  end or by anybody after the `endBlock`. This method finalizes the contribution period",
+            "    ///  by creating the remaining tokens and transferring the controller to the configured",
+            "    ///  controller.",
+            "    "
+        ],
+        "comt": "\n    // NOTE on Percentage format\n    // Right now, Solidity does not support decimal numbers. (This will change very soon)\n    //  So in this contract we use a representation of a percentage that consist in\n    //  expressing the percentage in \"x per 10**18\"\n    // This format has a precision of 16 digits for a percent.\n    // Examples:\n    //  3%   =   3*(10**16)\n    //  100% = 100*(10**16) = 10**18\n    //\n    // To get a percentage of a value we do it by first multiplying it by the percentage in  (x per 10^18)\n    //  and then divide it by 10**18\n    //\n    //              Y * X(in x per 10**18)\n    //  X% of Y = -------------------------\n    //               100(in x per 10**18)\n    //\n\n\n    /// @notice This method will can be called by the owner before the contribution period\n    ///  end or by anybody after the `endBlock`. This method finalizes the contribution period\n    ///  by creating the remaining tokens and transferring the controller to the configured\n    ///  controller.\n    ",
+        "@notice": "This method will can be called by the owner before the contribution period /// end or by anybody after the `endBlock`. This method finalizes the contribution period /// by creating the remaining tokens and transferring the controller to the configured /// controller.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokensIssued",
+        "visibility": "public",
+        "args": [],
+        "func": "function tokensIssued() public constant returns (uint256) {\n        return SNT.totalSupply();\n    }",
+        "comments": [
+            "",
+            "",
+            "    //////////",
+            "    // Constant functions",
+            "    //////////",
+            "",
+            "    /// @return Total tokens issued in weis.",
+            "    "
+        ],
+        "comt": "\n\n    //////////\n    // Constant functions\n    //////////\n\n    /// @return Total tokens issued in weis.\n    ",
+        "@return1": "Total tokens issued in weis.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalCollected",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalCollected() public constant returns (uint256) {\n        return totalNormalCollected.add(totalGuaranteedCollected);\n    }",
+        "comments": [
+            "",
+            "    /// @return Total Ether collected.",
+            "    "
+        ],
+        "comt": "\n    /// @return Total Ether collected.\n    ",
+        "@return1": "Total Ether collected.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function claimTokens(address _token) public onlyOwner {\n        if (SNT.controller() == address(this)) {\n            SNT.claimTokens(_token);\n        }\n        if (_token == 0x0) {\n            owner.transfer(this.balance);\n            return;\n        }\n\n        ERC20Token token = ERC20Token(_token);\n        uint256 balance = token.balanceOf(this);\n        token.transfer(owner, balance);\n        ClaimedTokens(_token, owner, balance);\n    }",
+        "comments": [
+            "",
+            "",
+            "    //////////",
+            "    // Safety Methods",
+            "    //////////",
+            "",
+            "    /// @notice This method can be used by the controller to extract mistakenly",
+            "    ///  sent tokens to this contract.",
+            "    /// @param _token The address of the token contract that you want to recover",
+            "    ///  set to 0 in case you want to extract ether.",
+            "    "
+        ],
+        "comt": "\n\n    //////////\n    // Safety Methods\n    //////////\n\n    /// @notice This method can be used by the controller to extract mistakenly\n    ///  sent tokens to this contract.\n    /// @param _token The address of the token contract that you want to recover\n    ///  set to 0 in case you want to extract ether.\n    ",
+        "@notice": "This method can be used by the controller to extract mistakenly /// sent tokens to this contract.",
+        "@param1": "_token The address of the token contract that you want to recover /// set to 0 in case you want to extract ether.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdraw() public {\n        require(msg.sender == multisig);              // Only the multisig can request it\n        require(block.number > endBlock ||            // Allow after end block\n                contribution.finalizedBlock() != 0);  // Allow when sale is finalized\n        multisig.transfer(this.balance);\n    }",
+        "comments": [
+            "",
+            "    // @dev Withdraw function sends all the funds to the wallet if conditions are correct",
+            "    "
+        ],
+        "comt": "\n    // @dev Withdraw function sends all the funds to the wallet if conditions are correct\n    ",
+        "@dev": "Withdraw function sends all the funds to the wallet if conditions are correct",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "collectTokens",
+        "visibility": "public",
+        "args": [],
+        "func": "function collectTokens() public onlyOwner {\n        uint256 balance = snt.balanceOf(address(this));\n        uint256 total = collectedTokens.add(balance);\n\n        uint256 finalizedTime = contribution.finalizedTime();\n\n        require(finalizedTime > 0 && getTime() > finalizedTime.add(months(6)));\n\n        uint256 canExtract = total.mul(getTime().sub(finalizedTime)).div(months(24));\n\n        canExtract = canExtract.sub(collectedTokens);\n\n        if (canExtract > balance) {\n            canExtract = balance;\n        }\n\n        collectedTokens = collectedTokens.add(canExtract);\n        assert(snt.transfer(owner, canExtract));\n\n        TokensWithdrawn(owner, canExtract);\n    }",
+        "comments": [
+            "",
+            "",
+            "    /// @notice The Dev (Owner) will call this method to extract the tokens",
+            "    "
+        ],
+        "comt": "\n\n    /// @notice The Dev (Owner) will call this method to extract the tokens\n    ",
+        "@notice": "The Dev (Owner) will call this method to extract the tokens",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function claimTokens(address _token) public onlyOwner {\n        require(_token != address(snt));\n        if (_token == 0x0) {\n            owner.transfer(this.balance);\n            return;\n        }\n\n        ERC20Token token = ERC20Token(_token);\n        uint256 balance = token.balanceOf(this);\n        token.transfer(owner, balance);\n        ClaimedTokens(_token, owner, balance);\n    }",
+        "comments": [
+            "",
+            "",
+            "    //////////",
+            "    // Safety Methods",
+            "    //////////",
+            "",
+            "    /// @notice This method can be used by the controller to extract mistakenly",
+            "    ///  sent tokens to this contract.",
+            "    /// @param _token The address of the token contract that you want to recover",
+            "    ///  set to 0 in case you want to extract ether.",
+            "    "
+        ],
+        "comt": "\n\n    //////////\n    // Safety Methods\n    //////////\n\n    /// @notice This method can be used by the controller to extract mistakenly\n    ///  sent tokens to this contract.\n    /// @param _token The address of the token contract that you want to recover\n    ///  set to 0 in case you want to extract ether.\n    ",
+        "@notice": "This method can be used by the controller to extract mistakenly /// sent tokens to this contract.",
+        "@param1": "_token The address of the token contract that you want to recover /// set to 0 in case you want to extract ether.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "collect",
+        "visibility": "public",
+        "args": [],
+        "func": "function collect() public {\n        uint256 finalizedBlock = statusContribution.finalizedBlock();\n\n        require(finalizedBlock != 0);\n        require(getBlockNumber() > finalizedBlock);\n\n        uint256 total = totalCollected.add(snt.balanceOf(address(this)));\n\n        uint256 balance = sgt.balanceOfAt(msg.sender, finalizedBlock);\n\n        // First calculate how much correspond to him\n        uint256 amount = total.mul(balance).div(sgt.totalSupplyAt(finalizedBlock));\n\n        // And then subtract the amount already collected\n        amount = amount.sub(collected[msg.sender]);\n\n        require(amount > 0);  // Notify the user that there are no tokens to exchange\n\n        totalCollected = totalCollected.add(amount);\n        collected[msg.sender] = collected[msg.sender].add(amount);\n\n        assert(snt.transfer(msg.sender, amount));\n\n        TokensCollected(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    /// @notice This method should be called by the SGT holders to collect their",
+            "    ///  corresponding SNTs",
+            "    "
+        ],
+        "comt": "\n    /// @notice This method should be called by the SGT holders to collect their\n    ///  corresponding SNTs\n    ",
+        "@notice": "This method should be called by the SGT holders to collect their /// corresponding SNTs",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "proxyPayment",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function proxyPayment(address) public payable returns (bool) {\n        throw;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onTransfer(address, address, uint256) public returns (bool) {\n        return false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onApprove",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onApprove(address, address, uint256) public returns (bool) {\n        return false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function claimTokens(address _token) public onlyOwner {\n        require(_token != address(snt));\n        if (_token == 0x0) {\n            owner.transfer(this.balance);\n            return;\n        }\n\n        ERC20Token token = ERC20Token(_token);\n        uint256 balance = token.balanceOf(this);\n        token.transfer(owner, balance);\n        ClaimedTokens(_token, owner, balance);\n    }",
+        "comments": [
+            "",
+            "    //////////",
+            "    // Safety Method",
+            "    //////////",
+            "",
+            "    /// @notice This method can be used by the controller to extract mistakenly",
+            "    ///  sent tokens to this contract.",
+            "    /// @param _token The address of the token contract that you want to recover",
+            "    ///  set to 0 in case you want to extract ether.",
+            "    "
+        ],
+        "comt": "\n    //////////\n    // Safety Method\n    //////////\n\n    /// @notice This method can be used by the controller to extract mistakenly\n    ///  sent tokens to this contract.\n    /// @param _token The address of the token contract that you want to recover\n    ///  set to 0 in case you want to extract ether.\n    ",
+        "@notice": "This method can be used by the controller to extract mistakenly /// sent tokens to this contract.",
+        "@param1": "_token The address of the token contract that you want to recover /// set to 0 in case you want to extract ether.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeController",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newController",
+                "type": "address"
+            }
+        ],
+        "func": "function changeController(address _newController) public onlyOwner {\n        snt.changeController(_newController);\n        ControllerChanged(_newController);\n    }",
+        "comments": [
+            "",
+            "    /// @notice The owner of this contract can change the controller of the SNT token",
+            "    ///  Please, be sure that the owner is a trusted agent or 0x0 address.",
+            "    /// @param _newController The address of the new controller",
+            "",
+            "    "
+        ],
+        "comt": "\n    /// @notice The owner of this contract can change the controller of the SNT token\n    ///  Please, be sure that the owner is a trusted agent or 0x0 address.\n    /// @param _newController The address of the new controller\n\n    ",
+        "@notice": "The owner of this contract can change the controller of the SNT token /// Please, be sure that the owner is a trusted agent or 0x0 address.",
+        "@param1": "_newController The address of the new controller",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "proxyPayment",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function proxyPayment(address) public payable returns (bool) {\n        return false;\n    }",
+        "comments": [
+            "",
+            "",
+            "    //////////",
+            "    // MiniMe Controller Interface functions",
+            "    //////////",
+            "",
+            "    // In between the offering and the network. Default settings for allowing token transfers.",
+            "    "
+        ],
+        "comt": "\n\n    //////////\n    // MiniMe Controller Interface functions\n    //////////\n\n    // In between the offering and the network. Default settings for allowing token transfers.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onTransfer(address _from, address, uint256) public returns (bool) {\n        return transferable(_from);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onApprove",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onApprove(address _from, address, uint256) public returns (bool) {\n        return transferable(_from);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function claimTokens(address _token) public onlyOwner {\n        if (snt.controller() == address(this)) {\n            snt.claimTokens(_token);\n        }\n        if (_token == 0x0) {\n            owner.transfer(this.balance);\n            return;\n        }\n\n        ERC20Token token = ERC20Token(_token);\n        uint256 balance = token.balanceOf(this);\n        token.transfer(owner, balance);\n        ClaimedTokens(_token, owner, balance);\n    }",
+        "comments": [
+            "",
+            "",
+            "    //////////",
+            "    // Safety Methods",
+            "    //////////",
+            "",
+            "    /// @notice This method can be used by the controller to extract mistakenly",
+            "    ///  sent tokens to this contract.",
+            "    /// @param _token The address of the token contract that you want to recover",
+            "    ///  set to 0 in case you want to extract ether.",
+            "    "
+        ],
+        "comt": "\n\n    //////////\n    // Safety Methods\n    //////////\n\n    /// @notice This method can be used by the controller to extract mistakenly\n    ///  sent tokens to this contract.\n    /// @param _token The address of the token contract that you want to recover\n    ///  set to 0 in case you want to extract ether.\n    ",
+        "@notice": "This method can be used by the controller to extract mistakenly /// sent tokens to this contract.",
+        "@param1": "_token The address of the token contract that you want to recover /// set to 0 in case you want to extract ether.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

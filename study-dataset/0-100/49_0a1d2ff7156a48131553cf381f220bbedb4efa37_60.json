@@ -1,0 +1,1106 @@
+[
+    {
+        "transactions": 60,
+        "function_num": 49
+    },
+    {
+        "name": "Ownable",
+        "visibility": "public",
+        "args": [],
+        "func": "function Ownable() public {\n    owner = msg.sender;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev The Ownable constructor sets the original `owner` of the contract to the sender",
+            "   * account.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev The Ownable constructor sets the original `owner` of the contract to the sender\n   * account.\n   */\n",
+        "@dev": "The Ownable constructor sets the original `owner` of the contract to the sender * account.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public onlyOwner {\n    require(newOwner != address(0));\n    OwnershipTransferred(owner, newOwner);\n    owner = newOwner;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            "   * @param newOwner The address to transfer ownership to.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Allows the current owner to transfer control of the contract to a newOwner.\n   * @param newOwner The address to transfer ownership to.\n   */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner.",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) public returns (bool) {\n    require(_to != address(0));\n    require(_value <= balances[msg.sender]);\n\n    // SafeMath.sub will throw if there is not enough balance.\n    balances[msg.sender] = balances[msg.sender].sub(_value);\n    balances[_to] = balances[_to].add(_value);\n    Transfer(msg.sender, _to, _value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev transfer token for a specified address",
+            "  * @param _to The address to transfer to.",
+            "  * @param _value The amount to be transferred.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev transfer token for a specified address\n  * @param _to The address to transfer to.\n  * @param _value The amount to be transferred.\n  */\n",
+        "@dev": "transfer token for a specified address",
+        "@param1": "_to The address to transfer to.",
+        "@param2": "_value The amount to be transferred.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public view returns (uint256 balance) {\n    return balances[_owner];\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Gets the balance of the specified address.",
+            "  * @param _owner The address to query the the balance of.",
+            "  * @return An uint256 representing the amount owned by the passed address.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Gets the balance of the specified address.\n  * @param _owner The address to query the the balance of.\n  * @return An uint256 representing the amount owned by the passed address.\n  */\n",
+        "@dev": "Gets the balance of the specified address.",
+        "@param1": "_owner The address to query the the balance of.",
+        "@return1": "An uint256 representing the amount owned by the passed address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {\n    require(_to != address(0));\n    require(_value <= balances[_from]);\n    require(_value <= allowed[_from][msg.sender]);\n\n    balances[_from] = balances[_from].sub(_value);\n    balances[_to] = balances[_to].add(_value);\n    allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);\n    Transfer(_from, _to, _value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Transfer tokens from one address to another",
+            "   * @param _from address The address which you want to send tokens from",
+            "   * @param _to address The address which you want to transfer to",
+            "   * @param _value uint256 the amount of tokens to be transferred",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Transfer tokens from one address to another\n   * @param _from address The address which you want to send tokens from\n   * @param _to address The address which you want to transfer to\n   * @param _value uint256 the amount of tokens to be transferred\n   */\n",
+        "@dev": "Transfer tokens from one address to another",
+        "@param1": "_from address The address which you want to send tokens from",
+        "@param2": "_to address The address which you want to transfer to",
+        "@param3": "_value uint256 the amount of tokens to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _value) public returns (bool) {\n    allowed[msg.sender][_spender] = _value;\n    Approval(msg.sender, _spender, _value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+            "   *",
+            "   * Beware that changing an allowance with this method brings the risk that someone may use both the old",
+            "   * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this",
+            "   * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:",
+            "   * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+            "   * @param _spender The address which will spend the funds.",
+            "   * @param _value The amount of tokens to be spent.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\n   *\n   * Beware that changing an allowance with this method brings the risk that someone may use both the old\n   * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this\n   * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:\n   * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n   * @param _spender The address which will spend the funds.\n   * @param _value The amount of tokens to be spent.\n   */\n",
+        "@dev": "Approve the passed address to spend the specified amount of tokens on behalf of msg.sender. * * Beware that changing an allowance with this method brings the risk that someone may use both the old * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards: * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_value The amount of tokens to be spent.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint256) {\n    return allowed[_owner][_spender];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Function to check the amount of tokens that an owner allowed to a spender.",
+            "   * @param _owner address The address which owns the funds.",
+            "   * @param _spender address The address which will spend the funds.",
+            "   * @return A uint256 specifying the amount of tokens still available for the spender.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Function to check the amount of tokens that an owner allowed to a spender.\n   * @param _owner address The address which owns the funds.\n   * @param _spender address The address which will spend the funds.\n   * @return A uint256 specifying the amount of tokens still available for the spender.\n   */\n",
+        "@dev": "Function to check the amount of tokens that an owner allowed to a spender.",
+        "@param1": "_owner address The address which owns the funds.",
+        "@param2": "_spender address The address which will spend the funds.",
+        "@return1": "A uint256 specifying the amount of tokens still available for the spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function increaseApproval(address _spender, uint _addedValue) public returns (bool) {\n    allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);\n    Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Increase the amount of tokens that an owner allowed to a spender.",
+            "   *",
+            "   * approve should be called when allowed[_spender] == 0. To increment",
+            "   * allowed value is better to use this function to avoid 2 calls (and wait until",
+            "   * the first transaction is mined)",
+            "   * From MonolithDAO Token.sol",
+            "   * @param _spender The address which will spend the funds.",
+            "   * @param _addedValue The amount of tokens to increase the allowance by.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Increase the amount of tokens that an owner allowed to a spender.\n   *\n   * approve should be called when allowed[_spender] == 0. To increment\n   * allowed value is better to use this function to avoid 2 calls (and wait until\n   * the first transaction is mined)\n   * From MonolithDAO Token.sol\n   * @param _spender The address which will spend the funds.\n   * @param _addedValue The amount of tokens to increase the allowance by.\n   */\n",
+        "@dev": "Increase the amount of tokens that an owner allowed to a spender. * * approve should be called when allowed[_spender] == 0. To increment * allowed value is better to use this function to avoid 2 calls (and wait until * the first transaction is mined) * From MonolithDAO Token.sol",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_addedValue The amount of tokens to increase the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function decreaseApproval(address _spender, uint _subtractedValue) public returns (bool) {\n    uint oldValue = allowed[msg.sender][_spender];\n    if (_subtractedValue > oldValue) {\n      allowed[msg.sender][_spender] = 0;\n    } else {\n      allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);\n    }\n    Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Decrease the amount of tokens that an owner allowed to a spender.",
+            "   *",
+            "   * approve should be called when allowed[_spender] == 0. To decrement",
+            "   * allowed value is better to use this function to avoid 2 calls (and wait until",
+            "   * the first transaction is mined)",
+            "   * From MonolithDAO Token.sol",
+            "   * @param _spender The address which will spend the funds.",
+            "   * @param _subtractedValue The amount of tokens to decrease the allowance by.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Decrease the amount of tokens that an owner allowed to a spender.\n   *\n   * approve should be called when allowed[_spender] == 0. To decrement\n   * allowed value is better to use this function to avoid 2 calls (and wait until\n   * the first transaction is mined)\n   * From MonolithDAO Token.sol\n   * @param _spender The address which will spend the funds.\n   * @param _subtractedValue The amount of tokens to decrease the allowance by.\n   */\n",
+        "@dev": "Decrease the amount of tokens that an owner allowed to a spender. * * approve should be called when allowed[_spender] == 0. To decrement * allowed value is better to use this function to avoid 2 calls (and wait until * the first transaction is mined) * From MonolithDAO Token.sol",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_subtractedValue The amount of tokens to decrease the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSaleAgent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newSaleAgnet",
+                "type": "address"
+            }
+        ],
+        "func": "function setSaleAgent(address newSaleAgnet) public {\n    require(msg.sender == saleAgent || msg.sender == owner);\n    saleAgent = newSaleAgnet;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address _to, uint256 _amount) public returns (bool) {\n    require(msg.sender == saleAgent && !mintingFinished);\n    totalSupply = totalSupply.add(_amount);\n    balances[_to] = balances[_to].add(_amount);\n    Mint(_to, _amount);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finishMinting",
+        "visibility": "public",
+        "args": [],
+        "func": "function finishMinting() public returns (bool) {\n    require((msg.sender == saleAgent || msg.sender == owner) && !mintingFinished);\n    mintingFinished = true;\n    MintFinished();\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Function to stop minting new tokens.",
+            "   * @return True if the operation was successful.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Function to stop minting new tokens.\n   * @return True if the operation was successful.\n   */\n",
+        "@dev": "Function to stop minting new tokens.",
+        "@return1": "True if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) public notLocked returns (bool) {\n    return super.transfer(_to, _value);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint256 value) public notLocked returns (bool) {\n    return super.transferFrom(from, to, value);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPercentRate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newPercentRate",
+                "type": "uint"
+            }
+        ],
+        "func": "function setPercentRate(uint newPercentRate) public onlyOwner {\n    percentRate = newPercentRate;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setHardcap",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newHardcap",
+                "type": "uint"
+            }
+        ],
+        "func": "function setHardcap(uint newHardcap) public onlyOwner {\n    hardcap = newHardcap;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setStart",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newStart",
+                "type": "uint"
+            }
+        ],
+        "func": "function setStart(uint newStart) public onlyOwner {\n    start = newStart;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMinInvestedLimit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newMinInvestedLimit",
+                "type": "uint"
+            }
+        ],
+        "func": "function setMinInvestedLimit(uint newMinInvestedLimit) public onlyOwner {\n    minInvestedLimit = newMinInvestedLimit;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setDirectMintAgent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newDirectMintAgent",
+                "type": "address"
+            }
+        ],
+        "func": "function setDirectMintAgent(address newDirectMintAgent) public onlyOwner {\n    directMintAgent = newDirectMintAgent;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setWallet",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newWallet",
+                "type": "address"
+            }
+        ],
+        "func": "function setWallet(address newWallet) public onlyOwner {\n    wallet = newWallet;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPrice",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newPrice",
+                "type": "uint"
+            }
+        ],
+        "func": "function setPrice(uint newPrice) public onlyOwner {\n    price = newPrice;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newToken",
+                "type": "address"
+            }
+        ],
+        "func": "function setToken(address newToken) public onlyOwner {\n    token = FABAToken(newToken);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintTokensExternal",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokens",
+                "type": "uint"
+            }
+        ],
+        "func": "function mintTokensExternal(address to, uint tokens) public onlyDirectMintAgentOrOwner {\n    mintTokens(to, tokens);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintTokensByETHExternal",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "_invested",
+                "type": "uint"
+            }
+        ],
+        "func": "function mintTokensByETHExternal(address to, uint _invested) public onlyDirectMintAgentOrOwner returns(uint) {\n    return mintTokensByETH(to, _invested);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setReferalsMinInvestLimit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newRefereralsMinInvestLimit",
+                "type": "uint"
+            }
+        ],
+        "func": "function setReferalsMinInvestLimit(uint newRefereralsMinInvestLimit) public onlyOwner {\n    referalsMinInvestLimit = newRefereralsMinInvestLimit;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRefererPercent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newRefererPercent",
+                "type": "uint"
+            }
+        ],
+        "func": "function setRefererPercent(uint newRefererPercent) public onlyOwner {\n    refererPercent = newRefererPercent;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "retrieveTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "anotherToken",
+                "type": "address"
+            }
+        ],
+        "func": "function retrieveTokens(address to, address anotherToken) public onlyOwner {\n    ERC20 alienToken = ERC20(anotherToken);\n    alienToken.transfer(to, alienToken.balanceOf(this));\n  }",
+        "comments": [
+            "",
+            "// File: contracts/RetrieveTokensFeature.sol",
+            "",
+            "contract RetrieveTokensFeature is Ownable {",
+            "",
+            "  "
+        ],
+        "comt": "\n// File: contracts/RetrieveTokensFeature.sol\n\ncontract RetrieveTokensFeature is Ownable {\n\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addValueBonus",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "uint"
+            },
+            {
+                "name": "bonus",
+                "type": "uint"
+            }
+        ],
+        "func": "function addValueBonus(uint from, uint bonus) public onlyOwner {\n    valueBonuses.push(ValueBonus(from, bonus));\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getValueBonusTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokens",
+                "type": "uint"
+            },
+            {
+                "name": "_invested",
+                "type": "uint"
+            }
+        ],
+        "func": "function getValueBonusTokens(uint tokens, uint _invested) public view returns(uint) {\n    uint valueBonus = getValueBonus(_invested);\n    if(valueBonus == 0) {\n      return 0;\n    }\n    return tokens.mul(valueBonus).div(percentRate);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getValueBonus",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function getValueBonus(uint value) public view returns(uint) {\n    uint bonus = 0;\n    for(uint i = 0; i < valueBonuses.length; i++) {\n      if(value >= valueBonuses[i].from) {\n        bonus = valueBonuses[i].bonus;\n      } else {\n        return bonus;\n      }\n    }\n    return bonus;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "milestonesCount",
+        "visibility": "public",
+        "args": [],
+        "func": "function milestonesCount() public view returns(uint) {\n    return milestones.length;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addMilestone",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "period",
+                "type": "uint"
+            },
+            {
+                "name": "bonus",
+                "type": "uint"
+            }
+        ],
+        "func": "function addMilestone(uint period, uint bonus) public onlyOwner {\n    require(period > 0);\n    milestones.push(Milestone(period, bonus));\n    totalPeriod = totalPeriod.add(period);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeMilestone",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "number",
+                "type": "uint8"
+            }
+        ],
+        "func": "function removeMilestone(uint8 number) public onlyOwner {\n    require(number < milestones.length);\n    Milestone storage milestone = milestones[number];\n    totalPeriod = totalPeriod.sub(milestone.period);\n\n    delete milestones[number];\n\n    for (uint i = number; i < milestones.length - 1; i++) {\n      milestones[i] = milestones[i+1];\n    }\n\n    milestones.length--;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeMilestone",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "number",
+                "type": "uint8"
+            },
+            {
+                "name": "period",
+                "type": "uint"
+            },
+            {
+                "name": "bonus",
+                "type": "uint"
+            }
+        ],
+        "func": "function changeMilestone(uint8 number, uint period, uint bonus) public onlyOwner {\n    require(number < milestones.length);\n    Milestone storage milestone = milestones[number];\n\n    totalPeriod = totalPeriod.sub(milestone.period);\n\n    milestone.period = period;\n    milestone.bonus = bonus;\n\n    totalPeriod = totalPeriod.add(period);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "insertMilestone",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "numberAfter",
+                "type": "uint8"
+            },
+            {
+                "name": "period",
+                "type": "uint"
+            },
+            {
+                "name": "bonus",
+                "type": "uint"
+            }
+        ],
+        "func": "function insertMilestone(uint8 numberAfter, uint period, uint bonus) public onlyOwner {\n    require(numberAfter < milestones.length);\n\n    totalPeriod = totalPeriod.add(period);\n\n    milestones.length++;\n\n    for (uint i = milestones.length - 2; i > numberAfter; i--) {\n      milestones[i + 1] = milestones[i];\n    }\n\n    milestones[numberAfter + 1] = Milestone(period, bonus);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "clearMilestones",
+        "visibility": "public",
+        "args": [],
+        "func": "function clearMilestones() public onlyOwner {\n    require(milestones.length > 0);\n    for (uint i = 0; i < milestones.length; i++) {\n      delete milestones[i];\n    }\n    milestones.length -= milestones.length;\n    totalPeriod = 0;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastSaleDate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "start",
+                "type": "uint"
+            }
+        ],
+        "func": "function lastSaleDate(uint start) public view returns(uint) {\n    return start + totalPeriod * 1 days;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "currentMilestone",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "start",
+                "type": "uint"
+            }
+        ],
+        "func": "function currentMilestone(uint start) public view returns(uint) {\n    uint previousDate = start;\n    for(uint i=0; i < milestones.length; i++) {\n      if(now >= previousDate && now < previousDate + milestones[i].period * 1 days) {\n        return i;\n      }\n      previousDate = previousDate.add(milestones[i].period * 1 days);\n    }\n    revert();\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFABAcompanyTokensPercent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newFABAcompanyTokensPercent",
+                "type": "uint"
+            }
+        ],
+        "func": "function setFABAcompanyTokensPercent(uint newFABAcompanyTokensPercent) public onlyOwner {\n    FABAcompanyTokensPercent = newFABAcompanyTokensPercent;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTymTokensPercent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newTymTokensPercent",
+                "type": "uint"
+            }
+        ],
+        "func": "function setTymTokensPercent(uint newTymTokensPercent) public onlyOwner {\n    TymTokensPercent = newTymTokensPercent;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFABAcompanyTokensWallet",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newFABAcompanyTokensWallet",
+                "type": "address"
+            }
+        ],
+        "func": "function setFABAcompanyTokensWallet(address newFABAcompanyTokensWallet) public onlyOwner {\n    FABAcompanyTokensWallet = newFABAcompanyTokensWallet;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTymTokensWallet",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newTymTokensWallet",
+                "type": "address"
+            }
+        ],
+        "func": "function setTymTokensWallet(address newTymTokensWallet) public onlyOwner {\n    TymTokensWallet = newTymTokensWallet;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finish",
+        "visibility": "public",
+        "args": [],
+        "func": "function finish() public onlyOwner {\n    uint summaryTokensPercent = TymTokensPercent.add(FABAcompanyTokensPercent);\n    uint mintedTokens = token.totalSupply();\n    uint allTokens = mintedTokens.mul(percentRate).div(percentRate.sub(summaryTokensPercent));\n    uint FABAcompanyTokens = allTokens.mul(FABAcompanyTokensPercent).div(percentRate);\n    uint TymTokens = allTokens.mul(TymTokensPercent).div(percentRate);\n    mintTokens(FABAcompanyTokensWallet, FABAcompanyTokens);\n    mintTokens(TymTokensWallet,TymTokens);\n    token.finishMinting();\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "endSaleDate",
+        "visibility": "public",
+        "args": [],
+        "func": "function endSaleDate() public view returns(uint) {\n    return lastSaleDate(start);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPeriod",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newPeriod",
+                "type": "uint"
+            }
+        ],
+        "func": "function setPeriod(uint newPeriod) public onlyOwner {\n    period = newPeriod;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMainsale",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newMainsale",
+                "type": "address"
+            }
+        ],
+        "func": "function setMainsale(address newMainsale) public onlyOwner {\n    mainsale = Mainsale(newMainsale);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finish",
+        "visibility": "public",
+        "args": [],
+        "func": "function finish() public onlyOwner {\n    token.setSaleAgent(mainsale);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "endSaleDate",
+        "visibility": "public",
+        "args": [],
+        "func": "function endSaleDate() public view returns(uint) {\n    return start.add(period * 1 days);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deploy",
+        "visibility": "public",
+        "args": [],
+        "func": "function deploy() public onlyOwner {\n    //owner = 0x83Af3226ca6d215F31dC0Baa0D969C06A1E5db3b;\n   // Existing investors in PRE ICO-period from 1st March 2018 until 5th June 2018 will receive \n   //a fair bonus from the company,which will equalize everyone to the value of 40% of FABA tokens.\n\n    token = new FABAToken();\n\n    presale = new Presale();\n\n    presale.setWallet(0x66CeD6f10d77ae5F8dd7811824EF71ebC0c8aEFf);\n    presale.setStart(1519862400);\n    presale.setPeriod(300);\n    presale.setPrice(600000000000000000000);\n    presale.setHardcap(500000000000000000000);\n    token.setSaleAgent(presale);\n    commonConfigure(presale, token);\n\n    mainsale = new Mainsale();\n\n    mainsale.addMilestone(30,20);\n    mainsale.addMilestone(30,15);\n    mainsale.addMilestone(30,10);\n \n  \n      \n    mainsale.setPrice(450000000000000000000);\n    mainsale.setWallet(0x66CeD6f10d77ae5F8dd7811824EF71ebC0c8aEFf);\n    mainsale.setFABAcompanyTokensWallet(0x96E187bdD7d817275aD45688BF85CD966A80A428);\n    mainsale.setTymTokensWallet(0x781b6EeCa4119f7B9633a03001616161c698b2c5);\n    mainsale.setStart(1551398400);\n    mainsale.setHardcap(112500000000000000000000);\n   \n    \n    mainsale.setFABAcompanyTokensPercent(40);\n    mainsale.setTymTokensPercent(8);\n   //Token for Mentors (2)\n    commonConfigure(mainsale, token);\n \n    presale.setMainsale(mainsale);\n\n    token.transferOwnership(owner);\n    presale.transferOwnership(owner);\n    mainsale.transferOwnership(owner);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

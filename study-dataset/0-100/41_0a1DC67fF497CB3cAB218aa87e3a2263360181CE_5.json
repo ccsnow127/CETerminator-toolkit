@@ -1,0 +1,1162 @@
+[
+    {
+        "transactions": 5,
+        "function_num": 41
+    },
+    {
+        "name": "createChildTyped",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "initializeConfig_",
+                "type": "InitializeConfig calldata"
+            }
+        ],
+        "func": "function createChildTyped(InitializeConfig calldata initializeConfig_)\n  external\n  returns (Vapour721A)\n {\n  return Vapour721A(this.createChild(abi.encode(initializeConfig_)));\n }",
+        "comments": [
+            "",
+            " /// Typed wrapper around IFactory.createChild.",
+            " "
+        ],
+        "comt": "\n /// Typed wrapper around IFactory.createChild.\n ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createChild",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "data_",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function createChild(bytes calldata data_)\n        external\n        virtual\n        override\n        nonReentrant\n        returns (address)\n    {\n        // Create child contract using hook.\n        address child_ = _createChild(data_);\n        // Ensure the child at this address has not previously been deployed.\n        require(!contracts[child_], \"DUPLICATE_CHILD\");\n        // Register child contract address to `contracts` mapping.\n        contracts[child_] = true;\n        // Emit `NewChild` event with child contract address.\n        emit IFactory.NewChild(msg.sender, child_);\n        return child_;\n    }",
+        "comments": [
+            "",
+            "    /// Implements `IFactory`.",
+            "    ///",
+            "    /// Calls the `_createChild` hook that inheriting contracts must override.",
+            "    /// Registers child contract address such that `isChild` is `true`.",
+            "    /// Emits `NewChild` event.",
+            "    ///",
+            "    /// @param data_ Encoded data to pass down to child contract constructor.",
+            "    /// @return New child contract address.",
+            "    "
+        ],
+        "comt": "\n    /// Implements `IFactory`.\n    ///\n    /// Calls the `_createChild` hook that inheriting contracts must override.\n    /// Registers child contract address such that `isChild` is `true`.\n    /// Emits `NewChild` event.\n    ///\n    /// @param data_ Encoded data to pass down to child contract constructor.\n    /// @return New child contract address.\n    ",
+        "@param1": "data_ Encoded data to pass down to child contract constructor.",
+        "@return1": "New child contract address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isChild",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "maybeChild_",
+                "type": "address"
+            }
+        ],
+        "func": "function isChild(address maybeChild_)\n        external\n        view\n        virtual\n        override\n        returns (bool)\n    {\n        return contracts[maybeChild_];\n    }",
+        "comments": [
+            "",
+            "    /// Implements `IFactory`.",
+            "    ///",
+            "    /// Checks if address is registered as a child contract of this factory.",
+            "    ///",
+            "    /// @param maybeChild_ Address of child contract to look up.",
+            "    /// @return Returns `true` if address is a contract created by this",
+            "    /// contract factory, otherwise `false`.",
+            "    "
+        ],
+        "comt": "\n    /// Implements `IFactory`.\n    ///\n    /// Checks if address is registered as a child contract of this factory.\n    ///\n    /// @param maybeChild_ Address of child contract to look up.\n    /// @return Returns `true` if address is a contract created by this\n    /// contract factory, otherwise `false`.\n    ",
+        "@param1": "maybeChild_ Address of child contract to look up.",
+        "@return1": "Returns `true` if address is a contract created by this /// contract factory, otherwise `false`.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "config_",
+                "type": "InitializeConfig memory"
+            }
+        ],
+        "func": "function initialize(InitializeConfig memory config_)\n  external\n  initializerERC721A\n  initializer\n {\n  __ERC721A_init(config_.name, config_.symbol);\n  __Ownable_init();\n\n  _supplyLimit = config_.supplyLimit;\n  baseURI = config_.baseURI;\n\n  _royaltyBPS = config_.royaltyBPS;\n  require(_royaltyBPS < 10_000, \"MAX_ROYALTY\");\n\n  setRecipient(config_.recipient);\n  transferOwnership(config_.owner);\n\n  require(config_.admin != address(0), \"0_ADMIN\");\n  _setRoleAdmin(DELEGATED_MINTER, DELEGATED_MINTER_ADMIN);\n\n  _grantRole(DELEGATED_MINTER_ADMIN, config_.admin);\n\n  _currency = config_.currency;\n\n  _vmStateConfig = _snapshot(_newState(config_.vmStateConfig));\n\n  emit Initialize(config_);\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId)\n  public\n  view\n  virtual\n  override\n  returns (string memory)\n {\n  if (!_exists(tokenId)) revert URIQueryForNonexistentToken();\n  return string(abi.encodePacked(baseURI, \"/\", tokenId.toString(), \".json\"));\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calculateBuy",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account_",
+                "type": "address"
+            },
+            {
+                "name": "targetUnits_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function calculateBuy(address account_, uint256 targetUnits_)\n  public\n  view\n  returns (uint256 maxUnits_, uint256 price_)\n {\n  State memory state_ = _restore(_vmStateConfig);\n  eval(abi.encode(account_, targetUnits_), state_, 0);\n\n  (maxUnits_, price_) = (\n   state_.stack[state_.stackIndex - 2],\n   state_.stack[state_.stackIndex - 1]\n  );\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintNFT",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "config_",
+                "type": "BuyConfig calldata"
+            }
+        ],
+        "func": "function mintNFT(BuyConfig calldata config_) external payable {\n  _mintNFT(msg.sender, config_);\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintNFTFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "maximumPrice",
+                "type": "uint256"
+            },
+            {
+                "name": "minimumUnits",
+                "type": "uint256"
+            },
+            {
+                "name": "desiredUnits",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintNFTFor(\n  address receiver,\n  uint256 maximumPrice,\n  uint256 minimumUnits,\n  uint256 desiredUnits\n ) external payable onlyRole(DELEGATED_MINTER) {\n  _mintNFT(receiver, BuyConfig(maximumPrice, minimumUnits, desiredUnits));\n }",
+        "comments": [
+            "",
+            " /// A minting function that allows minting to an address other than the",
+            " /// sender of the transaction/account that pays. This opens up the",
+            " /// possibility of using 3rd party services that will mint on a user's",
+            " /// behalf if they pay with some other form of payment. The BuyConfig for",
+            " /// the mint is split out of its struct, also for easier integration.",
+            " /// The downside is, this way of minting could be vulnerable to a phishing",
+            " /// attack - an attacker could create a duplicate front end that makes the",
+            " /// user think they are minting to themselves, when actually they are",
+            " /// minting to someone else. To mitigate against this we restrict access to",
+            " /// this function to only those accounts with the 'DELEGATED_MINTER' role.",
+            " /// @param receiver the receiver of the NFTs",
+            " /// @param maximumPrice maximum price, as per BuyConfig",
+            " /// @param minimumUnits minimum units, as per BuyConfig",
+            " /// @param desiredUnits desired units, as per BuyConfig",
+            " "
+        ],
+        "comt": "\n /// A minting function that allows minting to an address other than the\n /// sender of the transaction/account that pays. This opens up the\n /// possibility of using 3rd party services that will mint on a user's\n /// behalf if they pay with some other form of payment. The BuyConfig for\n /// the mint is split out of its struct, also for easier integration.\n /// The downside is, this way of minting could be vulnerable to a phishing\n /// attack - an attacker could create a duplicate front end that makes the\n /// user think they are minting to themselves, when actually they are\n /// minting to someone else. To mitigate against this we restrict access to\n /// this function to only those accounts with the 'DELEGATED_MINTER' role.\n /// @param receiver the receiver of the NFTs\n /// @param maximumPrice maximum price, as per BuyConfig\n /// @param minimumUnits minimum units, as per BuyConfig\n /// @param desiredUnits desired units, as per BuyConfig\n ",
+        "@param1": "receiver the receiver of the NFTs",
+        "@param2": "maximumPrice maximum price, as per BuyConfig",
+        "@param3": "minimumUnits minimum units, as per BuyConfig",
+        "@param4": "desiredUnits desired units, as per BuyConfig",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRecipient",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newRecipient",
+                "type": "address"
+            }
+        ],
+        "func": "function setRecipient(address newRecipient) public {\n  require(\n   msg.sender == _recipient || _recipient == address(0),\n   \"RECIPIENT_ONLY\"\n  );\n  require(\n   newRecipient.code.length == 0 && newRecipient != address(0),\n   \"INVALID_ADDRESS.\"\n  );\n  _recipient = payable(newRecipient);\n  emit RecipientChanged(newRecipient);\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 tokenId) external {\n  _burn(tokenId, true);\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "external",
+        "args": [],
+        "func": "function withdraw() external {\n  require(_amountPayable > 0, \"ZERO_FUND\");\n  unchecked {\n   _amountWithdrawn = _amountWithdrawn + _amountPayable;\n  }\n  emit Withdraw(msg.sender, _amountPayable, _amountWithdrawn);\n\n  if (_currency == address(0)) Address.sendValue(_recipient, _amountPayable);\n  else IERC20(_currency).transfer(_recipient, _amountPayable);\n\n  _amountPayable = 0;\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "royaltyInfo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "_salePrice",
+                "type": "uint256"
+            }
+        ],
+        "func": "function royaltyInfo(uint256, uint256 _salePrice)\n  external\n  view\n  returns (address receiver, uint256 royaltyAmount)\n {\n  if (_recipient == address(0x0)) {\n   return (_recipient, 0);\n  }\n  return (_recipient, (_salePrice * _royaltyBPS) / 10_000);\n }",
+        "comments": [
+            "",
+            " //// @dev Get royalty information for token",
+            " //// @param _salePrice Sale price for the token",
+            " "
+        ],
+        "comt": "\n //// @dev Get royalty information for token\n //// @param _salePrice Sale price for the token\n ",
+        "@dev": "Get royalty information for token",
+        "@param1": "_salePrice Sale price for the token",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId)\n  public\n  view\n  virtual\n  override(AccessControlUpgradeable, ERC721AUpgradeable)\n  returns (bool)\n {\n  return ERC721AUpgradeable.supportsInterface(interfaceId);\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "foo",
+        "visibility": "public",
+        "args": [],
+        "func": "function foo() public {\n *     require(hasRole(MY_ROLE, msg.sender));\n *     ...\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IAccessControlUpgradeable).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "hasRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function hasRole(bytes32 role, address account) public view virtual override returns (bool) {\n        return _roles[role].members[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns `true` if `account` has been granted `role`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns `true` if `account` has been granted `role`.\n     */\n",
+        "@dev": "Returns `true` if `account` has been granted `role`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoleAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getRoleAdmin(bytes32 role) public view virtual override returns (bytes32) {\n        return _roles[role].adminRole;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the admin role that controls `role`. See {grantRole} and",
+            "     * {revokeRole}.",
+            "     *",
+            "     * To change a role's admin, use {_setRoleAdmin}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the admin role that controls `role`. See {grantRole} and\n     * {revokeRole}.\n     *\n     * To change a role's admin, use {_setRoleAdmin}.\n     */\n",
+        "@dev": "Returns the admin role that controls `role`. See {grantRole} and * {revokeRole}. * * To change a role's admin, use {_setRoleAdmin}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "grantRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function grantRole(bytes32 role, address account) public virtual override onlyRole(getRoleAdmin(role)) {\n        _grantRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Grants `role` to `account`.",
+            "     *",
+            "     * If `account` had not been already granted `role`, emits a {RoleGranted}",
+            "     * event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must have ``role``'s admin role.",
+            "     *",
+            "     * May emit a {RoleGranted} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Grants `role` to `account`.\n     *\n     * If `account` had not been already granted `role`, emits a {RoleGranted}\n     * event.\n     *\n     * Requirements:\n     *\n     * - the caller must have ``role``'s admin role.\n     *\n     * May emit a {RoleGranted} event.\n     */\n",
+        "@dev": "Grants `role` to `account`. * * If `account` had not been already granted `role`, emits a {RoleGranted} * event. * * Requirements: * * - the caller must have ``role``'s admin role. * * May emit a {RoleGranted} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revokeRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function revokeRole(bytes32 role, address account) public virtual override onlyRole(getRoleAdmin(role)) {\n        _revokeRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Revokes `role` from `account`.",
+            "     *",
+            "     * If `account` had been granted `role`, emits a {RoleRevoked} event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must have ``role``'s admin role.",
+            "     *",
+            "     * May emit a {RoleRevoked} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Revokes `role` from `account`.\n     *\n     * If `account` had been granted `role`, emits a {RoleRevoked} event.\n     *\n     * Requirements:\n     *\n     * - the caller must have ``role``'s admin role.\n     *\n     * May emit a {RoleRevoked} event.\n     */\n",
+        "@dev": "Revokes `role` from `account`. * * If `account` had been granted `role`, emits a {RoleRevoked} event. * * Requirements: * * - the caller must have ``role``'s admin role. * * May emit a {RoleRevoked} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function renounceRole(bytes32 role, address account) public virtual override {\n        require(account == _msgSender(), \"AccessControl: can only renounce roles for self\");\n\n        _revokeRole(role, account);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Revokes `role` from the calling account.",
+            "     *",
+            "     * Roles are often managed via {grantRole} and {revokeRole}: this function's",
+            "     * purpose is to provide a mechanism for accounts to lose their privileges",
+            "     * if they are compromised (such as when a trusted device is misplaced).",
+            "     *",
+            "     * If the calling account had been revoked `role`, emits a {RoleRevoked}",
+            "     * event.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - the caller must be `account`.",
+            "     *",
+            "     * May emit a {RoleRevoked} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Revokes `role` from the calling account.\n     *\n     * Roles are often managed via {grantRole} and {revokeRole}: this function's\n     * purpose is to provide a mechanism for accounts to lose their privileges\n     * if they are compromised (such as when a trusted device is misplaced).\n     *\n     * If the calling account had been revoked `role`, emits a {RoleRevoked}\n     * event.\n     *\n     * Requirements:\n     *\n     * - the caller must be `account`.\n     *\n     * May emit a {RoleRevoked} event.\n     */\n",
+        "@dev": "Revokes `role` from the calling account. * * Roles are often managed via {grantRole} and {revokeRole}: this function's * purpose is to provide a mechanism for accounts to lose their privileges * if they are compromised (such as when a trusted device is misplaced). * * If the calling account had been revoked `role`, emits a {RoleRevoked} * event. * * Requirements: * * - the caller must be `account`. * * May emit a {RoleRevoked} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n        // Counter underflow is impossible as _burnCounter cannot be incremented\n        // more than `_currentIndex - _startTokenId()` times.\n        unchecked {\n            return ERC721AStorage.layout()._currentIndex - ERC721AStorage.layout()._burnCounter - _startTokenId();\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the total number of tokens in existence.",
+            "     * Burned tokens will reduce the count.",
+            "     * To get the total number of tokens minted, please see {_totalMinted}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the total number of tokens in existence.\n     * Burned tokens will reduce the count.\n     * To get the total number of tokens minted, please see {_totalMinted}.\n     */\n",
+        "@dev": "Returns the total number of tokens in existence. * Burned tokens will reduce the count. * To get the total number of tokens minted, please see {_totalMinted}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view virtual override returns (uint256) {\n        if (owner == address(0)) revert BalanceQueryForZeroAddress();\n        return ERC721AStorage.layout()._packedAddressData[owner] & _BITMASK_ADDRESS_DATA_ENTRY;\n    }",
+        "comments": [
+            "",
+            "    // =============================================================",
+            "    //                    ADDRESS DATA OPERATIONS",
+            "    // =============================================================",
+            "",
+            "    /**",
+            "     * @dev Returns the number of tokens in `owner`'s account.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // =============================================================\n    //                    ADDRESS DATA OPERATIONS\n    // =============================================================\n\n    /**\n     * @dev Returns the number of tokens in `owner`'s account.\n     */\n    ",
+        "@dev": "Returns the number of tokens in `owner`'s account.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        // The interface IDs are constants representing the first 4 bytes\n        // of the XOR of all function selectors in the interface.\n        // See: [ERC165](https://eips.ethereum.org/EIPS/eip-165)\n        // (e.g. `bytes4(i.functionA.selector ^ i.functionB.selector ^ ...)`)\n        return\n            interfaceId == 0x01ffc9a7 || // ERC165 interface ID for ERC165.\n            interfaceId == 0x80ac58cd || // ERC165 interface ID for ERC721.\n            interfaceId == 0x5b5e139f; // ERC165 interface ID for ERC721Metadata.\n    }",
+        "comments": [
+            "",
+            "    // =============================================================",
+            "    //                            IERC165",
+            "    // =============================================================",
+            "",
+            "    /**",
+            "     * @dev Returns true if this contract implements the interface defined by",
+            "     * `interfaceId`. See the corresponding",
+            "     * [EIP section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified)",
+            "     * to learn more about how these ids are created.",
+            "     *",
+            "     * This function call must use less than 30000 gas.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // =============================================================\n    //                            IERC165\n    // =============================================================\n\n    /**\n     * @dev Returns true if this contract implements the interface defined by\n     * `interfaceId`. See the corresponding\n     * [EIP section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified)\n     * to learn more about how these ids are created.\n     *\n     * This function call must use less than 30000 gas.\n     */\n    ",
+        "@dev": "Returns true if this contract implements the interface defined by * `interfaceId`. See the corresponding * [EIP section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified) * to learn more about how these ids are created. * * This function call must use less than 30000 gas.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return ERC721AStorage.layout()._name;\n    }",
+        "comments": [
+            "",
+            "    // =============================================================",
+            "    //                        IERC721Metadata",
+            "    // =============================================================",
+            "",
+            "    /**",
+            "     * @dev Returns the token collection name.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // =============================================================\n    //                        IERC721Metadata\n    // =============================================================\n\n    /**\n     * @dev Returns the token collection name.\n     */\n    ",
+        "@dev": "Returns the token collection name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return ERC721AStorage.layout()._symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the token collection symbol.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the token collection symbol.\n     */\n",
+        "@dev": "Returns the token collection symbol.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        if (!_exists(tokenId)) revert URIQueryForNonexistentToken();\n\n        string memory baseURI = _baseURI();\n        return bytes(baseURI).length != 0 ? string(abi.encodePacked(baseURI, _toString(tokenId))) : '';\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.\n     */\n",
+        "@dev": "Returns the Uniform Resource Identifier (URI) for `tokenId` token.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view virtual override returns (address) {\n        return address(uint160(_packedOwnershipOf(tokenId)));\n    }",
+        "comments": [
+            "",
+            "    // =============================================================",
+            "    //                     OWNERSHIPS OPERATIONS",
+            "    // =============================================================",
+            "",
+            "    /**",
+            "     * @dev Returns the owner of the `tokenId` token.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `tokenId` must exist.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // =============================================================\n    //                     OWNERSHIPS OPERATIONS\n    // =============================================================\n\n    /**\n     * @dev Returns the owner of the `tokenId` token.\n     *\n     * Requirements:\n     *\n     * - `tokenId` must exist.\n     */\n    ",
+        "@dev": "Returns the owner of the `tokenId` token. * * Requirements: * * - `tokenId` must exist.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ownerOf(tokenId);\n\n        if (_msgSenderERC721A() != owner)\n            if (!isApprovedForAll(owner, _msgSenderERC721A())) {\n                revert ApprovalCallerNotOwnerNorApproved();\n            }\n\n        ERC721AStorage.layout()._tokenApprovals[tokenId].value = to;\n        emit Approval(owner, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gives permission to `to` to transfer `tokenId` token to another account.",
+            "     * The approval is cleared when the token is transferred.",
+            "     *",
+            "     * Only a single account can be approved at a time, so approving the",
+            "     * zero address clears previous approvals.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - The caller must own the token or be an approved operator.",
+            "     * - `tokenId` must exist.",
+            "     *",
+            "     * Emits an {Approval} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gives permission to `to` to transfer `tokenId` token to another account.\n     * The approval is cleared when the token is transferred.\n     *\n     * Only a single account can be approved at a time, so approving the\n     * zero address clears previous approvals.\n     *\n     * Requirements:\n     *\n     * - The caller must own the token or be an approved operator.\n     * - `tokenId` must exist.\n     *\n     * Emits an {Approval} event.\n     */\n",
+        "@dev": "Gives permission to `to` to transfer `tokenId` token to another account. * The approval is cleared when the token is transferred. * * Only a single account can be approved at a time, so approving the * zero address clears previous approvals. * * Requirements: * * - The caller must own the token or be an approved operator. * - `tokenId` must exist. * * Emits an {Approval} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view virtual override returns (address) {\n        if (!_exists(tokenId)) revert ApprovalQueryForNonexistentToken();\n\n        return ERC721AStorage.layout()._tokenApprovals[tokenId].value;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the account approved for `tokenId` token.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `tokenId` must exist.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the account approved for `tokenId` token.\n     *\n     * Requirements:\n     *\n     * - `tokenId` must exist.\n     */\n",
+        "@dev": "Returns the account approved for `tokenId` token. * * Requirements: * * - `tokenId` must exist.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        if (operator == _msgSenderERC721A()) revert ApproveToCaller();\n\n        ERC721AStorage.layout()._operatorApprovals[_msgSenderERC721A()][operator] = approved;\n        emit ApprovalForAll(_msgSenderERC721A(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Approve or remove `operator` as an operator for the caller.",
+            "     * Operators can call {transferFrom} or {safeTransferFrom}",
+            "     * for any token owned by the caller.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - The `operator` cannot be the caller.",
+            "     *",
+            "     * Emits an {ApprovalForAll} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Approve or remove `operator` as an operator for the caller.\n     * Operators can call {transferFrom} or {safeTransferFrom}\n     * for any token owned by the caller.\n     *\n     * Requirements:\n     *\n     * - The `operator` cannot be the caller.\n     *\n     * Emits an {ApprovalForAll} event.\n     */\n",
+        "@dev": "Approve or remove `operator` as an operator for the caller. * Operators can call {transferFrom} or {safeTransferFrom} * for any token owned by the caller. * * Requirements: * * - The `operator` cannot be the caller. * * Emits an {ApprovalForAll} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {\n        return ERC721AStorage.layout()._operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.",
+            "     *",
+            "     * See {setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.\n     *\n     * See {setApprovalForAll}.\n     */\n",
+        "@dev": "Returns if the `operator` is allowed to manage all of the assets of `owner`. * * See {setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        uint256 prevOwnershipPacked = _packedOwnershipOf(tokenId);\n\n        if (address(uint160(prevOwnershipPacked)) != from) revert TransferFromIncorrectOwner();\n\n        (uint256 approvedAddressSlot, address approvedAddress) = _getApprovedSlotAndAddress(tokenId);\n\n        // The nested ifs save around 20+ gas over a compound boolean condition.\n        if (!_isSenderApprovedOrOwner(approvedAddress, from, _msgSenderERC721A()))\n            if (!isApprovedForAll(from, _msgSenderERC721A())) revert TransferCallerNotOwnerNorApproved();\n\n        if (to == address(0)) revert TransferToZeroAddress();\n\n        _beforeTokenTransfers(from, to, tokenId, 1);\n\n        // Clear approvals from the previous owner.\n        assembly {\n            if approvedAddress {\n                // This is equivalent to `delete _tokenApprovals[tokenId]`.\n                sstore(approvedAddressSlot, 0)\n            }\n        }\n\n        // Underflow of the sender's balance is impossible because we check for\n        // ownership above and the recipient's balance can't realistically overflow.\n        // Counter overflow is incredibly unrealistic as `tokenId` would have to be 2**256.\n        unchecked {\n            // We can directly increment and decrement the balances.\n            --ERC721AStorage.layout()._packedAddressData[from]; // Updates: `balance -= 1`.\n            ++ERC721AStorage.layout()._packedAddressData[to]; // Updates: `balance += 1`.\n\n            // Updates:\n            // - `address` to the next owner.\n            // - `startTimestamp` to the timestamp of transfering.\n            // - `burned` to `false`.\n            // - `nextInitialized` to `true`.\n            ERC721AStorage.layout()._packedOwnerships[tokenId] = _packOwnershipData(\n                to,\n                _BITMASK_NEXT_INITIALIZED | _nextExtraData(from, to, prevOwnershipPacked)\n            );\n\n            // If the next slot may not have been initialized (i.e. `nextInitialized == false`) .\n            if (prevOwnershipPacked & _BITMASK_NEXT_INITIALIZED == 0) {\n                uint256 nextTokenId = tokenId + 1;\n                // If the next slot's address is zero and not burned (i.e. packed value is zero).\n                if (ERC721AStorage.layout()._packedOwnerships[nextTokenId] == 0) {\n                    // If the next slot is within bounds.\n                    if (nextTokenId != ERC721AStorage.layout()._currentIndex) {\n                        // Initialize the next slot to maintain correctness for `ownerOf(tokenId + 1)`.\n                        ERC721AStorage.layout()._packedOwnerships[nextTokenId] = prevOwnershipPacked;\n                    }\n                }\n            }\n        }\n\n        emit Transfer(from, to, tokenId);\n        _afterTokenTransfers(from, to, tokenId, 1);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers `tokenId` from `from` to `to`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `from` cannot be the zero address.",
+            "     * - `to` cannot be the zero address.",
+            "     * - `tokenId` token must be owned by `from`.",
+            "     * - If the caller is not `from`, it must be approved to move this token",
+            "     * by either {approve} or {setApprovalForAll}.",
+            "     *",
+            "     * Emits a {Transfer} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers `tokenId` from `from` to `to`.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must be owned by `from`.\n     * - If the caller is not `from`, it must be approved to move this token\n     * by either {approve} or {setApprovalForAll}.\n     *\n     * Emits a {Transfer} event.\n     */\n",
+        "@dev": "Transfers `tokenId` from `from` to `to`. * * Requirements: * * - `from` cannot be the zero address. * - `to` cannot be the zero address. * - `tokenId` token must be owned by `from`. * - If the caller is not `from`, it must be approved to move this token * by either {approve} or {setApprovalForAll}. * * Emits a {Transfer} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        safeTransferFrom(from, to, tokenId, '');\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Equivalent to `safeTransferFrom(from, to, tokenId, '')`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Equivalent to `safeTransferFrom(from, to, tokenId, '')`.\n     */\n",
+        "@dev": "Equivalent to `safeTransferFrom(from, to, tokenId, '')`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId,\n        bytes memory _data\n    ) public virtual override {\n        transferFrom(from, to, tokenId);\n        if (to.code.length != 0)\n            if (!_checkContractOnERC721Received(from, to, tokenId, _data)) {\n                revert TransferToNonERC721ReceiverImplementer();\n            }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Safely transfers `tokenId` token from `from` to `to`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `from` cannot be the zero address.",
+            "     * - `to` cannot be the zero address.",
+            "     * - `tokenId` token must exist and be owned by `from`.",
+            "     * - If the caller is not `from`, it must be approved to move this token",
+            "     * by either {approve} or {setApprovalForAll}.",
+            "     * - If `to` refers to a smart contract, it must implement",
+            "     * {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.",
+            "     *",
+            "     * Emits a {Transfer} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Safely transfers `tokenId` token from `from` to `to`.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must exist and be owned by `from`.\n     * - If the caller is not `from`, it must be approved to move this token\n     * by either {approve} or {setApprovalForAll}.\n     * - If `to` refers to a smart contract, it must implement\n     * {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.\n     *\n     * Emits a {Transfer} event.\n     */\n",
+        "@dev": "Safely transfers `tokenId` token from `from` to `to`. * * Requirements: * * - `from` cannot be the zero address. * - `to` cannot be the zero address. * - `tokenId` token must exist and be owned by `from`. * - If the caller is not `from`, it must be approved to move this token * by either {approve} or {setApprovalForAll}. * - If `to` refers to a smart contract, it must implement * {IERC721Receiver-onERC721Received}, which is called upon a safe transfer. * * Emits a {Transfer} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [],
+        "func": "function initialize() initializer public {\n *         __ERC20_init(\"MyToken\", \"MTK\");\n *     }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initializeV2",
+        "visibility": "public",
+        "args": [],
+        "func": "function initializeV2() reinitializer(2) public {\n *         __ERC20Permit_init(\"MyToken\");\n *     }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC165Upgradeable).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

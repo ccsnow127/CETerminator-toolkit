@@ -1,0 +1,1258 @@
+[
+    {
+        "transactions": 0,
+        "function_num": 50
+    },
+    {
+        "name": "getLastInvariant",
+        "visibility": "external",
+        "args": [],
+        "func": "function getLastInvariant() external view returns (uint256) {\n        return _lastInvariant;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInvariant",
+        "visibility": "public",
+        "args": [],
+        "func": "function getInvariant() public view returns (uint256) {\n        (, uint256[] memory balances, ) = getVault().getPoolTokens(getPoolId());\n\n        // Since the Pool hooks always work with upscaled balances, we manually\n        // upscale here for consistency\n        _upscaleArray(balances, _scalingFactors());\n\n        uint256[] memory normalizedWeights = _normalizedWeights();\n        return WeightedMath._calculateInvariant(normalizedWeights, balances);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current value of the invariant.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current value of the invariant.\n     */\n",
+        "@dev": "Returns the current value of the invariant.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNormalizedWeights",
+        "visibility": "external",
+        "args": [],
+        "func": "function getNormalizedWeights() external view returns (uint256[] memory) {\n        return _normalizedWeights();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRate",
+        "visibility": "public",
+        "args": [],
+        "func": "function getRate() public view returns (uint256) {\n        // The initial BPT supply is equal to the invariant times the number of tokens.\n        return Math.mul(getInvariant(), _getTotalTokens()).divDown(totalSupply());\n    }",
+        "comments": [
+            "/**",
+            "     * @dev This function returns the appreciation of one BPT relative to the",
+            "     * underlying tokens. This starts at 1 when the pool is created and grows over time",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev This function returns the appreciation of one BPT relative to the\n     * underlying tokens. This starts at 1 when the pool is created and grows over time\n     */\n",
+        "@dev": "This function returns the appreciation of one BPT relative to the * underlying tokens. This starts at 1 when the pool is created and grows over time",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawCollectedFees",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokens",
+                "type": "IERC20[] calldata"
+            },
+            {
+                "name": "amounts",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            }
+        ],
+        "func": "function withdrawCollectedFees(\n        IERC20[] calldata tokens,\n        uint256[] calldata amounts,\n        address recipient\n    ) external nonReentrant authenticate {\n        InputHelpers.ensureInputLengthMatch(tokens.length, amounts.length);\n\n        for (uint256 i = 0; i < tokens.length; ++i) {\n            IERC20 token = tokens[i];\n            uint256 amount = amounts[i];\n            token.safeTransfer(recipient, amount);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSwapFeePercentage",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newSwapFeePercentage",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setSwapFeePercentage(uint256 newSwapFeePercentage) external authenticate {\n        _require(newSwapFeePercentage <= _MAX_PROTOCOL_SWAP_FEE_PERCENTAGE, Errors.SWAP_FEE_PERCENTAGE_TOO_HIGH);\n        _swapFeePercentage = newSwapFeePercentage;\n        emit SwapFeePercentageChanged(newSwapFeePercentage);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFlashLoanFeePercentage",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newFlashLoanFeePercentage",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setFlashLoanFeePercentage(uint256 newFlashLoanFeePercentage) external authenticate {\n        _require(\n            newFlashLoanFeePercentage <= _MAX_PROTOCOL_FLASH_LOAN_FEE_PERCENTAGE,\n            Errors.FLASH_LOAN_FEE_PERCENTAGE_TOO_HIGH\n        );\n        _flashLoanFeePercentage = newFlashLoanFeePercentage;\n        emit FlashLoanFeePercentageChanged(newFlashLoanFeePercentage);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSwapFeePercentage",
+        "visibility": "external",
+        "args": [],
+        "func": "function getSwapFeePercentage() external view returns (uint256) {\n        return _swapFeePercentage;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFlashLoanFeePercentage",
+        "visibility": "external",
+        "args": [],
+        "func": "function getFlashLoanFeePercentage() external view returns (uint256) {\n        return _flashLoanFeePercentage;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCollectedFeeAmounts",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokens",
+                "type": "IERC20[] memory"
+            }
+        ],
+        "func": "function getCollectedFeeAmounts(IERC20[] memory tokens) external view returns (uint256[] memory feeAmounts) {\n        feeAmounts = new uint256[](tokens.length);\n        for (uint256 i = 0; i < tokens.length; ++i) {\n            feeAmounts[i] = tokens[i].balanceOf(address(this));\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAuthorizer",
+        "visibility": "external",
+        "args": [],
+        "func": "function getAuthorizer() external view returns (IAuthorizer) {\n        return _getAuthorizer();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getActionId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "selector",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function getActionId(bytes4 selector) public view override returns (bytes32) {\n        // Each external function is dynamically assigned an action identifier as the hash of the disambiguator and the\n        // function selector. Disambiguation is necessary to avoid potential collisions in the function selectors of\n        // multiple contracts.\n        return keccak256(abi.encodePacked(_actionIdDisambiguator, selector));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onSwap",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "request",
+                "type": "SwapRequest memory"
+            },
+            {
+                "name": "balanceTokenIn",
+                "type": "uint256"
+            },
+            {
+                "name": "balanceTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onSwap(\n        SwapRequest memory request,\n        uint256 balanceTokenIn,\n        uint256 balanceTokenOut\n    ) external view virtual override returns (uint256) {\n        uint256 scalingFactorTokenIn = _scalingFactor(request.tokenIn);\n        uint256 scalingFactorTokenOut = _scalingFactor(request.tokenOut);\n\n        if (request.kind == IVault.SwapKind.GIVEN_IN) {\n            // Fees are subtracted before scaling, to reduce the complexity of the rounding direction analysis.\n            request.amount = _subtractSwapFeeAmount(request.amount);\n\n            // All token amounts are upscaled.\n            balanceTokenIn = _upscale(balanceTokenIn, scalingFactorTokenIn);\n            balanceTokenOut = _upscale(balanceTokenOut, scalingFactorTokenOut);\n            request.amount = _upscale(request.amount, scalingFactorTokenIn);\n\n            uint256 amountOut = _onSwapGivenIn(request, balanceTokenIn, balanceTokenOut);\n\n            // amountOut tokens are exiting the Pool, so we round down.\n            return _downscaleDown(amountOut, scalingFactorTokenOut);\n        } else {\n            // All token amounts are upscaled.\n            balanceTokenIn = _upscale(balanceTokenIn, scalingFactorTokenIn);\n            balanceTokenOut = _upscale(balanceTokenOut, scalingFactorTokenOut);\n            request.amount = _upscale(request.amount, scalingFactorTokenOut);\n\n            uint256 amountIn = _onSwapGivenOut(request, balanceTokenIn, balanceTokenOut);\n\n            // amountIn tokens are entering the Pool, so we round up.\n            amountIn = _downscaleUp(amountIn, scalingFactorTokenIn);\n\n            // Fees are added after scaling happens, to reduce the complexity of the rounding direction analysis.\n            return _addSwapFeeAmount(amountIn);\n        }\n    }",
+        "comments": [
+            "",
+            "    // Swap Hooks",
+            "",
+            "    "
+        ],
+        "comt": "\n    // Swap Hooks\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVault",
+        "visibility": "public",
+        "args": [],
+        "func": "function getVault() public view returns (IVault) {\n        return _vault;\n    }",
+        "comments": [
+            "",
+            "    // Getters / Setters",
+            "",
+            "    "
+        ],
+        "comt": "\n    // Getters / Setters\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPoolId",
+        "visibility": "public",
+        "args": [],
+        "func": "function getPoolId() public view returns (bytes32) {\n        return _poolId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSwapFeePercentage",
+        "visibility": "external",
+        "args": [],
+        "func": "function getSwapFeePercentage() external view returns (uint256) {\n        return _swapFeePercentage;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSwapFeePercentage",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "swapFeePercentage",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setSwapFeePercentage(uint256 swapFeePercentage) external virtual authenticate whenNotPaused {\n        _setSwapFeePercentage(swapFeePercentage);\n    }",
+        "comments": [
+            "",
+            "    // Caller must be approved by the Vault's Authorizer",
+            "    "
+        ],
+        "comt": "\n    // Caller must be approved by the Vault's Authorizer\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPaused",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "paused",
+                "type": "bool"
+            }
+        ],
+        "func": "function setPaused(bool paused) external authenticate {\n        _setPaused(paused);\n    }",
+        "comments": [
+            "",
+            "    // Caller must be approved by the Vault's Authorizer",
+            "    "
+        ],
+        "comt": "\n    // Caller must be approved by the Vault's Authorizer\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onJoinPool",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "lastChangeBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "protocolSwapFeePercentage",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function onJoinPool(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256 lastChangeBlock,\n        uint256 protocolSwapFeePercentage,\n        bytes memory userData\n    ) external virtual override onlyVault(poolId) returns (uint256[] memory, uint256[] memory) {\n        uint256[] memory scalingFactors = _scalingFactors();\n\n        if (totalSupply() == 0) {\n            (uint256 bptAmountOut, uint256[] memory amountsIn) = _onInitializePool(poolId, sender, recipient, userData);\n\n            // On initialization, we lock _MINIMUM_BPT by minting it for the zero address. This BPT acts as a minimum\n            // as it will never be burned, which reduces potential issues with rounding, and also prevents the Pool from\n            // ever being fully drained.\n            _require(bptAmountOut >= _MINIMUM_BPT, Errors.MINIMUM_BPT);\n            _mintPoolTokens(address(0), _MINIMUM_BPT);\n            _mintPoolTokens(recipient, bptAmountOut - _MINIMUM_BPT);\n\n            // amountsIn are amounts entering the Pool, so we round up.\n            _downscaleUpArray(amountsIn, scalingFactors);\n\n            return (amountsIn, new uint256[](_getTotalTokens()));\n        } else {\n            _upscaleArray(balances, scalingFactors);\n            (uint256 bptAmountOut, uint256[] memory amountsIn, uint256[] memory dueProtocolFeeAmounts) = _onJoinPool(\n                poolId,\n                sender,\n                recipient,\n                balances,\n                lastChangeBlock,\n                protocolSwapFeePercentage,\n                userData\n            );\n\n            // Note we no longer use `balances` after calling `_onJoinPool`, which may mutate it.\n\n            _mintPoolTokens(recipient, bptAmountOut);\n\n            // amountsIn are amounts entering the Pool, so we round up.\n            _downscaleUpArray(amountsIn, scalingFactors);\n            // dueProtocolFeeAmounts are amounts exiting the Pool, so we round down.\n            _downscaleDownArray(dueProtocolFeeAmounts, scalingFactors);\n\n            return (amountsIn, dueProtocolFeeAmounts);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onExitPool",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "lastChangeBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "protocolSwapFeePercentage",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function onExitPool(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256 lastChangeBlock,\n        uint256 protocolSwapFeePercentage,\n        bytes memory userData\n    ) external virtual override onlyVault(poolId) returns (uint256[] memory, uint256[] memory) {\n        uint256[] memory scalingFactors = _scalingFactors();\n        _upscaleArray(balances, scalingFactors);\n\n        (uint256 bptAmountIn, uint256[] memory amountsOut, uint256[] memory dueProtocolFeeAmounts) = _onExitPool(\n            poolId,\n            sender,\n            recipient,\n            balances,\n            lastChangeBlock,\n            protocolSwapFeePercentage,\n            userData\n        );\n\n        // Note we no longer use `balances` after calling `_onExitPool`, which may mutate it.\n\n        _burnPoolTokens(sender, bptAmountIn);\n\n        // Both amountsOut and dueProtocolFeeAmounts are amounts exiting the Pool, so we round down.\n        _downscaleDownArray(amountsOut, scalingFactors);\n        _downscaleDownArray(dueProtocolFeeAmounts, scalingFactors);\n\n        return (amountsOut, dueProtocolFeeAmounts);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "queryJoin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "lastChangeBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "protocolSwapFeePercentage",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function queryJoin(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256 lastChangeBlock,\n        uint256 protocolSwapFeePercentage,\n        bytes memory userData\n    ) external returns (uint256 bptOut, uint256[] memory amountsIn) {\n        InputHelpers.ensureInputLengthMatch(balances.length, _getTotalTokens());\n\n        _queryAction(\n            poolId,\n            sender,\n            recipient,\n            balances,\n            lastChangeBlock,\n            protocolSwapFeePercentage,\n            userData,\n            _onJoinPool,\n            _downscaleUpArray\n        );\n\n        // The `return` opcode is executed directly inside `_queryAction`, so execution never reaches this statement,\n        // and we don't need to return anything here - it just silences compiler warnings.\n        return (bptOut, amountsIn);\n    }",
+        "comments": [
+            "",
+            "    // Query functions",
+            "",
+            "    /**",
+            "     * @dev Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the",
+            "     * Vault with the same arguments, along with the number of tokens `sender` would have to supply.",
+            "     *",
+            "     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault",
+            "     * data, such as the protocol swap fee percentage and Pool balances.",
+            "     *",
+            "     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must",
+            "     * explicitly use eth_call instead of eth_sendTransaction.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Query functions\n\n    /**\n     * @dev Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the\n     * Vault with the same arguments, along with the number of tokens `sender` would have to supply.\n     *\n     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault\n     * data, such as the protocol swap fee percentage and Pool balances.\n     *\n     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must\n     * explicitly use eth_call instead of eth_sendTransaction.\n     */\n    ",
+        "@dev": "Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the * Vault with the same arguments, along with the number of tokens `sender` would have to supply. * * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault * data, such as the protocol swap fee percentage and Pool balances. * * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must * explicitly use eth_call instead of eth_sendTransaction.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "queryExit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "lastChangeBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "protocolSwapFeePercentage",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function queryExit(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256 lastChangeBlock,\n        uint256 protocolSwapFeePercentage,\n        bytes memory userData\n    ) external returns (uint256 bptIn, uint256[] memory amountsOut) {\n        InputHelpers.ensureInputLengthMatch(balances.length, _getTotalTokens());\n\n        _queryAction(\n            poolId,\n            sender,\n            recipient,\n            balances,\n            lastChangeBlock,\n            protocolSwapFeePercentage,\n            userData,\n            _onExitPool,\n            _downscaleDownArray\n        );\n\n        // The `return` opcode is executed directly inside `_queryAction`, so execution never reaches this statement,\n        // and we don't need to return anything here - it just silences compiler warnings.\n        return (bptIn, amountsOut);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the",
+            "     * Vault with the same arguments, along with the number of tokens `recipient` would receive.",
+            "     *",
+            "     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault",
+            "     * data, such as the protocol swap fee percentage and Pool balances.",
+            "     *",
+            "     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must",
+            "     * explicitly use eth_call instead of eth_sendTransaction.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the\n     * Vault with the same arguments, along with the number of tokens `recipient` would receive.\n     *\n     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault\n     * data, such as the protocol swap fee percentage and Pool balances.\n     *\n     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must\n     * explicitly use eth_call instead of eth_sendTransaction.\n     */\n",
+        "@dev": "Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the * Vault with the same arguments, along with the number of tokens `recipient` would receive. * * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault * data, such as the protocol swap fee percentage and Pool balances. * * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must * explicitly use eth_call instead of eth_sendTransaction.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPausedState",
+        "visibility": "external",
+        "args": [],
+        "func": "function getPausedState()\n        external\n        view\n        override\n        returns (\n            bool paused,\n            uint256 pauseWindowEndTime,\n            uint256 bufferPeriodEndTime\n        )\n    {\n        paused = !_isNotPaused();\n        pauseWindowEndTime = _getPauseWindowEndTime();\n        bufferPeriodEndTime = _getBufferPeriodEndTime();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current contract pause status, as well as the end times of the Pause Window and Buffer",
+            "     * Period.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current contract pause status, as well as the end times of the Pause Window and Buffer\n     * Period.\n     */\n",
+        "@dev": "Returns the current contract pause status, as well as the end times of the Pause Window and Buffer * Period.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the name of the token.\n     */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the symbol of the token, usually a shorter version of the",
+            "     * name.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the symbol of the token, usually a shorter version of the\n     * name.\n     */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of decimals used to get its user representation.",
+            "     * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "     * be displayed to a user as `5,05` (`505 / 10 ** 2`).",
+            "     *",
+            "     * Tokens usually opt for a value of 18, imitating the relationship between",
+            "     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is",
+            "     * called.",
+            "     *",
+            "     * NOTE: This information is only used for _display_ purposes: it in",
+            "     * no way affects any of the arithmetic of the contract, including",
+            "     * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of decimals used to get its user representation.\n     * For example, if `decimals` equals `2`, a balance of `505` tokens should\n     * be displayed to a user as `5,05` (`505 / 10 ** 2`).\n     *\n     * Tokens usually opt for a value of 18, imitating the relationship between\n     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is\n     * called.\n     *\n     * NOTE: This information is only used for _display_ purposes: it in\n     * no way affects any of the arithmetic of the contract, including\n     * {IERC20-balanceOf} and {IERC20-transfer}.\n     */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5,05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is * called. * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}.\n     */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(msg.sender, recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(msg.sender, spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(\n            sender,\n            msg.sender,\n            _allowances[sender][msg.sender].sub(amount, Errors.ERC20_TRANSFER_EXCEEDS_ALLOWANCE)\n        );\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(msg.sender, spender, _allowances[msg.sender][spender].add(addedValue));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(\n            msg.sender,\n            spender,\n            _allowances[msg.sender][spender].sub(subtractedValue, Errors.ERC20_DECREASED_ALLOWANCE_BELOW_ZERO)\n        );\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) external view override returns (uint256) {\n        return _allowance[owner][spender];\n    }",
+        "comments": [
+            "",
+            "    // External functions",
+            "",
+            "    "
+        ],
+        "comt": "\n    // External functions\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) external view override returns (uint256) {\n        return _balance[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) external override returns (bool) {\n        _setAllowance(msg.sender, spender, amount);\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseApproval(address spender, uint256 amount) external returns (bool) {\n        _setAllowance(msg.sender, spender, _allowance[msg.sender][spender].add(amount));\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseApproval(address spender, uint256 amount) external returns (bool) {\n        uint256 currentAllowance = _allowance[msg.sender][spender];\n\n        if (amount >= currentAllowance) {\n            _setAllowance(msg.sender, spender, 0);\n        } else {\n            _setAllowance(msg.sender, spender, currentAllowance.sub(amount));\n        }\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) external override returns (bool) {\n        _move(msg.sender, recipient, amount);\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) external override returns (bool) {\n        uint256 currentAllowance = _allowance[sender][msg.sender];\n        _require(msg.sender == sender || currentAllowance >= amount, Errors.INSUFFICIENT_ALLOWANCE);\n\n        _move(sender, recipient, amount);\n\n        if (msg.sender != sender && currentAllowance != uint256(-1)) {\n            // Because of the previous require, we know that if msg.sender != sender then currentAllowance >= amount\n            _setAllowance(sender, msg.sender, currentAllowance - amount);\n        }\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "permit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function permit(\n        address owner,\n        address spender,\n        uint256 value,\n        uint256 deadline,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) public virtual override {\n        // solhint-disable-next-line not-rely-on-time\n        _require(block.timestamp <= deadline, Errors.EXPIRED_PERMIT);\n\n        uint256 nonce = _nonces[owner];\n\n        bytes32 structHash = keccak256(abi.encode(_PERMIT_TYPE_HASH, owner, spender, value, nonce, deadline));\n\n        bytes32 hash = _hashTypedDataV4(structHash);\n\n        address signer = ecrecover(hash, v, r, s);\n        _require((signer != address(0)) && (signer == owner), Errors.INVALID_SIGNATURE);\n\n        _nonces[owner] = nonce + 1;\n        _setAllowance(owner, spender, value);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "",
+            "    // Public functions",
+            "",
+            "    "
+        ],
+        "comt": "\n    // Public functions\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public pure returns (uint8) {\n        return _DECIMALS;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "nonces",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function nonces(address owner) external view override returns (uint256) {\n        return _nonces[owner];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "DOMAIN_SEPARATOR",
+        "visibility": "external",
+        "args": [],
+        "func": "function DOMAIN_SEPARATOR() external view override returns (bytes32) {\n        return _domainSeparatorV4();\n    }",
+        "comments": [
+            "",
+            "    // solhint-disable-next-line func-name-mixedcase",
+            "    "
+        ],
+        "comt": "\n    // solhint-disable-next-line func-name-mixedcase\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOwner",
+        "visibility": "public",
+        "args": [],
+        "func": "function getOwner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAuthorizer",
+        "visibility": "external",
+        "args": [],
+        "func": "function getAuthorizer() external view returns (IAuthorizer) {\n        return _getAuthorizer();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,1369 @@
+[
+    {
+        "transactions": 3,
+        "function_num": 49
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) onlyOwner public {\n    require(newOwner != address(0));\n    owner = newOwner;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            "   * @param newOwner The address to transfer ownership to. ",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Allows the current owner to transfer control of the contract to a newOwner.\n   * @param newOwner The address to transfer ownership to. \n   */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner.",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "halt",
+        "visibility": "external",
+        "args": [],
+        "func": "function halt() external onlyOwner {\n    halted = true;\n    Halted(true);\n  }",
+        "comments": [
+            "",
+            "  // called by the owner on emergency, triggers stopped state",
+            "  "
+        ],
+        "comt": "\n  // called by the owner on emergency, triggers stopped state\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unhalt",
+        "visibility": "external",
+        "args": [],
+        "func": "function unhalt() external onlyOwner onlyInEmergency {\n    halted = false;\n    Halted(false);\n  }",
+        "comments": [
+            "",
+            "  // called by the owner on end of emergency, returns to normal state",
+            "  "
+        ],
+        "comt": "\n  // called by the owner on end of emergency, returns to normal state\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint) {\n    return total_supply;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address to, uint value) public returns (bool success) {\n    balances[msg.sender] = balances[msg.sender].sub(value);\n    balances[to] = balances[to].add(value);\n    Transfer(msg.sender, to, value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev transfer token for a specified address",
+            "   * @param to The address to transfer to.",
+            "   * @param value The amount to be transferred.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev transfer token for a specified address\n   * @param to The address to transfer to.\n   * @param value The amount to be transferred.\n   */\n",
+        "@dev": "transfer token for a specified address",
+        "@param1": "to The address to transfer to.",
+        "@param2": "value The amount to be transferred.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view returns (uint balance) {\n    return balances[account];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Gets the balance of the specified address.",
+            "   * @param account The address whose balance is to be queried.",
+            "   * @return An uint representing the amount owned by the passed address.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Gets the balance of the specified address.\n   * @param account The address whose balance is to be queried.\n   * @return An uint representing the amount owned by the passed address.\n   */\n",
+        "@dev": "Gets the balance of the specified address.",
+        "@param1": "account The address whose balance is to be queried.",
+        "@return1": "An uint representing the amount owned by the passed address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint value) public returns (bool success) {\n    uint allowance = allowed[from][msg.sender];\n\n    // Check is not needed because sub(allowance, value) will already throw if this condition is not met\n    // require(value <= allowance);\n    // SafeMath uses assert instead of require though, beware when using an analysis tool\n\n    balances[from] = balances[from].sub(value);\n    balances[to] = balances[to].add(value);\n    allowed[from][msg.sender] = allowance.sub(value);\n    Transfer(from, to, value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Transfer tokens from one address to another",
+            "   * @param from address The address which you want to send tokens from",
+            "   * @param to address The address which you want to transfer to",
+            "   * @param value uint the amout of tokens to be transfered",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Transfer tokens from one address to another\n   * @param from address The address which you want to send tokens from\n   * @param to address The address which you want to transfer to\n   * @param value uint the amout of tokens to be transfered\n   */\n",
+        "@dev": "Transfer tokens from one address to another",
+        "@param1": "from address The address which you want to send tokens from",
+        "@param2": "to address The address which you want to transfer to",
+        "@param3": "value uint the amout of tokens to be transfered",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function approve(address spender, uint value) public returns (bool success) {\n\n    // To change the approve amount you first have to reduce the addresses'\n    //  allowance to zero by calling `approve(spender, 0)` if it is not\n    //  already 0 to mitigate the race condition described here:\n    //  https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n    require (value == 0 || allowed[msg.sender][spender] == 0);\n\n    allowed[msg.sender][spender] = value;\n    Approval(msg.sender, spender, value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Aprove the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+            "   * @param spender The address which will spend the funds.",
+            "   * @param value The amount of tokens to be spent.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Aprove the passed address to spend the specified amount of tokens on behalf of msg.sender.\n   * @param spender The address which will spend the funds.\n   * @param value The amount of tokens to be spent.\n   */\n",
+        "@dev": "Aprove the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "value The amount of tokens to be spent.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address account, address spender) public view returns (uint remaining) {\n    return allowed[account][spender];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Function to check the amount of tokens than an owner allowed to a spender.",
+            "   * @param account address The address which owns the funds.",
+            "   * @param spender address The address which will spend the funds.",
+            "   * @return A uint specifing the amount of tokens still avaible for the spender.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Function to check the amount of tokens than an owner allowed to a spender.\n   * @param account address The address which owns the funds.\n   * @param spender address The address which will spend the funds.\n   * @return A uint specifing the amount of tokens still avaible for the spender.\n   */\n",
+        "@dev": "Function to check the amount of tokens than an owner allowed to a spender.",
+        "@param1": "account address The address which owns the funds.",
+        "@param2": "spender address The address which will spend the funds.",
+        "@return1": "A uint specifing the amount of tokens still avaible for the spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function addApproval(address spender, uint addedValue) public returns (bool success) {\n      uint oldValue = allowed[msg.sender][spender];\n      allowed[msg.sender][spender] = oldValue.add(addedValue);\n      Approval(msg.sender, spender, allowed[msg.sender][spender]);\n      return true;\n  }",
+        "comments": [
+            "/**",
+            "   * Atomic increment of approved spending",
+            "   *",
+            "   * Works around https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+            "   *",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Atomic increment of approved spending\n   *\n   * Works around https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n   *\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "subApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function subApproval(address spender, uint subtractedValue) public returns (bool success) {\n\n      uint oldVal = allowed[msg.sender][spender];\n\n      if (subtractedValue > oldVal) {\n          allowed[msg.sender][spender] = 0;\n      } else {\n          allowed[msg.sender][spender] = oldVal.sub(subtractedValue);\n      }\n      Approval(msg.sender, spender, allowed[msg.sender][spender]);\n      return true;\n  }",
+        "comments": [
+            "/**",
+            "   * Atomic decrement of approved spending.",
+            "   *",
+            "   * Works around https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Atomic decrement of approved spending.\n   *\n   * Works around https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setReleaseAgent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "func": "function setReleaseAgent(address addr) onlyOwner inReleaseState(false) public {\n    // We don't do interface check here as we might want to have a normal wallet address to act as a release agent.\n    releaseAgent = addr;\n  }",
+        "comments": [
+            "/**",
+            "   * Set the contract that can call release and make the token transferable.",
+            "   *",
+            "   * Since the owner of this contract is (or should be) the crowdsale,",
+            "   * it can only be called by a corresponding exposed API in the crowdsale contract in case of input error.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Set the contract that can call release and make the token transferable.\n   *\n   * Since the owner of this contract is (or should be) the crowdsale,\n   * it can only be called by a corresponding exposed API in the crowdsale contract in case of input error.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTransferAgent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "name": "state",
+                "type": "bool"
+            }
+        ],
+        "func": "function setTransferAgent(address addr, bool state) onlyOwner inReleaseState(false) public {\n    transferAgents[addr] = state;\n  }",
+        "comments": [
+            "/**",
+            "   * Owner can allow a particular address (e.g. a crowdsale contract) to transfer tokens despite the lock up period.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Owner can allow a particular address (e.g. a crowdsale contract) to transfer tokens despite the lock up period.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "releaseTokenTransfer",
+        "visibility": "public",
+        "args": [],
+        "func": "function releaseTokenTransfer() public onlyReleaseAgent {\n    released = true;\n  }",
+        "comments": [
+            "/**",
+            "   * One way function to release the tokens into the wild.",
+            "   *",
+            "   * Can be called only from the release agent that should typically be the finalize agent ICO contract.",
+            "   * In the scope of the crowdsale, it is only called if the crowdsale has been a success (first milestone reached).",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * One way function to release the tokens into the wild.\n   *\n   * Can be called only from the release agent that should typically be the finalize agent ICO contract.\n   * In the scope of the crowdsale, it is only called if the crowdsale has been a success (first milestone reached).\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address to, uint value) public canTransfer(msg.sender) returns (bool success) {\n    // Call StandardToken.transfer()\n   return super.transfer(to, value);\n  }",
+        "comments": [
+            "/** We restrict transfer by overriding it */",
+            ""
+        ],
+        "comt": "/** We restrict transfer by overriding it */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint value) public canTransfer(from) returns (bool success) {\n    // Call StandardToken.transferForm()\n    return super.transferFrom(from, to, value);\n  }",
+        "comments": [
+            "/** We restrict transferFrom by overriding it */",
+            ""
+        ],
+        "comt": "/** We restrict transferFrom by overriding it */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isUpgradeAgent",
+        "visibility": "public",
+        "args": [],
+        "func": "function isUpgradeAgent() public pure returns (bool) {\n    return true;\n  }",
+        "comments": [
+            "/** Interface to ensure the contract is correctly configured */",
+            ""
+        ],
+        "comt": "/** Interface to ensure the contract is correctly configured */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function upgrade(uint value) public {\n    UpgradeState state = getUpgradeState();\n    // Ensure it's not called in a bad state\n    require(state == UpgradeState.ReadyToUpgrade || state == UpgradeState.Upgrading);\n\n    // Validate input value.\n    require(value != 0);\n\n    // Upgrade agent reissues the tokens\n    upgradeAgent.upgradeFrom(msg.sender, value);\n    \n    // Take tokens out from circulation\n    burnTokens(msg.sender, value);\n    totalUpgraded = totalUpgraded.add(value);\n\n    Upgrade(msg.sender, upgradeAgent, value);\n  }",
+        "comments": [
+            "/**",
+            "   * Allow the token holder to upgrade some of their tokens to a new contract.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Allow the token holder to upgrade some of their tokens to a new contract.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUpgradeAgent",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "agent",
+                "type": "address"
+            }
+        ],
+        "func": "function setUpgradeAgent(address agent) onlyMaster external {\n    // Check whether the token is in a state that we could think of upgrading\n    require(canUpgrade());\n\n    require(agent != 0x0);\n    // Upgrade has already begun for an agent\n    require(getUpgradeState() != UpgradeState.Upgrading);\n\n    upgradeAgent = UpgradeAgent(agent);\n\n    // Bad interface\n    require(upgradeAgent.isUpgradeAgent());\n    // Make sure that token supplies match in source and target\n    require(upgradeAgent.originalSupply() == totalSupply());\n\n    UpgradeAgentSet(upgradeAgent);\n  }",
+        "comments": [
+            "/**",
+            "   * Set an upgrade agent that handles the upgrade process",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Set an upgrade agent that handles the upgrade process\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUpgradeState",
+        "visibility": "public",
+        "args": [],
+        "func": "function getUpgradeState() public view returns(UpgradeState) {\n    if (!canUpgrade()) return UpgradeState.NotAllowed;\n    else if (address(upgradeAgent) == 0x00) return UpgradeState.WaitingForAgent;\n    else if (totalUpgraded == 0) return UpgradeState.ReadyToUpgrade;\n    else return UpgradeState.Upgrading;\n  }",
+        "comments": [
+            "/**",
+            "   * Get the state of the token upgrade.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Get the state of the token upgrade.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeUpgradeMaster",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "new_master",
+                "type": "address"
+            }
+        ],
+        "func": "function changeUpgradeMaster(address new_master) onlyMaster public {\n    setUpgradeMaster(new_master);\n  }",
+        "comments": [
+            "/**",
+            "   * Change the upgrade master.",
+            "   *",
+            "   * This allows us to set a new owner for the upgrade mechanism.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Change the upgrade master.\n   *\n   * This allows us to set a new owner for the upgrade mechanism.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "canUpgrade",
+        "visibility": "public",
+        "args": [],
+        "func": "function canUpgrade() public view returns(bool) {\n     return true;\n  }",
+        "comments": [
+            "/**",
+            "   * Child contract can override to provide the condition in which the upgrade can begin.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Child contract can override to provide the condition in which the upgrade can begin.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enableLostAndFound",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "agent",
+                "type": "address"
+            },
+            {
+                "name": "tokens",
+                "type": "uint"
+            },
+            {
+                "name": "token_contract",
+                "type": "EIP20Token"
+            }
+        ],
+        "func": "function enableLostAndFound(address agent, uint tokens, EIP20Token token_contract) public {\n    require(msg.sender == getLostAndFoundMaster());\n    // We use approve instead of transfer to minimize the possibility of the lost and found master\n    //  getting them stuck in another address by accident.\n    token_contract.approve(agent, tokens);\n  }",
+        "comments": [
+            "/**",
+            "   * @param agent Address that will be able to move tokens with transferFrom",
+            "   * @param tokens Amount of tokens approved for transfer",
+            "   * @param token_contract Contract of the token",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @param agent Address that will be able to move tokens with transferFrom\n   * @param tokens Amount of tokens approved for transfer\n   * @param token_contract Contract of the token\n   */\n",
+        "@param1": "agent Address that will be able to move tokens with transferFrom",
+        "@param2": "tokens Amount of tokens approved for transfer",
+        "@param3": "token_contract Contract of the token",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(address receiver, uint amount) onlyMintAgent canMint public {\n    mintInternal(receiver, amount);\n  }",
+        "comments": [
+            "/**",
+            "   * Create new tokens and allocate them to an address.",
+            "   *",
+            "   * Only callable by a mint agent (e.g. crowdsale contract).",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Create new tokens and allocate them to an address.\n   *\n   * Only callable by a mint agent (e.g. crowdsale contract).\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMintAgent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "name": "state",
+                "type": "bool"
+            }
+        ],
+        "func": "function setMintAgent(address addr, bool state) onlyOwner canMint public {\n    mintAgents[addr] = state;\n    MintingAgentChanged(addr, state);\n  }",
+        "comments": [
+            "/**",
+            "   * Owner can allow a crowdsale contract to mint new tokens.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Owner can allow a crowdsale contract to mint new tokens.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "CrowdsaleToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "initial_supply",
+                "type": "uint"
+            },
+            {
+                "name": "token_decimals",
+                "type": "uint8"
+            },
+            {
+                "name": "team_multisig",
+                "type": "address"
+            },
+            {
+                "name": "token_retriever",
+                "type": "address"
+            }
+        ],
+        "func": "function CrowdsaleToken(uint initial_supply, uint8 token_decimals, address team_multisig, address token_retriever) public\n  UpgradeableToken(team_multisig) MintableToken(initial_supply, team_multisig, true) {\n    require(token_retriever != address(0));\n    decimals = token_decimals;\n    lost_and_found_master = token_retriever;\n  }",
+        "comments": [
+            "/**",
+            "   * Construct the token.",
+            "   *",
+            "   * This token must be created through a team multisig wallet, so that it is owned by that wallet.",
+            "   *",
+            "   * @param initial_supply How many tokens we start with.",
+            "   * @param token_decimals Number of decimal places.",
+            "   * @param team_multisig Address of the multisig that receives the initial supply and is set as the upgrade master.",
+            "   * @param token_retriever Address of the account that handles ERC20 tokens that were accidentally sent to this contract.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Construct the token.\n   *\n   * This token must be created through a team multisig wallet, so that it is owned by that wallet.\n   *\n   * @param initial_supply How many tokens we start with.\n   * @param token_decimals Number of decimal places.\n   * @param team_multisig Address of the multisig that receives the initial supply and is set as the upgrade master.\n   * @param token_retriever Address of the account that handles ERC20 tokens that were accidentally sent to this contract.\n   */\n",
+        "@param1": "initial_supply How many tokens we start with.",
+        "@param2": "token_decimals Number of decimal places.",
+        "@param3": "team_multisig Address of the multisig that receives the initial supply and is set as the upgrade master.",
+        "@param4": "token_retriever Address of the account that handles ERC20 tokens that were accidentally sent to this contract.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "releaseTokenTransfer",
+        "visibility": "public",
+        "args": [],
+        "func": "function releaseTokenTransfer() public onlyReleaseAgent {\n    mintingFinished = true;\n    super.releaseTokenTransfer();\n  }",
+        "comments": [
+            "/**",
+            "   * When token is released to be transferable, prohibit new token creation.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * When token is released to be transferable, prohibit new token creation.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "canUpgrade",
+        "visibility": "public",
+        "args": [],
+        "func": "function canUpgrade() public view returns(bool) {\n    return released && super.canUpgrade();\n  }",
+        "comments": [
+            "/**",
+            "   * Allow upgrade agent functionality to kick in only if the crowdsale was a success.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Allow upgrade agent functionality to kick in only if the crowdsale was a success.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function burn(uint value) public {\n    burnTokens(msg.sender, value);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "preallocate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "fullTokens",
+                "type": "uint"
+            },
+            {
+                "name": "weiPrice",
+                "type": "uint"
+            }
+        ],
+        "func": "function preallocate(address receiver, uint fullTokens, uint weiPrice) public onlyOwner notFinished {\n    require(receiver != address(0));\n    uint tokenAmount = fullTokens.mul(10**uint(token.decimals()));\n    require(tokenAmount != 0);\n    uint weiAmount = weiPrice.mul(tokenAmount); // This can also be 0, in which case we give out tokens for free\n    updateInvestorFunds(tokenAmount, weiAmount, receiver , 0);\n  }",
+        "comments": [
+            "/**",
+            "   * Preallocate tokens for the early investors.",
+            "   *",
+            "   * Preallocated tokens have been sold before the actual crowdsale opens.",
+            "   * This function mints the tokens and moves the crowdsale needle.",
+            "   *",
+            "   * No money is exchanged, as the crowdsale team already have received the payment.",
+            "   *",
+            "   * @param receiver Account that receives the tokens.",
+            "   * @param fullTokens tokens as full tokens - decimal places are added internally.",
+            "   * @param weiPrice Price of a single indivisible token in wei.",
+            "   *",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Preallocate tokens for the early investors.\n   *\n   * Preallocated tokens have been sold before the actual crowdsale opens.\n   * This function mints the tokens and moves the crowdsale needle.\n   *\n   * No money is exchanged, as the crowdsale team already have received the payment.\n   *\n   * @param receiver Account that receives the tokens.\n   * @param fullTokens tokens as full tokens - decimal places are added internally.\n   * @param weiPrice Price of a single indivisible token in wei.\n   *\n   */\n",
+        "@param1": "receiver Account that receives the tokens.",
+        "@param2": "fullTokens tokens as full tokens - decimal places are added internally.",
+        "@param3": "weiPrice Price of a single indivisible token in wei.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buyOnBehalfWithSignedAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "customerId",
+                "type": "uint128"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function buyOnBehalfWithSignedAddress(address receiver, uint128 customerId, uint8 v, bytes32 r, bytes32 s) public payable validCustomerId(customerId) {\n    bytes32 hash = sha256(receiver);\n    require(ecrecover(hash, v, r, s) == signerAddress);\n    investInternal(receiver, customerId);\n  }",
+        "comments": [
+            "/**",
+            "   * Investing function that recognizes the receiver and verifies he is allowed to invest.",
+            "   *",
+            "   * @param customerId UUIDv4 that identifies this contributor",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Investing function that recognizes the receiver and verifies he is allowed to invest.\n   *\n   * @param customerId UUIDv4 that identifies this contributor\n   */\n",
+        "@param1": "customerId UUIDv4 that identifies this contributor",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buyOnBehalfWithCustomerId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "customerId",
+                "type": "uint128"
+            }
+        ],
+        "func": "function buyOnBehalfWithCustomerId(address receiver, uint128 customerId) public payable validCustomerId(customerId) unsignedBuyAllowed {\n    investInternal(receiver, customerId);\n  }",
+        "comments": [
+            "/**",
+            "   * Investing function that recognizes the receiver.",
+            "   * ",
+            "   * @param customerId UUIDv4 that identifies this contributor",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Investing function that recognizes the receiver.\n   * \n   * @param customerId UUIDv4 that identifies this contributor\n   */\n",
+        "@param1": "customerId UUIDv4 that identifies this contributor",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buyOnBehalf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "receiver",
+                "type": "address"
+            }
+        ],
+        "func": "function buyOnBehalf(address receiver) public payable unsignedBuyAllowed {\n    require(!requireCustomerId); // Crowdsale needs to track participants for thank you email\n    investInternal(receiver, 0);\n  }",
+        "comments": [
+            "/**",
+            "   * Buys tokens on behalf of an address.",
+            "   *",
+            "   * Pay for funding, get invested tokens back in the receiver address.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Buys tokens on behalf of an address.\n   *\n   * Pay for funding, get invested tokens back in the receiver address.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buyWithSignedAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "customerId",
+                "type": "uint128"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function buyWithSignedAddress(uint128 customerId, uint8 v, bytes32 r, bytes32 s) public payable {\n    buyOnBehalfWithSignedAddress(msg.sender, customerId, v, r, s);\n  }",
+        "comments": [
+            "/**",
+            "   * Investing function that recognizes the payer and verifies he is allowed to invest.",
+            "   *",
+            "   * @param customerId UUIDv4 that identifies this contributor",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Investing function that recognizes the payer and verifies he is allowed to invest.\n   *\n   * @param customerId UUIDv4 that identifies this contributor\n   */\n",
+        "@param1": "customerId UUIDv4 that identifies this contributor",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buyWithCustomerId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "customerId",
+                "type": "uint128"
+            }
+        ],
+        "func": "function buyWithCustomerId(uint128 customerId) public payable {\n    buyOnBehalfWithCustomerId(msg.sender, customerId);\n  }",
+        "comments": [
+            "/**",
+            "   * Investing function that recognizes the payer.",
+            "   * ",
+            "   * @param customerId UUIDv4 that identifies this contributor",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Investing function that recognizes the payer.\n   * \n   * @param customerId UUIDv4 that identifies this contributor\n   */\n",
+        "@param1": "customerId UUIDv4 that identifies this contributor",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buy",
+        "visibility": "public",
+        "args": [],
+        "func": "function buy() public payable {\n    buyOnBehalf(msg.sender);\n  }",
+        "comments": [
+            "/**",
+            "   * The basic entry point to participate in the crowdsale process.",
+            "   *",
+            "   * Pay for funding, get invested tokens back in the sender address.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * The basic entry point to participate in the crowdsale process.\n   *\n   * Pay for funding, get invested tokens back in the sender address.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finalize",
+        "visibility": "public",
+        "args": [],
+        "func": "function finalize() public inState(State.Success) onlyOwner stopInEmergency {\n    finalized = true;\n    Finalized();\n  }",
+        "comments": [
+            "/**",
+            "   * Finalize a successful crowdsale.",
+            "   *",
+            "   * The owner can trigger post-crowdsale actions, like releasing the tokens.",
+            "   * Note that by default tokens are not in a released state.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Finalize a successful crowdsale.\n   *\n   * The owner can trigger post-crowdsale actions, like releasing the tokens.\n   * Note that by default tokens are not in a released state.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRequireCustomerId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "bool"
+            }
+        ],
+        "func": "function setRequireCustomerId(bool value) public onlyOwner {\n    requireCustomerId = value;\n    InvestmentPolicyChanged(requireCustomerId, requiredSignedAddress, signerAddress);\n  }",
+        "comments": [
+            "/**",
+            "   * Set policy do we need to have server-side customer ids for the investments.",
+            "   *",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Set policy do we need to have server-side customer ids for the investments.\n   *\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRequireSignedAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "bool"
+            },
+            {
+                "name": "signer",
+                "type": "address"
+            }
+        ],
+        "func": "function setRequireSignedAddress(bool value, address signer) public onlyOwner {\n    requiredSignedAddress = value;\n    signerAddress = signer;\n    InvestmentPolicyChanged(requireCustomerId, requiredSignedAddress, signerAddress);\n  }",
+        "comments": [
+            "/**",
+            "   * Set policy if all investors must be cleared on the server side first.",
+            "   *",
+            "   * This is e.g. for the accredited investor clearing.",
+            "   *",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Set policy if all investors must be cleared on the server side first.\n   *\n   * This is e.g. for the accredited investor clearing.\n   *\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setEarlyParticipantWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "name": "status",
+                "type": "bool"
+            }
+        ],
+        "func": "function setEarlyParticipantWhitelist(address addr, bool status) public onlyOwner notFinished stopInEmergency {\n    earlyParticipantWhitelist[addr] = status;\n    Whitelisted(addr, status);\n  }",
+        "comments": [
+            "/**",
+            "   * Allow addresses to do early participation.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Allow addresses to do early participation.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getState",
+        "visibility": "public",
+        "args": [],
+        "func": "function getState() public view returns (State) {\n    if (finalized) return State.Finalized;\n    else if (!configured) return State.PendingConfiguration;\n    else if (now < startsAt) return State.PreFunding;\n    else if (now <= endsAt && !isCrowdsaleFull()) return State.Funding;\n    else return State.Success;\n  }",
+        "comments": [
+            "/**",
+            "   * Crowdfund state machine management.",
+            "   *",
+            "   * This function has the timed transition builtin.",
+            "   * So there is no chance of the variable being stale.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Crowdfund state machine management.\n   *\n   * This function has the timed transition builtin.\n   * So there is no chance of the variable being stale.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "DeploymentInfo",
+        "visibility": "public",
+        "args": [],
+        "func": "function DeploymentInfo() public {\n    deployed_on = block.number;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDeploymentBlock",
+        "visibility": "public",
+        "args": [],
+        "func": "function getDeploymentBlock() public view returns (uint) {\n    return deployed_on;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTranchesLength",
+        "visibility": "public",
+        "args": [],
+        "func": "function getTranchesLength() public view returns (uint) {\n    return tranches.length;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "configurationCrowdsale",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "team_multisig",
+                "type": "address"
+            },
+            {
+                "name": "start",
+                "type": "uint"
+            },
+            {
+                "name": "end",
+                "type": "uint"
+            },
+            {
+                "name": "token_retriever",
+                "type": "address"
+            },
+            {
+                "name": "init_tranches",
+                "type": "uint[]"
+            },
+            {
+                "name": "multisig_supply",
+                "type": "uint"
+            },
+            {
+                "name": "crowdsale_supply",
+                "type": "uint"
+            },
+            {
+                "name": "token_decimals",
+                "type": "uint8"
+            },
+            {
+                "name": "max_tokens_to_sell",
+                "type": "uint"
+            }
+        ],
+        "func": "function configurationCrowdsale(address team_multisig, uint start, uint end, address token_retriever, uint[] init_tranches, uint multisig_supply, uint crowdsale_supply, uint8 token_decimals, uint max_tokens_to_sell) public onlyOwner {\n\n      \n      initial_tokens = multisig_supply;  \n      token = new CrowdsaleToken(multisig_supply, token_decimals, team_multisig, token_retriever);\n      // Necessary if assignTokens mints\n      token.setMintAgent(address(this), true);\n      // Necessary if finalize is overriden to release the tokens for public trading.\n      token.setReleaseAgent(address(this));\n      // Necessary for the execution of buy function and of the subsequent CrowdsaleToken's transfer function. \n      token.setTransferAgent(address(this), true);\n      // Crowdsale mints to himself the initial supply\n      token.mint(address(this), crowdsale_supply);\n\n      sellable_tokens = max_tokens_to_sell;\n\n      // Configuration functionality for GenericCrowdsale.\n      configurationGenericCrowdsale(team_multisig, start, end);\n\n      // Configuration functionality for TokenTranchePricing.\n      configurationTokenTranchePricing(init_tranches);\n  }",
+        "comments": [
+            "/*",
+            "   * The constructor for the crowdsale was removed given it didn't receive any arguments nor had any body.",
+            "   *",
+            "   * The configuration from the constructor was moved to the configurationCrowdsale function which creates the token contract and also calls the configuration functions from GenericCrowdsale and TokenTranchePricing.",
+            "   * ",
+            "   *",
+            "   * @param team_multisig Address of the multisignature wallet of the team that will receive all the funds contributed in the crowdsale.",
+            "   * @param start Timestamp where the crowdsale will be officially started. It should be greater than the timestamp in which the contract is deployed.",
+            "   * @param end Timestamp where the crowdsale finishes. No tokens can be sold through this contract after this timestamp.",
+            "   * @param token_retriever Address that will handle tokens accidentally sent to the token contract. See the LostAndFoundToken and CrowdsaleToken contracts for further details.",
+            "   */",
+            ""
+        ],
+        "comt": "/*\n   * The constructor for the crowdsale was removed given it didn't receive any arguments nor had any body.\n   *\n   * The configuration from the constructor was moved to the configurationCrowdsale function which creates the token contract and also calls the configuration functions from GenericCrowdsale and TokenTranchePricing.\n   * \n   *\n   * @param team_multisig Address of the multisignature wallet of the team that will receive all the funds contributed in the crowdsale.\n   * @param start Timestamp where the crowdsale will be officially started. It should be greater than the timestamp in which the contract is deployed.\n   * @param end Timestamp where the crowdsale finishes. No tokens can be sold through this contract after this timestamp.\n   * @param token_retriever Address that will handle tokens accidentally sent to the token contract. See the LostAndFoundToken and CrowdsaleToken contracts for further details.\n   */\n",
+        "@param1": "team_multisig Address of the multisignature wallet of the team that will receive all the funds contributed in the crowdsale.",
+        "@param2": "start Timestamp where the crowdsale will be officially started. It should be greater than the timestamp in which the contract is deployed.",
+        "@param3": "end Timestamp where the crowdsale finishes. No tokens can be sold through this contract after this timestamp.",
+        "@param4": "token_retriever Address that will handle tokens accidentally sent to the token contract. See the LostAndFoundToken and CrowdsaleToken contracts for further details.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finalize",
+        "visibility": "public",
+        "args": [],
+        "func": "function finalize() public inState(State.Success) onlyOwner stopInEmergency {\n    //Tokens sold + bounties represent 75% of the total, the other 25% goes ti the multisig to the partners and to regulate market \n    uint sold = tokensSold.add(  initial_tokens);\n    uint toShare = sold.mul(25).div(75).mul(10**uint(token.decimals()));\n    token.setMintAgent(address(this), true);\n    token.mint(multisigWallet, toShare);\n    token.setMintAgent(address(this), false);\n    token.releaseTokenTransfer();\n    token.burn(token.balanceOf(address(this)));\n    super.finalize();\n  }",
+        "comments": [
+            "/**",
+            "   * Finalize a successful crowdsale.",
+            "   *",
+            "   * The owner can trigger post-crowdsale actions, like releasing the tokens.",
+            "   * Note that by default tokens are not in a released state.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Finalize a successful crowdsale.\n   *\n   * The owner can trigger post-crowdsale actions, like releasing the tokens.\n   * Note that by default tokens are not in a released state.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setStartingTime",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "startingTime",
+                "type": "uint"
+            }
+        ],
+        "func": "function setStartingTime(uint startingTime) public onlyOwner inState(State.PreFunding) {\n      require(startingTime > now && startingTime < endsAt);\n      startsAt = startingTime;\n  }",
+        "comments": [
+            "",
+            "  // These two setters are present only to correct timestamps if they are off from their target date by more than, say, a day",
+            "  "
+        ],
+        "comt": "\n  // These two setters are present only to correct timestamps if they are off from their target date by more than, say, a day\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setEndingTime",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "endingTime",
+                "type": "uint"
+            }
+        ],
+        "func": "function setEndingTime(uint endingTime) public onlyOwner notFinished {\n       require(endingTime > now && endingTime > startsAt);\n       endsAt = endingTime;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateEursPerEth ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "milieurs_amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function updateEursPerEth (uint milieurs_amount) public onlyOwner {\n    require(milieurs_amount >= 100);\n    milieurs_per_eth = milieurs_amount;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

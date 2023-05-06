@@ -1,0 +1,1692 @@
+[
+    {
+        "transactions": 1071,
+        "function_num": 71
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balance",
+        "visibility": "public",
+        "args": [],
+        "func": "function balance() public view returns (uint256) {\n        return rewardToken.balanceOf(address(this));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calculateReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function calculateReward() public view returns (uint256) {\n        uint256 timeElapsed = block.timestamp.sub(roverStart);\n        if (timeElapsed > vestingTime) timeElapsed = vestingTime;\n        uint256 maxClaimable = totalTokensReceived.mul(timeElapsed).div(vestingTime);\n        return maxClaimable.sub(totalTokensWithdrawn);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rugPull",
+        "visibility": "public",
+        "args": [],
+        "func": "function rugPull() public virtual updateBalance {\n        require(roverStart != 0, \"Rover is not initialized\");\n\n        // Calculate how much reward can be swapped\n        uint256 availableReward = calculateReward();\n\n        // Record that the tokens are being withdrawn\n        totalTokensWithdrawn = totalTokensWithdrawn.add(availableReward);\n        // Swap for BASED\n        (bool success, bytes memory result) = swapModule.delegatecall(\n            abi.encodeWithSignature(\n                \"swapReward(uint256,address,address[])\",\n                availableReward,\n                address(this),\n                path\n            )\n        );\n        require(success, \"SwapModule: Swap failed\");\n        uint256 basedReward = abi.decode(result, (uint256));\n\n        // Split the reward between the caller and the moonbase contract\n        uint256 callerReward = basedReward.div(100);\n        uint256 moonbaseReward = basedReward.sub(callerReward);\n\n        // Reward the caller\n        based.transfer(msg.sender, callerReward);\n        // Send to MoonBase\n        based.transfer(basedGod.moonbase(), moonbaseReward);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMarsColony",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_marsColony",
+                "type": "address"
+            }
+        ],
+        "func": "function setMarsColony(address _marsColony) public onlyBasedDeployer {\n        marsColony = _marsColony;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "migrateRoverBalanceToMarsColonyV1_69",
+        "visibility": "external",
+        "args": [],
+        "func": "function migrateRoverBalanceToMarsColonyV1_69() external onlyMarsColony updateBalance {\n        require(migrationCompleted == false, \"Migration completed\");\n\n        IERC20 moonbase = IERC20(basedGod.moonbase());\n        uint256 marsColonyShare = moonbase.balanceOf(msg.sender);\n        uint256 totalSupply = moonbase.totalSupply();\n        // withdraw amount is proportional to total supply share of mbBASED of msg.sender\n        uint256 amountToMigrate =\n            rewardToken.balanceOf(address(this)).mul(marsColonyShare).div(totalSupply);\n\n        rewardToken.transfer(msg.sender, amountToMigrate);\n        migrationCompleted = true;\n\n        // update rewards\n        totalTokensReceived = totalTokensReceived.sub(amountToMigrate);\n    }",
+        "comments": [
+            "",
+            "    // WARNING: Alpha leak!",
+            "    "
+        ],
+        "comt": "\n    // WARNING: Alpha leak!\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "startRover",
+        "visibility": "public",
+        "args": [],
+        "func": "function startRover() public onlyOwner {\n        init();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the name of the token.\n     */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the symbol of the token, usually a shorter version of the",
+            "     * name.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the symbol of the token, usually a shorter version of the\n     * name.\n     */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of decimals used to get its user representation.",
+            "     * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "     * be displayed to a user as `5,05` (`505 / 10 ** 2`).",
+            "     *",
+            "     * Tokens usually opt for a value of 18, imitating the relationship between",
+            "     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is",
+            "     * called.",
+            "     *",
+            "     * NOTE: This information is only used for _display_ purposes: it in",
+            "     * no way affects any of the arithmetic of the contract, including",
+            "     * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of decimals used to get its user representation.\n     * For example, if `decimals` equals `2`, a balance of `505` tokens should\n     * be displayed to a user as `5,05` (`505 / 10 ** 2`).\n     *\n     * Tokens usually opt for a value of 18, imitating the relationship between\n     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is\n     * called.\n     *\n     * NOTE: This information is only used for _display_ purposes: it in\n     * no way affects any of the arithmetic of the contract, including\n     * {IERC20-balanceOf} and {IERC20-transfer}.\n     */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5,05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is * called. * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}.\n     */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address sender, address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, \"ERC20: transfer amount exceeds allowance\"));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20};",
+            "     *",
+            "     * Requirements:",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20};\n     *\n     * Requirements:\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}; * * Requirements: * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, \"ERC20: decreased allowance below zero\"));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [],
+        "func": "function earned() public view returns (uint256){\n        return rewardPool.earned(address(this));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "startRover",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_rewardPool",
+                "type": "address"
+            }
+        ],
+        "func": "function startRover(address _rewardPool)\n        public\n        onlyOwner\n    {\n        init();\n\n        this.approve(_rewardPool, 1);\n        rewardPool = IPool(_rewardPool);\n        rewardPool.stake(1);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rugPull",
+        "visibility": "public",
+        "args": [],
+        "func": "function rugPull() public override nonReentrant {\n        claimReward();\n\n        // this couses reentracy\n        super.rugPull();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRovers",
+        "visibility": "public",
+        "args": [],
+        "func": "function getRovers() public view returns (address[] memory) {\n        address[] memory legacyRovers = IBasedGod(basedGodV1).getRovers();\n        return legacyRovers.length == 0 ? rovers : concatArrays(legacyRovers, rovers);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTokenRovers",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "func": "function getTokenRovers(address token) public view returns (address[] memory) {\n        address[] memory legacyRovers = IBasedGod(basedGodV1).getTokenRovers(token);\n        return legacyRovers.length == 0 ? tokenRover[token] : concatArrays(legacyRovers, tokenRover[token]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createNewRoverVault",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_rewardToken",
+                "type": "address"
+            },
+            {
+                "name": "_pair",
+                "type": "string calldata"
+            },
+            {
+                "name": "_swapModule",
+                "type": "address"
+            }
+        ],
+        "func": "function createNewRoverVault(address _rewardToken, string calldata _pair, address _swapModule) external returns (RoverVault rover) {\n        rover = new RoverVault(_rewardToken, _pair, _swapModule);\n        rover.transferOwnership(msg.sender);\n        _saveRover(_rewardToken, address(rover));\n    }",
+        "comments": [
+            "",
+            "    /// @dev Use this Rover if you want to depoit tokens directly to Rover contract and you don't need to farm",
+            "    /// @param _rewardToken address of the reward token",
+            "    /// @param _pair through which pair do you want to sell reward tokens, either \"sUSD\" or \"WETH\"",
+            "    /// @param _swapModule contract address with swap implementation",
+            "    "
+        ],
+        "comt": "\n    /// @dev Use this Rover if you want to depoit tokens directly to Rover contract and you don't need to farm\n    /// @param _rewardToken address of the reward token\n    /// @param _pair through which pair do you want to sell reward tokens, either \"sUSD\" or \"WETH\"\n    /// @param _swapModule contract address with swap implementation\n    ",
+        "@dev": "Use this Rover if you want to depoit tokens directly to Rover contract and you don't need to farm",
+        "@param1": "_rewardToken address of the reward token",
+        "@param2": "_pair through which pair do you want to sell reward tokens, either \"sUSD\" or \"WETH\"",
+        "@param3": "_swapModule contract address with swap implementation",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createNewFarmingRover",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_rewardToken",
+                "type": "address"
+            },
+            {
+                "name": "_pair",
+                "type": "string calldata"
+            },
+            {
+                "name": "_swapModule",
+                "type": "address"
+            }
+        ],
+        "func": "function createNewFarmingRover(address _rewardToken, string calldata _pair, address _swapModule) external returns (FarmingRover rover) {\n        rover = new FarmingRover(_rewardToken, _pair, _swapModule);\n        rover.transferOwnership(msg.sender);\n        _saveRover(_rewardToken, address(rover));\n    }",
+        "comments": [
+            "",
+            "    /// @dev Use this Rover if you have a reward pool and you want the Rover to farm it",
+            "    /// @param _rewardToken address of the reward token",
+            "    /// @param _pair either \"sUSD\" or \"WETH\"",
+            "    /// @param _swapModule contract address with swap implementation",
+            "    "
+        ],
+        "comt": "\n    /// @dev Use this Rover if you have a reward pool and you want the Rover to farm it\n    /// @param _rewardToken address of the reward token\n    /// @param _pair either \"sUSD\" or \"WETH\"\n    /// @param _swapModule contract address with swap implementation\n    ",
+        "@dev": "Use this Rover if you have a reward pool and you want the Rover to farm it",
+        "@param1": "_rewardToken address of the reward token",
+        "@param2": "_pair either \"sUSD\" or \"WETH\"",
+        "@param3": "_swapModule contract address with swap implementation",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createNewFarmingRoverAndPool",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_rewardToken",
+                "type": "address"
+            },
+            {
+                "name": "_distributor",
+                "type": "address"
+            },
+            {
+                "name": "_pair",
+                "type": "string calldata"
+            },
+            {
+                "name": "_swapModule",
+                "type": "address"
+            },
+            {
+                "name": "_duration",
+                "type": "uint256"
+            }
+        ],
+        "func": "function createNewFarmingRoverAndPool(\n        address _rewardToken,\n        address _distributor,\n        string calldata _pair,\n        address _swapModule,\n        uint256 _duration\n    ) external returns (FarmingRover rover, address rewardsPool) {\n        require(_distributor != address(0), \"someone has to notify of rewards and it ain't us\");\n\n        rover = new FarmingRover(_rewardToken, _pair, _swapModule);\n        _saveRover(_rewardToken, address(rover));\n\n        rewardsPool = IPoolFactory(poolFactory).createNewPool(\n            _rewardToken,\n            address(rover),\n            _duration,\n            _distributor\n        );\n\n        rover.startRover(rewardsPool);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Use this if you want to deploy Farming Rover and Pool at once",
+            "    /// @param _distributor who can notify of rewards",
+            "    /// @param _swapModule contract address with swap implementation",
+            "    "
+        ],
+        "comt": "\n    /// @dev Use this if you want to deploy Farming Rover and Pool at once\n    /// @param _distributor who can notify of rewards\n    /// @param _swapModule contract address with swap implementation\n    ",
+        "@dev": "Use this if you want to deploy Farming Rover and Pool at once",
+        "@param1": "_distributor who can notify of rewards",
+        "@param2": "_swapModule contract address with swap implementation",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "migrateAll",
+        "visibility": "public",
+        "args": [],
+        "func": "function migrateAll() public {\n        address account = msg.sender;\n        uint256 balance = legacyToken.balanceOf(account);\n        uint256 allowance = legacyToken.allowance(account, address(this));\n        uint256 amount = Math.min(balance, allowance);\n        require(amount > 0, \"ERC20Migrator::migrateAll: Approval and balance must be > 0\");\n        migrate(account, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRewardDistribution",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_rewardDistribution",
+                "type": "address"
+            }
+        ],
+        "func": "function setRewardDistribution(address _rewardDistribution)\n        external\n        onlyOwner\n    {\n        rewardDistribution = _rewardDistribution;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.add(amount);\n        _balances[msg.sender] = _balances[msg.sender].add(amount);\n        lpToken.safeTransferFrom(msg.sender, address(this), amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public virtual {\n        _totalSupply = _totalSupply.sub(amount);\n        _balances[msg.sender] = _balances[msg.sender].sub(amount);\n        lpToken.safeTransfer(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTimeRewardApplicable",
+        "visibility": "public",
+        "args": [],
+        "func": "function lastTimeRewardApplicable() public view returns (uint256) {\n        return Math.min(block.timestamp, periodFinish);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardPerToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function rewardPerToken() public view returns (uint256) {\n        if (totalSupply() == 0) {\n            return rewardPerTokenStored;\n        }\n        return\n            rewardPerTokenStored.add(\n                lastTimeRewardApplicable()\n                    .sub(lastUpdateTime)\n                    .mul(rewardRate)\n                    .mul(1e18)\n                    .div(totalSupply())\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function earned(address account) public view returns (uint256) {\n        return\n            balanceOf(account)\n                .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))\n                .div(1e18)\n                .add(rewards[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 amount) public updateReward(msg.sender) override {\n        require(amount > 0, \"Cannot stake 0\");\n        super.stake(amount);\n        emit Staked(msg.sender, amount);\n    }",
+        "comments": [
+            "",
+            "    // stake visibility is public as overriding LPTokenWrapper's stake() function",
+            "    "
+        ],
+        "comt": "\n    // stake visibility is public as overriding LPTokenWrapper's stake() function\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public updateReward(msg.sender) override {\n        require(amount > 0, \"Cannot withdraw 0\");\n        super.withdraw(amount);\n        emit Withdrawn(msg.sender, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exit",
+        "visibility": "external",
+        "args": [],
+        "func": "function exit() external {\n        withdraw(balanceOf(msg.sender));\n        getReward();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function getReward() public updateReward(msg.sender) {\n        uint256 reward = earned(msg.sender);\n        if (reward > 0) {\n            rewards[msg.sender] = 0;\n            rewardToken.safeTransfer(msg.sender, reward);\n            emit RewardPaid(msg.sender, reward);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "notifyRewardAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "func": "function notifyRewardAmount(uint256 reward)\n        external\n        override\n        onlyRewardDistribution\n        updateReward(address(0))\n    {\n        if (block.timestamp >= periodFinish) {\n            rewardRate = reward.div(duration);\n        } else {\n            uint256 remaining = periodFinish.sub(block.timestamp);\n            uint256 leftover = remaining.mul(rewardRate);\n            rewardRate = reward.add(leftover).div(duration);\n        }\n        lastUpdateTime = block.timestamp;\n        periodFinish = block.timestamp.add(duration);\n        emit RewardAdded(reward);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "init",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_moonbaseNFTs",
+                "type": "address"
+            }
+        ],
+        "func": "function init(address _moonbaseNFTs) public onlyOwner {\n        require(address(moonbaseNFTs) == address(0), \"Already initialized\");\n        moonbaseNFTs = IMoonbaseTheGame(_moonbaseNFTs);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_addresses",
+                "type": "address[] memory"
+            }
+        ],
+        "func": "function setAddresses(address[] memory _addresses) public onlyOwner {\n        for (uint i = 0; i < _addresses.length; i++) {\n            nftPerAddress[_addresses[i]] = maxClaimable;\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimMoonbaseNFT",
+        "visibility": "public",
+        "args": [],
+        "func": "function claimMoonbaseNFT() public {\n        require(nftPerAddress[msg.sender] > 0, \"You got all your NFTs already\");\n\n        string memory ipfsHash = getRandomNFT(msg.sender);\n        moonbaseNFTs.mint(msg.sender, nftIdCounter, ipfsHash);\n        nftIdCounter += 1;\n        nftPerAddress[msg.sender] = nftPerAddress[msg.sender].sub(1);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view override returns (bool) {\n        return _supportedInterfaces[interfaceId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     *",
+            "     * Time complexity O(1), guaranteed to always use less than 30 000 gas.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     *\n     * Time complexity O(1), guaranteed to always use less than 30 000 gas.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}. * * Time complexity O(1), guaranteed to always use less than 30 000 gas.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view override returns (uint256) {\n        require(owner != address(0), \"ERC721: balance query for the zero address\");\n\n        return _holderTokens[owner].length();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-balanceOf}.\n     */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view override returns (address) {\n        return _tokenOwners.get(tokenId, \"ERC721: owner query for nonexistent token\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-ownerOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-ownerOf}.\n     */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-name}.\n     */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-symbol}.\n     */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view override returns (string memory) {\n        require(_exists(tokenId), \"ERC721Metadata: URI query for nonexistent token\");\n\n        string memory _tokenURI = _tokenURIs[tokenId];\n\n        // If there is no base URI, return the token URI.\n        if (bytes(_baseURI).length == 0) {\n            return _tokenURI;\n        }\n        // If both are set, concatenate the baseURI and tokenURI (via abi.encodePacked).\n        if (bytes(_tokenURI).length > 0) {\n            return string(abi.encodePacked(_baseURI, _tokenURI));\n        }\n        // If there is a baseURI but no tokenURI, concatenate the tokenID to the baseURI.\n        return string(abi.encodePacked(_baseURI, tokenId.toString()));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-tokenURI}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-tokenURI}.\n     */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "baseURI",
+        "visibility": "public",
+        "args": [],
+        "func": "function baseURI() public view returns (string memory) {\n        return _baseURI;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Returns the base URI set via {_setBaseURI}. This will be",
+            "    * automatically added as a prefix in {tokenURI} to each token's URI, or",
+            "    * to the token ID if no specific URI is set for that token ID.",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Returns the base URI set via {_setBaseURI}. This will be\n    * automatically added as a prefix in {tokenURI} to each token's URI, or\n    * to the token ID if no specific URI is set for that token ID.\n    */\n",
+        "@dev": "Returns the base URI set via {_setBaseURI}. This will be * automatically added as a prefix in {tokenURI} to each token's URI, or * to the token ID if no specific URI is set for that token ID.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenOfOwnerByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenOfOwnerByIndex(address owner, uint256 index) public view override returns (uint256) {\n        return _holderTokens[owner].at(index);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n        // _tokenOwners are indexed by tokenIds, so .length() returns the number of tokenIds\n        return _tokenOwners.length();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-totalSupply}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenByIndex(uint256 index) public view override returns (uint256) {\n        (uint256 tokenId, ) = _tokenOwners.at(index);\n        return tokenId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenByIndex}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenByIndex}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ownerOf(tokenId);\n        require(to != owner, \"ERC721: approval to current owner\");\n\n        require(_msgSender() == owner || isApprovedForAll(owner, _msgSender()),\n            \"ERC721: approve caller is not owner nor approved for all\"\n        );\n\n        _approve(to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-approve}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-approve}.\n     */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view override returns (address) {\n        require(_exists(tokenId), \"ERC721: approved query for nonexistent token\");\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-getApproved}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-getApproved}.\n     */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        require(operator != _msgSender(), \"ERC721: approve to caller\");\n\n        _operatorApprovals[_msgSender()][operator] = approved;\n        emit ApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view override returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint256 tokenId) public virtual override {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n\n        _transfer(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-transferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-transferFrom}.\n     */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(address from, address to, uint256 tokenId) public virtual override {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public virtual override {\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n        _safeTransfer(from, to, tokenId, _data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_tokenURI",
+                "type": "string memory"
+            }
+        ],
+        "func": "function mint(address to, uint256 tokenId, string memory _tokenURI) public onlyOwner {\n        _mint(to, tokenId);\n        _setTokenURI(tokenId, _tokenURI);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateBeforeRebase",
+        "visibility": "public",
+        "args": [],
+        "func": "function updateBeforeRebase() public onlyOwner {\n        update();\n    }",
+        "comments": [
+            "",
+            "    // this must be called 24h before first rebase to get proper price",
+            "    "
+        ],
+        "comt": "\n    // this must be called 24h before first rebase to get proper price\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getData",
+        "visibility": "external",
+        "args": [],
+        "func": "function getData() override external returns (uint256, bool) {\n        require(msg.sender == UFragmentsI(based).monetaryPolicy());\n        update();\n        uint256 price = consult(based, SCALE); // will return 1 BASED in sUSD\n\n        if (price == 0) {\n            return (0, false);\n        }\n\n        return (price, true);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createNewPool",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_rewardToken",
+                "type": "address"
+            },
+            {
+                "name": "_rover",
+                "type": "address"
+            },
+            {
+                "name": "_duration",
+                "type": "uint256"
+            },
+            {
+                "name": "_distributor",
+                "type": "address"
+            }
+        ],
+        "func": "function createNewPool(\n        address _rewardToken,\n        address _rover,\n        uint256 _duration,\n        address _distributor\n    ) external returns (address) {\n        _distributor = (_distributor != address(0)) ? _distributor : msg.sender;\n\n        NoMintRewardPool rewardsPool = new NoMintRewardPool(\n            _rewardToken,\n            _rover,\n            _duration,\n            _distributor  // who can notify of rewards\n        );\n\n        return address(rewardsPool);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPaths",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "path",
+                "type": "address[] memory"
+            }
+        ],
+        "func": "function getPaths(address[] memory path) public pure returns (address[] memory, address[] memory) {\n        address[] memory sakePath = new address[](2);\n        address[] memory uniswapPath = new address[](2);\n        sakePath[0] = path[0];\n        sakePath[1] = path[1];\n        uniswapPath[0] = path[1];\n        uniswapPath[1] = path[2];\n        return (sakePath, uniswapPath);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAmountsOut",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amountIn",
+                "type": "uint"
+            },
+            {
+                "name": "path",
+                "type": "address[] calldata"
+            }
+        ],
+        "func": "function getAmountsOut(uint amountIn, address[] calldata path) external view returns (uint256[] memory) {\n        (address[] memory sakePath, address[] memory uniswapPath) = getPaths(path);\n        uint256[] memory amounts = new uint256[](2);\n        uint256[] memory sakeAmounts = ISakeSwapRouter(sakeSwapRouter).getAmountsOut(amountIn, sakePath);\n        amounts[0] = sakeAmounts[sakeAmounts.length - 1];\n        uint256[] memory uniswapAmounts = IUniswapV2Router02(uniswapRouter).getAmountsOut(amounts[0], uniswapPath);\n        amounts[1] = uniswapAmounts[uniswapAmounts.length - 1];\n        return amounts;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "swapReward",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "path",
+                "type": "address[] memory"
+            }
+        ],
+        "func": "function swapReward(uint256 amountIn, address receiver, address[] memory path) public returns (uint256){\n        (address[] memory sakePath, address[] memory uniswapPath) = getPaths(path);\n\n        IERC20(path[0]).safeApprove(sakeSwapRouter, 0);\n        IERC20(path[0]).safeApprove(sakeSwapRouter, amountIn);\n        uint256 amountOutMin = 1;\n        uint256[] memory amounts =\n            ISakeSwapRouter(sakeSwapRouter).swapExactTokensForTokens(\n                amountIn,\n                amountOutMin,\n                sakePath,\n                receiver,\n                block.timestamp,\n                false\n            );\n        amountIn = amounts[amounts.length - 1];\n\n        IERC20(path[1]).safeApprove(uniswapRouter, 0);\n        IERC20(path[1]).safeApprove(uniswapRouter, amountIn);\n        amounts =\n            IUniswapV2Router02(uniswapRouter).swapExactTokensForTokens(\n                amountIn,\n                amountOutMin,\n                uniswapPath,\n                receiver,\n                block.timestamp\n            );\n        return amounts[amounts.length - 1];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAmountsOut",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amountIn",
+                "type": "uint"
+            },
+            {
+                "name": "path",
+                "type": "address[] calldata"
+            }
+        ],
+        "func": "function getAmountsOut(uint amountIn, address[] calldata path) external view returns (uint[] memory) {\n        return IUniswapV2Router02(uniswapRouter).getAmountsOut(amountIn, path);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "swapReward",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "path",
+                "type": "address[] memory"
+            }
+        ],
+        "func": "function swapReward(uint256 amountIn, address receiver, address[] memory path) public returns (uint256){\n        // ensure we have no over-approval\n        IERC20(path[0]).safeApprove(uniswapRouter, 0);\n        IERC20(path[0]).safeApprove(uniswapRouter, amountIn);\n        uint256 amountOutMin = 1;\n        uint256[] memory amounts =\n            IUniswapV2Router02(uniswapRouter).swapExactTokensForTokens(\n                amountIn,\n                amountOutMin,\n                path,\n                receiver,\n                block.timestamp\n            );\n        return amounts[amounts.length - 1];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

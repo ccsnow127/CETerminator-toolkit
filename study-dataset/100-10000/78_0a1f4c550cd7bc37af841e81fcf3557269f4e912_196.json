@@ -1,0 +1,1813 @@
+[
+    {
+        "transactions": 196,
+        "function_num": 78
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId)\n        external\n        view\n        virtual\n        override\n        returns (bool)\n    {\n        return _supportedInterfaces[interfaceId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See `IERC165.supportsInterface`.",
+            "     *",
+            "     * Time complexity O(1), guaranteed to always use less than 30 000 gas.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See `IERC165.supportsInterface`.\n     *\n     * Time complexity O(1), guaranteed to always use less than 30 000 gas.\n     */\n",
+        "@dev": "See `IERC165.supportsInterface`. * * Time complexity O(1), guaranteed to always use less than 30 000 gas.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n        return currentIndex - burnedTokens.length;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-totalSupply}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId)\n        public\n        view\n        virtual\n        override(ERC165, IERC165)\n        returns (bool)\n    {\n        return\n            interfaceId == type(IERC721).interfaceId ||\n            interfaceId == type(IERC721Metadata).interfaceId ||\n            interfaceId == type(IERC165).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view override returns (uint256) {\n        if (owner == address(0)) revert BalanceQueryForZeroAddress();\n        return uint256(_addressData[owner].balance);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-balanceOf}.\n     */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view override returns (address) {\n        return ownershipOf(tokenId).addr;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-ownerOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-ownerOf}.\n     */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isBurned",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function isBurned(uint256 tokenId) public view returns (bool) {\n        return _ownerships[tokenId].burned;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Added by @dotjiwa to track burned tokens.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Added by @dotjiwa to track burned tokens.\n     */\n",
+        "@dev": "Added by @dotjiwa to track burned tokens.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBurnedTokens",
+        "visibility": "public",
+        "args": [],
+        "func": "function getBurnedTokens() public view returns (uint256[] memory) {\n        return burnedTokens;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-name}.\n     */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-symbol}.\n     */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId)\n        public\n        view\n        virtual\n        override\n        returns (string memory)\n    {\n        if (!_exists(tokenId)) revert URIQueryForNonexistentToken();\n\n        string memory baseURI = _baseURI();\n        return\n            bytes(baseURI).length != 0\n                ? string(abi.encodePacked(baseURI, tokenId.toString()))\n                : \"\";\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-tokenURI}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-tokenURI}.\n     */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public override {\n        address owner = ERC721A.ownerOf(tokenId);\n        if (to == owner) revert ApprovalToCurrentOwner();\n\n        if (_msgSender() != owner && !isApprovedForAll(owner, _msgSender()))\n            revert ApprovalCallerNotOwnerNorApproved();\n\n        _approve(to, tokenId, owner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-approve}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-approve}.\n     */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId)\n        public\n        view\n        override\n        returns (address)\n    {\n        if (!_exists(tokenId)) revert ApprovalQueryForNonexistentToken();\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-getApproved}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-getApproved}.\n     */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved)\n        public\n        override\n    {\n        if (operator == _msgSender()) revert ApproveToCaller();\n\n        _operatorApprovals[_msgSender()][operator] = approved;\n        emit ApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator)\n        public\n        view\n        virtual\n        override\n        returns (bool)\n    {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        _transfer(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-transferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-transferFrom}.\n     */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId,\n        bytes memory _data\n    ) public override {\n        _transfer(from, to, tokenId);\n        if (!_checkOnERC721Received(from, to, tokenId, _data))\n            revert TransferToNonERC721ReceiverImplementer();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId)\n        public\n        view\n        virtual\n        override(ERC721A)\n        returns (bool)\n    {\n        return\n            interfaceId == type(IERC721).interfaceId ||\n            ERC721A.supportsInterface(interfaceId) ||\n            interfaceId == type(IERC721Metadata).interfaceId ||\n            interfaceId == type(IERC721Enumerable).interfaceId ||\n            interfaceId == _INTERFACE_ID_ROYALTIES_CREATORCORE ||\n            interfaceId == _INTERFACE_ID_ROYALTIES_EIP2981 ||\n            interfaceId == _INTERFACE_ID_ROYALTIES_RARIBLE;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "_by",
+                "type": "address"
+            }
+        ],
+        "func": "function mint(\n        address _to,\n        uint256 _projectId,\n        uint256 quantity,\n        address _by\n    ) external returns (uint256 _tokenId) {\n        require(\n            isMintRainbowlisted[msg.sender],\n            \"Must mint from Rainbowlisted minter\"\n        );\n        require(\n            projects[_projectId].invocations + quantity <=\n                projects[_projectId].maxInvocations,\n            \"Exceeds max invocations\"\n        );\n        require(\n            projects[_projectId].active ||\n                _by == projectIdToArtistAddress[_projectId],\n            \"Proj must exist and be active\"\n        );\n        require(\n            !projects[_projectId].paused ||\n                _by == projectIdToArtistAddress[_projectId],\n            \"Purchases are paused\"\n        );\n\n        uint256 tokenId = _mintTokens(_to, _projectId, quantity);\n\n        return tokenId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "ownerAddress",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(address ownerAddress, uint256 tokenId)\n        external\n        returns (uint256 _tokenId)\n    {\n        require(\n            isMintRainbowlisted[msg.sender],\n            \"Must burn from Rainbowlisted minter\"\n        );\n        _burn(tokenId);\n        emit TokenBurned(ownerAddress, tokenId);\n        return tokenId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateNtentAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_ntentAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function updateNtentAddress(address _ntentAddress) public onlyAdmin {\n        ntentAddress = _ntentAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateNtentPercentage",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_ntentPercentage",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateNtentPercentage(uint256 _ntentPercentage) public onlyAdmin {\n        require(_ntentPercentage <= 50, \"Max of 50%\");\n        ntentPercentage = _ntentPercentage;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addRainbowlisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function addRainbowlisted(address _address) public onlyAdmin {\n        isRainbowlisted[_address] = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeRainbowlisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function removeRainbowlisted(address _address) public onlyAdmin {\n        isRainbowlisted[_address] = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addMintRainbowlisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function addMintRainbowlisted(address _address) public onlyAdmin {\n        isMintRainbowlisted[_address] = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeMintRainbowlisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function removeMintRainbowlisted(address _address) public onlyAdmin {\n        isMintRainbowlisted[_address] = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPricePerTokenInWei",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getPricePerTokenInWei(uint256 _projectId)\n        public\n        view\n        returns (uint256 price)\n    {\n        return projectIdToPricePerTokenInWei[_projectId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectIsLocked",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectIsLocked(uint256 _projectId)\n        public\n        onlyRainbowlisted\n        onlyUnlocked(_projectId)\n    {\n        projects[_projectId].locked = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectIsActive",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectIsActive(uint256 _projectId)\n        public\n        onlyRainbowlisted\n    {\n        projects[_projectId].active = !projects[_projectId].active;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectArtistAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_artistAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function updateProjectArtistAddress(\n        uint256 _projectId,\n        address _artistAddress\n    ) public onlyArtistOrRainbowlisted(_projectId) {\n        projectIdToArtistAddress[_projectId] = _artistAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectIsPaused",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectIsPaused(uint256 _projectId)\n        public\n        onlyArtistOrRainbowlisted(_projectId)\n    {\n        projects[_projectId].paused = !projects[_projectId].paused;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addProject",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectName",
+                "type": "string memory"
+            },
+            {
+                "name": "_artistAddress",
+                "type": "address"
+            },
+            {
+                "name": "_pricePerTokenInWei",
+                "type": "uint256"
+            },
+            {
+                "name": "_purchaseContract",
+                "type": "address"
+            },
+            {
+                "name": "_acceptsMintPass",
+                "type": "bool"
+            },
+            {
+                "name": "_mintPassProjectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_dynamic",
+                "type": "bool"
+            }
+        ],
+        "func": "function addProject(\n        string memory _projectName,\n        address _artistAddress,\n        uint256 _pricePerTokenInWei,\n        address _purchaseContract,\n        bool _acceptsMintPass,\n        uint256 _mintPassProjectId,\n        bool _dynamic\n    ) public onlyRainbowlisted {\n        uint256 projectId = nextProjectId;\n        projectIdToArtistAddress[projectId] = _artistAddress;\n        projects[projectId].name = _projectName;\n        projects[projectId].purchaseContract = _purchaseContract;\n        projects[projectId].acceptsMintPass = _acceptsMintPass;\n        projects[projectId].mintPassProjectId = _mintPassProjectId;\n        projectIdToPricePerTokenInWei[projectId] = _pricePerTokenInWei;\n        projects[projectId].paused = true;\n        projects[projectId].dynamic = _dynamic;\n        projects[projectId].maxInvocations = ONE_MILLION;\n        if (!_dynamic) {\n            projects[projectId].useHashString = false;\n        } else {\n            projects[projectId].useHashString = true;\n        }\n        nextProjectId = nextProjectId + 1;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectPricePerTokenInWei",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_pricePerTokenInWei",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateProjectPricePerTokenInWei(\n        uint256 _projectId,\n        uint256 _pricePerTokenInWei\n    ) public onlyArtist(_projectId) {\n        projectIdToPricePerTokenInWei[_projectId] = _pricePerTokenInWei;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectName",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectName",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectName(uint256 _projectId, string memory _projectName)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrRainbowlisted(_projectId)\n    {\n        projects[_projectId].name = _projectName;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectArtistName",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectArtistName",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectArtistName(\n        uint256 _projectId,\n        string memory _projectArtistName\n    ) public onlyUnlocked(_projectId) onlyArtistOrRainbowlisted(_projectId) {\n        projects[_projectId].artist = _projectArtistName;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectPurchaseContractInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectPurchaseContract",
+                "type": "address"
+            },
+            {
+                "name": "_acceptsMintPass",
+                "type": "bool"
+            },
+            {
+                "name": "_mintPassProjectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateProjectPurchaseContractInfo(\n        uint256 _projectId,\n        address _projectPurchaseContract,\n        bool _acceptsMintPass,\n        uint256 _mintPassProjectId\n    ) public onlyUnlocked(_projectId) onlyRainbowlisted {\n        projects[_projectId].purchaseContract = _projectPurchaseContract;\n        projects[_projectId].acceptsMintPass = _acceptsMintPass;\n        projects[_projectId].mintPassProjectId = _mintPassProjectId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectDataContractInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectDataContract",
+                "type": "address"
+            }
+        ],
+        "func": "function updateProjectDataContractInfo(\n        uint256 _projectId,\n        address _projectDataContract\n    ) public onlyUnlocked(_projectId) onlyRainbowlisted {\n        projects[_projectId].dataContract = _projectDataContract;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateTransferContractInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectTransferContract",
+                "type": "address"
+            }
+        ],
+        "func": "function updateTransferContractInfo(\n        uint256 _projectId,\n        address _projectTransferContract\n    ) public onlyUnlocked(_projectId) onlyRainbowlisted {\n        projects[_projectId].transferContract = _projectTransferContract;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectTokenUriContractInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectTokenUriContract",
+                "type": "address"
+            }
+        ],
+        "func": "function updateProjectTokenUriContractInfo(\n        uint256 _projectId,\n        address _projectTokenUriContract\n    ) public onlyUnlocked(_projectId) onlyRainbowlisted {\n        projects[_projectId].tokenUriContract = _projectTokenUriContract;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectDescription",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectDescription",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectDescription(\n        uint256 _projectId,\n        string memory _projectDescription\n    ) public onlyArtist(_projectId) {\n        projects[_projectId].description = _projectDescription;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectWebsite",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectWebsite",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectWebsite(\n        uint256 _projectId,\n        string memory _projectWebsite\n    ) public onlyArtist(_projectId) {\n        projects[_projectId].website = _projectWebsite;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectLicense",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectLicense",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectLicense(\n        uint256 _projectId,\n        string memory _projectLicense\n    ) public onlyUnlocked(_projectId) onlyArtistOrRainbowlisted(_projectId) {\n        projects[_projectId].license = _projectLicense;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectMaxInvocations",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_maxInvocations",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateProjectMaxInvocations(\n        uint256 _projectId,\n        uint256 _maxInvocations\n    ) public onlyArtist(_projectId) {\n        require(\n            (!projects[_projectId].locked ||\n                _maxInvocations < projects[_projectId].maxInvocations),\n            \"Only if unlocked\"\n        );\n        require(\n            _maxInvocations > projects[_projectId].invocations,\n            \"Max invocations exceeds current\"\n        );\n        require(_maxInvocations <= ONE_MILLION, \"Cannot exceed 1000000\");\n        projects[_projectId].maxInvocations = _maxInvocations;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectUseHashString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectUseHashString(uint256 _projectId)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrRainbowlisted(_projectId)\n    {\n        require(\n            projects[_projectId].invocations == 0,\n            \"Cannot modify after token is minted.\"\n        );\n        projects[_projectId].useHashString = !projects[_projectId]\n            .useHashString;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addProjectScript",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_script",
+                "type": "string memory"
+            }
+        ],
+        "func": "function addProjectScript(uint256 _projectId, string memory _script)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrRainbowlisted(_projectId)\n    {\n        projects[_projectId].scripts[\n            projects[_projectId].scriptCount\n        ] = _script;\n        projects[_projectId].scriptCount = projects[_projectId].scriptCount + 1;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectScript",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_scriptId",
+                "type": "uint256"
+            },
+            {
+                "name": "_script",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectScript(\n        uint256 _projectId,\n        uint256 _scriptId,\n        string memory _script\n    ) public onlyUnlocked(_projectId) onlyArtistOrRainbowlisted(_projectId) {\n        require(\n            _scriptId < projects[_projectId].scriptCount,\n            \"scriptId out of range\"\n        );\n        projects[_projectId].scripts[_scriptId] = _script;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeProjectLastScript",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function removeProjectLastScript(uint256 _projectId)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrRainbowlisted(_projectId)\n    {\n        require(\n            projects[_projectId].scriptCount > 0,\n            \"there are no scripts to remove\"\n        );\n        delete projects[_projectId].scripts[\n            projects[_projectId].scriptCount - 1\n        ];\n        projects[_projectId].scriptCount = projects[_projectId].scriptCount + 1;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectScriptJSON",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectScriptJSON",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectScriptJSON(\n        uint256 _projectId,\n        string memory _projectScriptJSON\n    ) public onlyUnlocked(_projectId) onlyArtistOrRainbowlisted(_projectId) {\n        projects[_projectId].scriptJSON = _projectScriptJSON;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectIpfsHash",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_ipfsHash",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectIpfsHash(uint256 _projectId, string memory _ipfsHash)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrRainbowlisted(_projectId)\n    {\n        projects[_projectId].ipfsHash = _ipfsHash;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectBaseURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_newBaseURI",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectBaseURI(uint256 _projectId, string memory _newBaseURI)\n        public\n        onlyArtist(_projectId)\n    {\n        projects[_projectId].projectBaseURI = _newBaseURI;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectBaseIpfsURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectBaseIpfsURI",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectBaseIpfsURI(\n        uint256 _projectId,\n        string memory _projectBaseIpfsURI\n    ) public onlyArtist(_projectId) {\n        projects[_projectId].projectBaseIpfsURI = _projectBaseIpfsURI;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectUseIpfsForStatic",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectUseIpfsForStatic(uint256 _projectId)\n        public\n        onlyArtistOrRainbowlisted(_projectId)\n    {\n        require(\n            !projects[_projectId].dynamic,\n            \"can only set static IPFS hash for static projects\"\n        );\n        projects[_projectId].useIpfs = !projects[_projectId].useIpfs;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectIsDynamic",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectIsDynamic(uint256 _projectId)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrRainbowlisted(_projectId)\n    {\n        require(\n            projects[_projectId].invocations == 0,\n            \"Can not switch after a token is minted.\"\n        );\n        if (projects[_projectId].dynamic) {\n            projects[_projectId].useHashString = false;\n        } else {\n            projects[_projectId].useHashString = true;\n        }\n        projects[_projectId].dynamic = !projects[_projectId].dynamic;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "overrideTokenDynamicImageWithIpfsLink",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_ipfsHash",
+                "type": "string memory"
+            }
+        ],
+        "func": "function overrideTokenDynamicImageWithIpfsLink(\n        uint256 _tokenId,\n        string memory _ipfsHash\n    ) public onlyArtistOrRainbowlisted(tokenIdToProjectId(_tokenId)) {\n        staticIpfsImageLink[_tokenId] = _ipfsHash;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "clearTokenIpfsImageUri",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function clearTokenIpfsImageUri(uint256 _tokenId)\n        public\n        onlyArtistOrRainbowlisted(tokenIdToProjectId(_tokenId))\n    {\n        delete staticIpfsImageLink[tokenIdToProjectId(_tokenId)];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectDetails",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectDetails(uint256 _projectId)\n        public\n        view\n        returns (\n            string memory projectName,\n            string memory artist,\n            string memory description,\n            string memory website,\n            string memory license,\n            bool dynamic\n        )\n    {\n        projectName = projects[_projectId].name;\n        artist = projects[_projectId].artist;\n        description = projects[_projectId].description;\n        website = projects[_projectId].website;\n        license = projects[_projectId].license;\n        dynamic = projects[_projectId].dynamic;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectTokenInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectTokenInfo(uint256 _projectId)\n        public\n        view\n        returns (\n            address artistAddress,\n            uint256 pricePerTokenInWei,\n            uint256 invocations,\n            uint256 maxInvocations,\n            bool active,\n            address purchaseContract,\n            address dataContract,\n            address tokenUriContract,\n            address transferContract,\n            bool acceptsMintPass,\n            uint256 mintPassProjectId\n        )\n    {\n        artistAddress = projectIdToArtistAddress[_projectId];\n        pricePerTokenInWei = projectIdToPricePerTokenInWei[_projectId];\n        invocations = projects[_projectId].invocations;\n        maxInvocations = projects[_projectId].maxInvocations;\n        active = projects[_projectId].active;\n        purchaseContract = projects[_projectId].purchaseContract;\n        dataContract = projects[_projectId].dataContract;\n        tokenUriContract = projects[_projectId].tokenUriContract;\n        transferContract = projects[_projectId].transferContract;\n        acceptsMintPass = projects[_projectId].acceptsMintPass;\n        mintPassProjectId = projects[_projectId].mintPassProjectId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectBurnedTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectBurnedTokens(uint256 _projectId)\n        public\n        view\n        returns (uint256[] memory)\n    {\n        uint256 burnedIndex;\n        uint256 burnedTokenId;\n        uint256 projectBurnedCount = projectBurnedTokensCount(_projectId);\n        uint256[] memory burnedTokenIds = new uint256[](projectBurnedCount);\n\n        uint256 burnedTokenLength = burnedTokens.length;\n        for (uint256 i; i < burnedTokenLength; i++) {\n            burnedTokenId = burnedTokens[i];\n            if (tokenIdToProjectId(burnedTokenId) == _projectId) {\n                burnedTokenIds[burnedIndex] = burnedTokenId;\n            }\n        }\n        return burnedTokenIds;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectScriptInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectScriptInfo(uint256 _projectId)\n        public\n        view\n        returns (\n            string memory scriptJSON,\n            uint256 scriptCount,\n            bool useHashString,\n            string memory ipfsHash,\n            bool locked,\n            bool paused\n        )\n    {\n        scriptJSON = projects[_projectId].scriptJSON;\n        scriptCount = projects[_projectId].scriptCount;\n        useHashString = projects[_projectId].useHashString;\n        ipfsHash = projects[_projectId].ipfsHash;\n        locked = projects[_projectId].locked;\n        paused = projects[_projectId].paused;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectScriptByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectScriptByIndex(uint256 _projectId, uint256 _index)\n        public\n        view\n        returns (string memory)\n    {\n        return projects[_projectId].scripts[_index];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectURIInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectURIInfo(uint256 _projectId)\n        public\n        view\n        returns (\n            string memory projectBaseURI,\n            string memory projectBaseIpfsURI,\n            bool useIpfs\n        )\n    {\n        projectBaseURI = projects[_projectId].projectBaseURI;\n        projectBaseIpfsURI = projects[_projectId].projectBaseIpfsURI;\n        useIpfs = projects[_projectId].useIpfs;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address _from,\n        address _to,\n        uint256 _tokenId\n    ) public override {\n        _transfer(_from, _to, _tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "bulkTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_addressList",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "_tokenList",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function bulkTransfer(\n        address[] calldata _addressList,\n        uint256[] calldata _tokenList\n    ) public onlyAdmin {\n        uint256 addressLength = _addressList.length;\n        uint256 tokenLength = _tokenList.length;\n        require(addressLength > 0, \"Address quantity must greater than zero\");\n        require(\n            addressLength == tokenLength,\n            \"Token quantity must equal address quantity\"\n        );\n\n        for (uint256 i; i < addressLength; i++) {\n            address _toAddress = _addressList[i];\n            uint256 _tokenId = _tokenList[i];\n            safeTransferFrom(msg.sender, _toAddress, _tokenId);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectShowAllTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectShowAllTokens(uint256 _projectId)\n        public\n        view\n        returns (uint256[] memory)\n    {\n        return projectIdToTokenIds(_projectId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectIdToTokenIds",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectIdToTokenIds(uint256 _projectId)\n        public\n        view\n        returns (uint256[] memory)\n    {\n        uint256 tId;\n        uint256 tokenId;\n        uint256 projTokenLength = projects[_projectId].invocations;\n        uint256 projectBurnedCount = projectBurnedTokensCount(_projectId);\n        uint256[] memory projectTokens = new uint256[](\n            projTokenLength - projectBurnedCount\n        );\n\n        for (uint256 i; i < projTokenLength; i++) {\n            tokenId = (_projectId * ONE_MILLION) + i;\n            if (isBurned(tokenId) == false) {\n                projectTokens[tId] = tokenId;\n                tId++;\n            }\n        }\n        return projectTokens;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectBurnedTokensCount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectBurnedTokensCount(uint256 _projectId)\n        public\n        view\n        returns (uint256)\n    {\n        uint256 tokenId;\n        uint256 count;\n        uint256 burnedTokenLength = burnedTokens.length;\n        for (uint256 i; i < burnedTokenLength; i++) {\n            tokenId = burnedTokens[i];\n            if (tokenIdToProjectId(tokenId) == _projectId) {\n                count++;\n            }\n        }\n        return count;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenIdToProjectId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenIdToProjectId(uint256 _tokenId)\n        public\n        pure\n        returns (uint256)\n    {\n        //convert to string and reverse\n        string memory reversed = _tokenId.toString().reverse();\n        //chop off reversed project id from end, reverse back\n        string memory strProjectId = reversed\n            .substring(6, reversed.stringLength())\n            .reverse();\n\n        return strProjectId.str2int();\n    }",
+        "comments": [
+            "",
+            "    //example input : 1000004",
+            "    "
+        ],
+        "comt": "\n    //example input : 1000004\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokensOfOwner",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function tokensOfOwner(address owner)\n        public\n        view\n        returns (uint256[] memory)\n    {\n        uint256 ownerBalance = balanceOf(owner);\n        uint256 foundCount;\n        address currOwnershipAddr;\n\n        uint256[] memory ownerTokenIds = new uint256[](ownerBalance);\n\n        // Counter overflow is impossible as the loop breaks when uint256 i is equal to another uint256 numMintedSoFar.\n        unchecked {\n            for (uint256 i = startProjectId; i < nextProjectId; i++) {\n                uint256[] memory projectTokens = projectIdToTokenIds(i);\n\n                for (uint256 ii; ii < projectTokens.length; ii++) {\n                    uint256 tokenId = projectTokens[ii];\n\n                    TokenOwnership memory ownership = _ownerships[tokenId];\n                    if (ownership.addr != address(0)) {\n                        currOwnershipAddr = ownership.addr;\n                    }\n                    if (currOwnershipAddr == owner) {\n                        ownerTokenIds[foundCount] = tokenId;\n                        foundCount++;\n                    }\n                    if (foundCount == ownerBalance) {\n                        return ownerTokenIds;\n                    }\n                }\n            }\n        }\n\n        revert UnableGetTokenOwnerByIndex();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 _tokenId)\n        public\n        view\n        override\n        onlyValidTokenId(_tokenId)\n        returns (string memory)\n    {\n        //check if custom tokenUri contract, if so, use that.\n        if (\n            projects[tokenIdToProjectId(_tokenId)].tokenUriContract !=\n            address(0)\n        ) {\n            NtentTokenUri ntentTokenUri = NtentTokenUri(\n                projects[tokenIdToProjectId(_tokenId)].tokenUriContract\n            );\n            //if returned tokenUri is not empty, else continue\n            string memory tUri = ntentTokenUri.tokenUri(_tokenId);\n            if(bytes(tUri).length > 0)\n                return tUri;\n        }\n\n        //check if tokenId has a specified image link\n        if (bytes(staticIpfsImageLink[_tokenId]).length > 0) {\n            return\n                projects[tokenIdToProjectId(_tokenId)]\n                    .projectBaseIpfsURI\n                    .concatenate(staticIpfsImageLink[_tokenId]);\n        }\n\n        //check if the project has a single overall token Uri (mintpass, etc)\n        if (\n            !projects[tokenIdToProjectId(_tokenId)].dynamic &&\n            projects[tokenIdToProjectId(_tokenId)].useIpfs\n        ) {\n            return\n                projects[tokenIdToProjectId(_tokenId)]\n                    .projectBaseIpfsURI\n                    .concatenate(\n                        projects[tokenIdToProjectId(_tokenId)].ipfsHash\n                    );\n        }\n\n        return\n            projects[tokenIdToProjectId(_tokenId)].projectBaseURI.concatenate(\n                _tokenId.toString()\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateRoyalties",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "bps",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateRoyalties(address payable recipient, uint256 bps)\n        external\n        onlyRainbowlisted\n    {\n        _royaltyRecipient = recipient;\n        _royaltyBps = bps;\n    }",
+        "comments": [
+            "/**",
+            "     * Royalties",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * Royalties\n     */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoyalties",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getRoyalties(uint256)\n        external\n        view\n        returns (address payable[] memory recipients, uint256[] memory bps)\n    {\n        if (_royaltyRecipient != address(0x0)) {\n            recipients = new address payable[](1);\n            recipients[0] = _royaltyRecipient;\n            bps = new uint256[](1);\n            bps[0] = _royaltyBps;\n        }\n        return (recipients, bps);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFeeRecipients",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getFeeRecipients(uint256)\n        external\n        view\n        returns (address payable[] memory recipients)\n    {\n        if (_royaltyRecipient != address(0x0)) {\n            recipients = new address payable[](1);\n            recipients[0] = _royaltyRecipient;\n        }\n        return recipients;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFeeBps",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getFeeBps(uint256) external view returns (uint256[] memory bps) {\n        if (_royaltyRecipient != address(0x0)) {\n            bps = new uint256[](1);\n            bps[0] = _royaltyBps;\n        }\n        return bps;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "royaltyInfo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function royaltyInfo(uint256, uint256 value)\n        external\n        view\n        returns (address, uint256)\n    {\n        return (_royaltyRecipient, (value * _royaltyBps) / 10000);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "flipProxyState",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "proxyAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function flipProxyState(address proxyAddress) public onlyRainbowlisted{\n        proxyToApproved[proxyAddress] = !proxyToApproved[proxyAddress];\n    }",
+        "comments": [
+            "/**",
+            "     * Proxy ",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * Proxy \n     */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address _owner, address _operator) public view override returns (bool){\n        if(proxyToApproved[_operator]) return true;\n        return super.isApprovedForAll(_owner, _operator);\n    }",
+        "comments": [
+            "",
+            "    //proxy registration",
+            "    "
+        ],
+        "comt": "\n    //proxy registration\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenByIndex(uint256 index) public view override returns (uint256) {\n\n        uint256 tokenIdsIdx;\n\n                // Counter overflow is impossible as the loop breaks when uint256 i is equal to another uint256 numMintedSoFar.\n        unchecked {\n            for (uint256 i = startProjectId; i < nextProjectId; i++) {\n                uint256[] memory projectTokens = projectIdToTokenIds(i);\n\n                for (uint256 ii; ii < projectTokens.length; ii++) {\n                    uint256 tokenId = projectTokens[ii];\n\n                    TokenOwnership memory ownership = _ownerships[tokenId];\n                    if (!ownership.burned) {\n                        if (tokenIdsIdx == index) {\n                            return tokenId;\n                        }\n                        tokenIdsIdx++;\n                    }\n                }\n            }\n        }\n\n        revert UnableGetTokenOwnerByIndex();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenByIndex}.",
+            "     * This read function is O(totalSupply). If calling from a separate contract, be sure to test gas first.",
+            "     * It may also degrade with extremely large collection sizes (e.g >> 10000), test for your use case.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenByIndex}.\n     * This read function is O(totalSupply). If calling from a separate contract, be sure to test gas first.\n     * It may also degrade with extremely large collection sizes (e.g >> 10000), test for your use case.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenByIndex}. * This read function is O(totalSupply). If calling from a separate contract, be sure to test gas first. * It may also degrade with extremely large collection sizes (e.g >> 10000), test for your use case.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenOfOwnerByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenOfOwnerByIndex(address owner, uint256 index) public override view returns (uint256) {\n        require(index < balanceOf(owner), \"ERC721Enumerable: owner index out of bounds\");\n        return tokensOfOwner(owner)[index];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

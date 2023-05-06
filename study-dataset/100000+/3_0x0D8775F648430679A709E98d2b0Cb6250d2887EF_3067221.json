@@ -1,0 +1,66 @@
+[
+    {
+        "transactions": 3067221,
+        "function_num": 3
+    },
+    {
+        "name": "createTokens",
+        "visibility": "external",
+        "args": [],
+        "func": "function createTokens() payable external {\n if (isFinalized) throw;\n if (block.number < fundingStartBlock) throw;\n if (block.number > fundingEndBlock) throw;\n if (msg.value == 0) throw;\n\n uint256 tokens = safeMult(msg.value, tokenExchangeRate); // check that we're not over totals\n uint256 checkedSupply = safeAdd(totalSupply, tokens);\n\n // return money if something goes wrong\n if (tokenCreationCap < checkedSupply) throw; // odd fractions won't be found\n\n totalSupply = checkedSupply;\n balances[msg.sender] += tokens; // safeAdd not needed; bad semantics to use here\n CreateBAT(msg.sender, tokens); // logs token creation\n }",
+        "comments": [
+            "",
+            " /// @dev Accepts ether and creates new BAT tokens.",
+            " "
+        ],
+        "comt": "\n /// @dev Accepts ether and creates new BAT tokens.\n ",
+        "@dev": "Accepts ether and creates new BAT tokens.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finalize",
+        "visibility": "external",
+        "args": [],
+        "func": "function finalize() external {\n if (isFinalized) throw;\n if (msg.sender != ethFundDeposit) throw; // locks finalize to the ultimate ETH owner\n if(totalSupply < tokenCreationMin) throw; // have to sell minimum to move to operational\n if(block.number <= fundingEndBlock && totalSupply != tokenCreationCap) throw;\n // move to operational\n isFinalized = true;\n if(!ethFundDeposit.send(this.balance)) throw; // send the eth to Brave International\n }",
+        "comments": [
+            "",
+            " /// @dev Ends the funding period and sends the ETH home",
+            " "
+        ],
+        "comt": "\n /// @dev Ends the funding period and sends the ETH home\n ",
+        "@dev": "Ends the funding period and sends the ETH home",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "refund",
+        "visibility": "external",
+        "args": [],
+        "func": "function refund() external {\n if(isFinalized) throw; // prevents refund if operational\n if (block.number <= fundingEndBlock) throw; // prevents refund until sale period is over\n if(totalSupply >= tokenCreationMin) throw; // no refunds if we sold enough\n if(msg.sender == batFundDeposit) throw; // Brave Intl not entitled to a refund\n uint256 batVal = balances[msg.sender];\n if (batVal == 0) throw;\n balances[msg.sender] = 0;\n totalSupply = safeSubtract(totalSupply, batVal); // extra safe\n uint256 ethVal = batVal / tokenExchangeRate; // should be safe; previous throws covers edges\n LogRefund(msg.sender, ethVal); // log it \n if (!msg.sender.send(ethVal)) throw; // if you're using a contract; make sure it works with .send gas limits\n }",
+        "comments": [
+            "",
+            " /// @dev Allows contributors to recover their ether in the case of a failed funding campaign.",
+            " "
+        ],
+        "comt": "\n /// @dev Allows contributors to recover their ether in the case of a failed funding campaign.\n ",
+        "@dev": "Allows contributors to recover their ether in the case of a failed funding campaign.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

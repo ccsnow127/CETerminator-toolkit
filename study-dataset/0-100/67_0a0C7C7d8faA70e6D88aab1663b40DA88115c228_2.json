@@ -1,0 +1,1629 @@
+[
+    {
+        "transactions": 2,
+        "function_num": 67
+    },
+    {
+        "name": "setPendingAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newPendingAdmin_",
+                "type": "address"
+            }
+        ],
+        "func": "function setPendingAdmin(address newPendingAdmin_) external virtual onlyAdmin {\n        emit NewPendingAdmin(pendingAdmin, newPendingAdmin_);\n        pendingAdmin = newPendingAdmin_;        \n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "acceptAdmin",
+        "visibility": "external",
+        "args": [],
+        "func": "function acceptAdmin() external virtual {\n        require(_msgSender() == pendingAdmin, \"only pending admin\");\n        emit NewAdmin(admin, pendingAdmin);\n        admin = pendingAdmin;\n        pendingAdmin = address(0);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return _supportedInterfaces[interfaceId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     *",
+            "     * Time complexity O(1), guaranteed to always use less than 30 000 gas.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     *\n     * Time complexity O(1), guaranteed to always use less than 30 000 gas.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}. * * Time complexity O(1), guaranteed to always use less than 30 000 gas.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view virtual override returns (uint256) {\n        require(owner != address(0), \"ERC721: balance query for the zero address\");\n        return _holderTokens[owner].length();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-balanceOf}.\n     */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view virtual override returns (address) {\n        return _tokenOwners.get(tokenId, \"ERC721: owner query for nonexistent token\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-ownerOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-ownerOf}.\n     */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-name}.\n     */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-symbol}.\n     */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        require(_exists(tokenId), \"ERC721Metadata: URI query for nonexistent token\");\n\n        string memory _tokenURI = _tokenURIs[tokenId];\n        string memory base = baseURI();\n\n        // If there is no base URI, return the token URI.\n        if (bytes(base).length == 0) {\n            return _tokenURI;\n        }\n        // If both are set, concatenate the baseURI and tokenURI (via abi.encodePacked).\n        if (bytes(_tokenURI).length > 0) {\n            return string(abi.encodePacked(base, _tokenURI));\n        }\n        // If there is a baseURI but no tokenURI, concatenate the tokenID to the baseURI.\n        return string(abi.encodePacked(base, tokenId.toString()));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-tokenURI}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-tokenURI}.\n     */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "baseURI",
+        "visibility": "public",
+        "args": [],
+        "func": "function baseURI() public view virtual returns (string memory) {\n        return _baseURI;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Returns the base URI set via {_setBaseURI}. This will be",
+            "    * automatically added as a prefix in {tokenURI} to each token's URI, or",
+            "    * to the token ID if no specific URI is set for that token ID.",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Returns the base URI set via {_setBaseURI}. This will be\n    * automatically added as a prefix in {tokenURI} to each token's URI, or\n    * to the token ID if no specific URI is set for that token ID.\n    */\n",
+        "@dev": "Returns the base URI set via {_setBaseURI}. This will be * automatically added as a prefix in {tokenURI} to each token's URI, or * to the token ID if no specific URI is set for that token ID.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenOfOwnerByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenOfOwnerByIndex(address owner, uint256 index) public view virtual override returns (uint256) {\n        return _holderTokens[owner].at(index);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n        // _tokenOwners are indexed by tokenIds, so .length() returns the number of tokenIds\n        return _tokenOwners.length();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-totalSupply}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenByIndex(uint256 index) public view virtual override returns (uint256) {\n        (uint256 tokenId, ) = _tokenOwners.at(index);\n        return tokenId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenByIndex}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenByIndex}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ERC721Upgradeable.ownerOf(tokenId);\n        require(to != owner, \"ERC721: approval to current owner\");\n\n        require(_msgSender() == owner || ERC721Upgradeable.isApprovedForAll(owner, _msgSender()),\n            \"ERC721: approve caller is not owner nor approved for all\"\n        );\n\n        _approve(to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-approve}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-approve}.\n     */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view virtual override returns (address) {\n        require(_exists(tokenId), \"ERC721: approved query for nonexistent token\");\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-getApproved}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-getApproved}.\n     */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        require(operator != _msgSender(), \"ERC721: approve to caller\");\n\n        _operatorApprovals[_msgSender()][operator] = approved;\n        emit ApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint256 tokenId) public virtual override {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n\n        _transfer(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-transferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-transferFrom}.\n     */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(address from, address to, uint256 tokenId) public virtual override {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public virtual override {\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n        _safeTransfer(from, to, tokenId, _data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "allowance_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(\n        address to_,\n        uint256 tokenId_,\n        uint256 allowance_\n    ) public virtual override {\n        require(_msgSender() == ownerOf(tokenId_), \"VNFT: only owner\");\n        _approveUnits(to_, tokenId_, allowance_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "spender_",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(uint256 tokenId_, address spender_)\n        public\n        view\n        virtual\n        override\n        returns (uint256)\n    {\n        return _tokenApprovalUnits[tokenId_].allowances[spender_];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unitDecimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function unitDecimals() public view override returns (uint8) {\n        return _unitDecimals;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unitsInSlot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function unitsInSlot(uint256 slot_)\n        public\n        view\n        override\n        returns (uint256 units_)\n    {\n        for (uint256 i = 0; i < tokensInSlot(slot_); i++) {\n            units_ = units_.add(unitsInToken(tokenOfSlotByIndex(slot_, i)));\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unitsInToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function unitsInToken(uint256 tokenId_)\n        public\n        view\n        virtual\n        override\n        returns (uint256)\n    {\n        return _units[tokenId_];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokensInSlot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokensInSlot(uint256 slot_)\n        public\n        view\n        override\n        returns (uint256)\n    {\n        return _slotTokens[slot_].length();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenOfSlotByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            },
+            {
+                "name": "index_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenOfSlotByIndex(uint256 slot_, uint256 index_)\n        public\n        view\n        override\n        returns (uint256)\n    {\n        return _slotTokens[slot_].at(index_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "slotOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function slotOf(uint256 tokenId_) public view override returns (uint256) {\n        return _slotOf(tokenId_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "split",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "splitUnits_",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function split(uint256 tokenId_, uint256[] calldata splitUnits_)\n        public\n        virtual\n        override\n        returns (uint256[] memory newTokenIds)\n    {\n        require(splitUnits_.length > 0, \"empty splitUnits\");\n        newTokenIds = new uint256[](splitUnits_.length);\n\n        for (uint256 i = 0; i < splitUnits_.length; i++) {\n            uint256 newTokenId = _generateTokenId();\n            newTokenIds[i] = newTokenId;\n            VNFTCoreV2._split(tokenId_, newTokenId, splitUnits_[i]);\n            voucherSlotMapping[newTokenId] = voucherSlotMapping[tokenId_];\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "merge",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenIds_",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "targetTokenId_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function merge(uint256[] calldata tokenIds_, uint256 targetTokenId_)\n        public\n        virtual\n        override\n    {\n        require(tokenIds_.length > 0, \"empty tokenIds\");\n        for (uint256 i = 0; i < tokenIds_.length; i++) {\n            VNFTCoreV2._merge(tokenIds_[i], targetTokenId_);\n            delete voucherSlotMapping[tokenIds_[i]];\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from_",
+                "type": "address"
+            },
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "transferUnits_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from_,\n        address to_,\n        uint256 tokenId_,\n        uint256 transferUnits_\n    ) public virtual override returns (uint256 newTokenId) {\n        newTokenId = _generateTokenId();\n        _transferUnitsFrom(from_, to_, tokenId_, newTokenId, transferUnits_);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Transfer part of units of a Voucher to target address.",
+            "     * @param from_ Address of the Voucher sender",
+            "     * @param to_ Address of the Voucher recipient",
+            "     * @param tokenId_ Id of the Voucher to transfer",
+            "     * @param transferUnits_ Amount of units to transfer",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Transfer part of units of a Voucher to target address.\n     * @param from_ Address of the Voucher sender\n     * @param to_ Address of the Voucher recipient\n     * @param tokenId_ Id of the Voucher to transfer\n     * @param transferUnits_ Amount of units to transfer\n     */\n",
+        "@notice": "Transfer part of units of a Voucher to target address.",
+        "@param1": "from_ Address of the Voucher sender",
+        "@param2": "to_ Address of the Voucher recipient",
+        "@param3": "tokenId_ Id of the Voucher to transfer",
+        "@param4": "transferUnits_ Amount of units to transfer",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from_",
+                "type": "address"
+            },
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "targetTokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "transferUnits_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from_,\n        address to_,\n        uint256 tokenId_,\n        uint256 targetTokenId_,\n        uint256 transferUnits_\n    ) public virtual override {\n        require(_exists(targetTokenId_), \"target token not exists\");\n        _transferUnitsFrom(\n            from_,\n            to_,\n            tokenId_,\n            targetTokenId_,\n            transferUnits_\n        );\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Transfer part of units of a Voucher to another Voucher.",
+            "     * @param from_ Address of the Voucher sender",
+            "     * @param to_ Address of the Voucher recipient",
+            "     * @param tokenId_ Id of the Voucher to transfer",
+            "     * @param targetTokenId_ Id of the Voucher to receive",
+            "     * @param transferUnits_ Amount of units to transfer",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Transfer part of units of a Voucher to another Voucher.\n     * @param from_ Address of the Voucher sender\n     * @param to_ Address of the Voucher recipient\n     * @param tokenId_ Id of the Voucher to transfer\n     * @param targetTokenId_ Id of the Voucher to receive\n     * @param transferUnits_ Amount of units to transfer\n     */\n",
+        "@notice": "Transfer part of units of a Voucher to another Voucher.",
+        "@param1": "from_ Address of the Voucher sender",
+        "@param2": "to_ Address of the Voucher recipient",
+        "@param3": "tokenId_ Id of the Voucher to transfer",
+        "@param4": "targetTokenId_ Id of the Voucher to receive",
+        "@param5": "transferUnits_ Amount of units to transfer",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from_",
+                "type": "address"
+            },
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "transferUnits_",
+                "type": "uint256"
+            },
+            {
+                "name": "data_",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from_,\n        address to_,\n        uint256 tokenId_,\n        uint256 transferUnits_,\n        bytes memory data_\n    ) public virtual override returns (uint256 newTokenId) {\n        newTokenId = transferFrom(from_, to_, tokenId_, transferUnits_);\n        require(\n            _checkOnVNFTReceived(from_, to_, newTokenId, transferUnits_, data_),\n            \"to non VNFTReceiver\"\n        );\n        return newTokenId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from_",
+                "type": "address"
+            },
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "targetTokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "transferUnits_",
+                "type": "uint256"
+            },
+            {
+                "name": "data_",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from_,\n        address to_,\n        uint256 tokenId_,\n        uint256 targetTokenId_,\n        uint256 transferUnits_,\n        bytes memory data_\n    ) public virtual override {\n        transferFrom(from_, to_, tokenId_, targetTokenId_, transferUnits_);\n        require(\n            _checkOnVNFTReceived(\n                from_,\n                to_,\n                targetTokenId_,\n                transferUnits_,\n                data_\n            ),\n            \"to non VNFTReceiver\"\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 tokenId_) external virtual {\n        require(_msgSender() == ownerOf(tokenId_), \"only owner\");\n        _burnVoucher(tokenId_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "external",
+        "args": [],
+        "func": "function owner() external view virtual returns (address) {\n        return admin;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "voucherType",
+        "visibility": "external",
+        "args": [],
+        "func": "function voucherType() external view virtual returns (Constants.VoucherType) {}",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "underlyingVestingVoucher_",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address underlyingVestingVoucher_)\n        external\n        initializer\n    {\n        AdminControl.__AdminControl_init(_msgSender());\n        underlyingVestingVoucher = underlyingVestingVoucher_;\n        underlyingToken = IUnderlyingContainer(underlyingVestingVoucher)\n            .underlying();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createSlot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "issuer_",
+                "type": "address"
+            },
+            {
+                "name": "claimType_",
+                "type": "uint8"
+            },
+            {
+                "name": "latestStartTime_",
+                "type": "uint64"
+            },
+            {
+                "name": "terms_",
+                "type": "uint64[] calldata"
+            },
+            {
+                "name": "percentages_",
+                "type": "uint32[] calldata"
+            }
+        ],
+        "func": "function createSlot(\n        address issuer_,\n        uint8 claimType_,\n        uint64 latestStartTime_,\n        uint64[] calldata terms_,\n        uint32[] calldata percentages_\n    ) external onlyManager returns (uint256 slot) {\n        require(issuer_ != address(0), \"issuer cannot be 0 address\");\n        slot = getSlot(\n            issuer_,\n            claimType_,\n            latestStartTime_,\n            terms_,\n            percentages_\n        );\n        require(!_slotDetails[slot].isValid, \"slot already existed\");\n        require(\n            terms_.length == percentages_.length,\n            \"invalid terms and percentages\"\n        );\n        // latestStartTime should not be later than 2100/01/01 00:00:00\n        require(latestStartTime_ < 4102416000, \"latest start time too late\");\n        // number of stages should not be more than 50\n        require(percentages_.length <= 50, \"too many stages\");\n\n        uint256 sumOfPercentages = 0;\n        for (uint256 i = 0; i < percentages_.length; i++) {\n            // value of each term should not be larger than 10 years\n            require(terms_[i] <= 315360000, \"term value too large\");\n            // value of each percentage should not be larger than 10000\n            require(percentages_[i] <= Constants.FULL_PERCENTAGE, \"percentage value too large\");\n            sumOfPercentages += percentages_[i];\n        }\n        require(\n            sumOfPercentages == Constants.FULL_PERCENTAGE,\n            \"not full percentage\"\n        );\n\n        require(\n            (claimType_ == uint8(Constants.ClaimType.LINEAR) &&\n                percentages_.length == 1) ||\n                (claimType_ == uint8(Constants.ClaimType.ONE_TIME) &&\n                    percentages_.length == 1) ||\n                (claimType_ == uint8(Constants.ClaimType.STAGED) &&\n                    percentages_.length > 1),\n            \"invalid params\"\n        );\n\n        _slotDetails[slot] = SlotDetail({\n            issuer: issuer_,\n            claimType: claimType_,\n            startTime: 0,\n            latestStartTime: latestStartTime_,\n            terms: terms_,\n            percentages: percentages_,\n            isValid: true\n        });\n\n        _issuerSlots[issuer_].add(slot);\n\n        emit CreateSlot(\n            slot,\n            issuer_,\n            claimType_,\n            latestStartTime_,\n            terms_,\n            percentages_\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "minter_",
+                "type": "address"
+            },
+            {
+                "name": "slot_",
+                "type": "uint256"
+            },
+            {
+                "name": "vestingAmount_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(\n        address minter_,\n        uint256 slot_,\n        uint256 vestingAmount_\n    ) external nonReentrant onlyManager {\n        amountOfSlot[slot_] = amountOfSlot[slot_].add(vestingAmount_);\n        totalAmount = totalAmount.add(vestingAmount_);\n        ERC20TransferHelper.doTransferIn(\n            underlyingToken,\n            minter_,\n            vestingAmount_\n        );\n        emit Mint(minter_, slot_, vestingAmount_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claim",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            },
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "claimAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claim(\n        uint256 slot_,\n        address to_,\n        uint256 claimAmount\n    ) external nonReentrant onlyManager {\n        if (claimAmount > amountOfSlot[slot_]) {\n            claimAmount = amountOfSlot[slot_];\n        }\n        amountOfSlot[slot_] = amountOfSlot[slot_].sub(claimAmount);\n        totalAmount = totalAmount.sub(claimAmount);\n\n        SlotDetail storage slotDetail = _slotDetails[slot_];\n        uint64 finalTerm = slotDetail.claimType ==\n            uint8(Constants.ClaimType.LINEAR)\n            ? slotDetail.terms[0]\n            : slotDetail.claimType == uint8(Constants.ClaimType.ONE_TIME)\n            ? 0\n            : stagedTermsToVestingTerm(slotDetail.terms);\n        uint64 startTime = slotDetail.startTime > 0\n            ? slotDetail.startTime\n            : slotDetail.latestStartTime;\n\n        // Since the `startTime` and `terms` are read from storage, and their values have been \n        // checked before stored when minting a new voucher, so there is no need here to check \n        // the overflow of the values of `maturities`.\n        uint64[] memory maturities = new uint64[](slotDetail.terms.length);\n        maturities[0] = startTime + slotDetail.terms[0];\n        for (uint256 i = 1; i < maturities.length; i++) {\n            maturities[i] = maturities[i - 1] + slotDetail.terms[i];\n        }\n\n        IERC20(underlyingToken).approve(\n            address(IICToken(underlyingVestingVoucher).vestingPool()),\n            claimAmount\n        );\n        (, uint256 vestingVoucherId) = IICToken(underlyingVestingVoucher).mint(\n            finalTerm,\n            claimAmount,\n            maturities,\n            slotDetail.percentages,\n            \"\"\n        );\n        VNFTTransferHelper.doTransferOut(\n            address(underlyingVestingVoucher),\n            to_,\n            vestingVoucherId\n        );\n        emit Claim(slot_, to_, claimAmount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setStartTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "setter_",
+                "type": "address"
+            },
+            {
+                "name": "slot_",
+                "type": "uint256"
+            },
+            {
+                "name": "startTime_",
+                "type": "uint64"
+            }
+        ],
+        "func": "function setStartTime(\n        address setter_,\n        uint256 slot_,\n        uint64 startTime_\n    ) external onlyManager {\n        SlotDetail storage slotDetail = _slotDetails[slot_];\n        require(slotDetail.isValid, \"invalid slot\");\n        require(setter_ == slotDetail.issuer, \"only issuer\");\n        require(\n            startTime_ <= slotDetail.latestStartTime,\n            \"exceeds latestStartTime\"\n        );\n        if (slotDetail.startTime > 0) {\n            require(block.timestamp < slotDetail.startTime, \"unchangeable\");\n        }\n\n        emit SetStartTime(slot_, slotDetail.startTime, startTime_);\n        slotDetail.startTime = startTime_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isClaimable",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function isClaimable(uint256 slot_) external view returns (bool) {\n        SlotDetail storage slotDetail = _slotDetails[slot_];\n        return\n            (slotDetail.isValid &&\n                (slotDetail.startTime == 0 &&\n                    block.timestamp >= slotDetail.latestStartTime)) ||\n            (slotDetail.startTime > 0 &&\n                block.timestamp >= slotDetail.startTime);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSlot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "issuer_",
+                "type": "address"
+            },
+            {
+                "name": "claimType_",
+                "type": "uint8"
+            },
+            {
+                "name": "latestStartTime_",
+                "type": "uint64"
+            },
+            {
+                "name": "terms_",
+                "type": "uint64[] calldata"
+            },
+            {
+                "name": "percentages_",
+                "type": "uint32[] calldata"
+            }
+        ],
+        "func": "function getSlot(\n        address issuer_,\n        uint8 claimType_,\n        uint64 latestStartTime_,\n        uint64[] calldata terms_,\n        uint32[] calldata percentages_\n    ) public view returns (uint256) {\n        return\n            uint256(\n                keccak256(\n                    abi.encode(\n                        underlyingToken,\n                        underlyingVestingVoucher,\n                        issuer_,\n                        claimType_,\n                        latestStartTime_,\n                        terms_,\n                        percentages_\n                    )\n                )\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSlotDetail",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getSlotDetail(uint256 slot_)\n        external\n        view\n        returns (SlotDetail memory)\n    {\n        return _slotDetails[slot_];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getIssuerSlots",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "issuer_",
+                "type": "address"
+            }
+        ],
+        "func": "function getIssuerSlots(address issuer_)\n        external\n        view\n        returns (uint256[] memory slots)\n    {\n        slots = new uint256[](_issuerSlots[issuer_].length());\n        for (uint256 i = 0; i < slots.length; i++) {\n            slots[i] = _issuerSlots[issuer_].at(i);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getIssuerSlotDetails",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "issuer_",
+                "type": "address"
+            }
+        ],
+        "func": "function getIssuerSlotDetails(address issuer_)\n        external\n        view\n        returns (SlotDetail[] memory slotDetails)\n    {\n        slotDetails = new SlotDetail[](_issuerSlots[issuer_].length());\n        for (uint256 i = 0; i < slotDetails.length; i++) {\n            slotDetails[i] = _slotDetails[_issuerSlots[issuer_].at(i)];\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "slotProperties",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function slotProperties(uint256 slot_)\n        external\n        view\n        returns (string memory)\n    {\n        SlotDetail storage slotDetail = _slotDetails[slot_];\n        return\n            string(\n                abi.encodePacked(\n                    abi.encodePacked(\n                        '{\"underlyingToken\":\"',\n                        underlyingToken.addressToString(),\n                        '\",\"underlyingVesting\":\"',\n                        underlyingVestingVoucher.addressToString(),\n                        '\",\"claimType:\"',\n                        _parseClaimType(slotDetail.claimType),\n                        '\",\"terms:\"',\n                        slotDetail.terms.uintArray2str(),\n                        '\",\"percentages:\"',\n                        slotDetail.percentages.percentArray2str()\n                    ),\n                    abi.encodePacked(\n                        '\",\"issuer\":\"',\n                        slotDetail.issuer.addressToString(),\n                        '\",\"startTime:\"',\n                        slotDetail.startTime.toString(),\n                        '\",\"latestStartTime:\"',\n                        slotDetail.latestStartTime.toString(),\n                        '\"}'\n                    )\n                )\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setManager",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newManager_",
+                "type": "address"
+            }
+        ],
+        "func": "function setManager(address newManager_) external onlyAdmin {\n        require(newManager_ != address(0), \"new manager cannot be 0 address\");\n        emit NewManager(manager, newManager_);\n        manager = newManager_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "flexibleDateVestingPool_",
+                "type": "address"
+            },
+            {
+                "name": "voucherDescriptor_",
+                "type": "address"
+            },
+            {
+                "name": "solver_",
+                "type": "address"
+            },
+            {
+                "name": "unitDecimals_",
+                "type": "uint8"
+            },
+            {
+                "name": "name_",
+                "type": "string calldata"
+            },
+            {
+                "name": "symbol_",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function initialize(\n        address flexibleDateVestingPool_,\n        address voucherDescriptor_,\n        address solver_,\n        uint8 unitDecimals_,\n        string calldata name_,\n        string calldata symbol_\n    ) external initializer {\n        ReentrancyGuardUpgradeable.__ReentrancyGuard_init();\n        VoucherCore._initialize(name_, symbol_, unitDecimals_);\n        \n        flexibleDateVestingPool = FlexibleDateVestingPool(flexibleDateVestingPool_);\n        voucherDescriptor = IVNFTDescriptor(voucherDescriptor_);\n        solver = ISolver(solver_);\n\n        ERC165Upgradeable._registerInterface(type(IFlexibleDateVestingVoucher).interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "issuer_",
+                "type": "address"
+            },
+            {
+                "name": "claimType_",
+                "type": "uint8"
+            },
+            {
+                "name": "latestStartTime_",
+                "type": "uint64"
+            },
+            {
+                "name": "terms_",
+                "type": "uint64[] calldata"
+            },
+            {
+                "name": "percentages_",
+                "type": "uint32[] calldata"
+            },
+            {
+                "name": "vestingAmount_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(\n        address issuer_,\n        uint8 claimType_,\n        uint64 latestStartTime_,\n        uint64[] calldata terms_,\n        uint32[] calldata percentages_,\n        uint256 vestingAmount_\n    ) \n        external \n        override\n        returns (uint256 slot, uint256 tokenId) \n    {\n        uint256 err = solver.operationAllowed(\n            \"mint\",\n            abi.encode(\n                _msgSender(),\n                issuer_,\n                claimType_,\n                latestStartTime_,\n                terms_,\n                percentages_,\n                vestingAmount_\n            )\n        );\n        require(err == 0, \"Solver: not allowed\");\n\n        require(issuer_ != address(0), \"issuer cannot be 0 address\");\n        require(latestStartTime_ > 0, \"latestStartTime cannot be 0\");\n\n        slot = getSlot(issuer_, claimType_, latestStartTime_, terms_, percentages_);\n        FlexibleDateVestingPool.SlotDetail memory slotDetail = getSlotDetail(slot);\n        if (!slotDetail.isValid) {\n            flexibleDateVestingPool.createSlot(issuer_, claimType_, latestStartTime_, terms_, percentages_);\n        }\n\n        flexibleDateVestingPool.mint(_msgSender(), slot, vestingAmount_);\n        tokenId = VoucherCore._mint(_msgSender(), slot, vestingAmount_);\n\n        solver.operationVerify(\n            \"mint\", \n            abi.encode(_msgSender(), issuer_, slot, tokenId, vestingAmount_)\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claim",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "claimAmount_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claim(uint256 tokenId_, uint256 claimAmount_) external override {\n        claimTo(tokenId_, _msgSender(), claimAmount_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimTo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            },
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "claimAmount_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claimTo(uint256 tokenId_, address to_, uint256 claimAmount_) public override nonReentrant {\n        require(_msgSender() == ownerOf(tokenId_), \"only owner\");\n        require(claimAmount_ <= unitsInToken(tokenId_), \"over claim\");\n        require(isClaimable(voucherSlotMapping[tokenId_]));\n\n        uint256 err = solver.operationAllowed(\n            \"claim\",\n            abi.encode(_msgSender(), tokenId_, to_, claimAmount_)\n        );\n        require(err == 0, \"Solver: not allowed\");\n\n        flexibleDateVestingPool.claim(voucherSlotMapping[tokenId_], to_, claimAmount_);\n\n        if (claimAmount_ == unitsInToken(tokenId_)) {\n            _burnVoucher(tokenId_);\n        } else {\n            _burnUnits(tokenId_, claimAmount_);\n        }\n\n        solver.operationVerify(\n            \"claim\",\n            abi.encode(_msgSender(), tokenId_, to_, claimAmount_)\n        );\n\n        emit Claim(tokenId_, to_, claimAmount_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setStartTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            },
+            {
+                "name": "startTime_",
+                "type": "uint64"
+            }
+        ],
+        "func": "function setStartTime(uint256 slot_, uint64 startTime_) external override {\n        flexibleDateVestingPool.setStartTime(_msgSender(), slot_, startTime_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setVoucherDescriptor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newDescriptor_",
+                "type": "IVNFTDescriptor"
+            }
+        ],
+        "func": "function setVoucherDescriptor(IVNFTDescriptor newDescriptor_) external onlyAdmin {\n        emit SetDescriptor(address(voucherDescriptor), address(newDescriptor_));\n        voucherDescriptor = newDescriptor_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSolver",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newSolver_",
+                "type": "ISolver"
+            }
+        ],
+        "func": "function setSolver(ISolver newSolver_) external onlyAdmin {\n        require(newSolver_.isSolver(), \"invalid solver\");\n        emit SetSolver(address(solver), address(newSolver_));\n        solver = newSolver_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isClaimable",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function isClaimable(uint256 slot_) public view override returns (bool) {\n        return flexibleDateVestingPool.isClaimable(slot_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSlot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "issuer_",
+                "type": "address"
+            },
+            {
+                "name": "claimType_",
+                "type": "uint8"
+            },
+            {
+                "name": "latestStartTime_",
+                "type": "uint64"
+            },
+            {
+                "name": "terms_",
+                "type": "uint64[] calldata"
+            },
+            {
+                "name": "percentages_",
+                "type": "uint32[] calldata"
+            }
+        ],
+        "func": "function getSlot(\n        address issuer_, uint8 claimType_, uint64 latestStartTime_,\n        uint64[] calldata terms_, uint32[] calldata percentages_\n    ) \n        public  \n        view \n        returns (uint256) \n    {\n        return flexibleDateVestingPool.getSlot(issuer_, claimType_, latestStartTime_, terms_, percentages_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSlotDetail",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getSlotDetail(uint256 slot_) public view returns (IFlexibleDateVestingPool.SlotDetail memory) {\n        return flexibleDateVestingPool.getSlotDetail(slot_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getIssuerSlots",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "issuer_",
+                "type": "address"
+            }
+        ],
+        "func": "function getIssuerSlots(address issuer_) external view returns (uint256[] memory slots) {\n        return flexibleDateVestingPool.getIssuerSlots(issuer_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "contractURI",
+        "visibility": "external",
+        "args": [],
+        "func": "function contractURI() external view override returns (string memory) {\n        return voucherDescriptor.contractURI();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "slotURI",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function slotURI(uint256 slot_) external view override returns (string memory) {\n        return voucherDescriptor.slotURI(slot_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId_)\n        public\n        view\n        virtual\n        override\n        returns (string memory) \n    {\n        require(_exists(tokenId_), \"token not exists\");\n        return voucherDescriptor.tokenURI(tokenId_);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSnapshot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getSnapshot(uint256 tokenId_)\n        external\n        view\n        returns (FlexibleDateVestingVoucherSnapshot memory snapshot)\n    {\n        snapshot.tokenId = tokenId_;\n        snapshot.vestingAmount = unitsInToken(tokenId_);\n        snapshot.slotSnapshot = flexibleDateVestingPool.getSlotDetail(voucherSlotMapping[tokenId_]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "underlying",
+        "visibility": "external",
+        "args": [],
+        "func": "function underlying() external view override returns (address) {\n        return flexibleDateVestingPool.underlyingToken();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "underlyingVestingVoucher",
+        "visibility": "external",
+        "args": [],
+        "func": "function underlyingVestingVoucher() external view override returns (address) {\n        return address(flexibleDateVestingPool.underlyingVestingVoucher());\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "voucherType",
+        "visibility": "external",
+        "args": [],
+        "func": "function voucherType() external pure override returns (Constants.VoucherType) {\n        return Constants.VoucherType.FLEXIBLE_DATE_VESTING;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "version",
+        "visibility": "external",
+        "args": [],
+        "func": "function version() external pure returns (string memory) {\n        return \"2.5\";\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,27 @@
+[
+    {
+        "transactions": 1,
+        "function_num": 1
+    },
+    {
+        "name": "implementation",
+        "visibility": "public",
+        "args": [],
+        "func": "function implementation() public view returns (address) {\n        return _implementation();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current implementation address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current implementation address.\n     */\n",
+        "@dev": "Returns the current implementation address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

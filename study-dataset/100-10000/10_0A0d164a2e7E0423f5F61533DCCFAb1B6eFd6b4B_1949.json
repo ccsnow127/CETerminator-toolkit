@@ -1,0 +1,228 @@
+[
+    {
+        "transactions": 1949,
+        "function_num": 10
+    },
+    {
+        "name": "balance",
+        "visibility": "public",
+        "args": [],
+        "func": "function balance() public view returns (uint256) {\n    if (address(kataToken) == address(0)) {\n      return 0;\n    }\n\n    uint256 _balance = kataToken.balanceOf(address(this));\n    _balance -= allocatedAmount;\n    return _balance;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimableAmount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claimableAmount(address addr, uint256 timestamp) public view returns (uint256) {\n    Member memory _member = members[addr];\n\n    uint256 vested = vestedAmount(addr, timestamp);\n\n    if (vested < _member.claimedAmount) {\n      return 0;\n    }\n\n    return vested - _member.claimedAmount;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Calculates the amount that has already vested but hasn't been released yet.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Calculates the amount that has already vested but hasn't been released yet.\n   */\n",
+        "@dev": "Calculates the amount that has already vested but hasn't been released yet.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "vestedAmount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "func": "function vestedAmount(address addr, uint256 timestamp) public view returns (uint256) {\n    if (address(kataToken) == address(0)) {\n      return 0;\n    }\n\n    Member memory _member = members[addr];\n\n    if (timestamp < _member.startTime) {\n      return 0;\n    }\n\n    uint256 _tgeAmount = (_member.totalAmount * tgePercent) / 100;\n    uint256 _cliffTime = _member.startTime + cliffDuration;\n\n    if (timestamp < _cliffTime) {\n      return _tgeAmount;\n    }\n\n    if (_member.endTime != 0) {\n      return _member.totalAmount;\n    }\n\n    if (timestamp >= (_cliffTime + linearDuration)) {\n      return _member.totalAmount;\n    }\n\n    uint256 _cliffAmount = (_member.totalAmount * cliffPercent) / 100;\n\n    uint256 _linearAmount = (_member.totalAmount - _tgeAmount) - _cliffAmount;\n    _linearAmount = (_linearAmount * (timestamp - _cliffTime)) / linearDuration;\n\n    return _tgeAmount + _cliffAmount + _linearAmount;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Calculates the amount that has already vested.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Calculates the amount that has already vested.\n   */\n",
+        "@dev": "Calculates the amount that has already vested.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claim",
+        "visibility": "external",
+        "args": [],
+        "func": "function claim() external onlyMember {\n    Member memory _member = members[msg.sender];\n    uint256 timestamp = block.timestamp;\n\n    uint256 claimable = claimableAmount(_member.account, timestamp);\n\n    require(claimable > 0, \"no tokens claimable\");\n    require(_member.totalAmount >= (_member.claimedAmount + claimable), \"token pool exhausted\");\n\n    kataToken.transfer(_member.account, claimable);\n    _member.claimedAmount += claimable;\n    allocatedAmount -= claimable;\n\n    members[msg.sender] = _member;\n\n    emit Claimed(_member.account, claimable);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addMembers",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addrs",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "tokenAmounts",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function addMembers(address[] calldata addrs, uint256[] calldata tokenAmounts) external onlyOwner {\n    uint256 _balance = balance();\n\n    for (uint256 i = 0; i < addrs.length; i++) {\n      require(tokenAmounts[i] <= _balance, 'allocation would exceed remaining balance');\n\n      Member memory _member = members[addrs[i]];\n\n      if (_member.account == address(0)) {\n        _member.account = addrs[i];\n        _member.startTime = block.timestamp;\n\n        if (_member.startTime < tgeTime) {\n          _member.startTime = tgeTime;\n        }\n      }\n\n      _member.endTime = 0;\n      _member.totalAmount += tokenAmounts[i];\n      allocatedAmount += tokenAmounts[i];\n      _balance -= tokenAmounts[i];\n\n      members[addrs[i]] = _member;\n\n      emit Added(addrs[i], tokenAmounts[i]);\n    }\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeMember",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "func": "function removeMember(address addr) external onlyOwner {\n    Member memory _member = members[addr];\n\n    uint256 remaining = _member.totalAmount;\n    _member.totalAmount = _member.claimedAmount + claimableAmount(addr, block.timestamp);\n    remaining -= _member.totalAmount;\n    allocatedAmount -= remaining;\n\n    _member.endTime = block.timestamp;\n\n    members[addr] = _member;\n\n    emit Removed(addr, remaining);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setKataToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_erc",
+                "type": "address"
+            }
+        ],
+        "func": "function setKataToken(address _erc) external onlyOwner {\n    kataToken = IERC20(_erc);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

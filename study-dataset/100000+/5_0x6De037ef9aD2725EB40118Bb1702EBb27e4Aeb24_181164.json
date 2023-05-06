@@ -1,0 +1,144 @@
+[
+    {
+        "transactions": 181164,
+        "function_num": 5
+    },
+    {
+        "name": "admin",
+        "visibility": "external",
+        "args": [],
+        "func": "function admin() external view ifAdmin returns (address) {\n return _admin();\n }",
+        "comments": [
+            "/**",
+            " * @return The address of the proxy admin.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @return The address of the proxy admin.\n */\n",
+        "@return1": "The address of the proxy admin.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "implementation",
+        "visibility": "external",
+        "args": [],
+        "func": "function implementation() external view ifAdmin returns (address) {\n return _implementation();\n }",
+        "comments": [
+            "/**",
+            " * @return The address of the implementation.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @return The address of the implementation.\n */\n",
+        "@return1": "The address of the implementation.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAdmin",
+                "type": "address"
+            }
+        ],
+        "func": "function changeAdmin(address newAdmin) external ifAdmin {\n require(newAdmin != address(0), \"Cannot change the admin of a proxy to the zero address\");\n emit AdminChanged(_admin(), newAdmin);\n _setAdmin(newAdmin);\n }",
+        "comments": [
+            "/**",
+            " * @dev Changes the admin of the proxy.",
+            " * Only the current admin can call this function.",
+            " * @param newAdmin Address to transfer proxy administration to.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Changes the admin of the proxy.\n * Only the current admin can call this function.\n * @param newAdmin Address to transfer proxy administration to.\n */\n",
+        "@dev": "Changes the admin of the proxy. * Only the current admin can call this function.",
+        "@param1": "newAdmin Address to transfer proxy administration to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeTo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            }
+        ],
+        "func": "function upgradeTo(address newImplementation) external ifAdmin {\n _upgradeTo(newImplementation);\n }",
+        "comments": [
+            "/**",
+            " * @dev Upgrade the backing implementation of the proxy.",
+            " * Only the admin can call this function.",
+            " * @param newImplementation Address of the new implementation.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Upgrade the backing implementation of the proxy.\n * Only the admin can call this function.\n * @param newImplementation Address of the new implementation.\n */\n",
+        "@dev": "Upgrade the backing implementation of the proxy. * Only the admin can call this function.",
+        "@param1": "newImplementation Address of the new implementation.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeToAndCall",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "func": "function upgradeToAndCall(address newImplementation, bytes data) payable external ifAdmin {\n _upgradeTo(newImplementation);\n require(newImplementation.delegatecall(data));\n }",
+        "comments": [
+            "/**",
+            " * @dev Upgrade the backing implementation of the proxy and call a function",
+            " * on the new implementation.",
+            " * This is useful to initialize the proxied contract.",
+            " * @param newImplementation Address of the new implementation.",
+            " * @param data Data to send as msg.data in the low level call.",
+            " * It should include the signature and the parameters of the function to be called, as described in",
+            " * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Upgrade the backing implementation of the proxy and call a function\n * on the new implementation.\n * This is useful to initialize the proxied contract.\n * @param newImplementation Address of the new implementation.\n * @param data Data to send as msg.data in the low level call.\n * It should include the signature and the parameters of the function to be called, as described in\n * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.\n */\n",
+        "@dev": "Upgrade the backing implementation of the proxy and call a function * on the new implementation. * This is useful to initialize the proxied contract.",
+        "@param1": "newImplementation Address of the new implementation.",
+        "@param2": "data Data to send as msg.data in the low level call. * It should include the signature and the parameters of the function to be called, as described in * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,422 @@
+[
+    {
+        "transactions": 1,
+        "function_num": 16
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns(address _owner) {\n        bytes32 position = OWNER_SLOT;\n        assembly {\n            _owner := sload(position)\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isOwner",
+        "visibility": "public",
+        "args": [],
+        "func": "function isOwner() public view returns (bool) {\n        return owner() == msg.sender;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public onlyOwner {\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`).",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dusd",
+                "type": "IDUSD"
+            },
+            {
+                "name": "_stakeLPToken",
+                "type": "IStakeLPToken"
+            },
+            {
+                "name": "_oracle",
+                "type": "IOracle"
+            },
+            {
+                "name": "_redeemFactor",
+                "type": "uint"
+            },
+            {
+                "name": "_colBuffer",
+                "type": "uint"
+            }
+        ],
+        "func": "function initialize(\n        IDUSD _dusd,\n        IStakeLPToken _stakeLPToken,\n        IOracle _oracle,\n        uint _redeemFactor,\n        uint _colBuffer\n    )   public\n        notInitialized\n    {\n        require(\n            address(_dusd) != address(0),\n            \"0 address during initialization\"\n        );\n        require(\n            _redeemFactor <= FEE_PRECISION && _colBuffer <= FEE_PRECISION,\n            \"Incorrect upper bound for fee\"\n        );\n        dusd = _dusd;\n        stakeLPToken = _stakeLPToken;\n        oracle = _oracle;\n        redeemFactor = _redeemFactor;\n        colBuffer = _colBuffer;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Used to initialize contract state from the proxy",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Used to initialize contract state from the proxy\n    */\n",
+        "@dev": "Used to initialize contract state from the proxy",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "dusdAmount",
+                "type": "uint"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function mint(uint dusdAmount, address account)\n        external\n        returns(uint)\n    {\n        Peak storage peak = peaks[msg.sender];\n        uint tvl = peak.amount.add(dusdAmount);\n        require(\n            dusdAmount > 0\n            && peak.state == PeakState.Active\n            && tvl <= peak.ceiling,\n            \"ERR_MINT\"\n        );\n        peak.amount = tvl;\n        dusd.mint(account, dusdAmount);\n        emit Mint(account, dusdAmount);\n        return dusdAmount;\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Mint DUSD",
+            "    * @dev Only whitelisted peaks can call this function",
+            "    * @param dusdAmount DUSD amount to mint",
+            "    * @param account Account to mint DUSD to",
+            "    * @return dusdAmount DUSD amount minted",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Mint DUSD\n    * @dev Only whitelisted peaks can call this function\n    * @param dusdAmount DUSD amount to mint\n    * @param account Account to mint DUSD to\n    * @return dusdAmount DUSD amount minted\n    */\n",
+        "@notice": "Mint DUSD",
+        "@dev": "Only whitelisted peaks can call this function",
+        "@param1": "dusdAmount DUSD amount to mint",
+        "@param2": "account Account to mint DUSD to",
+        "@return1": "dusdAmount DUSD amount minted",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeem",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "dusdAmount",
+                "type": "uint"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function redeem(uint dusdAmount, address account)\n        external\n        returns(uint usd)\n    {\n        Peak storage peak = peaks[msg.sender];\n        require(\n            dusdAmount > 0 && peak.state != PeakState.Extinct,\n            \"ERR_REDEEM\"\n        );\n        peak.amount = peak.amount.sub(peak.amount.min(dusdAmount));\n        dusd.burn(account, dusdAmount);\n        emit Redeem(account, dusdAmount);\n        return dusdAmount;\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Redeem DUSD",
+            "    * @dev Only whitelisted peaks can call this function",
+            "    * @param dusdAmount DUSD amount to redeem.",
+            "    * @param account Account to burn DUSD from",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Redeem DUSD\n    * @dev Only whitelisted peaks can call this function\n    * @param dusdAmount DUSD amount to redeem.\n    * @param account Account to burn DUSD from\n    */\n",
+        "@notice": "Redeem DUSD",
+        "@dev": "Only whitelisted peaks can call this function",
+        "@param1": "dusdAmount DUSD amount to redeem.",
+        "@param2": "account Account to burn DUSD from",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "harvest",
+        "visibility": "external",
+        "args": [],
+        "func": "function harvest() external {\n        require(msg.sender == authorizedController() || isOwner(), \"HARVEST_NO_AUTH\");\n        uint earned = earned();\n        if (earned > 0) {\n            dusd.mint(msg.sender, earned);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "authorizedController",
+        "visibility": "public",
+        "args": [],
+        "func": "function authorizedController() public view returns(address) {\n        return address(getStore(0));\n    }",
+        "comments": [
+            "/* ##### View ##### */",
+            ""
+        ],
+        "comt": "/* ##### View ##### */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "earned",
+        "visibility": "public",
+        "args": [],
+        "func": "function earned() public view returns(uint) {\n        uint _totalAssets = totalSystemAssets();\n        uint supply = dusd.totalSupply();\n        if (_totalAssets > supply) {\n            return _totalAssets.sub(supply);\n        }\n        return 0;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSystemAssets",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSystemAssets() public view returns (uint _totalAssets) {\n        for (uint i = 0; i < peaksAddresses.length; i++) {\n            Peak memory peak = peaks[peaksAddresses[i]];\n            if (peak.state == PeakState.Extinct) {\n                continue;\n            }\n            _totalAssets = _totalAssets.add(\n                IPeak(peaksAddresses[i]).portfolioValue()\n            );\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "dusdToUsd",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dusd",
+                "type": "uint"
+            },
+            {
+                "name": "fee",
+                "type": "bool"
+            }
+        ],
+        "func": "function dusdToUsd(uint _dusd, bool fee) public view returns(uint usd) {\n        usd = _dusd;\n        if (fee) {\n            usd = usd.mul(redeemFactor).div(FEE_PRECISION);\n        }\n        return usd;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Unused but kept for backwards compatibility with CurveSusdPeak.",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Unused but kept for backwards compatibility with CurveSusdPeak.\n    */\n",
+        "@dev": "Unused but kept for backwards compatibility with CurveSusdPeak.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "authorizeController",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_controller",
+                "type": "address"
+            }
+        ],
+        "func": "function authorizeController(address _controller)\n        external\n        onlyOwner\n    {\n        require(_controller != address(0x0), \"Zero Address\");\n        setStore(0, uint(_controller));\n        // just a sanity check, not strictly required\n        require(authorizedController() == _controller, \"Sanity Check Failed\");\n    }",
+        "comments": [
+            "/* ##### Admin ##### */",
+            ""
+        ],
+        "comt": "/* ##### Admin ##### */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "whitelistTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokens",
+                "type": "address[] calldata"
+            }
+        ],
+        "func": "function whitelistTokens(address[] calldata tokens)\n        external\n        onlyOwner\n    {\n        for (uint i = 0; i < tokens.length; i++) {\n            _whitelistToken(tokens[i]);\n        }\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Whitelist new tokens supported by the peaks.",
+            "    * These are vanilla coins like DAI, USDC, USDT etc.",
+            "    * @dev onlyOwner ACL is provided by the whitelistToken call",
+            "    * @param tokens Token addresses to whitelist",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Whitelist new tokens supported by the peaks.\n    * These are vanilla coins like DAI, USDC, USDT etc.\n    * @dev onlyOwner ACL is provided by the whitelistToken call\n    * @param tokens Token addresses to whitelist\n    */\n",
+        "@notice": "Whitelist new tokens supported by the peaks. * These are vanilla coins like DAI, USDC, USDT etc.",
+        "@dev": "onlyOwner ACL is provided by the whitelistToken call",
+        "@param1": "tokens Token addresses to whitelist",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "whitelistPeak",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "peak",
+                "type": "address"
+            },
+            {
+                "name": "_systemCoins",
+                "type": "uint[] calldata"
+            },
+            {
+                "name": "ceiling",
+                "type": "uint"
+            }
+        ],
+        "func": "function whitelistPeak(\n        address peak,\n        uint[] calldata _systemCoins,\n        uint ceiling\n    )   external\n        onlyOwner\n    {\n        uint numSystemCoins = systemCoins.length;\n        for (uint i = 0; i < _systemCoins.length; i++) {\n            require(_systemCoins[i] < numSystemCoins, \"Invalid system coin index\");\n        }\n        require(\n            peaks[peak].state == PeakState.Extinct,\n            \"Peak already exists\"\n        );\n        peaksAddresses.push(peak);\n        peaks[peak] = Peak(_systemCoins, 0, ceiling, PeakState.Active);\n        emit PeakWhitelisted(peak);\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Whitelist a new peak",
+            "    * @param peak Address of the contract that interfaces with the 3rd-party protocol",
+            "    * @param _systemCoins Indices of the system coins, the peak supports",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Whitelist a new peak\n    * @param peak Address of the contract that interfaces with the 3rd-party protocol\n    * @param _systemCoins Indices of the system coins, the peak supports\n    */\n",
+        "@notice": "Whitelist a new peak",
+        "@param1": "peak Address of the contract that interfaces with the 3rd-party protocol",
+        "@param2": "_systemCoins Indices of the system coins, the peak supports",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPeakStatus",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "peak",
+                "type": "address"
+            },
+            {
+                "name": "ceiling",
+                "type": "uint"
+            },
+            {
+                "name": "state",
+                "type": "PeakState"
+            }
+        ],
+        "func": "function setPeakStatus(address peak, uint ceiling, PeakState state)\n        external\n        onlyOwner\n    {\n        peaks[peak].ceiling = ceiling;\n        peaks[peak].state = state;\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Change a peaks status",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Change a peaks status\n    */\n",
+        "@notice": "Change a peaks status",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFee",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_redeemFactor",
+                "type": "uint"
+            },
+            {
+                "name": "_colBuffer",
+                "type": "uint"
+            }
+        ],
+        "func": "function setFee(uint _redeemFactor, uint _colBuffer)\n        external\n        onlyOwner\n    {\n        require(\n            _redeemFactor <= FEE_PRECISION && _colBuffer <= FEE_PRECISION,\n            \"Incorrect upper bound for fee\"\n        );\n        redeemFactor = _redeemFactor;\n        colBuffer = _colBuffer;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

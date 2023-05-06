@@ -1,0 +1,115 @@
+[
+    {
+        "transactions": 1,
+        "function_num": 3
+    },
+    {
+        "name": "getBalance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function getBalance(address token, address account) public view override returns (int256) {\n        return int256(ERC20(token).balanceOf(account));\n    }",
+        "comments": [
+            "/**",
+            "     * @return Amount of tokens held by the given account.",
+            "     * @dev Implementation of ProtocolAdapter abstract contract function.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return Amount of tokens held by the given account.\n     * @dev Implementation of ProtocolAdapter abstract contract function.\n     */\n",
+        "@return1": "Amount of tokens held by the given account.",
+        "@dev": "Implementation of ProtocolAdapter abstract contract function.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deposit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenAmounts",
+                "type": "TokenAmount[] calldata"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function deposit(TokenAmount[] calldata tokenAmounts, bytes calldata data)\n        external\n        payable\n        override\n        returns (address[] memory tokensToBeWithdrawn)\n    {\n        address pool = abi.decode(data, (address));\n\n        tokensToBeWithdrawn = new address[](1);\n        tokensToBeWithdrawn[0] = pool;\n\n        uint256 length = tokenAmounts.length;\n        uint256[] memory absoluteAmounts = new uint256[](length);\n\n        for (uint256 i = 0; i < length; i++) {\n            absoluteAmounts[i] = getAbsoluteAmountDeposit(tokenAmounts[i]);\n        }\n\n        approveTokens(pool, tokenAmounts, absoluteAmounts);\n\n        uint256 poolAmount = getPoolAmount(pool, tokenAmounts, absoluteAmounts);\n\n        try BPool(pool).joinPool(poolAmount, absoluteAmounts)  {} catch Error(\n            string memory reason\n        ) {\n            //solhint-disable-previous-line no-empty-blocks\n            revert(reason);\n        } catch {\n            revert(\"BMIA: issue fail\");\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Deposits tokens to the TokenSet.",
+            "     * @param tokenAmounts Array with TokenAmount structs with",
+            "     * underlying tokens addresses, underlying tokens amounts to be deposited, and amount types.",
+            "     * @param data ABI-encoded additional parameters:",
+            "     *     - set - rebalancing set (v2) address.",
+            "     * @return tokensToBeWithdrawn Array with one element - rebalancing set address.",
+            "     * @dev Implementation of InteractiveAdapter function.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Deposits tokens to the TokenSet.\n     * @param tokenAmounts Array with TokenAmount structs with\n     * underlying tokens addresses, underlying tokens amounts to be deposited, and amount types.\n     * @param data ABI-encoded additional parameters:\n     *     - set - rebalancing set (v2) address.\n     * @return tokensToBeWithdrawn Array with one element - rebalancing set address.\n     * @dev Implementation of InteractiveAdapter function.\n     */\n",
+        "@notice": "Deposits tokens to the TokenSet.",
+        "@param1": "tokenAmounts Array with TokenAmount structs with * underlying tokens addresses, underlying tokens amounts to be deposited, and amount types.",
+        "@param2": "data ABI-encoded additional parameters: * - set - rebalancing set (v2) address.",
+        "@return1": "tokensToBeWithdrawn Array with one element - rebalancing set address.",
+        "@dev": "Implementation of InteractiveAdapter function.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenAmounts",
+                "type": "TokenAmount[] calldata"
+            },
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function withdraw(TokenAmount[] calldata tokenAmounts, bytes calldata)\n        external\n        payable\n        override\n        returns (address[] memory tokensToBeWithdrawn)\n    {\n        require(tokenAmounts.length == 1, \"BMIA: should be 1 tokenAmount\");\n\n        address pool = tokenAmounts[0].token;\n        uint256 poolAmount = getAbsoluteAmountWithdraw(tokenAmounts[0]);\n\n        tokensToBeWithdrawn = BPool(pool).getCurrentTokens();\n\n        try\n            BPool(pool).exitPool(poolAmount, new uint256[](tokensToBeWithdrawn.length))\n         {} catch Error(\n            // solhint-disable-previous-line no-empty-blocks\n            string memory reason\n        ) {\n            revert(reason);\n        } catch {\n            revert(\"BMIA: redeem fail\");\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Withdraws tokens from the TokenSet.",
+            "     * @param tokenAmounts Array with one element - TokenAmount struct with",
+            "     * rebalancing set (v2) address, rebalancing set amount to be redeemed, and amount type.",
+            "     * @return tokensToBeWithdrawn Array with set token components.",
+            "     * @dev Implementation of InteractiveAdapter function.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Withdraws tokens from the TokenSet.\n     * @param tokenAmounts Array with one element - TokenAmount struct with\n     * rebalancing set (v2) address, rebalancing set amount to be redeemed, and amount type.\n     * @return tokensToBeWithdrawn Array with set token components.\n     * @dev Implementation of InteractiveAdapter function.\n     */\n",
+        "@notice": "Withdraws tokens from the TokenSet.",
+        "@param1": "tokenAmounts Array with one element - TokenAmount struct with * rebalancing set (v2) address, rebalancing set amount to be redeemed, and amount type.",
+        "@return1": "tokensToBeWithdrawn Array with set token components.",
+        "@dev": "Implementation of InteractiveAdapter function.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

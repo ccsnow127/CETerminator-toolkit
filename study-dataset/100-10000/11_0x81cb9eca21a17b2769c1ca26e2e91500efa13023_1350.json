@@ -1,0 +1,343 @@
+[
+    {
+        "transactions": 1350,
+        "function_num": 11
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) onlyOwner public {\n    require(newOwner != address(0));\n    OwnershipTransferred(owner, newOwner);\n    owner = newOwner;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            "   * @param newOwner The address to transfer ownership to.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Allows the current owner to transfer control of the contract to a newOwner.\n   * @param newOwner The address to transfer ownership to.\n   */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner.",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pause",
+        "visibility": "public",
+        "args": [],
+        "func": "function pause() onlyOwner whenNotPaused public {\n    paused = true;\n    Pause();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev called by the owner to pause, triggers stopped state",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev called by the owner to pause, triggers stopped state\n   */\n",
+        "@dev": "called by the owner to pause, triggers stopped state",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unpause",
+        "visibility": "public",
+        "args": [],
+        "func": "function unpause() onlyOwner whenPaused public {\n    paused = false;\n    Unpause();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev called by the owner to unpause, returns to normal state",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev called by the owner to unpause, returns to normal state\n   */\n",
+        "@dev": "called by the owner to unpause, returns to normal state",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buy ",
+        "visibility": "public",
+        "args": [],
+        "func": "function buy ()\n        payable public\n        whenNotPaused\n        beforeDeadline\n        afterStartTime\n        saleNotClosed\n        nonReentrant\n    {\n        require(msg.value >= minContribution);\n        uint amount = msg.value;\n        // ensure that the user adheres to whitelist restrictions\n        require(registry[msg.sender]);\n        uint numTokens = computeTokenAmount(msg.sender, amount);\n        assert(numTokens > 0);\n        // update the total amount raised\n        amountRaised = amountRaised.add(amount);\n        require(amountRaised <= fundingCap);\n        // update the sender's balance of wei contributed\n        balanceOf[msg.sender] = balanceOf[msg.sender].add(amount);\n        // add to the token balance of the sender\n        tokenBalanceOf[msg.sender] = tokenBalanceOf[msg.sender].add(numTokens);\n        FundTransfer(msg.sender, amount, true);\n        updateFundingCap();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "registerUser",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contributor",
+                "type": "address"
+            },
+            {
+                "name": "c1",
+                "type": "uint"
+            },
+            {
+                "name": "c2",
+                "type": "uint"
+            },
+            {
+                "name": "c3",
+                "type": "uint"
+            },
+            {
+                "name": "c4",
+                "type": "uint"
+            }
+        ],
+        "func": "function registerUser(address contributor, uint c1, uint c2, uint c3, uint c4)\n        public\n        onlyOwner\n    {\n        require(contributor != address(0));\n        // if the user was already registered ensure that the new caps do not contradict their current contributions\n        if(hasPreviouslyRegistered(contributor)){\n            require(validateUpdatedRegistration(contributor, c1, c2, c3, c4));\n        }\n        require(c1.add(c2).add(c3).add(c4) >= minContribution);\n        registry[contributor] = true;\n        cap1[contributor] = c1;\n        cap2[contributor] = c2;\n        cap3[contributor] = c3;\n        cap4[contributor] = c4;\n        RegistrationStatusChanged(contributor, true, c1, c2, c3, c4);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Sets registration status of an address for participation.",
+            "     *",
+            "     * @param contributor Address that will be registered/deregistered.",
+            "     * @param c1 The maximum amount of wei that the user can contribute in tier 1.",
+            "     * @param c2 The maximum amount of wei that the user can contribute in tier 2.",
+            "     * @param c3 The maximum amount of wei that the user can contribute in tier 3.",
+            "     * @param c4 The maximum amount of wei that the user can contribute in tier 4.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Sets registration status of an address for participation.\n     *\n     * @param contributor Address that will be registered/deregistered.\n     * @param c1 The maximum amount of wei that the user can contribute in tier 1.\n     * @param c2 The maximum amount of wei that the user can contribute in tier 2.\n     * @param c3 The maximum amount of wei that the user can contribute in tier 3.\n     * @param c4 The maximum amount of wei that the user can contribute in tier 4.\n     */\n",
+        "@dev": "Sets registration status of an address for participation.",
+        "@param1": "contributor Address that will be registered/deregistered.",
+        "@param2": "c1 The maximum amount of wei that the user can contribute in tier 1.",
+        "@param3": "c2 The maximum amount of wei that the user can contribute in tier 2.",
+        "@param4": "c3 The maximum amount of wei that the user can contribute in tier 3.",
+        "@param5": "c4 The maximum amount of wei that the user can contribute in tier 4.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deactivate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contributor",
+                "type": "address"
+            }
+        ],
+        "func": "function deactivate(address contributor)\n        public\n        onlyOwner\n    {\n        require(registry[contributor]);\n        registry[contributor] = false;\n        RegistrationStatusChanged(contributor, false, cap1[contributor], cap2[contributor], cap3[contributor], cap4[contributor]);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Remove registration status of an address for participation.",
+            "     *",
+            "     * NOTE: if the user made initial contributions to the crowdsale,",
+            "     *       this will not return the previously allotted tokens.",
+            "     *",
+            "     * @param contributor Address to be unregistered.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Remove registration status of an address for participation.\n     *\n     * NOTE: if the user made initial contributions to the crowdsale,\n     *       this will not return the previously allotted tokens.\n     *\n     * @param contributor Address to be unregistered.\n     */\n",
+        "@dev": "Remove registration status of an address for participation. * * NOTE: if the user made initial contributions to the crowdsale, * this will not return the previously allotted tokens.",
+        "@param1": "contributor Address to be unregistered.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reactivate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contributor",
+                "type": "address"
+            }
+        ],
+        "func": "function reactivate(address contributor)\n        public\n        onlyOwner\n    {\n        require(hasPreviouslyRegistered(contributor));\n        registry[contributor] = true;\n        RegistrationStatusChanged(contributor, true, cap1[contributor], cap2[contributor], cap3[contributor], cap4[contributor]);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Re-registers an already existing contributor",
+            "     *",
+            "     * @param contributor Address to be unregistered.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Re-registers an already existing contributor\n     *\n     * @param contributor Address to be unregistered.\n     */\n",
+        "@dev": "Re-registers an already existing contributor",
+        "@param1": "contributor Address to be unregistered.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "registerUsers",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "contributors",
+                "type": "address[]"
+            },
+            {
+                "name": "caps1",
+                "type": "uint[]"
+            },
+            {
+                "name": "caps2",
+                "type": "uint[]"
+            },
+            {
+                "name": "caps3",
+                "type": "uint[]"
+            },
+            {
+                "name": "caps4",
+                "type": "uint[]"
+            }
+        ],
+        "func": "function registerUsers(address[] contributors,\n                           uint[] caps1,\n                           uint[] caps2,\n                           uint[] caps3,\n                           uint[] caps4)\n        external\n        onlyOwner\n    {\n        // check that all arrays have the same length\n        require(contributors.length == caps1.length);\n        require(contributors.length == caps2.length);\n        require(contributors.length == caps3.length);\n        require(contributors.length == caps4.length);\n        for (uint i = 0; i < contributors.length; i++) {\n            registerUser(contributors[i], caps1[i], caps2[i], caps3[i], caps4[i]);\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Sets registration statuses of addresses for participation.",
+            "     * @param contributors Addresses that will be registered/deregistered.",
+            "     * @param caps1 The maximum amount of wei that each user can contribute to cap1, in the same order as the addresses.",
+            "     * @param caps2 The maximum amount of wei that each user can contribute to cap2, in the same order as the addresses.",
+            "     * @param caps3 The maximum amount of wei that each user can contribute to cap3, in the same order as the addresses.",
+            "     * @param caps4 The maximum amount of wei that each user can contribute to cap4, in the same order as the addresses.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Sets registration statuses of addresses for participation.\n     * @param contributors Addresses that will be registered/deregistered.\n     * @param caps1 The maximum amount of wei that each user can contribute to cap1, in the same order as the addresses.\n     * @param caps2 The maximum amount of wei that each user can contribute to cap2, in the same order as the addresses.\n     * @param caps3 The maximum amount of wei that each user can contribute to cap3, in the same order as the addresses.\n     * @param caps4 The maximum amount of wei that each user can contribute to cap4, in the same order as the addresses.\n     */\n",
+        "@dev": "Sets registration statuses of addresses for participation.",
+        "@param1": "contributors Addresses that will be registered/deregistered.",
+        "@param2": "caps1 The maximum amount of wei that each user can contribute to cap1, in the same order as the addresses.",
+        "@param3": "caps2 The maximum amount of wei that each user can contribute to cap2, in the same order as the addresses.",
+        "@param4": "caps3 The maximum amount of wei that each user can contribute to cap3, in the same order as the addresses.",
+        "@param5": "caps4 The maximum amount of wei that each user can contribute to cap4, in the same order as the addresses.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "terminate",
+        "visibility": "external",
+        "args": [],
+        "func": "function terminate() external onlyOwner {\n        saleClosed = true;\n    }",
+        "comments": [
+            "/**",
+            "     * The owner can terminate the crowdsale at any time.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * The owner can terminate the crowdsale at any time.\n     */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerAllocateTokensForList",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addrs",
+                "type": "address[]"
+            },
+            {
+                "name": "weiAmounts",
+                "type": "uint[]"
+            },
+            {
+                "name": "miniQspAmounts",
+                "type": "uint[]"
+            }
+        ],
+        "func": "function ownerAllocateTokensForList(address[] addrs, uint[] weiAmounts, uint[] miniQspAmounts)\n            external onlyOwner\n    {\n        require(addrs.length == weiAmounts.length);\n        require(addrs.length == miniQspAmounts.length);\n        for(uint i = 0; i < addrs.length; i++){\n            ownerAllocateTokens(addrs[i], weiAmounts[i], miniQspAmounts[i]);\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * The owner can allocate the specified amount of tokens from the",
+            "     * crowdsale allowance to the recipient addresses.",
+            "     *",
+            "     * NOTE: be extremely careful to get the amounts correct, which",
+            "     * are in units of wei and mini-QSP. Every digit counts.",
+            "     *",
+            "     * @param addrs          the recipient addresses",
+            "     * @param weiAmounts     the amounts contributed in wei",
+            "     * @param miniQspAmounts the amounts of tokens transferred in mini-QSP",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * The owner can allocate the specified amount of tokens from the\n     * crowdsale allowance to the recipient addresses.\n     *\n     * NOTE: be extremely careful to get the amounts correct, which\n     * are in units of wei and mini-QSP. Every digit counts.\n     *\n     * @param addrs          the recipient addresses\n     * @param weiAmounts     the amounts contributed in wei\n     * @param miniQspAmounts the amounts of tokens transferred in mini-QSP\n     */\n",
+        "@param1": "addrs the recipient addresses",
+        "@param2": "weiAmounts the amounts contributed in wei",
+        "@param3": "miniQspAmounts the amounts of tokens transferred in mini-QSP",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerSafeWithdrawal",
+        "visibility": "external",
+        "args": [],
+        "func": "function ownerSafeWithdrawal() external onlyOwner nonReentrant {\n        uint balanceToSend = this.balance;\n        beneficiary.transfer(balanceToSend);\n        FundTransfer(beneficiary, balanceToSend, false);\n    }",
+        "comments": [
+            "/**",
+            "     * The owner can call this function to withdraw the funds that",
+            "     * have been sent to this contract for the crowdsale subject to",
+            "     * the funding goal having been reached. The funds will be sent",
+            "     * to the beneficiary specified when the crowdsale was created.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * The owner can call this function to withdraw the funds that\n     * have been sent to this contract for the crowdsale subject to\n     * the funding goal having been reached. The funds will be sent\n     * to the beneficiary specified when the crowdsale was created.\n     */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

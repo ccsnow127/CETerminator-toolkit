@@ -1,0 +1,353 @@
+[
+    {
+        "transactions": 665838,
+        "function_num": 18
+    },
+    {
+        "name": "AbstractToken ",
+        "visibility": "public",
+        "args": [],
+        "func": "function AbstractToken () public {\n    // Do nothing\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf (address _owner) public view returns (uint256 balance) {\n    return accounts [_owner];\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer (address _to, uint256 _value)\n  public returns (bool success) {\n    uint256 fromBalance = accounts [msg.sender];\n    if (fromBalance < _value) return false;\n    if (_value > 0 && msg.sender != _to) {\n      accounts [msg.sender] = safeSub (fromBalance, _value);\n      accounts [_to] = safeAdd (accounts [_to], _value);\n    }\n    Transfer (msg.sender, _to, _value);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom (address _from, address _to, uint256 _value)\n  public returns (bool success) {\n    uint256 spenderAllowance = allowances [_from][msg.sender];\n    if (spenderAllowance < _value) return false;\n    uint256 fromBalance = accounts [_from];\n    if (fromBalance < _value) return false;\n\n    allowances [_from][msg.sender] =\n      safeSub (spenderAllowance, _value);\n\n    if (_value > 0 && _from != _to) {\n      accounts [_from] = safeSub (fromBalance, _value);\n      accounts [_to] = safeAdd (accounts [_to], _value);\n    }\n    Transfer (_from, _to, _value);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve (address _spender, uint256 _value)\n  public returns (bool success) {\n    allowances [msg.sender][_spender] = _value;\n    Approval (msg.sender, _spender, _value);\n\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance (address _owner, address _spender)\n  public view returns (uint256 remaining) {\n    return allowances [_owner][_spender];\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "CelsiusToken ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenCount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function CelsiusToken (uint256 _tokenCount) public {\n    owner = msg.sender;\n    tokenCount = _tokenCount;\n    accounts [msg.sender] = _tokenCount;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply ",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply () public view returns (uint256 supply) {\n    return tokenCount;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name ",
+        "visibility": "public",
+        "args": [],
+        "func": "function name () public pure returns (string result) {\n    return \"Celsius\";\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol ",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol () public pure returns (string result) {\n    return \"CEL\";\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals ",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals () public pure returns (uint8 result) {\n    return 4;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer (address _to, uint256 _value)\n    public returns (bool success) {\n    if (frozen) return false;\n    else return AbstractToken.transfer (_to, _value);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom (address _from, address _to, uint256 _value)\n    public returns (bool success) {\n    if (frozen) return false;\n    else return AbstractToken.transferFrom (_from, _to, _value);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_currentValue",
+                "type": "uint256"
+            },
+            {
+                "name": "_newValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve (address _spender, uint256 _currentValue, uint256 _newValue)\n    public returns (bool success) {\n    if (allowance (msg.sender, _spender) == _currentValue)\n      return approve (_spender, _newValue);\n    else return false;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnTokens ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnTokens (uint256 _value) public returns (bool success) {\n    if (_value > accounts [msg.sender]) return false;\n    else if (_value > 0) {\n      accounts [msg.sender] = safeSub (accounts [msg.sender], _value);\n      tokenCount = safeSub (tokenCount, _value);\n\n      Transfer (msg.sender, address (0), _value);\n      return true;\n    } else return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setOwner ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function setOwner (address _newOwner) public {\n    require (msg.sender == owner);\n\n    owner = _newOwner;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "freezeTransfers ",
+        "visibility": "public",
+        "args": [],
+        "func": "function freezeTransfers () public {\n    require (msg.sender == owner);\n\n    if (!frozen) {\n      frozen = true;\n      Freeze ();\n    }\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unfreezeTransfers ",
+        "visibility": "public",
+        "args": [],
+        "func": "function unfreezeTransfers () public {\n    require (msg.sender == owner);\n\n    if (frozen) {\n      frozen = false;\n      Unfreeze ();\n    }\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

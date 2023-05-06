@@ -1,0 +1,3950 @@
+[
+    {
+        "transactions": 6926,
+        "function_num": 168
+    },
+    {
+        "name": "ninjaFlip",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ninjaFlip(uint256 tokenId) external {\n        require(msg.sender == ownerOf(tokenId), \"Not yours homie.\");\n        _ninjaFlip(tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ninjaFlipMany",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function ninjaFlipMany(uint256[] calldata tokenIds) external {\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            require(msg.sender == ownerOf(tokenId), \"Not yours homie.\");\n            _ninjaFlip(tokenId);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ninjaFlipAll",
+        "visibility": "external",
+        "args": [],
+        "func": "function ninjaFlipAll() external {\n        uint256 num = balanceOf(msg.sender);\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenOfOwnerByIndex(msg.sender, i);\n            _ninjaFlip(tokenId);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ninjaFlipAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ninjaFlipAdmin(uint256 tokenId) external onlyOwner {\n        _ninjaFlip(tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeemIndividual",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function redeemIndividual(uint256 tokenId) external {\n        require(msg.sender == fetchOwnerOfArbibot(tokenId), \"Not yours homie.\");\n        require(redeemEnabled, \"Not enabled!\");\n        _redeem(tokenId, msg.sender);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeem",
+        "visibility": "external",
+        "args": [],
+        "func": "function redeem() external {\n        require(redeemEnabled, \"Not enabled!\");\n\n        uint256 num = fetchNumArbibotsOwnedBy(msg.sender);\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = fetchArbibotTokenOfOwnerByIndex(msg.sender, i);\n\n            // only redeem if it hasnt been redeemed yet\n            if (!_exists(tokenId))\n                _redeem(tokenId, msg.sender);\n        }\n    }",
+        "comments": [
+            "",
+            "    // redeem all ",
+            "    "
+        ],
+        "comt": "\n    // redeem all \n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeemMany",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function redeemMany(uint256[] calldata tokenIds) external {\n        require(redeemEnabled, \"Not enabled!\");\n\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            require(msg.sender == fetchOwnerOfArbibot(tokenId), \"Not yours homie.\");\n            _redeem(tokenId, msg.sender);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAllRedeemableTokens",
+        "visibility": "external",
+        "args": [],
+        "func": "function getAllRedeemableTokens() external view returns (uint256[] memory, uint count) {\n\n        uint256 num = fetchNumArbibotsOwnedBy(msg.sender);\n        uint256[] memory redeemableTokens = new uint256[](num);\n\n        count = 0;\n\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = fetchArbibotTokenOfOwnerByIndex(msg.sender, i);\n\n            // only redeem if it hasnt been redeemed yet\n            if (!_exists(tokenId)) {\n                redeemableTokens[count] = tokenId;\n                count++;\n            }\n        }\n\n        return (redeemableTokens, count);\n    }",
+        "comments": [
+            "",
+            "    // returns array of redeemable tokenIds and count of redeemable tokens",
+            "    // note: count can be less than memory.length",
+            "    "
+        ],
+        "comt": "\n    // returns array of redeemable tokenIds and count of redeemable tokens\n    // note: count can be less than memory.length\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "adminRedeem",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function adminRedeem(uint256 tokenId) external onlyOwner { // for testing\n        _redeem(tokenId, msg.sender);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "adminRedeemMany",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function adminRedeemMany(uint256[] calldata tokenIds) external { // for testing\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            _redeem(tokenId, msg.sender);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view override returns (string memory) {\n        require(_exists(tokenId), \"URI query for nonexistent token\");\n        return _render(tokenId);\n    }",
+        "comments": [
+            "/*function adminRedeem(uint256 tokenId) external onlyOwner { // for testing",
+            "        _redeem(tokenId, msg.sender);",
+            "    }",
+            "",
+            "    function adminRedeemMany(uint256[] calldata tokenIds) external { // for testing",
+            "        uint256 num = tokenIds.length;",
+            "        for (uint256 i = 0; i < num; ++i) {",
+            "            uint256 tokenId = tokenIds[i];",
+            "            _redeem(tokenId, msg.sender);",
+            "        }",
+            "    }*/",
+            ""
+        ],
+        "comt": "/*function adminRedeem(uint256 tokenId) external onlyOwner { // for testing\n        _redeem(tokenId, msg.sender);\n    }\n\n    function adminRedeemMany(uint256[] calldata tokenIds) external { // for testing\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            _redeem(tokenId, msg.sender);\n        }\n    }*/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {\n        return super.supportsInterface(interfaceId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRedeemEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setRedeemEnabled(bool newEnabled) external onlyOwner {\n        redeemEnabled = newEnabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractArbibots",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractArbibots(address newAddress) external onlyOwner {\n        contractArbibots = IERC721Enumerable(newAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fetchOwnerOfArbibot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "arbibotTokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function fetchOwnerOfArbibot(uint256 arbibotTokenId) public view returns (address) {\n        if (address(contractArbibots) == address(0)) {\n            return address(0);\n        }\n\n        return contractArbibots.ownerOf(arbibotTokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fetchNumArbibotsOwnedBy",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            }
+        ],
+        "func": "function fetchNumArbibotsOwnedBy(address from) public view returns (uint256) {\n        if (address(contractArbibots) == address(0)) {\n            return 0;\n        }\n\n        return contractArbibots.balanceOf(from);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fetchArbibotTokenOfOwnerByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function fetchArbibotTokenOfOwnerByIndex(address from, uint256 index) public view returns (uint256) {\n        if (address(contractArbibots) == address(0)) {\n            return 0;\n        }\n\n        return contractArbibots.tokenOfOwnerByIndex(from, index);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdraw() public onlyOwner {\n        uint balance = address(this).balance;\n        payable(msg.sender).transfer(balance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return\n            interfaceId == type(IERC721).interfaceId ||\n            interfaceId == type(IERC721Metadata).interfaceId ||\n            super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view virtual override returns (uint256) {\n        require(owner != address(0), \"ERC721: address zero is not a valid owner\");\n        return _balances[owner];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-balanceOf}.\n     */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view virtual override returns (address) {\n        address owner = _owners[tokenId];\n        require(owner != address(0), \"ERC721: invalid token ID\");\n        return owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-ownerOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-ownerOf}.\n     */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-name}.\n     */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-symbol}.\n     */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        _requireMinted(tokenId);\n\n        string memory baseURI = _baseURI();\n        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : \"\";\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-tokenURI}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-tokenURI}.\n     */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ERC721.ownerOf(tokenId);\n        require(to != owner, \"ERC721: approval to current owner\");\n\n        require(\n            _msgSender() == owner || isApprovedForAll(owner, _msgSender()),\n            \"ERC721: approve caller is not token owner nor approved for all\"\n        );\n\n        _approve(to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-approve}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-approve}.\n     */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view virtual override returns (address) {\n        _requireMinted(tokenId);\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-getApproved}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-getApproved}.\n     */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        _setApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: caller is not token owner nor approved\");\n\n        _transfer(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-transferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-transferFrom}.\n     */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId,\n        bytes memory data\n    ) public virtual override {\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: caller is not token owner nor approved\");\n        _safeTransfer(from, to, tokenId, data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC721) returns (bool) {\n        return interfaceId == type(IERC721Enumerable).interfaceId || super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenOfOwnerByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenOfOwnerByIndex(address owner, uint256 index) public view virtual override returns (uint256) {\n        require(index < ERC721.balanceOf(owner), \"ERC721Enumerable: owner index out of bounds\");\n        return _ownedTokens[owner][index];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n        return _allTokens.length;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-totalSupply}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenByIndex(uint256 index) public view virtual override returns (uint256) {\n        require(index < ERC721Enumerable.totalSupply(), \"ERC721Enumerable: global index out of bounds\");\n        return _allTokens[index];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Enumerable-tokenByIndex}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Enumerable-tokenByIndex}.\n     */\n",
+        "@dev": "See {IERC721Enumerable-tokenByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burn(uint256 tokenId) public virtual {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: caller is not token owner nor approved\");\n        _burn(tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Burns `tokenId`. See {ERC721-_burn}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - The caller must own `tokenId` or be an approved operator.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Burns `tokenId`. See {ERC721-_burn}.\n     *\n     * Requirements:\n     *\n     * - The caller must own `tokenId` or be an approved operator.\n     */\n",
+        "@dev": "Burns `tokenId`. See {ERC721-_burn}. * * Requirements: * * - The caller must own `tokenId` or be an approved operator.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC165).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view virtual override returns (uint8) {\n      return 16;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenCount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintAdmin(address to, uint256 tokenCount) external onlyOwner {\n        _mint(to, tokenCount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the name of the token.\n     */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the symbol of the token, usually a shorter version of the",
+            "     * name.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the symbol of the token, usually a shorter version of the\n     * name.\n     */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view virtual override returns (uint8) {\n        return 18;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of decimals used to get its user representation.",
+            "     * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "     * be displayed to a user as `5.05` (`505 / 10 ** 2`).",
+            "     *",
+            "     * Tokens usually opt for a value of 18, imitating the relationship between",
+            "     * Ether and Wei. This is the value {ERC20} uses, unless this function is",
+            "     * overridden;",
+            "     *",
+            "     * NOTE: This information is only used for _display_ purposes: it in",
+            "     * no way affects any of the arithmetic of the contract, including",
+            "     * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of decimals used to get its user representation.\n     * For example, if `decimals` equals `2`, a balance of `505` tokens should\n     * be displayed to a user as `5.05` (`505 / 10 ** 2`).\n     *\n     * Tokens usually opt for a value of 18, imitating the relationship between\n     * Ether and Wei. This is the value {ERC20} uses, unless this function is\n     * overridden;\n     *\n     * NOTE: This information is only used for _display_ purposes: it in\n     * no way affects any of the arithmetic of the contract, including\n     * {IERC20-balanceOf} and {IERC20-transfer}.\n     */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5.05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless this function is * overridden; * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}.\n     */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view virtual override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address to, uint256 amount) public virtual override returns (bool) {\n        address owner = _msgSender();\n        _transfer(owner, to, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `to` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `to` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `to` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        address owner = _msgSender();\n        _approve(owner, spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on",
+            "     * `transferFrom`. This is semantically equivalent to an infinite approval.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on\n     * `transferFrom`. This is semantically equivalent to an infinite approval.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on * `transferFrom`. This is semantically equivalent to an infinite approval. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        address spender = _msgSender();\n        _spendAllowance(from, spender, amount);\n        _transfer(from, to, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * NOTE: Does not update the allowance if the current allowance",
+            "     * is the maximum `uint256`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `from` and `to` cannot be the zero address.",
+            "     * - `from` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``from``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * NOTE: Does not update the allowance if the current allowance\n     * is the maximum `uint256`.\n     *\n     * Requirements:\n     *\n     * - `from` and `to` cannot be the zero address.\n     * - `from` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``from``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * NOTE: Does not update the allowance if the current allowance * is the maximum `uint256`. * * Requirements: * * - `from` and `to` cannot be the zero address. * - `from` must have a balance of at least `amount`. * - the caller must have allowance for ``from``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        address owner = _msgSender();\n        _approve(owner, spender, allowance(owner, spender) + addedValue);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        address owner = _msgSender();\n        uint256 currentAllowance = allowance(owner, spender);\n        require(currentAllowance >= subtractedValue, \"ERC20: decreased allowance below zero\");\n        unchecked {\n            _approve(owner, spender, currentAllowance - subtractedValue);\n        }\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnSacrifice",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnSacrifice(uint256 tokenId) external onlyApprovedOrOwner(tokenId) {\n        //require(msg.sender == ownerOf(tokenId), \"Not yours\");\n        require(burnSacrificeEnabled == true);\n\n        _burn(tokenId);\n        emit EthKunSacrificed(tokenId);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Burn sacrifice an ethkun at the altar of Lord Vitalik",
+            "    /// @param tokenId The tokenID for the EthKun",
+            "    "
+        ],
+        "comt": "\n    /// @notice Burn sacrifice an ethkun at the altar of Lord Vitalik\n    /// @param tokenId The tokenID for the EthKun\n    ",
+        "@notice": "Burn sacrifice an ethkun at the altar of Lord Vitalik",
+        "@param1": "tokenId The tokenID for the EthKun",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reserveEthKuns",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "numToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function reserveEthKuns(address to, uint256 numToMint) external onlyOwner {\n        _mintEthKuns(to, numToMint);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reserveEthKunsMany",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipients",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "numToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function reserveEthKunsMany(address[] calldata recipients, uint256 numToMint) external onlyOwner {\n        uint256 num = recipients.length;\n        require(num > 0);\n\n        for (uint256 i = 0; i < num; ++i) {\n            _mintEthKuns(recipients[i], numToMint);    \n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintEthKunsGenesis",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "numToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintEthKunsGenesis(uint256 numToMint) external payable verifySupplyGenesis(numToMint) {\n        require(mintStatus == MintStatus.PUBLIC, \"Public mint closed\");\n        require(msg.value >= _getPrice(numToMint), \"Incorrect ether sent\" );\n\n        // check max mint\n        (uint256 maxTokensOwnedInWallet, uint256 maxMintsPerTransaction) = _getMaxMintsData();\n        require(_numberMinted(msg.sender) + numToMint <= maxTokensOwnedInWallet, \"Exceeds max mints\");\n        require(numToMint <= maxMintsPerTransaction, \"Exceeds transaction max\");\n\n        _mintEthKuns(msg.sender, numToMint);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Mint genesis ethkuns into your wallet!",
+            "    /// @param numToMint The number of genesis ethkuns to mint ",
+            "    "
+        ],
+        "comt": "\n    /// @notice Mint genesis ethkuns into your wallet!\n    /// @param numToMint The number of genesis ethkuns to mint \n    ",
+        "@notice": "Mint genesis ethkuns into your wallet!",
+        "@param1": "numToMint The number of genesis ethkuns to mint",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "merge",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function merge(uint256[] calldata tokenIds) external {\n        require(_isRevealed() && mergeEnabled, \"Not mergeable\");\n        _merge(tokenIds);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Merge several ethkuns into one buff gigachad ethkun, all the levels accumulate into the gigachad ethkun, but the remaining ethkuns are burned, gg",
+            "    /// @param tokenIds Array of owned tokenIds. Note that the first tokenId will be the one that remains and accumulates levels of other ethkuns, the other tokens will be BURNT!!",
+            "    "
+        ],
+        "comt": "\n    /// @notice Merge several ethkuns into one buff gigachad ethkun, all the levels accumulate into the gigachad ethkun, but the remaining ethkuns are burned, gg\n    /// @param tokenIds Array of owned tokenIds. Note that the first tokenId will be the one that remains and accumulates levels of other ethkuns, the other tokens will be BURNT!!\n    ",
+        "@notice": "Merge several ethkuns into one buff gigachad ethkun, all the levels accumulate into the gigachad ethkun, but the remaining ethkuns are burned, gg",
+        "@param1": "tokenIds Array of owned tokenIds. Note that the first tokenId will be the one that remains and accumulates levels of other ethkuns, the other tokens will be BURNT!!",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rerollMany",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function rerollMany(uint256[] calldata tokenIds) external {\n        require(_isRevealed() && demoteRerollEnabled);\n\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            uint256 tokenLevel = level[tokenId];\n\n            require(_ownershipOf(tokenId).addr == _msgSender(), \"Must own\");\n            require(tokenLevel > 1, \"At least Lvl 1\"); // need to be at least level 1 to reroll\n            \n            // reroll visuals/stats\n            _saveSeed(tokenId); \n\n            // demote -1 evel\n            uint256 tokenLevelDemoted = tokenLevel-1;\n            level[tokenId] = tokenLevelDemoted; \n\n            emit EthRerolled(tokenId, tokenLevelDemoted);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Reroll the visuals/stats of ethkun, but unfortunately demotes them by -1 level :(",
+            "    /// @param tokenIds Array of owned tokenIds of ethkuns to demote",
+            "    "
+        ],
+        "comt": "\n    /// @notice Reroll the visuals/stats of ethkun, but unfortunately demotes them by -1 level :(\n    /// @param tokenIds Array of owned tokenIds of ethkuns to demote\n    ",
+        "@notice": "Reroll the visuals/stats of ethkun, but unfortunately demotes them by -1 level :(",
+        "@param1": "tokenIds Array of owned tokenIds of ethkuns to demote",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokensOfOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function tokensOfOwner(address owner) external view returns (uint256[] memory) {\n        unchecked {\n            uint256 tokenIdsIdx;\n            address currOwnershipAddr;\n            uint256 tokenIdsLength = balanceOf(owner);\n            uint256[] memory tokenIds = new uint256[](tokenIdsLength);\n            TokenOwnership memory ownership;\n            for (uint256 i = _startTokenId(); tokenIdsIdx != tokenIdsLength; ++i) {\n                ownership = _ownershipAt(i);\n                if (ownership.burned) {\n                    continue;\n                }\n                if (ownership.addr != address(0)) {\n                    currOwnershipAddr = ownership.addr;\n                }\n                if (currOwnershipAddr == owner) {\n                    tokenIds[tokenIdsIdx++] = i;\n                }\n            }\n            return tokenIds;\n        }\n    }",
+        "comments": [
+            "",
+            "    // taken from 'ERC721AQueryable.sol'",
+            "    "
+        ],
+        "comt": "\n    // taken from 'ERC721AQueryable.sol'\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNumMinted",
+        "visibility": "external",
+        "args": [],
+        "func": "function getNumMinted() external view returns (uint256) {\n        return _totalMinted();\n    }",
+        "comments": [
+            "",
+            "    ///////////////////////////",
+            "    // -- GETTERS/SETTERS --",
+            "    ///////////////////////////",
+            "    "
+        ],
+        "comt": "\n    ///////////////////////////\n    // -- GETTERS/SETTERS --\n    ///////////////////////////\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNumBabiesMinted",
+        "visibility": "external",
+        "args": [],
+        "func": "function getNumBabiesMinted() external view returns (uint256) {\n        return _getNumBabiesMinted();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPricing",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pricingData",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function setPricing(uint256[] calldata pricingData) external onlyOwner {\n        // tier 0\n        tier0_supply = pricingData[0];\n        tier0_price = pricingData[1];\n        tier0_maxTokensOwnedInWallet = pricingData[2];\n        tier0_maxMintsPerTransaction = pricingData[3];\n\n        // tier 1\n        tier1_price = pricingData[4];\n        tier1_maxTokensOwnedInWallet = pricingData[5];\n        tier1_maxMintsPerTransaction = pricingData[6];\n\n        require(tier0_supply <= MAX_TOKEN_SUPPLY_GENESIS);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPrice",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "numToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getPrice(uint256 numToMint) external view returns (uint256) {\n        return _getPrice(numToMint);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMaxMintsData",
+        "visibility": "external",
+        "args": [],
+        "func": "function getMaxMintsData() external view returns (uint256 maxTokensOwnedInWallet, uint256 maxMintsPerTransaction) {\n        return _getMaxMintsData() ;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMaxLevel",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_maxLevel",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setMaxLevel(uint256 _maxLevel) external onlyOwner {\n        maxLevel = _maxLevel;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMintStatus",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_status",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setMintStatus(uint256 _status) external onlyOwner {\n        mintStatus = MintStatus(_status);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractRenderer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractRenderer(address newAddress) external onlyOwner {\n        contractRenderer = IEthKunRenderer(newAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRevealed",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_revealEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setRevealed(bool _revealEnabled) external onlyOwner {\n        revealEnabled = _revealEnabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMergeEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setMergeEnabled(bool _enabled) external onlyOwner {\n        mergeEnabled = _enabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMergeBlockNumber",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newMergeBlockNumber",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setMergeBlockNumber(uint256 newMergeBlockNumber) external onlyOwner {\n        mergeBlockNumber = newMergeBlockNumber;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBurnSacrificeEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setBurnSacrificeEnabled(bool _enabled) external onlyOwner {\n        burnSacrificeEnabled = _enabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setDemoteRerollEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setDemoteRerollEnabled(bool _enabled) external onlyOwner {\n        demoteRerollEnabled = _enabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "numberMinted",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "func": "function numberMinted(address addr) external view returns(uint256){\n        return _numberMinted(addr);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isGenesis",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function isGenesis(uint256 tokenId) external pure returns(bool){\n        return tokenId <= MAX_TOKEN_SUPPLY_GENESIS;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMerkleRoot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_merkleRoot",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function setMerkleRoot(bytes32 _merkleRoot) external onlyOwner {\n        merkleRoot = _merkleRoot;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMerkleMintEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setMerkleMintEnabled(bool _enabled) external onlyOwner {\n        merkleMintEnabled = _enabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "verifyMerkle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_proof",
+                "type": "bytes32[] calldata"
+            },
+            {
+                "name": "_leaf",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function verifyMerkle(bytes32[] calldata _proof, bytes32 _leaf) external view returns (bool) {\n        return _verifyMerkle(_proof, _leaf);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "verifyMerkleAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_proof",
+                "type": "bytes32[] calldata"
+            },
+            {
+                "name": "from",
+                "type": "address"
+            }
+        ],
+        "func": "function verifyMerkleAddress(bytes32[] calldata _proof, address from) external view returns (bool) {\n        bytes32 leaf = keccak256(abi.encodePacked(from));\n        return _verifyMerkle(_proof, leaf);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintMerkle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_merkleProof",
+                "type": "bytes32[] calldata"
+            },
+            {
+                "name": "numToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintMerkle(bytes32[] calldata _merkleProof, uint256 numToMint) external verifySupplyGenesis(numToMint) {\n        require(merkleMintEnabled == true, \"Merkle closed\");\n        require(_numberMinted(msg.sender) + numToMint <= merkleMintMax, \"Can claim only 1\");\n\n        // verify merkle        \n        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));\n        require(_verifyMerkle(_merkleProof, leaf), \"Invalid proof\");\n\n        _mintEthKuns(msg.sender, numToMint);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) override(ERC721A) public view verifyTokenId(tokenId) returns (string memory) {\n        if (_isRevealed()) \n            return _tokenURI(tokenId);\n        else\n            return _tokenUnrevealedURI(tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "external",
+        "args": [],
+        "func": "function withdraw() external onlyOwner {\n        uint balance = address(this).balance;\n        payable(msg.sender).transfer(balance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSteakingInfoForToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getSteakingInfoForToken(uint256 tokenId) external view returns (uint256 currentSteakingTime, uint256 totalSteakingTime, bool steaking)\n    {\n        currentSteakingTime = 0;\n        uint256 startTimestamp = steakingStartTimestamp[tokenId];\n\n        // is steaking?\n        if (startTimestamp != NULL_STEAKING) { \n            currentSteakingTime = block.timestamp - startTimestamp;\n        }\n\n        totalSteakingTime = currentSteakingTime + steakingTotalTime[tokenId];\n        steaking = startTimestamp != NULL_STEAKING;\n    }",
+        "comments": [
+            "",
+            "    // currentSteakingTime: current steaking time in secs (0 = not steaking)",
+            "    // totalSteakingTime: total time of steaking (in secs)",
+            "    "
+        ],
+        "comt": "\n    // currentSteakingTime: current steaking time in secs (0 = not steaking)\n    // totalSteakingTime: total time of steaking (in secs)\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSteakingEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "allowed",
+                "type": "bool"
+            }
+        ],
+        "func": "function setSteakingEnabled(bool allowed) external onlyOwner {\n        steakingEnabled = allowed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMintingBabiesEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "allowed",
+                "type": "bool"
+            }
+        ],
+        "func": "function setMintingBabiesEnabled(bool allowed) external onlyOwner {\n        mintingBabiesEnabled = allowed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSteakingMinLevel",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_minLvl",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setSteakingMinLevel(uint256 _minLvl) external onlyOwner {\n        minSteakingLevel = _minLvl;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleSteaking",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function toggleSteaking(uint256[] calldata tokenIds) external {\n        uint256 num = tokenIds.length;\n\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            _toggleSteaking(tokenId);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Token steaking on multiple ethkun tokens!",
+            "    /// @param tokenIds Array of ethkun tokenIds to toggle steaking ",
+            "    "
+        ],
+        "comt": "\n    /// @notice Token steaking on multiple ethkun tokens!\n    /// @param tokenIds Array of ethkun tokenIds to toggle steaking \n    ",
+        "@notice": "Token steaking on multiple ethkun tokens!",
+        "@param1": "tokenIds Array of ethkun tokenIds to toggle steaking",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "adminForceStopSteaking",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function adminForceStopSteaking(uint256[] calldata tokenIds) external onlyOwner {\n        uint256 num = tokenIds.length;\n\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            _adminForceStopSteaking(tokenId);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "canSpawnEthKunBaby",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function canSpawnEthKunBaby(uint256 tokenId) external view returns (bool) {\n        return _canSpawnEthKunBaby(tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSteakingParams",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_steakingMinDays",
+                "type": "uint256"
+            },
+            {
+                "name": "_steakingCurveDivisor",
+                "type": "uint256"
+            },
+            {
+                "name": "_steakingLevelBoostDivisor",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setSteakingParams(uint256 _steakingMinDays, uint256 _steakingCurveDivisor, uint256 _steakingLevelBoostDivisor) external onlyOwner {\n        steakingMinDays = _steakingMinDays;\n        steakingCurveDivisor = _steakingCurveDivisor;\n        steakingLevelBoostDivisor = _steakingLevelBoostDivisor;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set parameters for steaking",
+            "    /// @param _steakingMinDays Minimum days for steaking",
+            "    /// @param _steakingCurveDivisor Per baby coefficient divisor",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set parameters for steaking\n    /// @param _steakingMinDays Minimum days for steaking\n    /// @param _steakingCurveDivisor Per baby coefficient divisor\n    ",
+        "@notice": "Set parameters for steaking",
+        "@param1": "_steakingMinDays Minimum days for steaking",
+        "@param2": "_steakingCurveDivisor Per baby coefficient divisor",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintEthKunBaby",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "parentTokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function mintEthKunBaby(uint256[] calldata parentTokenIds) external {\n        _mintEthKunBabies(parentTokenIds);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Mint a baby ethkun from steaked parent ethkun!",
+            "    /// @param parentTokenIds Steaked ethkun tokenIds to spawn from",
+            "    "
+        ],
+        "comt": "\n    /// @notice Mint a baby ethkun from steaked parent ethkun!\n    /// @param parentTokenIds Steaked ethkun tokenIds to spawn from\n    ",
+        "@notice": "Mint a baby ethkun from steaked parent ethkun!",
+        "@param1": "parentTokenIds Steaked ethkun tokenIds to spawn from",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSecsSteakingRequiredToMintBaby",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getSecsSteakingRequiredToMintBaby(uint256 tokenId) external view returns (uint256) {\n        return _getSecsSteakingRequiredToMintBaby(tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n        // Counter underflow is impossible as _burnCounter cannot be incremented\n        // more than `_currentIndex - _startTokenId()` times.\n        unchecked {\n            return _currentIndex - _burnCounter - _startTokenId();\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the total number of tokens in existence.",
+            "     * Burned tokens will reduce the count.",
+            "     * To get the total number of tokens minted, please see {_totalMinted}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the total number of tokens in existence.\n     * Burned tokens will reduce the count.\n     * To get the total number of tokens minted, please see {_totalMinted}.\n     */\n",
+        "@dev": "Returns the total number of tokens in existence. * Burned tokens will reduce the count. * To get the total number of tokens minted, please see {_totalMinted}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view virtual override returns (uint256) {\n        if (owner == address(0)) revert BalanceQueryForZeroAddress();\n        return _packedAddressData[owner] & _BITMASK_ADDRESS_DATA_ENTRY;\n    }",
+        "comments": [
+            "",
+            "    // =============================================================",
+            "    //                    ADDRESS DATA OPERATIONS",
+            "    // =============================================================",
+            "",
+            "    /**",
+            "     * @dev Returns the number of tokens in `owner`'s account.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // =============================================================\n    //                    ADDRESS DATA OPERATIONS\n    // =============================================================\n\n    /**\n     * @dev Returns the number of tokens in `owner`'s account.\n     */\n    ",
+        "@dev": "Returns the number of tokens in `owner`'s account.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        // The interface IDs are constants representing the first 4 bytes\n        // of the XOR of all function selectors in the interface.\n        // See: [ERC165](https://eips.ethereum.org/EIPS/eip-165)\n        // (e.g. `bytes4(i.functionA.selector ^ i.functionB.selector ^ ...)`)\n        return\n            interfaceId == 0x01ffc9a7 || // ERC165 interface ID for ERC165.\n            interfaceId == 0x80ac58cd || // ERC165 interface ID for ERC721.\n            interfaceId == 0x5b5e139f; // ERC165 interface ID for ERC721Metadata.\n    }",
+        "comments": [
+            "",
+            "    // =============================================================",
+            "    //                            IERC165",
+            "    // =============================================================",
+            "",
+            "    /**",
+            "     * @dev Returns true if this contract implements the interface defined by",
+            "     * `interfaceId`. See the corresponding",
+            "     * [EIP section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified)",
+            "     * to learn more about how these ids are created.",
+            "     *",
+            "     * This function call must use less than 30000 gas.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // =============================================================\n    //                            IERC165\n    // =============================================================\n\n    /**\n     * @dev Returns true if this contract implements the interface defined by\n     * `interfaceId`. See the corresponding\n     * [EIP section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified)\n     * to learn more about how these ids are created.\n     *\n     * This function call must use less than 30000 gas.\n     */\n    ",
+        "@dev": "Returns true if this contract implements the interface defined by * `interfaceId`. See the corresponding * [EIP section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified) * to learn more about how these ids are created. * * This function call must use less than 30000 gas.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "",
+            "    // =============================================================",
+            "    //                        IERC721Metadata",
+            "    // =============================================================",
+            "",
+            "    /**",
+            "     * @dev Returns the token collection name.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // =============================================================\n    //                        IERC721Metadata\n    // =============================================================\n\n    /**\n     * @dev Returns the token collection name.\n     */\n    ",
+        "@dev": "Returns the token collection name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the token collection symbol.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the token collection symbol.\n     */\n",
+        "@dev": "Returns the token collection symbol.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        if (!_exists(tokenId)) revert URIQueryForNonexistentToken();\n\n        string memory baseURI = _baseURI();\n        return bytes(baseURI).length != 0 ? string(abi.encodePacked(baseURI, _toString(tokenId))) : '';\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.\n     */\n",
+        "@dev": "Returns the Uniform Resource Identifier (URI) for `tokenId` token.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view virtual override returns (address) {\n        return address(uint160(_packedOwnershipOf(tokenId)));\n    }",
+        "comments": [
+            "",
+            "    // =============================================================",
+            "    //                     OWNERSHIPS OPERATIONS",
+            "    // =============================================================",
+            "",
+            "    /**",
+            "     * @dev Returns the owner of the `tokenId` token.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `tokenId` must exist.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // =============================================================\n    //                     OWNERSHIPS OPERATIONS\n    // =============================================================\n\n    /**\n     * @dev Returns the owner of the `tokenId` token.\n     *\n     * Requirements:\n     *\n     * - `tokenId` must exist.\n     */\n    ",
+        "@dev": "Returns the owner of the `tokenId` token. * * Requirements: * * - `tokenId` must exist.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ownerOf(tokenId);\n\n        if (_msgSenderERC721A() != owner)\n            if (!isApprovedForAll(owner, _msgSenderERC721A())) {\n                revert ApprovalCallerNotOwnerNorApproved();\n            }\n\n        _tokenApprovals[tokenId].value = to;\n        emit Approval(owner, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gives permission to `to` to transfer `tokenId` token to another account.",
+            "     * The approval is cleared when the token is transferred.",
+            "     *",
+            "     * Only a single account can be approved at a time, so approving the",
+            "     * zero address clears previous approvals.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - The caller must own the token or be an approved operator.",
+            "     * - `tokenId` must exist.",
+            "     *",
+            "     * Emits an {Approval} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gives permission to `to` to transfer `tokenId` token to another account.\n     * The approval is cleared when the token is transferred.\n     *\n     * Only a single account can be approved at a time, so approving the\n     * zero address clears previous approvals.\n     *\n     * Requirements:\n     *\n     * - The caller must own the token or be an approved operator.\n     * - `tokenId` must exist.\n     *\n     * Emits an {Approval} event.\n     */\n",
+        "@dev": "Gives permission to `to` to transfer `tokenId` token to another account. * The approval is cleared when the token is transferred. * * Only a single account can be approved at a time, so approving the * zero address clears previous approvals. * * Requirements: * * - The caller must own the token or be an approved operator. * - `tokenId` must exist. * * Emits an {Approval} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view virtual override returns (address) {\n        if (!_exists(tokenId)) revert ApprovalQueryForNonexistentToken();\n\n        return _tokenApprovals[tokenId].value;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the account approved for `tokenId` token.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `tokenId` must exist.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the account approved for `tokenId` token.\n     *\n     * Requirements:\n     *\n     * - `tokenId` must exist.\n     */\n",
+        "@dev": "Returns the account approved for `tokenId` token. * * Requirements: * * - `tokenId` must exist.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        if (operator == _msgSenderERC721A()) revert ApproveToCaller();\n\n        _operatorApprovals[_msgSenderERC721A()][operator] = approved;\n        emit ApprovalForAll(_msgSenderERC721A(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Approve or remove `operator` as an operator for the caller.",
+            "     * Operators can call {transferFrom} or {safeTransferFrom}",
+            "     * for any token owned by the caller.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - The `operator` cannot be the caller.",
+            "     *",
+            "     * Emits an {ApprovalForAll} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Approve or remove `operator` as an operator for the caller.\n     * Operators can call {transferFrom} or {safeTransferFrom}\n     * for any token owned by the caller.\n     *\n     * Requirements:\n     *\n     * - The `operator` cannot be the caller.\n     *\n     * Emits an {ApprovalForAll} event.\n     */\n",
+        "@dev": "Approve or remove `operator` as an operator for the caller. * Operators can call {transferFrom} or {safeTransferFrom} * for any token owned by the caller. * * Requirements: * * - The `operator` cannot be the caller. * * Emits an {ApprovalForAll} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.",
+            "     *",
+            "     * See {setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.\n     *\n     * See {setApprovalForAll}.\n     */\n",
+        "@dev": "Returns if the `operator` is allowed to manage all of the assets of `owner`. * * See {setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        uint256 prevOwnershipPacked = _packedOwnershipOf(tokenId);\n\n        if (address(uint160(prevOwnershipPacked)) != from) revert TransferFromIncorrectOwner();\n\n        (uint256 approvedAddressSlot, address approvedAddress) = _getApprovedSlotAndAddress(tokenId);\n\n        // The nested ifs save around 20+ gas over a compound boolean condition.\n        if (!_isSenderApprovedOrOwner(approvedAddress, from, _msgSenderERC721A()))\n            if (!isApprovedForAll(from, _msgSenderERC721A())) revert TransferCallerNotOwnerNorApproved();\n\n        if (to == address(0)) revert TransferToZeroAddress();\n\n        _beforeTokenTransfers(from, to, tokenId, 1);\n\n        // Clear approvals from the previous owner.\n        assembly {\n            if approvedAddress {\n                // This is equivalent to `delete _tokenApprovals[tokenId]`.\n                sstore(approvedAddressSlot, 0)\n            }\n        }\n\n        // Underflow of the sender's balance is impossible because we check for\n        // ownership above and the recipient's balance can't realistically overflow.\n        // Counter overflow is incredibly unrealistic as `tokenId` would have to be 2**256.\n        unchecked {\n            // We can directly increment and decrement the balances.\n            --_packedAddressData[from]; // Updates: `balance -= 1`.\n            ++_packedAddressData[to]; // Updates: `balance += 1`.\n\n            // Updates:\n            // - `address` to the next owner.\n            // - `startTimestamp` to the timestamp of transfering.\n            // - `burned` to `false`.\n            // - `nextInitialized` to `true`.\n            _packedOwnerships[tokenId] = _packOwnershipData(\n                to,\n                _BITMASK_NEXT_INITIALIZED | _nextExtraData(from, to, prevOwnershipPacked)\n            );\n\n            // If the next slot may not have been initialized (i.e. `nextInitialized == false`) .\n            if (prevOwnershipPacked & _BITMASK_NEXT_INITIALIZED == 0) {\n                uint256 nextTokenId = tokenId + 1;\n                // If the next slot's address is zero and not burned (i.e. packed value is zero).\n                if (_packedOwnerships[nextTokenId] == 0) {\n                    // If the next slot is within bounds.\n                    if (nextTokenId != _currentIndex) {\n                        // Initialize the next slot to maintain correctness for `ownerOf(tokenId + 1)`.\n                        _packedOwnerships[nextTokenId] = prevOwnershipPacked;\n                    }\n                }\n            }\n        }\n\n        emit Transfer(from, to, tokenId);\n        _afterTokenTransfers(from, to, tokenId, 1);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers `tokenId` from `from` to `to`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `from` cannot be the zero address.",
+            "     * - `to` cannot be the zero address.",
+            "     * - `tokenId` token must be owned by `from`.",
+            "     * - If the caller is not `from`, it must be approved to move this token",
+            "     * by either {approve} or {setApprovalForAll}.",
+            "     *",
+            "     * Emits a {Transfer} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers `tokenId` from `from` to `to`.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must be owned by `from`.\n     * - If the caller is not `from`, it must be approved to move this token\n     * by either {approve} or {setApprovalForAll}.\n     *\n     * Emits a {Transfer} event.\n     */\n",
+        "@dev": "Transfers `tokenId` from `from` to `to`. * * Requirements: * * - `from` cannot be the zero address. * - `to` cannot be the zero address. * - `tokenId` token must be owned by `from`. * - If the caller is not `from`, it must be approved to move this token * by either {approve} or {setApprovalForAll}. * * Emits a {Transfer} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        safeTransferFrom(from, to, tokenId, '');\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Equivalent to `safeTransferFrom(from, to, tokenId, '')`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Equivalent to `safeTransferFrom(from, to, tokenId, '')`.\n     */\n",
+        "@dev": "Equivalent to `safeTransferFrom(from, to, tokenId, '')`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId,\n        bytes memory _data\n    ) public virtual override {\n        transferFrom(from, to, tokenId);\n        if (to.code.length != 0)\n            if (!_checkContractOnERC721Received(from, to, tokenId, _data)) {\n                revert TransferToNonERC721ReceiverImplementer();\n            }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Safely transfers `tokenId` token from `from` to `to`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `from` cannot be the zero address.",
+            "     * - `to` cannot be the zero address.",
+            "     * - `tokenId` token must exist and be owned by `from`.",
+            "     * - If the caller is not `from`, it must be approved to move this token",
+            "     * by either {approve} or {setApprovalForAll}.",
+            "     * - If `to` refers to a smart contract, it must implement",
+            "     * {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.",
+            "     *",
+            "     * Emits a {Transfer} event.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Safely transfers `tokenId` token from `from` to `to`.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must exist and be owned by `from`.\n     * - If the caller is not `from`, it must be approved to move this token\n     * by either {approve} or {setApprovalForAll}.\n     * - If `to` refers to a smart contract, it must implement\n     * {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.\n     *\n     * Emits a {Transfer} event.\n     */\n",
+        "@dev": "Safely transfers `tokenId` token from `from` to `to`. * * Requirements: * * - `from` cannot be the zero address. * - `to` cannot be the zero address. * - `tokenId` token must exist and be owned by `from`. * - If the caller is not `from`, it must be approved to move this token * by either {approve} or {setApprovalForAll}. * - If `to` refers to a smart contract, it must implement * {IERC721Receiver-onERC721Received}, which is called upon a safe transfer. * * Emits a {Transfer} event.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSVG",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "uint256"
+            },
+            {
+                "name": "level",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getSVG(uint256 seed, uint256 level) external view returns (string memory) {\n    return _getSVG(seed, level);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUnrevealedSVG",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getUnrevealedSVG(uint256 seed) external view returns (string memory) {\n    return _getUnrevealedSVG(seed);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTraitsMetadata",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getTraitsMetadata(uint256 seed) external view returns (string memory) {\n    return _getTraitsMetadata(seed);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reserveEddies",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "numEddiesToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function reserveEddies(address to, uint256 numEddiesToMint) external onlyOwner {\n        _mintEddies(to, numEddiesToMint);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reserveEddiesToManyFolk",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addresses",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "numEddiesToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function reserveEddiesToManyFolk(address[] calldata addresses, uint256 numEddiesToMint) external {\n        uint256 num = addresses.length;\n        for (uint256 i = 0; i < num; ++i) {\n            address to = addresses[i];\n            _mintEddies(to, numEddiesToMint);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintEddies",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "numEddiesToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintEddies(uint256 numEddiesToMint) external payable {\n        require(mintStatus == MintStatus.PUBLIC, \"Public mint closed\");\n        require(msg.value >= _getPrice(numEddiesToMint), \"Incorrect ether\" );\n        require(_numberMinted(msg.sender) + numEddiesToMint <= maxMintsPerPersonPublic, \"Exceeds max mints\");\n\n        _mintEddies(msg.sender, numEddiesToMint);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Mints CryptoEddies into your wallet! payableAmount is the total amount of ETH to mint all numEddiesToMint (costPerCryptoEddie * numEddiesToMint)",
+            "    /// @param numEddiesToMint The number of CryptoEddies you want to mint",
+            "    "
+        ],
+        "comt": "\n    /// @notice Mints CryptoEddies into your wallet! payableAmount is the total amount of ETH to mint all numEddiesToMint (costPerCryptoEddie * numEddiesToMint)\n    /// @param numEddiesToMint The number of CryptoEddies you want to mint\n    ",
+        "@notice": "Mints CryptoEddies into your wallet! payableAmount is the total amount of ETH to mint all numEddiesToMint (costPerCryptoEddie * numEddiesToMint)",
+        "@param1": "numEddiesToMint The number of CryptoEddies you want to mint",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rerollEddie",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function rerollEddie(uint256 tokenId) external {\n        _rerollEddie(tokenId);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Rerolls the visuals and stats of one CryptoEddie, deals -1 HP damage!",
+            "    /// @param tokenId The token ID for the CryptoEddie to reroll",
+            "    "
+        ],
+        "comt": "\n    /// @notice Rerolls the visuals and stats of one CryptoEddie, deals -1 HP damage!\n    /// @param tokenId The token ID for the CryptoEddie to reroll\n    ",
+        "@notice": "Rerolls the visuals and stats of one CryptoEddie, deals -1 HP damage!",
+        "@param1": "tokenId The token ID for the CryptoEddie to reroll",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rerollEddieMany",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function rerollEddieMany(uint256[] calldata tokenIds) external {\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            _rerollEddie(tokenId);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnSacrifice",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnSacrifice(uint256 tokenId) external {\n        require(msg.sender == ownerOf(tokenId), \"Not yours\");\n        _burn(tokenId);\n\n        // if not already dead, force kill and spawn ghost\n        if (hp[tokenId] > 0) {\n            hp[tokenId] = 0;\n            emit EddieDied(tokenId);\n\n            if (address(contractGhost) != address(0)) {\n                contractGhost.spawnGhost(msg.sender, tokenId, seeds[tokenId]);\n            }\n        }\n\n        emit EddieSacrificed(tokenId);\n    }",
+        "comments": [
+            "",
+            "    // @notice Destroys your CryptoEddie, spawning a ghost",
+            "    /// @param tokenId The token ID for the CryptoEddie",
+            "    "
+        ],
+        "comt": "\n    // @notice Destroys your CryptoEddie, spawning a ghost\n    /// @param tokenId The token ID for the CryptoEddie\n    ",
+        "@notice": "Destroys your CryptoEddie, spawning a ghost",
+        "@param1": "tokenId The token ID for the CryptoEddie",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokensOfOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function tokensOfOwner(address owner) external view returns (uint256[] memory) {\n        unchecked {\n            uint256 tokenIdsIdx;\n            address currOwnershipAddr;\n            uint256 tokenIdsLength = balanceOf(owner);\n            uint256[] memory tokenIds = new uint256[](tokenIdsLength);\n            TokenOwnership memory ownership;\n            for (uint256 i = _startTokenId(); tokenIdsIdx != tokenIdsLength; ++i) {\n                ownership = _ownershipAt(i);\n                if (ownership.burned) {\n                    continue;\n                }\n                if (ownership.addr != address(0)) {\n                    currOwnershipAddr = ownership.addr;\n                }\n                if (currOwnershipAddr == owner) {\n                    tokenIds[tokenIdsIdx++] = i;\n                }\n            }\n            return tokenIds;\n        }\n    }",
+        "comments": [
+            "",
+            "    // taken from 'ERC721AQueryable.sol'",
+            "    "
+        ],
+        "comt": "\n    // taken from 'ERC721AQueryable.sol'\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPricing",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "pricingData",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function setPricing(uint256[] calldata pricingData) external onlyOwner {\n        tier0_supply = pricingData[0];\n        tier0_price = pricingData[1];\n\n        tier1_supply = pricingData[2];\n        tier1_price = pricingData[3];\n\n        tier2_price = pricingData[4];\n\n        require(tier0_supply + tier1_supply <= MAX_TOKEN_SUPPLY);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPublicMintStatus",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_status",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setPublicMintStatus(uint256 _status) external onlyOwner {\n        mintStatus = MintStatus(_status);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMaxMints",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_maxMintsPublic",
+                "type": "uint256"
+            },
+            {
+                "name": "_maxMintsWhitelist",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setMaxMints(uint256 _maxMintsPublic, uint256 _maxMintsWhitelist) external onlyOwner {\n        maxMintsPerPersonPublic = _maxMintsPublic;\n        maxMintsPerPersonWhitelist = _maxMintsWhitelist;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractGhost",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractGhost(address newAddress) external onlyOwner {\n        contractGhost = CryptoDeddies(newAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRevealed",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_revealed",
+                "type": "bool"
+            }
+        ],
+        "func": "function setRevealed(bool _revealed) external onlyOwner {\n        revealed = _revealed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardHP",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "hpRewarded",
+                "type": "uint"
+            }
+        ],
+        "func": "function rewardHP(uint256 tokenId, uint hpRewarded) external onlyOwner verifyTokenId(tokenId) {\n        require(hp[tokenId] > 0, \"Already dead\");\n        hp[tokenId] += hpRewarded;\n\n        if (hp[tokenId] > MAX_HP) \n            hp[tokenId] = MAX_HP;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardManyHP",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "hpRewarded",
+                "type": "uint"
+            }
+        ],
+        "func": "function rewardManyHP(uint256[] calldata tokenIds, uint hpRewarded) external {\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n\n            if (hp[tokenId] > 0 ) { // not dead\n                hp[tokenId] += hpRewarded;\n\n                if (hp[tokenId] > MAX_HP) \n                    hp[tokenId] = MAX_HP;\n            }\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getHP",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getHP(uint256 tokenId) external view verifyTokenId(tokenId) returns(uint){\n        return hp[tokenId];\n    }",
+        "comments": [
+            "",
+            "    /// @notice Retrieves the HP",
+            "    /// @param tokenId The token ID for the CryptoEddie",
+            "    /// @return hp the amount of HP for the CryptoEddie",
+            "    "
+        ],
+        "comt": "\n    /// @notice Retrieves the HP\n    /// @param tokenId The token ID for the CryptoEddie\n    /// @return hp the amount of HP for the CryptoEddie\n    ",
+        "@notice": "Retrieves the HP",
+        "@param1": "tokenId The token ID for the CryptoEddie",
+        "@return1": "hp the amount of HP for the CryptoEddie",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "numberMinted",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "func": "function numberMinted(address addr) external view returns(uint256){\n        return _numberMinted(addr);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMerkleRoot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_merkleRoot",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function setMerkleRoot(bytes32 _merkleRoot) external onlyOwner {\n        merkleRoot = _merkleRoot;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "verifyMerkle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_proof",
+                "type": "bytes32[] calldata"
+            },
+            {
+                "name": "_leaf",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function verifyMerkle(bytes32[] calldata _proof, bytes32 _leaf) external view returns (bool) {\n        return _verifyMerkle(_proof, _leaf);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "verifyMerkleAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_proof",
+                "type": "bytes32[] calldata"
+            },
+            {
+                "name": "from",
+                "type": "address"
+            }
+        ],
+        "func": "function verifyMerkleAddress(bytes32[] calldata _proof, address from) external view returns (bool) {\n        bytes32 leaf = keccak256(abi.encodePacked(from));\n        return _verifyMerkle(_proof, leaf);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintEddiesMerkle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_merkleProof",
+                "type": "bytes32[] calldata"
+            },
+            {
+                "name": "numEddiesToMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintEddiesMerkle(bytes32[] calldata _merkleProof, uint256 numEddiesToMint) external payable {\n        require(mintStatus == MintStatus.WHITELIST || mintStatus == MintStatus.PUBLIC, \"Merkle mint closed\");\n        \n        uint256 numMintedAlready = _numberMinted(msg.sender);\n        require(numMintedAlready + numEddiesToMint <= maxMintsPerPersonPublic, \"Exceeds max mints\");\n\n        // calculate how much you need to pay beyond whitelisted amount\n        uint256 numToMintFromWhitelist = 0;\n        if (numMintedAlready < maxMintsPerPersonWhitelist) {\n            numToMintFromWhitelist = (maxMintsPerPersonWhitelist - numMintedAlready);\n        }\n\n        // num to actually buy\n        uint256 numToMintPayable = numEddiesToMint - numToMintFromWhitelist;\n        require(msg.value >= _getPrice(numToMintPayable), \"Incorrect ether sent\" );\n    \n        // verify merkle        \n        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));\n        require(_verifyMerkle(_merkleProof, leaf), \"Invalid proof\");\n\n        _mintEddies(msg.sender, numEddiesToMint);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) override(ERC721A) public view verifyTokenId(tokenId) returns (string memory) {\n        if (revealed) \n            return _tokenURI(tokenId);\n        else\n            return _tokenUnrevealedURI(tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "external",
+        "args": [],
+        "func": "function withdraw() external onlyOwner {\n        uint balance = address(this).balance;\n        payable(msg.sender).transfer(balance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSVG",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getSVG(uint256 seed) external view returns (string memory) {\n    return _getSVG(seed);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getGhostSVG",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getGhostSVG(uint256 seed) external view returns (string memory) {\n    return _getGhostSVG(seed);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUnrevealedSVG",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getUnrevealedSVG(uint256 seed) external view returns (string memory) {\n    return _getUnrevealedSVG(seed);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTraitsMetadata",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "seed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getTraitsMetadata(uint256 seed) external view returns (string memory) {\n    return _getTraitsMetadata(seed);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "spawnGhost",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "eddieTokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "eddieTokenSeed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function spawnGhost(address to, uint256 eddieTokenId, uint256 eddieTokenSeed) external {\n        require(msg.sender == address(contractRenderer), \"Only callable from contract\");\n        _mintGhost(to, eddieTokenId, eddieTokenSeed);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "spawnGhostAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "eddieTokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "eddieTokenSeed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function spawnGhostAdmin(address to, uint256 eddieTokenId, uint256 eddieTokenSeed) external onlyOwner {\n        _mintGhost(to, eddieTokenId, eddieTokenSeed);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractRenderer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractRenderer(address newAddress) external onlyOwner {\n        contractRenderer = EddieRenderer(newAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) override(ERC721A) public view verifyTokenId(tokenId) returns (string memory) {\n        require(_exists(tokenId), \"Nonexistent token\");\n\n        GhostData memory ghost = ghostData[tokenId];\n        uint256 eddieTokenId = ghost.eddieTokenId;\n        uint256 seed = ghost.eddieTokenSeed;\n\n        string memory image = contractRenderer.getGhostSVG(seed);\n\n        string memory json = Base64.encode(\n            bytes(string(\n                abi.encodePacked(\n                    '{\"name\": ', '\"CryptoDeddie Ghost #', Strings.toString(eddieTokenId),'\",',\n                    '\"description\": \"CryptoDeddie Ghost is a memorialized ghost of your original CryptoEddie, forever soulbound to your wallet.\",',\n                    '\"attributes\":[',\n                        contractRenderer.getTraitsMetadata(seed),\n                        '{\"trait_type\":\"Dead\", \"value\":\"True\"}, {\"trait_type\":\"Soulbound\", \"value\":\"True\"}'\n                    '],',\n                    '\"image\": \"data:image/svg+xml;base64,', Base64.encode(bytes(image)), '\"}' \n                )\n            ))\n        );\n\n        return string(abi.encodePacked('data:application/json;base64,', json));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdraw() public onlyOwner {\n        uint balance = address(this).balance;\n        payable(msg.sender).transfer(balance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimMany",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function claimMany(uint256[] calldata tokenIds) external {\n        require(claimEnabled == true);\n\n        // clamp the total minted\n        //require(_totalMinted() + tokenIds.length <= MAX_TOKEN_SUPPLY );\n\n        uint256 num = tokenIds.length;\n        uint256 startTokenId = _startTokenId() + _totalMinted();\n        address sender = msg.sender;\n\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 originalTokenId = tokenIds[i];\n            uint256 newTokenId = startTokenId + i;\n\n            //require(sender == contractEddieOG.ownerOf(originalTokenId)); // check ownership\n            //require(ogTokenId[newTokenId] == 0); // check not already claimed\n\n            // transfer each token to this contract and then call the burn function\n            // since the 'burnSacrifice' call can only be called on the owner,\n            // we had to first transfer to this contract before excuting burnSacrifice\n            contractEddieOG.transferFrom(sender, address(this), originalTokenId);\n            contractEddieOG.burnSacrifice(originalTokenId);\n\n            // save data on new token\n            ogTokenId[newTokenId] = originalTokenId;\n            hp[newTokenId] = MAX_HP;\n            _saveSeed(newTokenId); // reshuffle\n            //seeds[newTokenId] = contractEddieOG.seeds(originalTokenId); // copy seed over\n        }\n\n        //_safeMint(sender, num);\n        _mint(sender, num);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rerollEddie",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function rerollEddie(uint256 tokenId) external {\n        require(rerollingEnabled == true);\n        _rerollEddie(tokenId);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Rerolls the visuals and stats of one CryptoEddie, deals -1 HP damage!",
+            "    /// @param tokenId The token ID for the CryptoEddie to reroll",
+            "    "
+        ],
+        "comt": "\n    /// @notice Rerolls the visuals and stats of one CryptoEddie, deals -1 HP damage!\n    /// @param tokenId The token ID for the CryptoEddie to reroll\n    ",
+        "@notice": "Rerolls the visuals and stats of one CryptoEddie, deals -1 HP damage!",
+        "@param1": "tokenId The token ID for the CryptoEddie to reroll",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rerollEddieMany",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function rerollEddieMany(uint256[] calldata tokenIds) external {\n        require(rerollingEnabled == true);\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            _rerollEddie(tokenId);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Rerolls the visuals and stats of many CryptoEddies, deals -1 HP damage!",
+            "    /// @param tokenIds An array of token IDs",
+            "    "
+        ],
+        "comt": "\n    /// @notice Rerolls the visuals and stats of many CryptoEddies, deals -1 HP damage!\n    /// @param tokenIds An array of token IDs\n    ",
+        "@notice": "Rerolls the visuals and stats of many CryptoEddies, deals -1 HP damage!",
+        "@param1": "tokenIds An array of token IDs",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burnSacrifice",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function burnSacrifice(uint256 tokenId) external onlyApprovedOrOwner(tokenId) {\n        //require(msg.sender == ownerOf(tokenId), \"Not yours\");\n        require(burnSacrificeEnabled == true);\n\n        address ownerOfEddie = ownerOf(tokenId);\n\n        _burn(tokenId);\n\n        // if not already dead, force kill and spawn ghost\n        if (hp[tokenId] > 0) {\n            hp[tokenId] = 0;\n        \n             // cancel vibing\n            _resetAndCancelVibing(tokenId);\n\n            emit EddieDied(tokenId);\n\n            if (address(contractGhost) != address(0)) {\n                contractGhost.spawnGhost(ownerOfEddie, tokenId, seeds[tokenId]);\n            }\n        }\n\n        emit EddieSacrificed(tokenId);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Destroys your CryptoEddie, spawning a ghost",
+            "    /// @param tokenId The token ID for the CryptoEddie",
+            "    "
+        ],
+        "comt": "\n    /// @notice Destroys your CryptoEddie, spawning a ghost\n    /// @param tokenId The token ID for the CryptoEddie\n    ",
+        "@notice": "Destroys your CryptoEddie, spawning a ghost",
+        "@param1": "tokenId The token ID for the CryptoEddie",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokensOfOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function tokensOfOwner(address owner) external view returns (uint256[] memory) {\n        unchecked {\n            uint256 tokenIdsIdx;\n            address currOwnershipAddr;\n            uint256 tokenIdsLength = balanceOf(owner);\n            uint256[] memory tokenIds = new uint256[](tokenIdsLength);\n            TokenOwnership memory ownership;\n            for (uint256 i = _startTokenId(); tokenIdsIdx != tokenIdsLength; ++i) {\n                ownership = _ownershipAt(i);\n                if (ownership.burned) {\n                    continue;\n                }\n                if (ownership.addr != address(0)) {\n                    currOwnershipAddr = ownership.addr;\n                }\n                if (currOwnershipAddr == owner) {\n                    tokenIds[tokenIdsIdx++] = i;\n                }\n            }\n            return tokenIds;\n        }\n    }",
+        "comments": [
+            "",
+            "    // taken from 'ERC721AQueryable.sol'",
+            "    "
+        ],
+        "comt": "\n    // taken from 'ERC721AQueryable.sol'\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractEddieOG",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractEddieOG(address newAddress) external onlyOwner {\n        contractEddieOG = CryptoEddies(newAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractGhost",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractGhost(address newAddress) external onlyOwner {\n        contractGhost = CryptoDeddiesV2(newAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setClaimEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setClaimEnabled(bool _enabled) external onlyOwner {\n        claimEnabled = _enabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractHpEffector",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractHpEffector(address newAddress) external onlyOwner {\n        contractHpEffector = newAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRevealed",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_revealed",
+                "type": "bool"
+            }
+        ],
+        "func": "function setRevealed(bool _revealed) external onlyOwner {\n        revealed = _revealed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRerollingEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setRerollingEnabled(bool _enabled) external onlyOwner {\n        rerollingEnabled = _enabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBurnSacrificeEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setBurnSacrificeEnabled(bool _enabled) external onlyOwner {\n        burnSacrificeEnabled = _enabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardManyHP",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "hpRewarded",
+                "type": "int"
+            }
+        ],
+        "func": "function rewardManyHP(uint256[] calldata tokenIds, int hpRewarded) external /*onlyOwner*/ {\n        // only admin or another authorized smart contract can change HP\n        // perhaps a hook for future content? ;)\n        require(owner() == _msgSender() || (contractHpEffector != address(0) && _msgSender() == contractHpEffector), \"Not authorized\");\n\n        uint256 num = tokenIds.length;\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n\n            if (hp[tokenId] > 0 ) { // not dead\n\n                int newHp = int256(hp[tokenId]) + hpRewarded;\n\n                // clamping between [0,MAX_HP]\n                if (newHp > int(MAX_HP)) \n                    newHp = int(MAX_HP);\n                \n                else if (newHp <= 0) {\n                    newHp = 0;\n\n                    // spawn ghost\n                    emit EddieDied(tokenId);\n                    if (address(contractGhost) != address(0)) {\n                        contractGhost.spawnGhost(ownerOf(tokenId), tokenId, seeds[tokenId]);\n                    }\n                }\n\n                hp[tokenId] = uint256(newHp);\n\n                // taking damage resets your vibing\n                if (hpRewarded < 0) {\n                     _resetAndCancelVibing(tokenId);\n                }\n            }\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getHP",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getHP(uint256 tokenId) external view verifyTokenId(tokenId) returns(uint){\n        return hp[tokenId];\n    }",
+        "comments": [
+            "",
+            "    /// @notice Retrieves the HP",
+            "    /// @param tokenId The token ID for the CryptoEddie",
+            "    /// @return hp the amount of HP for the CryptoEddie",
+            "    "
+        ],
+        "comt": "\n    /// @notice Retrieves the HP\n    /// @param tokenId The token ID for the CryptoEddie\n    /// @return hp the amount of HP for the CryptoEddie\n    ",
+        "@notice": "Retrieves the HP",
+        "@param1": "tokenId The token ID for the CryptoEddie",
+        "@return1": "hp the amount of HP for the CryptoEddie",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "numberMinted",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "func": "function numberMinted(address addr) external view returns(uint256){\n        return _numberMinted(addr);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) override(ERC721A) public view verifyTokenId(tokenId) returns (string memory) {\n        if (revealed) \n            return _tokenURI(tokenId);\n        else\n            return _tokenUnrevealedURI(tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "external",
+        "args": [],
+        "func": "function withdraw() external onlyOwner {\n        uint balance = address(this).balance;\n        payable(msg.sender).transfer(balance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVibingInfoForToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getVibingInfoForToken(uint256 tokenId) external view returns (uint256 currentVibingTime, uint256 totalVibingTime)\n    {\n        currentVibingTime = 0;\n        uint256 startTimestamp = vibingStartTimestamp[tokenId];\n\n        // is vibing?\n        if (startTimestamp != NULL_VIBING) { \n            currentVibingTime = block.timestamp - startTimestamp;\n        }\n\n        totalVibingTime = currentVibingTime + vibingTotalTime[tokenId];\n    }",
+        "comments": [
+            "",
+            "    // currentVibingTime: current vibing time in secs (0 = not vibing)",
+            "    // totalVibingTime: total time of vibing (in secs)",
+            "    "
+        ],
+        "comt": "\n    // currentVibingTime: current vibing time in secs (0 = not vibing)\n    // totalVibingTime: total time of vibing (in secs)\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setVibingEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "allowed",
+                "type": "bool"
+            }
+        ],
+        "func": "function setVibingEnabled(bool allowed) external onlyOwner {\n        require(allowed != isVibingEnabled);\n        isVibingEnabled = allowed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleVibing",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function toggleVibing(uint256[] calldata tokenIds) external {\n        uint256 num = tokenIds.length;\n\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            _toggleVibing(tokenId);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "adminForceStopVibing",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenIds",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function adminForceStopVibing(uint256[] calldata tokenIds) external onlyOwner {\n        uint256 num = tokenIds.length;\n\n        for (uint256 i = 0; i < num; ++i) {\n            uint256 tokenId = tokenIds[i];\n            _adminForceStopVibing(tokenId);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "spawnGhost",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "eddieTokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "eddieTokenSeed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function spawnGhost(address to, uint256 eddieTokenId, uint256 eddieTokenSeed) external {\n        require(msg.sender == address(contractEddiesV2), \"Only callable from contract\");\n        _mintGhost(to, eddieTokenId, eddieTokenSeed);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "spawnGhostAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "eddieTokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "eddieTokenSeed",
+                "type": "uint256"
+            }
+        ],
+        "func": "function spawnGhostAdmin(address to, uint256 eddieTokenId, uint256 eddieTokenSeed) external onlyOwner {\n        _mintGhost(to, eddieTokenId, eddieTokenSeed);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractRenderer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractRenderer(address newAddress) external onlyOwner {\n        contractRenderer = EddieRenderer(newAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractEddieV2",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractEddieV2(address newAddress) external onlyOwner {\n        contractEddiesV2 = CryptoEddiesV2(newAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) override(ERC721A) public view verifyTokenId(tokenId) returns (string memory) {\n        require(_exists(tokenId), \"Nonexistent token\");\n\n        GhostData memory ghost = ghostData[tokenId];\n        uint256 eddieTokenId = ghost.eddieTokenId;\n        uint256 seed = ghost.eddieTokenSeed;\n\n        string memory image = contractRenderer.getGhostSVG(seed);\n\n        string memory json = Base64.encode(\n            bytes(string(\n                abi.encodePacked(\n                    '{\"name\": ', '\"CryptoDeddie Ghost #', Strings.toString(eddieTokenId),'\",',\n                    '\"description\": \"CryptoDeddie Ghost is a memorialized ghost of your original CryptoEddie, forever soulbound to your wallet.\",',\n                    '\"attributes\":[',\n                        contractRenderer.getTraitsMetadata(seed),\n                        '{\"trait_type\":\"Dead\", \"value\":\"True\"}, {\"trait_type\":\"Soulbound\", \"value\":\"True\"}'\n                    '],',\n                    '\"image\": \"data:image/svg+xml;base64,', Base64.encode(bytes(image)), '\"}' \n                )\n            ))\n        );\n\n        return string(abi.encodePacked('data:application/json;base64,', json));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdraw() public onlyOwner {\n        uint balance = address(this).balance;\n        payable(msg.sender).transfer(balance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,553 @@
+[
+    {
+        "transactions": 223833,
+        "function_num": 18
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}.\n     */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address sender, address recipient, uint256 amount) public returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, \"ERC20: transfer amount exceeds allowance\"));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20};",
+            "     *",
+            "     * Requirements:",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for `sender`'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20};\n     *\n     * Requirements:\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for `sender`'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}; * * Requirements: * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for `sender`'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, \"ERC20: decreased allowance below zero\"));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "snapshot",
+        "visibility": "public",
+        "args": [],
+        "func": "function snapshot() public returns (uint256) {\n        _currentSnapshotId.increment();\n\n        uint256 currentId = _currentSnapshotId.current();\n        emit Snapshot(currentId);\n        return currentId;\n    }",
+        "comments": [
+            "",
+            "    // Creates a new snapshot id. Balances are only stored in snapshots on demand: unless a snapshot was taken, a",
+            "    // balance change will not be recorded. This means the extra added cost of storing snapshotted balances is only paid",
+            "    // when required, but is also flexible enough that it allows for e.g. daily snapshots.",
+            "    "
+        ],
+        "comt": "\n    // Creates a new snapshot id. Balances are only stored in snapshots on demand: unless a snapshot was taken, a\n    // balance change will not be recorded. This means the extra added cost of storing snapshotted balances is only paid\n    // when required, but is also flexible enough that it allows for e.g. daily snapshots.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfAt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "snapshotId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function balanceOfAt(address account, uint256 snapshotId) public view returns (uint256) {\n        (bool snapshotted, uint256 value) = _valueAt(snapshotId, _accountBalanceSnapshots[account]);\n\n        return snapshotted ? value : balanceOf(account);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupplyAt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "snapshotId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function totalSupplyAt(uint256 snapshotId) public view returns(uint256) {\n        (bool snapshotted, uint256 value) = _valueAt(snapshotId, _totalSupplySnapshots);\n\n        return snapshotted ? value : totalSupply();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "holdsRole",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "roleId",
+                "type": "uint"
+            },
+            {
+                "name": "memberToCheck",
+                "type": "address"
+            }
+        ],
+        "func": "function holdsRole(uint roleId, address memberToCheck) public view returns (bool) {\n        Role storage role = roles[roleId];\n        if (role.roleType == RoleType.Exclusive) {\n            return role.exclusiveRoleMembership.isMember(memberToCheck);\n        } else if (role.roleType == RoleType.Shared) {\n            return role.sharedRoleMembership.isMember(memberToCheck);\n        }\n        require(false, \"Invalid roleId\");\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Whether `memberToCheck` is a member of roleId.",
+            "     * @dev Reverts if roleId does not correspond to an initialized role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Whether `memberToCheck` is a member of roleId.\n     * @dev Reverts if roleId does not correspond to an initialized role.\n     */\n",
+        "@notice": "Whether `memberToCheck` is a member of roleId.",
+        "@dev": "Reverts if roleId does not correspond to an initialized role.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "resetMember",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "roleId",
+                "type": "uint"
+            },
+            {
+                "name": "newMember",
+                "type": "address"
+            }
+        ],
+        "func": "function resetMember(uint roleId, address newMember) public onlyExclusive(roleId) onlyRoleManager(roleId) {\n        roles[roleId].exclusiveRoleMembership.resetMember(newMember);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Changes the exclusive role holder of `roleId` to `newMember`.",
+            "     * @dev Reverts if the caller is not a member of the managing role for `roleId` or if `roleId` is not an",
+            "     * initialized, exclusive role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Changes the exclusive role holder of `roleId` to `newMember`.\n     * @dev Reverts if the caller is not a member of the managing role for `roleId` or if `roleId` is not an\n     * initialized, exclusive role.\n     */\n",
+        "@notice": "Changes the exclusive role holder of `roleId` to `newMember`.",
+        "@dev": "Reverts if the caller is not a member of the managing role for `roleId` or if `roleId` is not an * initialized, exclusive role.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMember",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "roleId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getMember(uint roleId) public view onlyExclusive(roleId) returns (address) {\n        return roles[roleId].exclusiveRoleMembership.getMember();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Gets the current holder of the exclusive role, `roleId`.",
+            "     * @dev Reverts if `roleId` does not represent an initialized, exclusive role.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Gets the current holder of the exclusive role, `roleId`.\n     * @dev Reverts if `roleId` does not represent an initialized, exclusive role.\n     */\n",
+        "@notice": "Gets the current holder of the exclusive role, `roleId`.",
+        "@dev": "Reverts if `roleId` does not represent an initialized, exclusive role.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addMember",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "roleId",
+                "type": "uint"
+            },
+            {
+                "name": "newMember",
+                "type": "address"
+            }
+        ],
+        "func": "function addMember(uint roleId, address newMember) public onlyShared(roleId) onlyRoleManager(roleId) {\n        roles[roleId].sharedRoleMembership.addMember(newMember);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Adds `newMember` to the shared role, `roleId`.",
+            "     * @dev Reverts if `roleId` does not represent an initialized, shared role or if the caller is not a member of the",
+            "     * managing role for `roleId`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Adds `newMember` to the shared role, `roleId`.\n     * @dev Reverts if `roleId` does not represent an initialized, shared role or if the caller is not a member of the\n     * managing role for `roleId`.\n     */\n",
+        "@notice": "Adds `newMember` to the shared role, `roleId`.",
+        "@dev": "Reverts if `roleId` does not represent an initialized, shared role or if the caller is not a member of the * managing role for `roleId`.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeMember",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "roleId",
+                "type": "uint"
+            },
+            {
+                "name": "memberToRemove",
+                "type": "address"
+            }
+        ],
+        "func": "function removeMember(uint roleId, address memberToRemove) public onlyShared(roleId) onlyRoleManager(roleId) {\n        roles[roleId].sharedRoleMembership.removeMember(memberToRemove);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Removes `memberToRemove` from the shared role, `roleId`.",
+            "     * @dev Reverts if `roleId` does not represent an initialized, shared role or if the caller is not a member of the",
+            "     * managing role for `roleId`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Removes `memberToRemove` from the shared role, `roleId`.\n     * @dev Reverts if `roleId` does not represent an initialized, shared role or if the caller is not a member of the\n     * managing role for `roleId`.\n     */\n",
+        "@notice": "Removes `memberToRemove` from the shared role, `roleId`.",
+        "@dev": "Reverts if `roleId` does not represent an initialized, shared role or if the caller is not a member of the * managing role for `roleId`.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(address recipient, uint value) external onlyRoleHolder(uint(Roles.Minter)) returns (bool) {\n        _mint(recipient, value);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Mints `value` tokens to `recipient`, returning true on success.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Mints `value` tokens to `recipient`, returning true on success.\n     */\n",
+        "@dev": "Mints `value` tokens to `recipient`, returning true on success.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint"
+            }
+        ],
+        "func": "function burn(uint value) external onlyRoleHolder(uint(Roles.Burner)) {\n        _burn(msg.sender, value);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Burns `value` tokens owned by `msg.sender`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Burns `value` tokens owned by `msg.sender`.\n     */\n",
+        "@dev": "Burns `value` tokens owned by `msg.sender`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

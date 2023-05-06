@@ -1,0 +1,1591 @@
+[
+    {
+        "transactions": 1926,
+        "function_num": 56
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isOwner",
+        "visibility": "public",
+        "args": [],
+        "func": "function isOwner() public view returns (bool) {\n        return msg.sender == _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns true if the caller is the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns true if the caller is the current owner.\n     */\n",
+        "@dev": "Returns true if the caller is the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * > Note: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * > Note: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * > Note: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public onlyOwner {\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setCacheContract",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "cacheContract",
+                "type": "address"
+            }
+        ],
+        "func": "function setCacheContract(address cacheContract) external onlyOwner {\n    _cacheContract = cacheContract;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lockAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amountGrams",
+                "type": "uint256"
+            }
+        ],
+        "func": "function lockAmount(uint256 amountGrams) external onlyOwner {\n    _lockedGold = _lockedGold.add(amountGrams);\n    emit LockEvent(amountGrams);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unlockAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amountGrams",
+                "type": "uint256"
+            }
+        ],
+        "func": "function unlockAmount(uint256 amountGrams) external onlyOwner {\n    _lockedGold = _lockedGold.sub(amountGrams);\n    require(_lockedGold >= CacheGold(_cacheContract).totalCirculation());\n    emit UnlockEvent(amountGrams);\n  }",
+        "comments": [
+            "  // Can only unlock amount of gold if it would leave the",
+            "  // total amount of locked gold greater than or equal to the",
+            "  // number of tokens in circulation",
+            "  "
+        ],
+        "comt": "  // Can only unlock amount of gold if it would leave the\n  // total amount of locked gold greater than or equal to the\n  // number of tokens in circulation\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lockedGold",
+        "visibility": "external",
+        "args": [],
+        "func": "function lockedGold() external view returns(uint256) {\n    return _lockedGold;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cacheContract",
+        "visibility": "external",
+        "args": [],
+        "func": "function cacheContract() external view returns(address) {\n    return _cacheContract;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address to, uint256 value) external returns (bool) {\n    // Update activity for the sender\n    _updateActivity(msg.sender);\n    // Can opportunistically mark an account inactive if someone\n    // sends money to it\n    if (_shouldMarkInactive(to)) {\n      _setInactive(to);\n    }\n    _transfer(msg.sender, to, value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Transfer token for a specified address",
+            "  * @param to The address to transfer to.",
+            "  * @param value The amount to be transferred.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Transfer token for a specified address\n  * @param to The address to transfer to.\n  * @param value The amount to be transferred.\n  */\n",
+        "@dev": "Transfer token for a specified address",
+        "@param1": "to The address to transfer to.",
+        "@param2": "value The amount to be transferred.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 value) external returns (bool) {\n    _updateActivity(msg.sender);\n    _approve(msg.sender, spender, value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+            "  * Beware that changing an allowance with this method brings the risk that someone may use both the old",
+            "  * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this",
+            "  * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:",
+            "  * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+            "  * @param spender The address which will spend the funds.",
+            "  * @param value The amount of tokens to be spent.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\n  * Beware that changing an allowance with this method brings the risk that someone may use both the old\n  * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this\n  * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:\n  * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n  * @param spender The address which will spend the funds.\n  * @param value The amount of tokens to be spent.\n  */\n",
+        "@dev": "Approve the passed address to spend the specified amount of tokens on behalf of msg.sender. * Beware that changing an allowance with this method brings the risk that someone may use both the old * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards: * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "value The amount of tokens to be spent.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint256 value) external returns (bool) {\n    _updateActivity(msg.sender);\n    _transfer(from, to, value);\n    _approve(from, msg.sender, _allowances[from][msg.sender].sub(value));\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Transfer tokens from one address to another.",
+            "  * Note that while this function emits an Approval event, this is not required as per the specification,",
+            "  * and other compliant implementations may not emit the event.",
+            "  * Also note that even though balance requirements are not explicitly checked,",
+            "  * any transfer attempt over the approved amount will automatically fail due to",
+            "  * SafeMath revert when trying to subtract approval to a negative balance",
+            "  * @param from address The address which you want to send tokens from",
+            "  * @param to address The address which you want to transfer to",
+            "  * @param value uint256 the amount of tokens to be transferred",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Transfer tokens from one address to another.\n  * Note that while this function emits an Approval event, this is not required as per the specification,\n  * and other compliant implementations may not emit the event.\n  * Also note that even though balance requirements are not explicitly checked,\n  * any transfer attempt over the approved amount will automatically fail due to\n  * SafeMath revert when trying to subtract approval to a negative balance\n  * @param from address The address which you want to send tokens from\n  * @param to address The address which you want to transfer to\n  * @param value uint256 the amount of tokens to be transferred\n  */\n",
+        "@dev": "Transfer tokens from one address to another. * Note that while this function emits an Approval event, this is not required as per the specification, * and other compliant implementations may not emit the event. * Also note that even though balance requirements are not explicitly checked, * any transfer attempt over the approved amount will automatically fail due to * SafeMath revert when trying to subtract approval to a negative balance",
+        "@param1": "from address The address which you want to send tokens from",
+        "@param2": "to address The address which you want to transfer to",
+        "@param3": "value uint256 the amount of tokens to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) external returns (bool) {\n    _updateActivity(msg.sender);\n    _approve(msg.sender, spender, _allowances[msg.sender][spender].add(addedValue));\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Increase the amount of tokens that an owner allowed to a spender.",
+            "  * approve should be called when allowed_[_spender] == 0. To increment",
+            "  * allowed value is better to use this function to avoid 2 calls (and wait until",
+            "  * the first transaction is mined)",
+            "  * From MonolithDAO Token.sol",
+            "  * Emits an Approval event.",
+            "  * @param spender The address which will spend the funds.",
+            "  * @param addedValue The amount of tokens to increase the allowance by.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Increase the amount of tokens that an owner allowed to a spender.\n  * approve should be called when allowed_[_spender] == 0. To increment\n  * allowed value is better to use this function to avoid 2 calls (and wait until\n  * the first transaction is mined)\n  * From MonolithDAO Token.sol\n  * Emits an Approval event.\n  * @param spender The address which will spend the funds.\n  * @param addedValue The amount of tokens to increase the allowance by.\n  */\n",
+        "@dev": "Increase the amount of tokens that an owner allowed to a spender. * approve should be called when allowed_[_spender] == 0. To increment * allowed value is better to use this function to avoid 2 calls (and wait until * the first transaction is mined) * From MonolithDAO Token.sol * Emits an Approval event.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "addedValue The amount of tokens to increase the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) external returns (bool) {\n    _updateActivity(msg.sender);\n    _approve(msg.sender, spender, _allowances[msg.sender][spender].sub(subtractedValue));\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Decrease the amount of tokens that an owner allowed to a spender.",
+            "  * approve should be called when allowed_[_spender] == 0. To decrement",
+            "  * allowed value is better to use this function to avoid 2 calls (and wait until",
+            "  * the first transaction is mined)",
+            "  * From MonolithDAO Token.sol",
+            "  * Emits an Approval event.",
+            "  * @param spender The address which will spend the funds.",
+            "  * @param subtractedValue The amount of tokens to decrease the allowance by.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Decrease the amount of tokens that an owner allowed to a spender.\n  * approve should be called when allowed_[_spender] == 0. To decrement\n  * allowed value is better to use this function to avoid 2 calls (and wait until\n  * the first transaction is mined)\n  * From MonolithDAO Token.sol\n  * Emits an Approval event.\n  * @param spender The address which will spend the funds.\n  * @param subtractedValue The amount of tokens to decrease the allowance by.\n  */\n",
+        "@dev": "Decrease the amount of tokens that an owner allowed to a spender. * approve should be called when allowed_[_spender] == 0. To decrement * allowed value is better to use this function to avoid 2 calls (and wait until * the first transaction is mined) * From MonolithDAO Token.sol * Emits an Approval event.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "subtractedValue The amount of tokens to decrease the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addBackedTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function addBackedTokens(uint256 value) external onlyOwner returns (bool)\n  {\n    uint256 unbackedBalance = _balances[_unbackedTreasury];\n    // Use oracle to check if there is actually enough gold\n    // in custody to validate this operation\n    uint256 lockedGrams =  LockedGoldOracle(_oracle).lockedGold();\n    // Should reject mint if it would make the total supply\n    // exceed the amount actually locked in vault\n    require(lockedGrams >= totalCirculation().add(value),\n            \"Insufficent grams locked in LockedGoldOracle to complete operation\");\n    // If we have sufficient balance, just move from the unbacked to backed\n    // treasury address\n    if (value <= unbackedBalance) {\n      _transfer(_unbackedTreasury, _backedTreasury, value);\n    } else {\n      if (unbackedBalance > 0) {\n        // There is no sufficient balance, so we have to both transfer and mint new tokens\n        // Transfer the remaining unbacked treasury balance to backed treasury\n        _transfer(_unbackedTreasury, _backedTreasury, unbackedBalance);\n      }\n      // And mint the remaining to the backed treasury\n      _mint(value.sub(unbackedBalance));\n    }\n    emit AddBackedGold(value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Function to add a certain amount of backed tokens. This will first",
+            "  * take any tokens from the _unbackedTreasury address and move them to the",
+            "  * _backedTreasury. Any remaining tokens will actually be minted.",
+            "  * This operation will fail if there is not a sufficient supply of locked gold",
+            "  * as determined by the LockedGoldOracle",
+            "  *",
+            "  * @param value The amount of tokens to add to the backed treasury",
+            "  * @return A boolean that indicates if the operation was successful.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Function to add a certain amount of backed tokens. This will first\n  * take any tokens from the _unbackedTreasury address and move them to the\n  * _backedTreasury. Any remaining tokens will actually be minted.\n  * This operation will fail if there is not a sufficient supply of locked gold\n  * as determined by the LockedGoldOracle\n  *\n  * @param value The amount of tokens to add to the backed treasury\n  * @return A boolean that indicates if the operation was successful.\n  */\n",
+        "@dev": "Function to add a certain amount of backed tokens. This will first * take any tokens from the _unbackedTreasury address and move them to the * _backedTreasury. Any remaining tokens will actually be minted. * This operation will fail if there is not a sufficient supply of locked gold * as determined by the LockedGoldOracle",
+        "@param1": "value The amount of tokens to add to the backed treasury",
+        "@return1": "A boolean that indicates if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "payStorageFee",
+        "visibility": "external",
+        "args": [],
+        "func": "function payStorageFee() external returns (bool) {\n    _updateActivity(msg.sender);\n    _payStorageFee(msg.sender);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Manually pay storage fees on senders address. Exchanges may want to",
+            "  * periodically call this function to pay owed storage fees. This is a",
+            "  * cheaper option than 'send to self', which would also trigger paying",
+            "  * storage fees",
+            "  *",
+            "  * @return A boolean that indicates if the operation was successful.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Manually pay storage fees on senders address. Exchanges may want to\n  * periodically call this function to pay owed storage fees. This is a\n  * cheaper option than 'send to self', which would also trigger paying\n  * storage fees\n  *\n  * @return A boolean that indicates if the operation was successful.\n  */\n",
+        "@dev": "Manually pay storage fees on senders address. Exchanges may want to * periodically call this function to pay owed storage fees. This is a * cheaper option than 'send to self', which would also trigger paying * storage fees",
+        "@return1": "A boolean that indicates if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAccountInactive",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function setAccountInactive(address account) external onlyEnforcer returns (bool) {\n    require(_shouldMarkInactive(account), \"Account not eligible to be marked inactive\");\n    _setInactive(account);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "forcePayFees",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function forcePayFees(address account) external onlyEnforcer returns(bool) {\n    require(account != address(0));\n    require(_balances[account] > 0,\n            \"Account has no balance, cannot force paying fees\");\n    // If account is inactive, pay inactive fees\n    if (isInactive(account)) {\n      uint256 paid = _payInactiveFee(account);\n      require(paid > 0);\n    } else if (_shouldMarkInactive(account)) {\n      // If it meets inactive threshold, but hasn't been set yet, set it.\n      // This will also trigger automatic payment of owed storage fees\n      // before starting inactive fees\n      _setInactive(account);\n    } else {\n      // Otherwise just force paying owed storage fees, which can only\n      // be called if they are more than 365 days overdue\n      require(daysSincePaidStorageFee(account) >= YEAR,\n              \"Account has paid storage fees more recently than 365 days\");\n      uint256 paid = _payStorageFee(account);\n      require(paid > 0, \"No appreciable storage fees due, will refund gas\");\n    }\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Contract allows the forcible collection of storage fees on an address",
+            "  * if it is has been more than than 365 days since the last time storage fees",
+            "  * were paid on this address.",
+            "  *",
+            "  * Alternatively inactive fees may also be collected periodically on a prorated",
+            "  * basis if the account is currently marked as inactive.",
+            "  *",
+            "  * @param account The address to pay storage fees on",
+            "  * @return A boolean that indicates if the operation was successful.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Contract allows the forcible collection of storage fees on an address\n  * if it is has been more than than 365 days since the last time storage fees\n  * were paid on this address.\n  *\n  * Alternatively inactive fees may also be collected periodically on a prorated\n  * basis if the account is currently marked as inactive.\n  *\n  * @param account The address to pay storage fees on\n  * @return A boolean that indicates if the operation was successful.\n  */\n",
+        "@dev": "Contract allows the forcible collection of storage fees on an address * if it is has been more than than 365 days since the last time storage fees * were paid on this address. * * Alternatively inactive fees may also be collected periodically on a prorated * basis if the account is currently marked as inactive.",
+        "@param1": "account The address to pay storage fees on",
+        "@return1": "A boolean that indicates if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFeeEnforcer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "enforcer",
+                "type": "address"
+            }
+        ],
+        "func": "function setFeeEnforcer(address enforcer) external onlyOwner returns(bool) {\n    require(enforcer != address(0));\n    _feeEnforcer = enforcer;\n    setFeeExempt(_feeEnforcer);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set the address that can force collecting fees from users",
+            "  * @param enforcer The address to force collecting fees",
+            "  * @return An bool representing successfully changing enforcer address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set the address that can force collecting fees from users\n  * @param enforcer The address to force collecting fees\n  * @return An bool representing successfully changing enforcer address\n  */\n",
+        "@dev": "Set the address that can force collecting fees from users",
+        "@param1": "enforcer The address to force collecting fees",
+        "@return1": "An bool representing successfully changing enforcer address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFeeAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newFeeAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setFeeAddress(address newFeeAddress) external onlyOwner returns(bool) {\n    require(newFeeAddress != address(0));\n    require(newFeeAddress != _unbackedTreasury,\n            \"Cannot set fee address to unbacked treasury\");\n    _feeAddress = newFeeAddress;\n    setFeeExempt(_feeAddress);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set the address to collect fees",
+            "  * @param newFeeAddress The address to collect storage and transfer fees",
+            "  * @return An bool representing successfully changing fee address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set the address to collect fees\n  * @param newFeeAddress The address to collect storage and transfer fees\n  * @return An bool representing successfully changing fee address\n  */\n",
+        "@dev": "Set the address to collect fees",
+        "@param1": "newFeeAddress The address to collect storage and transfer fees",
+        "@return1": "An bool representing successfully changing fee address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRedeemAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newRedeemAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setRedeemAddress(address newRedeemAddress) external onlyOwner returns(bool) {\n    require(newRedeemAddress != address(0));\n    require(newRedeemAddress != _unbackedTreasury,\n            \"Cannot set redeem address to unbacked treasury\");\n    _redeemAddress = newRedeemAddress;\n    setFeeExempt(_redeemAddress);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set the address to deposit tokens when redeeming for physical locked bars.",
+            "  * @param newRedeemAddress The address to redeem tokens for bars",
+            "  * @return An bool representing successfully changing redeem address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set the address to deposit tokens when redeeming for physical locked bars.\n  * @param newRedeemAddress The address to redeem tokens for bars\n  * @return An bool representing successfully changing redeem address\n  */\n",
+        "@dev": "Set the address to deposit tokens when redeeming for physical locked bars.",
+        "@param1": "newRedeemAddress The address to redeem tokens for bars",
+        "@return1": "An bool representing successfully changing redeem address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBackedAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newBackedAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setBackedAddress(address newBackedAddress) external onlyOwner returns(bool) {\n    require(newBackedAddress != address(0));\n    require(newBackedAddress != _unbackedTreasury,\n            \"Cannot set backed address to unbacked treasury\");\n    _backedTreasury = newBackedAddress;\n    setFeeExempt(_backedTreasury);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set the address of backed treasury",
+            "  * @param newBackedAddress The address of backed treasury",
+            "  * @return An bool representing successfully changing backed address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set the address of backed treasury\n  * @param newBackedAddress The address of backed treasury\n  * @return An bool representing successfully changing backed address\n  */\n",
+        "@dev": "Set the address of backed treasury",
+        "@param1": "newBackedAddress The address of backed treasury",
+        "@return1": "An bool representing successfully changing backed address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUnbackedAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newUnbackedAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setUnbackedAddress(address newUnbackedAddress) external onlyOwner returns(bool) {\n    require(newUnbackedAddress != address(0));\n    require(newUnbackedAddress != _backedTreasury,\n            \"Cannot set unbacked treasury to backed treasury\");\n    require(newUnbackedAddress != _feeAddress,\n            \"Cannot set unbacked treasury to fee address \");\n    require(newUnbackedAddress != _redeemAddress,\n            \"Cannot set unbacked treasury to fee address \");\n    _unbackedTreasury = newUnbackedAddress;\n    setFeeExempt(_unbackedTreasury);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set the address to unbacked treasury",
+            "  * @param newUnbackedAddress The address of unbacked treasury",
+            "  * @return An bool representing successfully changing unbacked address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set the address to unbacked treasury\n  * @param newUnbackedAddress The address of unbacked treasury\n  * @return An bool representing successfully changing unbacked address\n  */\n",
+        "@dev": "Set the address to unbacked treasury",
+        "@param1": "newUnbackedAddress The address of unbacked treasury",
+        "@return1": "An bool representing successfully changing unbacked address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setOracleAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "oracleAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setOracleAddress(address oracleAddress) external onlyOwner returns(bool) {\n    require(oracleAddress != address(0));\n    _oracle = oracleAddress;\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set the LockedGoldOracle address",
+            "  * @param oracleAddress The address for oracle",
+            "  * @return An bool representing successfully changing oracle address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set the LockedGoldOracle address\n  * @param oracleAddress The address for oracle\n  * @return An bool representing successfully changing oracle address\n  */\n",
+        "@dev": "Set the LockedGoldOracle address",
+        "@param1": "oracleAddress The address for oracle",
+        "@return1": "An bool representing successfully changing oracle address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setStorageFeeGracePeriodDays",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "daysGracePeriod",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setStorageFeeGracePeriodDays(uint256 daysGracePeriod) external onlyOwner {\n    _storageFeeGracePeriodDays = daysGracePeriod;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set the number of days before storage fees begin accruing.",
+            "  * @param daysGracePeriod The global setting for the grace period before storage",
+            "  * fees begin accruing. Note that calling this will not change the grace period",
+            "  * for addresses already actively inside a grace period",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set the number of days before storage fees begin accruing.\n  * @param daysGracePeriod The global setting for the grace period before storage\n  * fees begin accruing. Note that calling this will not change the grace period\n  * for addresses already actively inside a grace period\n  */\n",
+        "@dev": "Set the number of days before storage fees begin accruing.",
+        "@param1": "daysGracePeriod The global setting for the grace period before storage * fees begin accruing. Note that calling this will not change the grace period * for addresses already actively inside a grace period",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTransferFeeExempt",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function setTransferFeeExempt(address account) external onlyOwner {\n    _transferFeeExempt[account] = true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set this account as being exempt from transfer fees. This may be used",
+            "  * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.",
+            "  * @param account The account to exempt from transfer fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set this account as being exempt from transfer fees. This may be used\n  * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.\n  * @param account The account to exempt from transfer fees\n  */\n",
+        "@dev": "Set this account as being exempt from transfer fees. This may be used * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.",
+        "@param1": "account The account to exempt from transfer fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setStorageFeeExempt",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function setStorageFeeExempt(address account) external onlyOwner {\n    _storageFeeExempt[account] = true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set this account as being exempt from storage fees. This may be used",
+            "  * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.",
+            "  * @param account The account to exempt from storage fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set this account as being exempt from storage fees. This may be used\n  * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.\n  * @param account The account to exempt from storage fees\n  */\n",
+        "@dev": "Set this account as being exempt from storage fees. This may be used * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.",
+        "@param1": "account The account to exempt from storage fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unsetFeeExempt",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function unsetFeeExempt(address account) external onlyOwner {\n    _transferFeeExempt[account] = false;\n    _storageFeeExempt[account] = false;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set account is no longer exempt from all fees",
+            "  * @param account The account to reactivate fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set account is no longer exempt from all fees\n  * @param account The account to reactivate fees\n  */\n",
+        "@dev": "Set account is no longer exempt from all fees",
+        "@param1": "account The account to reactivate fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTransferFeeBasisPoints",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "fee",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setTransferFeeBasisPoints(uint256 fee) external onlyOwner {\n    require(fee <= MAX_TRANSFER_FEE_BASIS_POINTS,\n            \"Transfer fee basis points must be an integer between 0 and 10\");\n    _transferFeeBasisPoints = fee;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set a new transfer fee in basis points, must be less than or equal to 10 basis points",
+            "  * @param fee The new transfer fee in basis points",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set a new transfer fee in basis points, must be less than or equal to 10 basis points\n  * @param fee The new transfer fee in basis points\n  */\n",
+        "@dev": "Set a new transfer fee in basis points, must be less than or equal to 10 basis points",
+        "@param1": "fee The new transfer fee in basis points",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) external view returns (uint256) {\n    return calcSendAllBalance(owner);\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Gets the balance of the specified address deducting owed fees and",
+            "  * accounting for the maximum amount that could be sent including transfer fee",
+            "  * @param owner The address to query the balance of.",
+            "  * @return An uint256 representing the amount sendable by the passed address",
+            "  * including transaction and storage fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Gets the balance of the specified address deducting owed fees and\n  * accounting for the maximum amount that could be sent including transfer fee\n  * @param owner The address to query the balance of.\n  * @return An uint256 representing the amount sendable by the passed address\n  * including transaction and storage fees\n  */\n",
+        "@dev": "Gets the balance of the specified address deducting owed fees and * accounting for the maximum amount that could be sent including transfer fee",
+        "@param1": "owner The address to query the balance of.",
+        "@return1": "An uint256 representing the amount sendable by the passed address * including transaction and storage fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfNoFees",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOfNoFees(address owner) external view returns (uint256) {\n    return _balances[owner];\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Gets the balance of the specified address not deducting owed fees.",
+            "  * this returns the 'traditional' ERC-20 balance that represents the balance",
+            "  * currently stored in contract storage.",
+            "  * @param owner The address to query the balance of.",
+            "  * @return An uint256 representing the amount stored in passed address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Gets the balance of the specified address not deducting owed fees.\n  * this returns the 'traditional' ERC-20 balance that represents the balance\n  * currently stored in contract storage.\n  * @param owner The address to query the balance of.\n  * @return An uint256 representing the amount stored in passed address\n  */\n",
+        "@dev": "Gets the balance of the specified address not deducting owed fees. * this returns the 'traditional' ERC-20 balance that represents the balance * currently stored in contract storage.",
+        "@param1": "owner The address to query the balance of.",
+        "@return1": "An uint256 representing the amount stored in passed address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "external",
+        "args": [],
+        "func": "function totalSupply() external view returns (uint256) {\n    return _totalSupply;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Total number of tokens in existence. This includes tokens",
+            "  * in the unbacked treasury that are essentially unusable and not",
+            "  * in circulation",
+            "  * @return A uint256 representing the total number of minted tokens",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Total number of tokens in existence. This includes tokens\n  * in the unbacked treasury that are essentially unusable and not\n  * in circulation\n  * @return A uint256 representing the total number of minted tokens\n  */\n",
+        "@dev": "Total number of tokens in existence. This includes tokens * in the unbacked treasury that are essentially unusable and not * in circulation",
+        "@return1": "A uint256 representing the total number of minted tokens",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) external view returns (uint256) {\n    return _allowances[owner][spender];\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Function to check the amount of tokens that an owner allowed to a spender.",
+            "  * @param owner address The address which owns the funds.",
+            "  * @param spender address The address which will spend the funds.",
+            "  * @return A uint256 specifying the amount of tokens still available for the spender.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Function to check the amount of tokens that an owner allowed to a spender.\n  * @param owner address The address which owns the funds.\n  * @param spender address The address which will spend the funds.\n  * @return A uint256 specifying the amount of tokens still available for the spender.\n  */\n",
+        "@dev": "Function to check the amount of tokens that an owner allowed to a spender.",
+        "@param1": "owner address The address which owns the funds.",
+        "@param2": "spender address The address which will spend the funds.",
+        "@return1": "A uint256 specifying the amount of tokens still available for the spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "feeEnforcer",
+        "visibility": "external",
+        "args": [],
+        "func": "function feeEnforcer() external view returns(address) {\n    return _feeEnforcer;\n  }",
+        "comments": [
+            "/**",
+            "  * @return address that can force paying overdue inactive fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @return address that can force paying overdue inactive fees\n  */\n",
+        "@return1": "address that can force paying overdue inactive fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "feeAddress",
+        "visibility": "external",
+        "args": [],
+        "func": "function feeAddress() external view returns(address) {\n    return _feeAddress;\n  }",
+        "comments": [
+            "/**",
+            "   * @return address where fees are collected",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @return address where fees are collected\n   */\n",
+        "@return1": "address where fees are collected",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeemAddress",
+        "visibility": "external",
+        "args": [],
+        "func": "function redeemAddress() external view returns(address) {\n    return _redeemAddress;\n  }",
+        "comments": [
+            "/**",
+            "   * @return address for redeeming tokens for gold bars",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @return address for redeeming tokens for gold bars\n   */\n",
+        "@return1": "address for redeeming tokens for gold bars",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "backedTreasury",
+        "visibility": "external",
+        "args": [],
+        "func": "function backedTreasury() external view returns(address) {\n    return _backedTreasury;\n  }",
+        "comments": [
+            "/**",
+            "   * @return address for backed treasury",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @return address for backed treasury\n   */\n",
+        "@return1": "address for backed treasury",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unbackedTreasury",
+        "visibility": "external",
+        "args": [],
+        "func": "function unbackedTreasury() external view returns(address) {\n    return _unbackedTreasury;\n  }",
+        "comments": [
+            "/**",
+            "  * @return address for unbacked treasury",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @return address for unbacked treasury\n  */\n",
+        "@return1": "address for unbacked treasury",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "oracleAddress",
+        "visibility": "external",
+        "args": [],
+        "func": "function oracleAddress() external view returns(address) {\n    return _oracle;\n  }",
+        "comments": [
+            "/**",
+            "  * @return address for oracle contract",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @return address for oracle contract\n  */\n",
+        "@return1": "address for oracle contract",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "storageFeeGracePeriodDays",
+        "visibility": "external",
+        "args": [],
+        "func": "function storageFeeGracePeriodDays() external view returns(uint256) {\n    return _storageFeeGracePeriodDays;\n  }",
+        "comments": [
+            "/**",
+            "  * @return the current number of days and address is exempt",
+            "  * from storage fees upon receiving tokens",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @return the current number of days and address is exempt\n  * from storage fees upon receiving tokens\n  */\n",
+        "@return1": "the current number of days and address is exempt * from storage fees upon receiving tokens",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFeeBasisPoints",
+        "visibility": "external",
+        "args": [],
+        "func": "function transferFeeBasisPoints() external view returns(uint256) {\n    return _transferFeeBasisPoints;\n  }",
+        "comments": [
+            "/**",
+            "  * @return the current transfer fee in basis points [0-10]",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @return the current transfer fee in basis points [0-10]\n  */\n",
+        "@return1": "the current transfer fee in basis points [0-10]",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "simulateTransfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function simulateTransfer(address from, address to, uint256 value) external view returns (uint256[5] memory) {\n    return _simulateTransfer(from, to, value);\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Simulate the transfer from one address to another see final balances and associated fees",
+            "  * @param from The address to transfer from.",
+            "  * @param to The address to transfer to.",
+            "  * @param value The amount to be transferred.",
+            "  * @return See _simulateTransfer function",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Simulate the transfer from one address to another see final balances and associated fees\n  * @param from The address to transfer from.\n  * @param to The address to transfer to.\n  * @param value The amount to be transferred.\n  * @return See _simulateTransfer function\n  */\n",
+        "@dev": "Simulate the transfer from one address to another see final balances and associated fees",
+        "@param1": "from The address to transfer from.",
+        "@param2": "to The address to transfer to.",
+        "@param3": "value The amount to be transferred.",
+        "@return1": "See _simulateTransfer function",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFeeExempt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function setFeeExempt(address account) public onlyOwner {\n    _transferFeeExempt[account] = true;\n    _storageFeeExempt[account] = true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Set this account as being exempt from all fees. This may be used",
+            "  * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.",
+            "  * @param account The account to exempt from storage and transfer fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Set this account as being exempt from all fees. This may be used\n  * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.\n  * @param account The account to exempt from storage and transfer fees\n  */\n",
+        "@dev": "Set this account as being exempt from all fees. This may be used * in special circumstance for cold storage addresses owed by Cache, exchanges, etc.",
+        "@param1": "account The account to exempt from storage and transfer fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isStorageFeeExempt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function isStorageFeeExempt(address account) public view returns(bool) {\n    return _storageFeeExempt[account];\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Check if the address given is extempt from storage fees",
+            "  * @param account The address to check",
+            "  * @return A boolean if the address passed is exempt from storage fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Check if the address given is extempt from storage fees\n  * @param account The address to check\n  * @return A boolean if the address passed is exempt from storage fees\n  */\n",
+        "@dev": "Check if the address given is extempt from storage fees",
+        "@param1": "account The address to check",
+        "@return1": "A boolean if the address passed is exempt from storage fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isTransferFeeExempt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function isTransferFeeExempt(address account) public view returns(bool) {\n    return _transferFeeExempt[account];\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Check if the address given is extempt from transfer fees",
+            "  * @param account The address to check",
+            "  * @return A boolean if the address passed is exempt from transfer fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Check if the address given is extempt from transfer fees\n  * @param account The address to check\n  * @return A boolean if the address passed is exempt from transfer fees\n  */\n",
+        "@dev": "Check if the address given is extempt from transfer fees",
+        "@param1": "account The address to check",
+        "@return1": "A boolean if the address passed is exempt from transfer fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isAllFeeExempt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function isAllFeeExempt(address account) public view returns(bool) {\n    return _transferFeeExempt[account] && _storageFeeExempt[account];\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Check if the address given is extempt from transfer fees",
+            "  * @param account The address to check",
+            "  * @return A boolean if the address passed is exempt from transfer fees",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Check if the address given is extempt from transfer fees\n  * @param account The address to check\n  * @return A boolean if the address passed is exempt from transfer fees\n  */\n",
+        "@dev": "Check if the address given is extempt from transfer fees",
+        "@param1": "account The address to check",
+        "@return1": "A boolean if the address passed is exempt from transfer fees",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isInactive",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function isInactive(address account) public view returns(bool) {\n    return _inactiveFeePerYear[account] > 0;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Check if the address is considered inactive for not having transacted with",
+            "  * the contract for INACTIVE_THRESHOLD_DAYS",
+            "  * @param account The address to check",
+            "  * @return A boolean if the address passed is considered inactive",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Check if the address is considered inactive for not having transacted with\n  * the contract for INACTIVE_THRESHOLD_DAYS\n  * @param account The address to check\n  * @return A boolean if the address passed is considered inactive\n  */\n",
+        "@dev": "Check if the address is considered inactive for not having transacted with * the contract for INACTIVE_THRESHOLD_DAYS",
+        "@param1": "account The address to check",
+        "@return1": "A boolean if the address passed is considered inactive",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalCirculation",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalCirculation() public view returns (uint256) {\n    return _totalSupply.sub(_balances[_unbackedTreasury]);\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Total number of tokens that are actually in circulation, which is",
+            "  * total tokens excluding the unbacked treasury",
+            "  * @return A uint256 representing the total number of tokens in circulation",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Total number of tokens that are actually in circulation, which is\n  * total tokens excluding the unbacked treasury\n  * @return A uint256 representing the total number of tokens in circulation\n  */\n",
+        "@dev": "Total number of tokens that are actually in circulation, which is * total tokens excluding the unbacked treasury",
+        "@return1": "A uint256 representing the total number of tokens in circulation",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "daysSincePaidStorageFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function daysSincePaidStorageFee(address account) public view returns(uint256) {\n    if (isInactive(account) || _timeStorageFeePaid[account] == 0) {\n      return 0;\n    }\n    return block.timestamp.sub(_timeStorageFeePaid[account]).div(DAY);\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Get the number of days since the account last paid storage fees",
+            "  * @param account The address to check",
+            "  * @return A uint256 representing the number of days since storage fees where last paid",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Get the number of days since the account last paid storage fees\n  * @param account The address to check\n  * @return A uint256 representing the number of days since storage fees where last paid\n  */\n",
+        "@dev": "Get the number of days since the account last paid storage fees",
+        "@param1": "account The address to check",
+        "@return1": "A uint256 representing the number of days since storage fees where last paid",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "daysSinceActivity",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function daysSinceActivity(address account) public view returns(uint256) {\n    if (_timeLastActivity[account] == 0) {\n      return 0;\n    }\n    return block.timestamp.sub(_timeLastActivity[account]).div(DAY);\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Get the days since the account last sent a transaction to the contract (activity)",
+            "  * @param account The address to check",
+            "  * @return A uint256 representing the number of days since the address last had activity",
+            "  * with the contract",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Get the days since the account last sent a transaction to the contract (activity)\n  * @param account The address to check\n  * @return A uint256 representing the number of days since the address last had activity\n  * with the contract\n  */\n",
+        "@dev": "Get the days since the account last sent a transaction to the contract (activity)",
+        "@param1": "account The address to check",
+        "@return1": "A uint256 representing the number of days since the address last had activity * with the contract",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calcOwedFees",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function calcOwedFees(address account) public view returns(uint256) {\n    return calcStorageFee(account).add(calcInactiveFee(account));\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Returns the total number of fees owed on a particular address",
+            "  * @param account The address to check",
+            "  * @return The total storage and inactive fees owed on the address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Returns the total number of fees owed on a particular address\n  * @param account The address to check\n  * @return The total storage and inactive fees owed on the address\n  */\n",
+        "@dev": "Returns the total number of fees owed on a particular address",
+        "@param1": "account The address to check",
+        "@return1": "The total storage and inactive fees owed on the address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calcStorageFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function calcStorageFee(address account) public view returns(uint256) {\n    // If an account is in an inactive state those fees take over and\n    // storage fees are effectively paused\n    uint256 balance = _balances[account];\n    if (isInactive(account) || isStorageFeeExempt(account) || balance == 0) {\n      return 0;\n    }\n    uint256 daysSinceStoragePaid = daysSincePaidStorageFee(account);\n    uint256 daysInactive = daysSinceActivity(account);\n    uint256 gracePeriod = _storageFeeGracePeriod[account];\n    // If there is a grace period, we can deduct it from the daysSinceStoragePaid\n    if (gracePeriod > 0) {\n      if (daysSinceStoragePaid > gracePeriod) {\n        daysSinceStoragePaid = daysSinceStoragePaid.sub(gracePeriod);\n      } else {\n        daysSinceStoragePaid = 0;\n      }\n    }\n    if (daysSinceStoragePaid == 0) {\n      return 0;\n    }\n    // This is an edge case where the account has not yet been marked inactive, but\n    // will be marked inactive whenever there is a transaction allowing it to be marked.\n    // Therefore we know storage fees will only be valid up to a point, and inactive\n    // fees will take over.\n    if (daysInactive >= INACTIVE_THRESHOLD_DAYS) {\n      // This should not be at risk of being negative, because its impossible to force paying\n      // storage fees without also setting the account to inactive, so if we are here it means\n      // the last time storage fees were paid was BEFORE the account became eligible to be inactive\n      // and it's always the case that daysSinceStoragePaid > daysInactive.sub(INACTIVE_THRESHOLD_DAYS)\n      daysSinceStoragePaid = daysSinceStoragePaid.sub(daysInactive.sub(INACTIVE_THRESHOLD_DAYS));\n    }\n    // The normal case with normal storage fees\n    return storageFee(balance, daysSinceStoragePaid);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Calculate the current storage fee owed for a given address",
+            "   * @param account The address to check",
+            "   * @return A uint256 representing current storage fees for the address",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Calculate the current storage fee owed for a given address\n   * @param account The address to check\n   * @return A uint256 representing current storage fees for the address\n   */\n",
+        "@dev": "Calculate the current storage fee owed for a given address",
+        "@param1": "account The address to check",
+        "@return1": "A uint256 representing current storage fees for the address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calcInactiveFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function calcInactiveFee(address account) public view returns(uint256) {\n    uint256 balance = _balances[account];\n    uint256 daysInactive = daysSinceActivity(account);\n    // if the account is marked inactive already, can use the snapshot balance\n    if (isInactive(account)) {\n      return _calcInactiveFee(balance,\n                          daysInactive,\n                          _inactiveFeePerYear[account],\n                          _inactiveFeePaid[account]);\n    } else if (_shouldMarkInactive(account)) {\n      // Account has not yet been marked inactive in contract, but the inactive fees will still be due.\n      // Just assume snapshotBalance will be current balance after fees\n      uint256 snapshotBalance = balance.sub(calcStorageFee(account));\n      return _calcInactiveFee(snapshotBalance,                          // current balance\n                              daysInactive,                             // number of days inactive\n                              _calcInactiveFeePerYear(snapshotBalance), // the inactive fee per year based on balance\n                              0);                                       // fees paid already\n    }\n    return 0;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Calculate the current inactive fee for a given address",
+            "   * @param account The address to check",
+            "   * @return A uint256 representing current inactive fees for the address",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Calculate the current inactive fee for a given address\n   * @param account The address to check\n   * @return A uint256 representing current inactive fees for the address\n   */\n",
+        "@dev": "Calculate the current inactive fee for a given address",
+        "@param1": "account The address to check",
+        "@return1": "A uint256 representing current inactive fees for the address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calcSendAllBalance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function calcSendAllBalance(address account) public view returns (uint256) {\n    require(account != address(0));\n    // Internal addresses pay no fees, so they can send their entire balance\n    uint256 balanceAfterStorage = _balances[account].sub(calcOwedFees(account));\n    if (_transferFeeBasisPoints == 0 || isTransferFeeExempt(account)) {\n      return balanceAfterStorage;\n    }\n    // Edge cases where remaining balance is 0.00000001, but is effectively 0\n    if (balanceAfterStorage <= 1) {\n      return 0;\n    }\n    // Calculate the send all amount including storage fee\n    // Send All = Balance / 1.001\n    // and round up 0.00000001\n    uint256 divisor = TOKEN.add(_transferFeeBasisPoints.mul(BASIS_POINTS_MULTIPLIER));\n    uint256 sendAllAmount = balanceAfterStorage.mul(TOKEN).div(divisor).add(1);\n    // Calc transfer fee on send all amount\n    uint256 transFee = sendAllAmount.mul(_transferFeeBasisPoints).div(BASIS_POINTS_MULTIPLIER);\n    // Fix to include rounding errors\n    if (sendAllAmount.add(transFee) > balanceAfterStorage) {\n      return sendAllAmount.sub(1);\n    }\n    return sendAllAmount;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Calculate the amount that would clear the balance from the address",
+            "   * accounting for owed storage and transfer fees",
+            "   * accounting for storage and transfer fees",
+            "   * @param account The address to check",
+            "   * @return A uint256 representing total amount an address has available to send",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Calculate the amount that would clear the balance from the address\n   * accounting for owed storage and transfer fees\n   * accounting for storage and transfer fees\n   * @param account The address to check\n   * @return A uint256 representing total amount an address has available to send\n   */\n",
+        "@dev": "Calculate the amount that would clear the balance from the address * accounting for owed storage and transfer fees * accounting for storage and transfer fees",
+        "@param1": "account The address to check",
+        "@return1": "A uint256 representing total amount an address has available to send",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calcTransferFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function calcTransferFee(address account, uint256 value) public view returns(uint256) {\n    if (isTransferFeeExempt(account)) {\n      return 0;\n    }\n    // Basis points -> decimal multiplier:\n    // f(x) = x / 10,0000 (10 basis points is 0.001)\n    // So transfer fee working with integers =\n    // f(balance, basis) = (balance * TOKEN) / (10,000 * TOKEN / basis)\n    return value.mul(_transferFeeBasisPoints).div(BASIS_POINTS_MULTIPLIER);\n  }",
+        "comments": [
+            "/*",
+            "   * @dev Calculate the transfer fee on an amount",
+            "   * @param value The value being sent",
+            "   * @return A uint256 representing the transfer fee on sending the value given",
+            "   */",
+            ""
+        ],
+        "comt": "/*\n   * @dev Calculate the transfer fee on an amount\n   * @param value The value being sent\n   * @return A uint256 representing the transfer fee on sending the value given\n   */\n",
+        "@dev": "Calculate the transfer fee on an amount",
+        "@param1": "value The value being sent",
+        "@return1": "A uint256 representing the transfer fee on sending the value given",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "storageFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "balance",
+                "type": "uint256"
+            },
+            {
+                "name": "daysSinceStoragePaid",
+                "type": "uint256"
+            }
+        ],
+        "func": "function storageFee(uint256 balance, uint256 daysSinceStoragePaid) public pure returns(uint256) {\n    uint256 fee = balance.mul(TOKEN).mul(daysSinceStoragePaid).div(YEAR).div(STORAGE_FEE_DENOMINATOR);\n    if (fee > balance) {\n      return balance;\n    }\n    return fee;\n  }",
+        "comments": [
+            "/*",
+            "   * @dev Calculate the storage fee for a given balance after a certain number of",
+            "   * days have passed since the last time fees were paid.",
+            "   * @param balance The current balance of the address",
+            "   * @param daysSinceStoragePaid The number days that have passed since fees where last paid",
+            "   * @return A uint256 representing the storage fee owed",
+            "   */",
+            ""
+        ],
+        "comt": "/*\n   * @dev Calculate the storage fee for a given balance after a certain number of\n   * days have passed since the last time fees were paid.\n   * @param balance The current balance of the address\n   * @param daysSinceStoragePaid The number days that have passed since fees where last paid\n   * @return A uint256 representing the storage fee owed\n   */\n",
+        "@dev": "Calculate the storage fee for a given balance after a certain number of * days have passed since the last time fees were paid.",
+        "@param1": "balance The current balance of the address",
+        "@param2": "daysSinceStoragePaid The number days that have passed since fees where last paid",
+        "@return1": "A uint256 representing the storage fee owed",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

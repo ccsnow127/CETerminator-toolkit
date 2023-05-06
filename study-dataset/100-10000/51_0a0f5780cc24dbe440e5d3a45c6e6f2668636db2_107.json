@@ -1,0 +1,1298 @@
+[
+    {
+        "transactions": 107,
+        "function_num": 51
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC165).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * onlyOwner functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * onlyOwner functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * onlyOwner functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (newOwner).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (newOwner).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (newOwner). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addToTeam",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function addToTeam(address _address) public onlyOwner {\n    require(_address != address(0), \"Invalid address\");\n    require(!inTeam(_address), \"This address is already in your team.\");\n  \n    team[_address] = true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Adds an address to the team. Allows them to execute protected functions",
+            "  * @param _address the ETH address to add, cannot be 0x and cannot be in team already",
+            "  **/",
+            ""
+        ],
+        "comt": "/**\n  * @dev Adds an address to the team. Allows them to execute protected functions\n  * @param _address the ETH address to add, cannot be 0x and cannot be in team already\n  **/\n",
+        "@dev": "Adds an address to the team. Allows them to execute protected functions",
+        "@param1": "_address the ETH address to add, cannot be 0x and cannot be in team already",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeFromTeam",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function removeFromTeam(address _address) public onlyOwner {\n    require(_address != address(0), \"Invalid address\");\n    require(inTeam(_address), \"This address is not in your team currently.\");\n  \n    team[_address] = false;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Removes an address to the team.",
+            "  * @param _address the ETH address to remove, cannot be 0x and must be in team",
+            "  **/",
+            ""
+        ],
+        "comt": "/**\n  * @dev Removes an address to the team.\n  * @param _address the ETH address to remove, cannot be 0x and must be in team\n  **/\n",
+        "@dev": "Removes an address to the team.",
+        "@param1": "_address the ETH address to remove, cannot be 0x and must be in team",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "inTeam",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function inTeam(address _address)\n    public\n    view\n    returns (bool)\n  {\n    require(_address != address(0), \"Invalid address to check.\");\n    return team[_address] == true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Check if an address is valid and active in the team",
+            "  * @param _address ETH address to check for truthiness",
+            "  **/",
+            ""
+        ],
+        "comt": "/**\n  * @dev Check if an address is valid and active in the team\n  * @param _address ETH address to check for truthiness\n  **/\n",
+        "@dev": "Check if an address is valid and active in the team",
+        "@param1": "_address ETH address to check for truthiness",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateMerkleRoot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newMerkleRoot",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function updateMerkleRoot(bytes32 _newMerkleRoot) public onlyTeamOrOwner {\n      require(_newMerkleRoot != merkleRoot, \"Merkle root will be unchanged!\");\n      merkleRoot = _newMerkleRoot;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Update merkle root to reflect changes in Allowlist",
+            "     * @param _newMerkleRoot new merkle root to reflect most recent Allowlist",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Update merkle root to reflect changes in Allowlist\n     * @param _newMerkleRoot new merkle root to reflect most recent Allowlist\n     */\n",
+        "@dev": "Update merkle root to reflect changes in Allowlist",
+        "@param1": "_newMerkleRoot new merkle root to reflect most recent Allowlist",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isAllowlisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_merkleProof",
+                "type": "bytes32[] calldata"
+            }
+        ],
+        "func": "function isAllowlisted(address _to, bytes32[] calldata _merkleProof) public view returns(bool) {\n      require(merkleRoot != 0, \"Merkle root is not set!\");\n      bytes32 leaf = keccak256(abi.encodePacked(_to));\n\n      return MerkleProof.verify(_merkleProof, merkleRoot, leaf);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Check the proof of an address if valid for merkle root",
+            "     * @param _to address to check for proof",
+            "     * @param _merkleProof Proof of the address to validate against root and leaf",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Check the proof of an address if valid for merkle root\n     * @param _to address to check for proof\n     * @param _merkleProof Proof of the address to validate against root and leaf\n     */\n",
+        "@dev": "Check the proof of an address if valid for merkle root",
+        "@param1": "_to address to check for proof",
+        "@param2": "_merkleProof Proof of the address to validate against root and leaf",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enableAllowlistOnlyMode",
+        "visibility": "public",
+        "args": [],
+        "func": "function enableAllowlistOnlyMode() public onlyTeamOrOwner {\n      onlyAllowlistMode = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "disableAllowlistOnlyMode",
+        "visibility": "public",
+        "args": [],
+        "func": "function disableAllowlistOnlyMode() public onlyTeamOrOwner {\n        onlyAllowlistMode = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n    return _totalMinted();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721Enumerable-totalSupply}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721Enumerable-totalSupply}.\n   */\n",
+        "@dev": "See {IERC721Enumerable-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "currentTokenId",
+        "visibility": "public",
+        "args": [],
+        "func": "function currentTokenId() public view returns (uint256) {\n    return _totalMinted();\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNextTokenId",
+        "visibility": "public",
+        "args": [],
+        "func": "function getNextTokenId() public view returns (uint256) {\n      return _totalMinted() + 1;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenByIndex(uint256 index) public view override returns (uint256) {\n    require(index < totalSupply(), \"ERC721A: global index out of bounds\");\n    return index;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721Enumerable-tokenByIndex}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721Enumerable-tokenByIndex}.\n   */\n",
+        "@dev": "See {IERC721Enumerable-tokenByIndex}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenOfOwnerByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenOfOwnerByIndex(address owner, uint256 index)\n    public\n    view\n    override\n    returns (uint256)\n  {\n    require(index < balanceOf(owner), \"ERC721A: owner index out of bounds\");\n    uint256 numMintedSoFar = totalSupply();\n    uint256 tokenIdsIdx = 0;\n    address currOwnershipAddr = address(0);\n    for (uint256 i = 0; i < numMintedSoFar; i++) {\n      TokenOwnership memory ownership = _ownerships[i];\n      if (ownership.addr != address(0)) {\n        currOwnershipAddr = ownership.addr;\n      }\n      if (currOwnershipAddr == owner) {\n        if (tokenIdsIdx == index) {\n          return i;\n        }\n        tokenIdsIdx++;\n      }\n    }\n    revert(\"ERC721A: unable to get token of owner by index\");\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.",
+            "   * This read function is O(collectionSize). If calling from a separate contract, be sure to test gas first.",
+            "   * It may also degrade with extremely large collection sizes (e.g >> 10000), test for your use case.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.\n   * This read function is O(collectionSize). If calling from a separate contract, be sure to test gas first.\n   * It may also degrade with extremely large collection sizes (e.g >> 10000), test for your use case.\n   */\n",
+        "@dev": "See {IERC721Enumerable-tokenOfOwnerByIndex}. * This read function is O(collectionSize). If calling from a separate contract, be sure to test gas first. * It may also degrade with extremely large collection sizes (e.g >> 10000), test for your use case.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId)\n    public\n    view\n    virtual\n    override(ERC165, IERC165)\n    returns (bool)\n  {\n    return\n      interfaceId == type(IERC721).interfaceId ||\n      interfaceId == type(IERC721Metadata).interfaceId ||\n      interfaceId == type(IERC721Enumerable).interfaceId ||\n      super.supportsInterface(interfaceId);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC165-supportsInterface}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC165-supportsInterface}.\n   */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view override returns (uint256) {\n    require(owner != address(0), \"ERC721A: balance query for the zero address\");\n    return uint256(_addressData[owner].balance);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-balanceOf}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-balanceOf}.\n   */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view override returns (address) {\n    return ownershipOf(tokenId).addr;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-ownerOf}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-ownerOf}.\n   */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n    return _name;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721Metadata-name}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721Metadata-name}.\n   */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n    return _symbol;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721Metadata-symbol}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721Metadata-symbol}.\n   */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId)\n    public\n    view\n    virtual\n    override\n    returns (string memory)\n  {\n    string memory baseURI = _baseURI();\n    return\n      bytes(baseURI).length > 0\n        ? string(abi.encodePacked(baseURI, tokenId.toString()))\n        : \"\";\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721Metadata-tokenURI}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721Metadata-tokenURI}.\n   */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public override {\n    address owner = ERC721A.ownerOf(tokenId);\n    require(to != owner, \"ERC721A: approval to current owner\");\n\n    require(\n      _msgSender() == owner || isApprovedForAll(owner, _msgSender()),\n      \"ERC721A: approve caller is not owner nor approved for all\"\n    );\n\n    _approve(to, tokenId, owner);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-approve}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-approve}.\n   */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view override returns (address) {\n    require(_exists(tokenId), \"ERC721A: approved query for nonexistent token\");\n\n    return _tokenApprovals[tokenId];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-getApproved}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-getApproved}.\n   */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public override {\n    require(operator != _msgSender(), \"ERC721A: approve to caller\");\n\n    _operatorApprovals[_msgSender()][operator] = approved;\n    emit ApprovalForAll(_msgSender(), operator, approved);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-setApprovalForAll}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-setApprovalForAll}.\n   */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator)\n    public\n    view\n    virtual\n    override\n    returns (bool)\n  {\n    return _operatorApprovals[owner][operator];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-isApprovedForAll}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-isApprovedForAll}.\n   */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n    address from,\n    address to,\n    uint256 tokenId\n  ) public override {\n    _transfer(from, to, tokenId);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-transferFrom}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-transferFrom}.\n   */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n    address from,\n    address to,\n    uint256 tokenId\n  ) public override {\n    safeTransferFrom(from, to, tokenId, \"\");\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-safeTransferFrom}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-safeTransferFrom}.\n   */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n    address from,\n    address to,\n    uint256 tokenId,\n    bytes memory _data\n  ) public override {\n    _transfer(from, to, tokenId);\n    require(\n      _checkOnERC721Received(from, to, tokenId, _data),\n      \"ERC721A: transfer to non ERC721Receiver implementer\"\n    );\n  }",
+        "comments": [
+            "/**",
+            "   * @dev See {IERC721-safeTransferFrom}.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev See {IERC721-safeTransferFrom}.\n   */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawAll",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdrawAll() public onlyTeamOrOwner {\n      require(address(this).balance > 0);\n      _withdrawAll();\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawAllRampp",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdrawAllRampp() public isRampp {\n      require(address(this).balance > 0);\n      _withdrawAll();\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawAllERC20",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenContract",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdrawAllERC20(address _tokenContract, uint256 _amount) public onlyTeamOrOwner {\n    require(_amount > 0);\n    IERC20 tokenContract = IERC20(_tokenContract);\n    require(tokenContract.balanceOf(address(this)) >= _amount, 'Contract does not own enough tokens');\n\n    for(uint i=0; i < payableAddressCount; i++ ) {\n        tokenContract.transfer(payableAddresses[i], (_amount * payableFees[i]) / 100);\n    }\n  }",
+        "comments": [
+            "/**",
+            "    * @dev Allow contract owner to withdraw ERC-20 balance from contract",
+            "    * while still splitting royalty payments to all other team members.",
+            "    * in the event ERC-20 tokens are paid to the contract.",
+            "    * @param _tokenContract contract of ERC-20 token to withdraw",
+            "    * @param _amount balance to withdraw according to balanceOf of ERC-20 token",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Allow contract owner to withdraw ERC-20 balance from contract\n    * while still splitting royalty payments to all other team members.\n    * in the event ERC-20 tokens are paid to the contract.\n    * @param _tokenContract contract of ERC-20 token to withdraw\n    * @param _amount balance to withdraw according to balanceOf of ERC-20 token\n    */\n",
+        "@dev": "Allow contract owner to withdraw ERC-20 balance from contract * while still splitting royalty payments to all other team members. * in the event ERC-20 tokens are paid to the contract.",
+        "@param1": "_tokenContract contract of ERC-20 token to withdraw",
+        "@param2": "_amount balance to withdraw according to balanceOf of ERC-20 token",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRamppAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setRamppAddress(address _newAddress) public isRampp {\n    require(_newAddress != RAMPPADDRESS, \"RAMPP: New Rampp address must be different\");\n    RAMPPADDRESS = _newAddress;\n    payableAddresses[0] = _newAddress;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Allows Rampp wallet to update its own reference as well as update",
+            "  * the address for the Rampp-owed payment split. Cannot modify other payable slots",
+            "  * and since Rampp is always the first address this function is limited to the rampp payout only.",
+            "  * @param _newAddress updated Rampp Address",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Allows Rampp wallet to update its own reference as well as update\n  * the address for the Rampp-owed payment split. Cannot modify other payable slots\n  * and since Rampp is always the first address this function is limited to the rampp payout only.\n  * @param _newAddress updated Rampp Address\n  */\n",
+        "@dev": "Allows Rampp wallet to update its own reference as well as update * the address for the Rampp-owed payment split. Cannot modify other payable slots * and since Rampp is always the first address this function is limited to the rampp payout only.",
+        "@param1": "_newAddress updated Rampp Address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setPrice",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_feeInWei",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setPrice(uint256 _feeInWei) public onlyTeamOrOwner {\n    PRICE = _feeInWei;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPrice",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_count",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getPrice(uint256 _count) public view returns (uint256) {\n    return PRICE * _count;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintToAdminV2",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_qty",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintToAdminV2(address _to, uint256 _qty) public onlyTeamOrOwner{\n         require(_qty > 0, \"Must mint at least 1 token.\");\n         require(currentTokenId() + _qty <= collectionSize, \"Cannot mint over supply cap of 88888\");\n         _safeMint(_to, _qty, true);\n     }",
+        "comments": [
+            "",
+            "  ",
+            "    /////////////// Admin Mint Functions",
+            "    /**",
+            "     * @dev Mints a token to an address with a tokenURI.",
+            "     * This is owner only and allows a fee-free drop",
+            "     * @param _to address of the future owner of the token",
+            "     * @param _qty amount of tokens to drop the owner",
+            "     */",
+            "     "
+        ],
+        "comt": "\n  \n    /////////////// Admin Mint Functions\n    /**\n     * @dev Mints a token to an address with a tokenURI.\n     * This is owner only and allows a fee-free drop\n     * @param _to address of the future owner of the token\n     * @param _qty amount of tokens to drop the owner\n     */\n     ",
+        "@dev": "Mints a token to an address with a tokenURI. * This is owner only and allows a fee-free drop",
+        "@param1": "_to address of the future owner of the token",
+        "@param2": "_qty amount of tokens to drop the owner",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintTo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            }
+        ],
+        "func": "function mintTo(address _to) public payable {\n        require(getNextTokenId() <= collectionSize, \"Cannot mint over supply cap of 10000\");\n        require(mintingOpen == true && onlyAllowlistMode == false, \"Public minting is not open right now!\");\n        \n        require(canMintAmount(_to, 200), \"Wallet address is over the maximum allowed mints\");\n        require(msg.value == getPrice(1), \"Value needs to be exactly the mint fee!\");\n        \n        _safeMint(_to, 1, false);\n    }",
+        "comments": [
+            "",
+            "  ",
+            "    /////////////// GENERIC MINT FUNCTIONS",
+            "    /**",
+            "    * @dev Mints a single token to an address.",
+            "    * fee may or may not be required*",
+            "    * @param _to address of the future owner of the token",
+            "    */",
+            "    "
+        ],
+        "comt": "\n  \n    /////////////// GENERIC MINT FUNCTIONS\n    /**\n    * @dev Mints a single token to an address.\n    * fee may or may not be required*\n    * @param _to address of the future owner of the token\n    */\n    ",
+        "@dev": "Mints a single token to an address. * fee may or may not be required",
+        "@param1": "_to address of the future owner of the token",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintToMultiple",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintToMultiple(address _to, uint256 _amount) public payable {\n        require(_amount >= 1, \"Must mint at least 1 token\");\n        require(_amount <= maxBatchSize, \"Cannot mint more than max mint per transaction\");\n        require(mintingOpen == true && onlyAllowlistMode == false, \"Public minting is not open right now!\");\n        \n        require(canMintAmount(_to, _amount), \"Wallet address is over the maximum allowed mints\");\n        require(currentTokenId() + _amount <= collectionSize, \"Cannot mint over supply cap of 88888\");\n        require(msg.value == getPrice(_amount), \"Value below required mint fee for amount\");\n\n        _safeMint(_to, _amount, false);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Mints a token to an address with a tokenURI.",
+            "    * fee may or may not be required*",
+            "    * @param _to address of the future owner of the token",
+            "    * @param _amount number of tokens to mint",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Mints a token to an address with a tokenURI.\n    * fee may or may not be required*\n    * @param _to address of the future owner of the token\n    * @param _amount number of tokens to mint\n    */\n",
+        "@dev": "Mints a token to an address with a tokenURI. * fee may or may not be required",
+        "@param1": "_to address of the future owner of the token",
+        "@param2": "_amount number of tokens to mint",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "openMinting",
+        "visibility": "public",
+        "args": [],
+        "func": "function openMinting() public onlyTeamOrOwner {\n        mintingOpen = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stopMinting",
+        "visibility": "public",
+        "args": [],
+        "func": "function stopMinting() public onlyTeamOrOwner {\n        mintingOpen = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintToAL",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_merkleProof",
+                "type": "bytes32[] calldata"
+            }
+        ],
+        "func": "function mintToAL(address _to, bytes32[] calldata _merkleProof) public payable {\n        require(onlyAllowlistMode == true && mintingOpen == true, \"Allowlist minting is closed\");\n        require(isAllowlisted(_to, _merkleProof), \"Address is not in Allowlist!\");\n        require(getNextTokenId() <= collectionSize, \"Cannot mint over supply cap of 8888\");\n        require(canMintAmount(_to, 1), \"Wallet address is over the maximum allowed mints\");\n        require(msg.value == getPrice(1), \"Value needs to be exactly the mint fee!\");\n        \n\n        _safeMint(_to, 1, false);\n    }",
+        "comments": [
+            "",
+            "  ",
+            "    ///////////// ALLOWLIST MINTING FUNCTIONS",
+            "",
+            "    /**",
+            "    * @dev Mints a token to an address with a tokenURI for allowlist.",
+            "    * fee may or may not be required*",
+            "    * @param _to address of the future owner of the token",
+            "    */",
+            "    "
+        ],
+        "comt": "\n  \n    ///////////// ALLOWLIST MINTING FUNCTIONS\n\n    /**\n    * @dev Mints a token to an address with a tokenURI for allowlist.\n    * fee may or may not be required*\n    * @param _to address of the future owner of the token\n    */\n    ",
+        "@dev": "Mints a token to an address with a tokenURI for allowlist. * fee may or may not be required",
+        "@param1": "_to address of the future owner of the token",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintToMultipleAL",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_merkleProof",
+                "type": "bytes32[] calldata"
+            }
+        ],
+        "func": "function mintToMultipleAL(address _to, uint256 _amount, bytes32[] calldata _merkleProof) public payable {\n        require(onlyAllowlistMode == true && mintingOpen == true, \"Allowlist minting is closed\");\n        require(isAllowlisted(_to, _merkleProof), \"Address is not in Allowlist!\");\n        require(_amount >= 1, \"Must mint at least 1 token\");\n        require(_amount <= maxBatchSize, \"Cannot mint more than max mint per transaction\");\n\n        require(canMintAmount(_to, _amount), \"Wallet address is over the maximum allowed mints\");\n        require(currentTokenId() + _amount <= collectionSize, \"Cannot mint over supply cap of 8888\");\n        require(msg.value == getPrice(_amount), \"Value below required mint fee for amount\");\n        \n\n        _safeMint(_to, _amount, false);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Mints a token to an address with a tokenURI for allowlist.",
+            "    * fee may or may not be required*",
+            "    * @param _to address of the future owner of the token",
+            "    * @param _amount number of tokens to mint",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Mints a token to an address with a tokenURI for allowlist.\n    * fee may or may not be required*\n    * @param _to address of the future owner of the token\n    * @param _amount number of tokens to mint\n    */\n",
+        "@dev": "Mints a token to an address with a tokenURI for allowlist. * fee may or may not be required",
+        "@param1": "_to address of the future owner of the token",
+        "@param2": "_amount number of tokens to mint",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "openAllowlistMint",
+        "visibility": "public",
+        "args": [],
+        "func": "function openAllowlistMint() public onlyTeamOrOwner {\n        enableAllowlistOnlyMode();\n        mintingOpen = true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Enable allowlist minting fully by enabling both flags",
+            "     * This is a convenience function for the Rampp user",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Enable allowlist minting fully by enabling both flags\n     * This is a convenience function for the Rampp user\n     */\n",
+        "@dev": "Enable allowlist minting fully by enabling both flags * This is a convenience function for the Rampp user",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "closeAllowlistMint",
+        "visibility": "public",
+        "args": [],
+        "func": "function closeAllowlistMint() public onlyTeamOrOwner {\n        disableAllowlistOnlyMode();\n        mintingOpen = false;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Close allowlist minting fully by disabling both flags",
+            "     * This is a convenience function for the Rampp user",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Close allowlist minting fully by disabling both flags\n     * This is a convenience function for the Rampp user\n     */\n",
+        "@dev": "Close allowlist minting fully by disabling both flags * This is a convenience function for the Rampp user",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "canMintAmount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function canMintAmount(address _address, uint256 _amount) public view returns(bool) {\n        require(_amount >= 1, \"Amount must be greater than or equal to 1\");\n        return (_numberMinted(_address) + _amount) <= MAX_WALLET_MINTS;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Check if wallet over MAX_WALLET_MINTS",
+            "    * @param _address address in question to check if minted count exceeds max",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Check if wallet over MAX_WALLET_MINTS\n    * @param _address address in question to check if minted count exceeds max\n    */\n",
+        "@dev": "Check if wallet over MAX_WALLET_MINTS",
+        "@param1": "_address address in question to check if minted count exceeds max",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setWalletMax",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newWalletMax",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setWalletMax(uint256 _newWalletMax) public onlyTeamOrOwner {\n        require(_newWalletMax >= 1, \"Max mints per wallet must be at least 1\");\n        MAX_WALLET_MINTS = _newWalletMax;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Update the maximum amount of tokens that can be minted by a unique wallet",
+            "    * @param _newWalletMax the new max of tokens a wallet can mint. Must be >= 1",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Update the maximum amount of tokens that can be minted by a unique wallet\n    * @param _newWalletMax the new max of tokens a wallet can mint. Must be >= 1\n    */\n",
+        "@dev": "Update the maximum amount of tokens that can be minted by a unique wallet",
+        "@param1": "_newWalletMax the new max of tokens a wallet can mint. Must be >= 1",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMaxMint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newMaxMint",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setMaxMint(uint256 _newMaxMint) public onlyTeamOrOwner {\n         require(_newMaxMint >= 1, \"Max mint must be at least 1\");\n         maxBatchSize = _newMaxMint;\n     }",
+        "comments": [
+            "/**",
+            "     * @dev Allows owner to set Max mints per tx",
+            "     * @param _newMaxMint maximum amount of tokens allowed to mint per tx. Must be >= 1",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows owner to set Max mints per tx\n     * @param _newMaxMint maximum amount of tokens allowed to mint per tx. Must be >= 1\n     */\n",
+        "@dev": "Allows owner to set Max mints per tx",
+        "@param1": "_newMaxMint maximum amount of tokens allowed to mint per tx. Must be >= 1",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "baseTokenURI",
+        "visibility": "public",
+        "args": [],
+        "func": "function baseTokenURI() public view returns(string memory) {\n    return _baseTokenURI;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBaseURI",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "baseURI",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function setBaseURI(string calldata baseURI) external onlyTeamOrOwner {\n    _baseTokenURI = baseURI;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOwnershipData",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getOwnershipData(uint256 tokenId) external view returns(TokenOwnership memory) {\n    return ownershipOf(tokenId);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

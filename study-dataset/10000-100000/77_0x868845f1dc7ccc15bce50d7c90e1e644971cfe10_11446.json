@@ -1,0 +1,2335 @@
+[
+    {
+        "transactions": 11446,
+        "function_num": 77
+    },
+    {
+        "name": "setAffiliate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "member",
+                "type": "address"
+            },
+            {
+                "name": "affiliate",
+                "type": "address"
+            }
+        ],
+        "func": "function setAffiliate(address member, address affiliate)\n        public\n        onlySystemParamsAdmin\n    {\n        require(\n            affiliate != address(0),\n            \"AFFILIATE_ZERO_ADDRESS\"\n        );\n\n        addressToAffiliate[member] = affiliate;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Sets the affiliate for an address.",
+            "    /// @param member The address to attach to the affiliate.",
+            "    /// @param affiliate The affiliate address to attach.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Sets the affiliate for an address.\n    /// @param member The address to attach to the affiliate.\n    /// @param affiliate The affiliate address to attach.\n    ",
+        "@notice": "Sets the affiliate for an address.",
+        "@param1": "member The address to attach to the affiliate.",
+        "@param2": "affiliate The affiliate address to attach.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAffiliateFeeFrac",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "affiliate",
+                "type": "address"
+            },
+            {
+                "name": "feeFrac",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setAffiliateFeeFrac(address affiliate, uint256 feeFrac)\n        public\n        onlySystemParamsAdmin\n    {\n        require(\n            feeFrac < MAX_AFFILIATE_FEE,\n            \"AFFILIATE_FEE_TOO_HIGH\"\n        );\n\n        affiliateFeeFrac[affiliate] = feeFrac;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Sets the affiliate fee fraction for an address.",
+            "    /// @param affiliate The affiliate whose fee fraction should be changed.",
+            "    /// @param feeFrac The new fee fraction for this affiliate.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Sets the affiliate fee fraction for an address.\n    /// @param affiliate The affiliate whose fee fraction should be changed.\n    /// @param feeFrac The new fee fraction for this affiliate.\n    ",
+        "@notice": "Sets the affiliate fee fraction for an address.",
+        "@param1": "affiliate The affiliate whose fee fraction should be changed.",
+        "@param2": "feeFrac The new fee fraction for this affiliate.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setDefaultAffiliate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "affiliate",
+                "type": "address"
+            }
+        ],
+        "func": "function setDefaultAffiliate(address affiliate)\n        public\n        onlySystemParamsAdmin\n    {\n        require(\n            affiliate != address(0),\n            \"AFFILIATE_ZERO_ADDRESS\"\n        );\n\n        defaultAffiliate = affiliate;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Sets the default affiliate if no affiliate is set for an address.",
+            "    /// @param affiliate The new default affiliate.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Sets the default affiliate if no affiliate is set for an address.\n    /// @param affiliate The new default affiliate.\n    ",
+        "@notice": "Sets the default affiliate if no affiliate is set for an address.",
+        "@param1": "affiliate The new default affiliate.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAffiliate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "member",
+                "type": "address"
+            }
+        ],
+        "func": "function getAffiliate(address member)\n        public\n        view\n        returns (address)\n    {\n        address affiliate = addressToAffiliate[member];\n        if (affiliate == address(0)) {\n            return defaultAffiliate;\n        } else {\n            return affiliate;\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the affiliate for an address. If no affiliate is set, it returns the",
+            "    ///         default affiliate.",
+            "    /// @param member The address to query.",
+            "    /// @return The affiliate for this address.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the affiliate for an address. If no affiliate is set, it returns the\n    ///         default affiliate.\n    /// @param member The address to query.\n    /// @return The affiliate for this address.\n    ",
+        "@notice": "Gets the affiliate for an address. If no affiliate is set, it returns the /// default affiliate.",
+        "@param1": "member The address to query.",
+        "@return1": "The affiliate for this address.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAffiliateFeeFrac",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "affiliate",
+                "type": "address"
+            }
+        ],
+        "func": "function getAffiliateFeeFrac(address affiliate)\n        public\n        view\n        returns (uint256)\n    {\n        return affiliateFeeFrac[affiliate];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDefaultAffiliate",
+        "visibility": "public",
+        "args": [],
+        "func": "function getDefaultAffiliate()\n        public\n        view\n        returns (address)\n    {\n        return defaultAffiliate;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "settleBet",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            },
+            {
+                "name": "baseTokenAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function settleBet(\n        address owner,\n        bytes32 marketHash,\n        address baseTokenAddress\n    ) public marketTokensRedeemable(marketHash) {\n        IERC20 baseToken = IERC20(baseTokenAddress);\n        LibOutcome.Outcome marketResult = outcomeReporter.getReportedOutcome(\n            marketHash\n        );\n        uint256 outcomeOneEligibility = returnAmounts[marketHash][baseTokenAddress][owner][uint8(\n            LibOutcome.Outcome.OUTCOME_ONE\n        )];\n        uint256 outcomeTwoEligibility = returnAmounts[marketHash][baseTokenAddress][owner][uint8(\n            LibOutcome.Outcome.OUTCOME_TWO\n        )];\n        uint256 outcomeOneStake = stakedAmounts[marketHash][baseTokenAddress][owner][uint8(\n            LibOutcome.Outcome.OUTCOME_ONE\n        )];\n        uint256 outcomeTwoStake = stakedAmounts[marketHash][baseTokenAddress][owner][uint8(\n            LibOutcome.Outcome.OUTCOME_TWO\n        )];\n        BetFee memory betFees;\n        uint256 payout;\n\n        if (\n            marketResult == LibOutcome.Outcome.OUTCOME_ONE &&\n            outcomeOneEligibility > 0\n        ) {\n            uint256 profits = outcomeOneEligibility.sub(outcomeOneStake);\n            betFees = settleFees(baseTokenAddress, owner, profits);\n            payout = outcomeOneEligibility.sub(betFees.oracleFee).sub(\n                betFees.affiliateFee\n            );\n            returnAmounts[marketHash][baseTokenAddress][owner][uint8(\n                LibOutcome.Outcome.OUTCOME_ONE\n            )] = 0;\n        } else if (\n            marketResult == LibOutcome.Outcome.OUTCOME_TWO &&\n            outcomeTwoEligibility > 0\n        ) {\n            uint256 profits = outcomeTwoEligibility.sub(outcomeTwoStake);\n            betFees = settleFees(baseTokenAddress, owner, profits);\n            payout = outcomeTwoEligibility.sub(betFees.oracleFee).sub(\n                betFees.affiliateFee\n            );\n            returnAmounts[marketHash][baseTokenAddress][owner][uint8(\n                LibOutcome.Outcome.OUTCOME_TWO\n            )] = 0;\n        } else if (\n            marketResult == LibOutcome.Outcome.VOID &&\n            (outcomeOneStake > 0 || outcomeTwoStake > 0)\n        ) {\n            if (outcomeOneStake > 0) {\n                payout = outcomeOneStake;\n                stakedAmounts[marketHash][baseTokenAddress][owner][uint8(\n                    LibOutcome.Outcome.OUTCOME_ONE\n                )] = 0;\n            }\n            if (outcomeTwoStake > 0) {\n                payout = payout.add(outcomeTwoStake);\n                stakedAmounts[marketHash][baseTokenAddress][owner][uint8(\n                    LibOutcome.Outcome.OUTCOME_TWO\n                )] = 0;\n            }\n        } else {\n            revert(\"MARKET_WRONG_RESOLUTION\");\n        }\n\n        require(baseToken.transfer(owner, payout), \"CANNOT_TRANSFER_ESCROW\");\n\n        emit BetSettled(\n            owner,\n            marketHash,\n            baseTokenAddress,\n            marketResult,\n            payout,\n            betFees.oracleFee,\n            betFees.affiliateFee\n        );\n    }",
+        "comments": [
+            "",
+            "    /// @notice Redeems outcome one or outcome two return amounts after a market",
+            "    ///         has been resolved.",
+            "    /// @param owner The user to redeem for.",
+            "    /// @param marketHash The market that is resolved.",
+            "    /// @param baseTokenAddress The token to resolve.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Redeems outcome one or outcome two return amounts after a market\n    ///         has been resolved.\n    /// @param owner The user to redeem for.\n    /// @param marketHash The market that is resolved.\n    /// @param baseTokenAddress The token to resolve.\n    ",
+        "@notice": "Redeems outcome one or outcome two return amounts after a market /// has been resolved.",
+        "@param1": "owner The user to redeem for.",
+        "@param2": "marketHash The market that is resolved.",
+        "@param3": "baseTokenAddress The token to resolve.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateStakedAmount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            },
+            {
+                "name": "baseToken",
+                "type": "address"
+            },
+            {
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "name": "outcome",
+                "type": "LibOutcome.Outcome"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateStakedAmount(\n        bytes32 marketHash,\n        address baseToken,\n        address user,\n        LibOutcome.Outcome outcome,\n        uint256 amount\n    ) public onlyFillOrder {\n        stakedAmounts[marketHash][baseToken][user][uint8(\n            outcome\n        )] = stakedAmounts[marketHash][baseToken][user][uint8(outcome)].add(\n            amount\n        );\n    }",
+        "comments": [
+            "",
+            "    /// @notice Updates the user's escrowed amount they have in the market.",
+            "    /// @param marketHash The market to redeem.",
+            "    /// @param baseToken The token with which they are betting.",
+            "    /// @param user The user to update.",
+            "    /// @param outcome The side to update.",
+            "    /// @param amount The amount to add.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Updates the user's escrowed amount they have in the market.\n    /// @param marketHash The market to redeem.\n    /// @param baseToken The token with which they are betting.\n    /// @param user The user to update.\n    /// @param outcome The side to update.\n    /// @param amount The amount to add.\n    ",
+        "@notice": "Updates the user's escrowed amount they have in the market.",
+        "@param1": "marketHash The market to redeem.",
+        "@param2": "baseToken The token with which they are betting.",
+        "@param3": "user The user to update.",
+        "@param4": "outcome The side to update.",
+        "@param5": "amount The amount to add.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseReturnAmount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            },
+            {
+                "name": "baseToken",
+                "type": "address"
+            },
+            {
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "name": "outcome",
+                "type": "LibOutcome.Outcome"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseReturnAmount(\n        bytes32 marketHash,\n        address baseToken,\n        address user,\n        LibOutcome.Outcome outcome,\n        uint256 amount\n    ) public onlyFillOrder {\n        returnAmounts[marketHash][baseToken][user][uint8(\n            outcome\n        )] = returnAmounts[marketHash][baseToken][user][uint8(outcome)].add(\n            amount\n        );\n    }",
+        "comments": [
+            "",
+            "    /// @notice Updates the user's return amount",
+            "    /// @param marketHash The market for which they are betting on outcome one.",
+            "    /// @param baseToken The token with which they are betting.",
+            "    /// @param user The user to update.",
+            "    /// @param outcome The outcome to increase",
+            "    /// @param amount The amount to add.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Updates the user's return amount\n    /// @param marketHash The market for which they are betting on outcome one.\n    /// @param baseToken The token with which they are betting.\n    /// @param user The user to update.\n    /// @param outcome The outcome to increase\n    /// @param amount The amount to add.\n    ",
+        "@notice": "Updates the user's return amount",
+        "@param1": "marketHash The market for which they are betting on outcome one.",
+        "@param2": "baseToken The token with which they are betting.",
+        "@param3": "user The user to update.",
+        "@param4": "outcome The outcome to increase",
+        "@param5": "amount The amount to add.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isMarketRedeemable",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function isMarketRedeemable(bytes32 marketHash) public view returns (bool) {\n        uint256 reportTime = outcomeReporter.getReportTime(marketHash);\n        if (reportTime > 0) {\n            return now > reportTime;\n        } else {\n            return false;\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Checks if the market's tokens are redeemable.",
+            "    /// @param marketHash The market to check.",
+            "    /// @return true if the market's tokens are redeemable, false otherwise.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Checks if the market's tokens are redeemable.\n    /// @param marketHash The market to check.\n    /// @return true if the market's tokens are redeemable, false otherwise.\n    ",
+        "@notice": "Checks if the market's tokens are redeemable.",
+        "@param1": "marketHash The market to check.",
+        "@return1": "true if the market's tokens are redeemable, false otherwise.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getEligibility",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            },
+            {
+                "name": "baseToken",
+                "type": "address"
+            }
+        ],
+        "func": "function getEligibility(\n        address owner,\n        bytes32 marketHash,\n        address baseToken\n    ) public view returns (Eligibility memory eligibility) {\n        if (!isMarketRedeemable(marketHash)) {\n            return\n                Eligibility({\n                    hasEligibility: false,\n                    outcome: LibOutcome.Outcome.VOID,\n                    amount: 0\n                });\n        }\n        LibOutcome.Outcome marketResult = outcomeReporter.getReportedOutcome(\n            marketHash\n        );\n\n        uint256 outcomeOneEligibility = returnAmounts[marketHash][baseToken][owner][uint8(\n            LibOutcome.Outcome.OUTCOME_ONE\n        )];\n        uint256 outcomeTwoEligibility = returnAmounts[marketHash][baseToken][owner][uint8(\n            LibOutcome.Outcome.OUTCOME_TWO\n        )];\n        uint256 outcomeOneStake = stakedAmounts[marketHash][baseToken][owner][uint8(\n            LibOutcome.Outcome.OUTCOME_ONE\n        )];\n        uint256 outcomeTwoStake = stakedAmounts[marketHash][baseToken][owner][uint8(\n            LibOutcome.Outcome.OUTCOME_TWO\n        )];\n\n        if (\n            marketResult == LibOutcome.Outcome.OUTCOME_ONE &&\n            outcomeOneEligibility > 0\n        ) {\n            return\n                Eligibility({\n                    hasEligibility: true,\n                    outcome: LibOutcome.Outcome.OUTCOME_ONE,\n                    amount: outcomeOneEligibility\n                });\n        } else if (\n            marketResult == LibOutcome.Outcome.OUTCOME_TWO &&\n            outcomeTwoEligibility > 0\n        ) {\n            return\n                Eligibility({\n                    hasEligibility: true,\n                    outcome: LibOutcome.Outcome.OUTCOME_TWO,\n                    amount: outcomeTwoEligibility\n                });\n        } else if (\n            marketResult == LibOutcome.Outcome.VOID &&\n            (outcomeOneStake > 0 || outcomeTwoStake > 0)\n        ) {\n            return\n                Eligibility({\n                    hasEligibility: true,\n                    outcome: LibOutcome.Outcome.VOID,\n                    amount: outcomeOneStake.add(outcomeTwoStake)\n                });\n        } else {\n            return\n                Eligibility({\n                    hasEligibility: false,\n                    outcome: LibOutcome.Outcome.VOID,\n                    amount: 0\n                });\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Checks if the owner has a valid redeemable bet.",
+            "    /// @param owner The owner of the bet.",
+            "    /// @param marketHash The market to check.",
+            "    /// @param baseToken The base token to check.",
+            "    /// @return true if the owner has a valid redeemable bet for this market, false otherwise.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Checks if the owner has a valid redeemable bet.\n    /// @param owner The owner of the bet.\n    /// @param marketHash The market to check.\n    /// @param baseToken The base token to check.\n    /// @return true if the owner has a valid redeemable bet for this market, false otherwise.\n    ",
+        "@notice": "Checks if the owner has a valid redeemable bet.",
+        "@param1": "owner The owner of the bet.",
+        "@param2": "marketHash The market to check.",
+        "@param3": "baseToken The base token to check.",
+        "@return1": "true if the owner has a valid redeemable bet for this market, false otherwise.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReturnAmount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            },
+            {
+                "name": "baseToken",
+                "type": "address"
+            },
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "outcome",
+                "type": "LibOutcome.Outcome"
+            }
+        ],
+        "func": "function getReturnAmount(\n        bytes32 marketHash,\n        address baseToken,\n        address owner,\n        LibOutcome.Outcome outcome\n    ) public view returns (uint256) {\n        return returnAmounts[marketHash][baseToken][owner][uint8(outcome)];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getStakedAmount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            },
+            {
+                "name": "baseToken",
+                "type": "address"
+            },
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "outcome",
+                "type": "LibOutcome.Outcome"
+            }
+        ],
+        "func": "function getStakedAmount(\n        bytes32 marketHash,\n        address baseToken,\n        address owner,\n        LibOutcome.Outcome outcome\n    ) public view returns (uint256) {\n        return stakedAmounts[marketHash][baseToken][owner][uint8(outcome)];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setCompleted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "completed",
+                "type": "uint"
+            }
+        ],
+        "func": "function setCompleted(uint completed) public restricted {\n        last_completed_migration = completed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "new_address",
+                "type": "address"
+            }
+        ],
+        "func": "function upgrade(address new_address) public restricted {\n        Migrations upgraded = Migrations(new_address);\n        upgraded.setCompleted(last_completed_migration);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reportOutcome",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            },
+            {
+                "name": "reportedOutcome",
+                "type": "LibOutcome.Outcome"
+            }
+        ],
+        "func": "function reportOutcome(bytes32 marketHash, LibOutcome.Outcome reportedOutcome)\n        public\n        onlyOutcomeReporterAdmin\n        notAlreadyReported(marketHash)\n    {\n        reportedOutcomes[marketHash] = reportedOutcome;\n        reportTime[marketHash] = now;\n\n        emit OutcomeReported(marketHash, reportedOutcome);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Reports the initial outcome of the market.",
+            "    ///         Only callable by OutcomeReporter admins.",
+            "    ///         Can only be reported once.",
+            "    /// @param marketHash The market to report.",
+            "    /// @param reportedOutcome The outcome to report.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Reports the initial outcome of the market.\n    ///         Only callable by OutcomeReporter admins.\n    ///         Can only be reported once.\n    /// @param marketHash The market to report.\n    /// @param reportedOutcome The outcome to report.\n    ",
+        "@notice": "Reports the initial outcome of the market. /// Only callable by OutcomeReporter admins. /// Can only be reported once.",
+        "@param1": "marketHash The market to report.",
+        "@param2": "reportedOutcome The outcome to report.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reportOutcomes",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHashes",
+                "type": "bytes32[] memory"
+            },
+            {
+                "name": "outcomes",
+                "type": "LibOutcome.Outcome[] memory"
+            }
+        ],
+        "func": "function reportOutcomes(\n        bytes32[] memory marketHashes,\n        LibOutcome.Outcome[] memory outcomes\n    ) public {\n        uint256 marketHashesLength = marketHashes.length;\n        for (uint256 i = 0; i < marketHashesLength; i++) {\n            reportOutcome(marketHashes[i], outcomes[i]);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Reports the outcome for several markets.",
+            "    /// @param marketHashes The market hashes to report.",
+            "    /// @param outcomes The outcomes to report.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Reports the outcome for several markets.\n    /// @param marketHashes The market hashes to report.\n    /// @param outcomes The outcomes to report.\n    ",
+        "@notice": "Reports the outcome for several markets.",
+        "@param1": "marketHashes The market hashes to report.",
+        "@param2": "outcomes The outcomes to report.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReportedOutcome",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getReportedOutcome(bytes32 marketHash)\n        public\n        view\n        returns (LibOutcome.Outcome)\n    {\n        return reportedOutcomes[marketHash];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getReportTime",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "marketHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getReportTime(bytes32 marketHash) public view returns (uint256) {\n        return reportTime[marketHash];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setNewOracleFeeRecipient",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOracleFeeRecipient",
+                "type": "address"
+            }
+        ],
+        "func": "function setNewOracleFeeRecipient(address newOracleFeeRecipient)\n        public\n        onlySystemParamsAdmin\n    {\n        oracleFeeRecipient = newOracleFeeRecipient;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Sets the oracle fee recipient. Only callable by SystemParams admins.",
+            "    /// @param newOracleFeeRecipient The new oracle fee recipient address",
+            "    "
+        ],
+        "comt": "\n    /// @notice Sets the oracle fee recipient. Only callable by SystemParams admins.\n    /// @param newOracleFeeRecipient The new oracle fee recipient address\n    ",
+        "@notice": "Sets the oracle fee recipient. Only callable by SystemParams admins.",
+        "@param1": "newOracleFeeRecipient The new oracle fee recipient address",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOracleFeeRecipient",
+        "visibility": "public",
+        "args": [],
+        "func": "function getOracleFeeRecipient() public view returns (address) {\n        return oracleFeeRecipient;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOrderStatus",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            },
+            {
+                "name": "makerSig",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function getOrderStatus(\n        LibOrder.Order memory order,\n        bytes memory makerSig\n    )\n        public\n        view\n        returns (string memory)\n    {\n        string memory baseMakerOrderStatus = getBaseOrderStatus(\n            order,\n            makerSig\n        );\n        if (!baseMakerOrderStatus.equals(\"OK\")) {return baseMakerOrderStatus;}\n        uint256 remainingSpace = fills.remainingSpace(order);\n        if (remainingSpace == 0) {\n            return \"FULLY_FILLED\";\n        }\n        LibOrderAmounts.OrderAmounts memory orderAmounts = LibOrderAmounts.computeOrderAmounts(\n            order,\n            remainingSpace\n        );\n        string memory allowanceBalanceValidity = getMakerAllowanceAndBalanceStatus(\n            orderAmounts,\n            order.baseToken,\n            order.maker\n        );\n        return allowanceBalanceValidity;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the current status of an order without considering",
+            "    ///         any individual taker.",
+            "    /// @param order The order to examine.",
+            "    /// @param makerSig The signature of maker on this order.",
+            "    /// @return A string representing the status. \"OK\" for valid.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the current status of an order without considering\n    ///         any individual taker.\n    /// @param order The order to examine.\n    /// @param makerSig The signature of maker on this order.\n    /// @return A string representing the status. \"OK\" for valid.\n    ",
+        "@notice": "Gets the current status of an order without considering /// any individual taker.",
+        "@param1": "order The order to examine.",
+        "@param2": "makerSig The signature of maker on this order.",
+        "@return1": "A string representing the status. \"OK\" for valid.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMultiOrderStatus",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "orders",
+                "type": "LibOrder.Order[] memory"
+            },
+            {
+                "name": "makerSigs",
+                "type": "bytes[] memory"
+            }
+        ],
+        "func": "function getMultiOrderStatus(\n        LibOrder.Order[] memory orders,\n        bytes[] memory makerSigs\n    )\n        public\n        view\n        returns (string[] memory)\n    {\n        string[] memory statuses = new string[](orders.length);\n\n        for (uint256 i = 0; i < orders.length; i++) {\n            statuses[i] = getOrderStatus(\n                orders[i],\n                makerSigs[i]\n            );\n        }\n\n        return statuses;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the current status of multiple orders without considering",
+            "    ///         any individual taker.",
+            "    /// @param orders The orders to examine.",
+            "    /// @param makerSigs The signature of the makers on this order.",
+            "    /// @return A string representing the status. \"OK\" for valid.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the current status of multiple orders without considering\n    ///         any individual taker.\n    /// @param orders The orders to examine.\n    /// @param makerSigs The signature of the makers on this order.\n    /// @return A string representing the status. \"OK\" for valid.\n    ",
+        "@notice": "Gets the current status of multiple orders without considering /// any individual taker.",
+        "@param1": "orders The orders to examine.",
+        "@param2": "makerSigs The signature of the makers on this order.",
+        "@return1": "A string representing the status. \"OK\" for valid.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFillStatus",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "fillDetails",
+                "type": "LibOrder.FillDetails memory"
+            },
+            {
+                "name": "executorSig",
+                "type": "bytes memory"
+            },
+            {
+                "name": "taker",
+                "type": "address"
+            }
+        ],
+        "func": "function getFillStatus(\n        LibOrder.FillDetails memory fillDetails,\n        bytes memory executorSig,\n        address taker\n    )\n        public\n        view\n        returns (string memory)\n    {\n        address executor = fillDetails.fills.orders[0].executor;\n        if (executor != address(0)) {\n            bytes32 fillHash = eip712FillHasher.getDetailsHash(fillDetails);\n\n            if (fills.getFillHashSubmitted(fillHash)) {\n                return \"FILL_ALREADY_SUBMITTED\";\n            }\n\n            if (ECDSA.recover(fillHash, executorSig) != executor) {\n                return \"EXECUTOR_SIGNATURE_MISMATCH\";\n            }\n        }\n\n        if (fillDetails.fills.orders.length > 1) {\n            for (uint256 i = 1; i < fillDetails.fills.orders.length; i++) {\n                if (fillDetails.fills.orders[i].executor != executor) {\n                    return \"INCONSISTENT_EXECUTORS\";\n                }\n            }\n        }\n\n        return _getFillStatus(\n            fillDetails.fills.orders,\n            taker,\n            fillDetails.fills.takerAmounts,\n            fillDetails.fills.makerSigs\n        );\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the status of a multi-order fill",
+            "    /// @param fillDetails The fills to execute",
+            "    /// @param executorSig The signature of the executor, if any.",
+            "    /// @param taker The hypothetical taker.",
+            "    /// @return A string representing the status. \"OK\" for valid.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the status of a multi-order fill\n    /// @param fillDetails The fills to execute\n    /// @param executorSig The signature of the executor, if any.\n    /// @param taker The hypothetical taker.\n    /// @return A string representing the status. \"OK\" for valid.\n    ",
+        "@notice": "Gets the status of a multi-order fill",
+        "@param1": "fillDetails The fills to execute",
+        "@param2": "executorSig The signature of the executor, if any.",
+        "@param3": "taker The hypothetical taker.",
+        "@return1": "A string representing the status. \"OK\" for valid.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMetaFillStatus",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "fillDetails",
+                "type": "LibOrder.FillDetails memory"
+            },
+            {
+                "name": "taker",
+                "type": "address"
+            },
+            {
+                "name": "takerSig",
+                "type": "bytes memory"
+            },
+            {
+                "name": "executorSig",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function getMetaFillStatus(\n        LibOrder.FillDetails memory fillDetails,\n        address taker,\n        bytes memory takerSig,\n        bytes memory executorSig\n    )\n        public\n        view\n        returns (string memory)\n    {\n        bytes32 fillHash = eip712FillHasher.getDetailsHash(fillDetails);\n\n        if (ECDSA.recover(fillHash, takerSig) != taker) {\n            return \"TAKER_SIGNATURE_MISMATCH\";\n        }\n\n        if (fills.getFillHashSubmitted(fillHash)) {\n            return \"FILL_ALREADY_SUBMITTED\";\n        }\n\n        address executor = fillDetails.fills.orders[0].executor;\n\n        if (executor != address(0) &&\n            ECDSA.recover(fillHash, executorSig) != executor) {\n            return \"EXECUTOR_SIGNATURE_MISMATCH\";\n        }\n\n        if (fillDetails.fills.orders.length > 1) {\n            for (uint256 i = 1; i < fillDetails.fills.orders.length; i++) {\n                if (fillDetails.fills.orders[i].executor != executor) {\n                    return \"INCONSISTENT_EXECUTORS\";\n                }\n            }\n        }\n\n        return _getFillStatus(\n            fillDetails.fills.orders,\n            taker,\n            fillDetails.fills.takerAmounts,\n            fillDetails.fills.makerSigs\n        );\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the status of a meta multi-order fill",
+            "    /// @param fillDetails The fills to execute, meta style.",
+            "    /// @param taker The hypothetical taker.",
+            "    /// @param takerSig The taker's signature for this fill.",
+            "    /// @param executorSig The signature of the executor, if any.",
+            "    /// @return A string representing the status. \"OK\" for valid.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the status of a meta multi-order fill\n    /// @param fillDetails The fills to execute, meta style.\n    /// @param taker The hypothetical taker.\n    /// @param takerSig The taker's signature for this fill.\n    /// @param executorSig The signature of the executor, if any.\n    /// @return A string representing the status. \"OK\" for valid.\n    ",
+        "@notice": "Gets the status of a meta multi-order fill",
+        "@param1": "fillDetails The fills to execute, meta style.",
+        "@param2": "taker The hypothetical taker.",
+        "@param3": "takerSig The taker's signature for this fill.",
+        "@param4": "executorSig The signature of the executor, if any.",
+        "@return1": "A string representing the status. \"OK\" for valid.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addSuperAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function addSuperAdmin(address account) public onlySuperAdmin {\n        _addSuperAdmin(account);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Adds a super admin to the list.",
+            "    /// @param account The account to add.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Adds a super admin to the list.\n    /// @param account The account to add.\n    ",
+        "@notice": "Adds a super admin to the list.",
+        "@param1": "account The account to add.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeSuperAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function removeSuperAdmin(address account)\n        public\n        onlySuperAdmin\n        atLeastOneSuperAdmin\n    {\n        _removeSuperAdmin(account);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Removes a super admin from the list.",
+            "    /// @param account The account to add.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Removes a super admin from the list.\n    /// @param account The account to add.\n    ",
+        "@notice": "Removes a super admin from the list.",
+        "@param1": "account The account to add.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSuperAdminCount",
+        "visibility": "public",
+        "args": [],
+        "func": "function getSuperAdminCount() public view returns (uint256) {\n        return superAdminCount;\n    }",
+        "comments": [
+            "",
+            "        /// @notice Gets the total number of super admins.",
+            "    /// @return The total number of super admins.",
+            "    "
+        ],
+        "comt": "\n        /// @notice Gets the total number of super admins.\n    /// @return The total number of super admins.\n    ",
+        "@notice": "Gets the total number of super admins.",
+        "@return1": "The total number of super admins.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isSuperAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function isSuperAdmin(address account) public view returns (bool) {\n        return superAdmins.has(account);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Checks if an account is a super admin.",
+            "    /// @param account The account to add.",
+            "    /// @return true if the account is a super admin, false otherwise.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Checks if an account is a super admin.\n    /// @param account The account to add.\n    /// @return true if the account is a super admin, false otherwise.\n    ",
+        "@notice": "Checks if an account is a super admin.",
+        "@param1": "account The account to add.",
+        "@return1": "true if the account is a super admin, false otherwise.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addAddressToWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function addAddressToWhitelist(address operator)\n        public\n        onlySuperAdmin(msg.sender)\n    {\n        whitelisted[operator] = true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Adds an operator to the whitelist",
+            "    ///         Only callable by the SuperAdmin role.",
+            "    /// @param operator The operator to add.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Adds an operator to the whitelist\n    ///         Only callable by the SuperAdmin role.\n    /// @param operator The operator to add.\n    ",
+        "@notice": "Adds an operator to the whitelist /// Only callable by the SuperAdmin role.",
+        "@param1": "operator The operator to add.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeAddressFromWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function removeAddressFromWhitelist(address operator)\n        public\n        onlySuperAdmin(msg.sender)\n    {\n        whitelisted[operator] = false;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Removes an address from the whitelist",
+            "    ///         Only callable by the SuperAdmin role.",
+            "    /// @param operator The operator to remove.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Removes an address from the whitelist\n    ///         Only callable by the SuperAdmin role.\n    /// @param operator The operator to remove.\n    ",
+        "@notice": "Removes an address from the whitelist /// Only callable by the SuperAdmin role.",
+        "@param1": "operator The operator to remove.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getWhitelisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function getWhitelisted(address operator) public view returns (bool) {\n        return whitelisted[operator];\n    }",
+        "comments": [
+            "",
+            "    /// @notice Checks if the operator is whitelisted.",
+            "    /// @param operator The operator.",
+            "    /// @return true if the operator is whitelisted, false otherwise",
+            "    "
+        ],
+        "comt": "\n    /// @notice Checks if the operator is whitelisted.\n    /// @param operator The operator.\n    /// @return true if the operator is whitelisted, false otherwise\n    ",
+        "@notice": "Checks if the operator is whitelisted.",
+        "@param1": "operator The operator.",
+        "@return1": "true if the operator is whitelisted, false otherwise",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address dst, uint wad) external returns (bool) {\n        return transferFrom(msg.sender, dst, wad);\n    }",
+        "comments": [
+            "",
+            "    // --- Token ---",
+            "    "
+        ],
+        "comt": "\n    // --- Token ---\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address src, address dst, uint wad)\n        public returns (bool)\n    {\n        require(balanceOf[src] >= wad, \"Dai/insufficient-balance\");\n        if (src != msg.sender && allowance[src][msg.sender] != uint(-1)) {\n            require(allowance[src][msg.sender] >= wad, \"Dai/insufficient-allowance\");\n            allowance[src][msg.sender] = sub(allowance[src][msg.sender], wad);\n        }\n        balanceOf[src] = sub(balanceOf[src], wad);\n        balanceOf[dst] = add(balanceOf[dst], wad);\n        emit Transfer(src, dst, wad);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "usr",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function burn(address usr, uint wad) external {\n        require(balanceOf[usr] >= wad, \"Dai/insufficient-balance\");\n        if (usr != msg.sender && allowance[usr][msg.sender] != uint(-1)) {\n            require(allowance[usr][msg.sender] >= wad, \"Dai/insufficient-allowance\");\n            allowance[usr][msg.sender] = sub(allowance[usr][msg.sender], wad);\n        }\n        balanceOf[usr] = sub(balanceOf[usr], wad);\n        totalSupply    = sub(totalSupply, wad);\n        emit Transfer(usr, address(0), wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "usr",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function approve(address usr, uint wad) external returns (bool) {\n        allowance[msg.sender][usr] = wad;\n        emit Approval(msg.sender, usr, wad);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBalance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_target",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setBalance(address _target, uint256 _value) external {\n        balanceOf[_target] = _value;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "permit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "expiry",
+                "type": "uint256"
+            },
+            {
+                "name": "allowed",
+                "type": "bool"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function permit(address holder, address spender, uint256 nonce, uint256 expiry,\n                    bool allowed, uint8 v, bytes32 r, bytes32 s) external\n    {\n        bytes32 digest =\n            keccak256(abi.encodePacked(\n                \"\\x19\\x01\",\n                DOMAIN_SEPARATOR,\n                keccak256(abi.encode(PERMIT_TYPEHASH,\n                                     holder,\n                                     spender,\n                                     nonce,\n                                     expiry,\n                                     allowed))\n        ));\n\n        require(holder != address(0), \"Dai/invalid-address-0\");\n        require(holder == ecrecover(digest, v, r, s), \"Dai/invalid-permit\");\n        require(expiry == 0 || now <= expiry, \"Dai/permit-expired\");\n        require(nonce == nonces[holder]++, \"Dai/invalid-nonce\");\n        uint wad = allowed ? uint(-1) : 0;\n        allowance[holder][spender] = wad;\n        emit Approval(holder, spender, wad);\n    }",
+        "comments": [
+            "",
+            "    // --- Approve by signature ---",
+            "    "
+        ],
+        "comt": "\n    // --- Approve by signature ---\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the name of the token.",
+            "    /// @return The name of the token.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the name of the token.\n    /// @return The name of the token.\n    ",
+        "@notice": "Gets the name of the token.",
+        "@return1": "The name of the token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the symbol of the token.",
+            "    /// @return The symbol of the token.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the symbol of the token.\n    /// @return The symbol of the token.\n    ",
+        "@notice": "Gets the symbol of the token.",
+        "@return1": "The symbol of the token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the decimals of the token.",
+            "    /// @return The decimals of the token.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the decimals of the token.\n    /// @return The decimals of the token.\n    ",
+        "@notice": "Gets the decimals of the token.",
+        "@return1": "The decimals of the token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setDefaultOperator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newDefaultOperator",
+                "type": "address"
+            }
+        ],
+        "func": "function setDefaultOperator(address newDefaultOperator) external onlyDefaultOperatorController {\n        defaultOperator = newDefaultOperator;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Sets the default operator. Only callable by the default operator controller.",
+            "     * @param newDefaultOperator The new default operator.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Sets the default operator. Only callable by the default operator controller.\n     * @param newDefaultOperator The new default operator.\n     */\n",
+        "@dev": "Sets the default operator. Only callable by the default operator controller.",
+        "@param1": "newDefaultOperator The new default operator.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "metaWithdraw",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address payable"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "expiry",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function metaWithdraw(\n        address payable holder,\n        uint256 amount,\n        uint256 nonce,\n        uint256 expiry,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) external {\n        bytes32 digest = keccak256(\n            abi.encodePacked(\n                EIP191_HEADER,\n                EIP712_DOMAIN_SEPARATOR,\n                keccak256(\n                    abi.encode(\n                        EIP712_UNWRAP_TYPEHASH,\n                        holder,\n                        amount,\n                        nonce,\n                        expiry\n                    )\n                )\n            )\n        );\n\n        require(holder != address(0), \"INVALID_HOLDER\");\n        require(holder == ecrecover(digest, v, r, s), \"INVALID_SIGNATURE\");\n        require(expiry == 0 || now <= expiry, \"META_WITHDRAW_EXPIRED\");\n        require(nonce == unwrapNonces[holder]++, \"INVALID_NONCE\");\n        require(_balances[holder] >= amount, \"INSUFFICIENT_BALANCE\");\n\n        _withdraw(holder, amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Unwraps ETH meta style. Exchanges this token, WETH, for ETH 1 to 1",
+            "     * @param holder The holder of WETH that wishes to withdraw.",
+            "     * @param amount The amount to withdraw.",
+            "     * @param nonce The current nonce for this holder, to prevent replays of the withdraw.",
+            "     * @param expiry The time after which this meta withdraw is not valid.",
+            "     * @param v v parameter in the ECDSA signature.",
+            "     * @param r r parameter in the ECDSA signature.",
+            "     * @param s s parameter in the ECDSA signature.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Unwraps ETH meta style. Exchanges this token, WETH, for ETH 1 to 1\n     * @param holder The holder of WETH that wishes to withdraw.\n     * @param amount The amount to withdraw.\n     * @param nonce The current nonce for this holder, to prevent replays of the withdraw.\n     * @param expiry The time after which this meta withdraw is not valid.\n     * @param v v parameter in the ECDSA signature.\n     * @param r r parameter in the ECDSA signature.\n     * @param s s parameter in the ECDSA signature.\n     */\n",
+        "@dev": "Unwraps ETH meta style. Exchanges this token, WETH, for ETH 1 to 1",
+        "@param1": "holder The holder of WETH that wishes to withdraw.",
+        "@param2": "amount The amount to withdraw.",
+        "@param3": "nonce The current nonce for this holder, to prevent replays of the withdraw.",
+        "@param4": "expiry The time after which this meta withdraw is not valid.",
+        "@param5": "v v parameter in the ECDSA signature.",
+        "@param6": "r r parameter in the ECDSA signature.",
+        "@param7": "s s parameter in the ECDSA signature.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "permit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "expiry",
+                "type": "uint256"
+            },
+            {
+                "name": "allowed",
+                "type": "bool"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function permit(\n        address holder,\n        address spender,\n        uint256 nonce,\n        uint256 expiry,\n        bool allowed,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) external {\n        bytes32 digest = keccak256(\n            abi.encodePacked(\n                \"\\x19\\x01\",\n                EIP712_DOMAIN_SEPARATOR,\n                keccak256(\n                    abi.encode(\n                        EIP712_PERMIT_TYPEHASH,\n                        holder,\n                        spender,\n                        nonce,\n                        expiry,\n                        allowed\n                    )\n                )\n            )\n        );\n\n        require(holder != address(0), \"INVALID_HOLDER\");\n        require(holder == ecrecover(digest, v, r, s), \"INVALID_SIGNATURE\");\n        require(expiry == 0 || now <= expiry, \"PERMIT_EXPIRED\");\n        require(nonce == permitNonces[holder]++, \"INVALID_NONCE\");\n        uint256 wad = allowed ? uint256(-1) : 0;\n        _allowed[holder][spender] = wad;\n        emit Approval(holder, spender, wad);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Meta approval for max funds.",
+            "     * @param holder The holder of the WETH that wishes to approve another account.",
+            "     * @param spender The designated spender of the WETH.",
+            "     * @param nonce The current permit nonce for this holder, to prevent replays of the increased allowance.",
+            "     * @param expiry The time after which this meta approval is not valid.",
+            "     * @param allowed true if this spender should be allowed to spend all funds on behalf of the holder, false otherwise.",
+            "     * @param v v parameter in the ECDSA signature.",
+            "     * @param r r parameter in the ECDSA signature.",
+            "     * @param s s parameter in the ECDSA signature.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Meta approval for max funds.\n     * @param holder The holder of the WETH that wishes to approve another account.\n     * @param spender The designated spender of the WETH.\n     * @param nonce The current permit nonce for this holder, to prevent replays of the increased allowance.\n     * @param expiry The time after which this meta approval is not valid.\n     * @param allowed true if this spender should be allowed to spend all funds on behalf of the holder, false otherwise.\n     * @param v v parameter in the ECDSA signature.\n     * @param r r parameter in the ECDSA signature.\n     * @param s s parameter in the ECDSA signature.\n     */\n",
+        "@dev": "Meta approval for max funds.",
+        "@param1": "holder The holder of the WETH that wishes to approve another account.",
+        "@param2": "spender The designated spender of the WETH.",
+        "@param3": "nonce The current permit nonce for this holder, to prevent replays of the increased allowance.",
+        "@param4": "expiry The time after which this meta approval is not valid.",
+        "@param5": "allowed true if this spender should be allowed to spend all funds on behalf of the holder, false otherwise.",
+        "@param6": "v v parameter in the ECDSA signature.",
+        "@param7": "r r parameter in the ECDSA signature.",
+        "@param8": "s s parameter in the ECDSA signature.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Total number of tokens in existence",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Total number of tokens in existence\n     */\n",
+        "@dev": "Total number of tokens in existence",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view returns (uint256) {\n        return _balances[owner];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the balance of the specified address.",
+            "     * @param owner The address to query the balance of.",
+            "     * @return An uint256 representing the amount owned by the passed address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the balance of the specified address.\n     * @param owner The address to query the balance of.\n     * @return An uint256 representing the amount owned by the passed address.\n     */\n",
+        "@dev": "Gets the balance of the specified address.",
+        "@param1": "owner The address to query the balance of.",
+        "@return1": "An uint256 representing the amount owned by the passed address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view returns (uint256) {\n        return _allowed[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Function to check the amount of tokens that an owner allowed to a spender.",
+            "     * @param owner address The address which owns the funds.",
+            "     * @param spender address The address which will spend the funds.",
+            "     * @return A uint256 specifying the amount of tokens still available for the spender.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Function to check the amount of tokens that an owner allowed to a spender.\n     * @param owner address The address which owns the funds.\n     * @param spender address The address which will spend the funds.\n     * @return A uint256 specifying the amount of tokens still available for the spender.\n     */\n",
+        "@dev": "Function to check the amount of tokens that an owner allowed to a spender.",
+        "@param1": "owner address The address which owns the funds.",
+        "@param2": "spender address The address which will spend the funds.",
+        "@return1": "A uint256 specifying the amount of tokens still available for the spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address to, uint256 value) public returns (bool) {\n        _transfer(msg.sender, to, value);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfer token for a specified address",
+            "     * @param to The address to transfer to.",
+            "     * @param value The amount to be transferred.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfer token for a specified address\n     * @param to The address to transfer to.\n     * @param value The amount to be transferred.\n     */\n",
+        "@dev": "Transfer token for a specified address",
+        "@param1": "to The address to transfer to.",
+        "@param2": "value The amount to be transferred.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 value) public returns (bool) {\n        require(spender != address(0), \"SPENDER_INVALID\");\n\n        _allowed[msg.sender][spender] = value;\n        emit Approval(msg.sender, spender, value);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+            "     * Beware that changing an allowance with this method brings the risk that someone may use both the old",
+            "     * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this",
+            "     * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:",
+            "     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+            "     * @param spender The address which will spend the funds.",
+            "     * @param value The amount of tokens to be spent.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\n     * Beware that changing an allowance with this method brings the risk that someone may use both the old\n     * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this\n     * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n     * @param spender The address which will spend the funds.\n     * @param value The amount of tokens to be spent.\n     */\n",
+        "@dev": "Approve the passed address to spend the specified amount of tokens on behalf of msg.sender. * Beware that changing an allowance with this method brings the risk that someone may use both the old * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards: * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "value The amount of tokens to be spent.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint256 value) public returns (bool) {\n        _allowed[from][msg.sender] = _allowed[from][msg.sender].sub(value);\n        _transfer(from, to, value);\n        emit Approval(from, msg.sender, _allowed[from][msg.sender]);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfer tokens from one address to another.",
+            "     * Note that while this function emits an Approval event, this is not required as per the specification,",
+            "     * and other compliant implementations may not emit the event.",
+            "     * @param from address The address which you want to send tokens from",
+            "     * @param to address The address which you want to transfer to",
+            "     * @param value uint256 the amount of tokens to be transferred",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfer tokens from one address to another.\n     * Note that while this function emits an Approval event, this is not required as per the specification,\n     * and other compliant implementations may not emit the event.\n     * @param from address The address which you want to send tokens from\n     * @param to address The address which you want to transfer to\n     * @param value uint256 the amount of tokens to be transferred\n     */\n",
+        "@dev": "Transfer tokens from one address to another. * Note that while this function emits an Approval event, this is not required as per the specification, * and other compliant implementations may not emit the event.",
+        "@param1": "from address The address which you want to send tokens from",
+        "@param2": "to address The address which you want to transfer to",
+        "@param3": "value uint256 the amount of tokens to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {\n        require(spender != address(0), \"SPENDER_INVALID\");\n\n        _allowed[msg.sender][spender] = _allowed[msg.sender][spender].add(addedValue);\n        emit Approval(msg.sender, spender, _allowed[msg.sender][spender]);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Increase the amount of tokens that an owner allowed to a spender.",
+            "     * approve should be called when allowed_[_spender] == 0. To increment",
+            "     * allowed value is better to use this function to avoid 2 calls (and wait until",
+            "     * the first transaction is mined)",
+            "     * From MonolithDAO Token.sol",
+            "     * Emits an Approval event.",
+            "     * @param spender The address which will spend the funds.",
+            "     * @param addedValue The amount of tokens to increase the allowance by.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Increase the amount of tokens that an owner allowed to a spender.\n     * approve should be called when allowed_[_spender] == 0. To increment\n     * allowed value is better to use this function to avoid 2 calls (and wait until\n     * the first transaction is mined)\n     * From MonolithDAO Token.sol\n     * Emits an Approval event.\n     * @param spender The address which will spend the funds.\n     * @param addedValue The amount of tokens to increase the allowance by.\n     */\n",
+        "@dev": "Increase the amount of tokens that an owner allowed to a spender. * approve should be called when allowed_[_spender] == 0. To increment * allowed value is better to use this function to avoid 2 calls (and wait until * the first transaction is mined) * From MonolithDAO Token.sol * Emits an Approval event.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "addedValue The amount of tokens to increase the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {\n        require(spender != address(0), \"SPENDER_INVALID\");\n\n        _allowed[msg.sender][spender] = _allowed[msg.sender][spender].sub(subtractedValue);\n        emit Approval(msg.sender, spender, _allowed[msg.sender][spender]);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Decrease the amount of tokens that an owner allowed to a spender.",
+            "     * approve should be called when allowed_[_spender] == 0. To decrement",
+            "     * allowed value is better to use this function to avoid 2 calls (and wait until",
+            "     * the first transaction is mined)",
+            "     * From MonolithDAO Token.sol",
+            "     * Emits an Approval event.",
+            "     * @param spender The address which will spend the funds.",
+            "     * @param subtractedValue The amount of tokens to decrease the allowance by.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Decrease the amount of tokens that an owner allowed to a spender.\n     * approve should be called when allowed_[_spender] == 0. To decrement\n     * allowed value is better to use this function to avoid 2 calls (and wait until\n     * the first transaction is mined)\n     * From MonolithDAO Token.sol\n     * Emits an Approval event.\n     * @param spender The address which will spend the funds.\n     * @param subtractedValue The amount of tokens to decrease the allowance by.\n     */\n",
+        "@dev": "Decrease the amount of tokens that an owner allowed to a spender. * approve should be called when allowed_[_spender] == 0. To decrement * allowed value is better to use this function to avoid 2 calls (and wait until * the first transaction is mined) * From MonolithDAO Token.sol * Emits an Approval event.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "subtractedValue The amount of tokens to decrease the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 amount) public {\n        require(_balances[msg.sender] >= amount, \"INSUFFICIENT_BALANCE\");\n        _withdraw(msg.sender, amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Unwraps ETH - exchanges this token, WETH, for ETH 1 to 1",
+            "     * @param amount The amount of token to withdraw.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Unwraps ETH - exchanges this token, WETH, for ETH 1 to 1\n     * @param amount The amount of token to withdraw.\n     */\n",
+        "@dev": "Unwraps ETH - exchanges this token, WETH, for ETH 1 to 1",
+        "@param1": "amount The amount of token to withdraw.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_fills",
+                "type": "IFills"
+            },
+            {
+                "name": "_escrow",
+                "type": "IEscrow"
+            },
+            {
+                "name": "_tokenTransferProxy",
+                "type": "ITokenTransferProxy"
+            },
+            {
+                "name": "_outcomeReporter",
+                "type": "IOutcomeReporter"
+            }
+        ],
+        "func": "function initialize(\n        IFills _fills,\n        IEscrow _escrow,\n        ITokenTransferProxy _tokenTransferProxy,\n        IOutcomeReporter _outcomeReporter\n    )\n        external\n        notInitialized\n        onlySuperAdmin(msg.sender)\n    {\n        fills = _fills;\n        escrow = _escrow;\n        proxy = _tokenTransferProxy;\n        outcomeReporter = _outcomeReporter;\n        initialized = true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Initializes this contract with reference to other contracts.",
+            "    /// @param _fills The Fills contract.",
+            "    /// @param _escrow  The Escrow contract.",
+            "    /// @param _tokenTransferProxy The TokenTransferProxy contract.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Initializes this contract with reference to other contracts.\n    /// @param _fills The Fills contract.\n    /// @param _escrow  The Escrow contract.\n    /// @param _tokenTransferProxy The TokenTransferProxy contract.\n    ",
+        "@notice": "Initializes this contract with reference to other contracts.",
+        "@param1": "_fills The Fills contract.",
+        "@param2": "_escrow The Escrow contract.",
+        "@param3": "_tokenTransferProxy The TokenTransferProxy contract.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_fills",
+                "type": "IFills"
+            }
+        ],
+        "func": "function initialize(IFills _fills)\n        external\n        notInitialized\n        onlySuperAdmin(msg.sender)\n    {\n        fills = _fills;\n        initialized = true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Initializes this contract with reference to other contracts",
+            "    ///         in the protocol.",
+            "    /// @param _fills The Fills contract.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Initializes this contract with reference to other contracts\n    ///         in the protocol.\n    /// @param _fills The Fills contract.\n    ",
+        "@notice": "Initializes this contract with reference to other contracts /// in the protocol.",
+        "@param1": "_fills The Fills contract.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancelOrder",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            }
+        ],
+        "func": "function cancelOrder(LibOrder.Order memory order) public {\n        assertCancelValid(order, msg.sender);\n        fills.cancel(order);\n\n        emit OrderCancel(\n            order.maker,\n            order.getOrderHash(),\n            order\n        );\n    }",
+        "comments": [
+            "",
+            "    /// @notice Cancels an order and prevents and further filling.",
+            "    ///         Uses the order hash to uniquely ID the order.",
+            "    /// @param order The order to cancel.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Cancels an order and prevents and further filling.\n    ///         Uses the order hash to uniquely ID the order.\n    /// @param order The order to cancel.\n    ",
+        "@notice": "Cancels an order and prevents and further filling. /// Uses the order hash to uniquely ID the order.",
+        "@param1": "order The order to cancel.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "batchCancelOrders",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "makerOrders",
+                "type": "LibOrder.Order[] memory"
+            }
+        ],
+        "func": "function batchCancelOrders(LibOrder.Order[] memory makerOrders) public {\n        uint256 makerOrdersLength = makerOrders.length;\n        for (uint256 i = 0; i < makerOrdersLength; i++) {\n            cancelOrder(makerOrders[i]);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Cancels multiple orders and prevents further filling.",
+            "    /// @param makerOrders The orders to cancel.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Cancels multiple orders and prevents further filling.\n    /// @param makerOrders The orders to cancel.\n    ",
+        "@notice": "Cancels multiple orders and prevents further filling.",
+        "@param1": "makerOrders The orders to cancel.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOrderHash",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            }
+        ],
+        "func": "function getOrderHash(LibOrder.Order memory order)\n        public\n        pure\n        returns (bytes32)\n    {\n        return keccak256(\n            abi.encode(\n                EIP712_ORDER_HASH,\n                order.marketHash,\n                order.baseToken,\n                order.totalBetSize,\n                order.percentageOdds,\n                order.expiry,\n                order.salt,\n                order.maker,\n                order.executor,\n                order.isMakerBettingOutcomeOne\n            )\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOrdersArrayHash",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "orders",
+                "type": "LibOrder.Order[] memory"
+            }
+        ],
+        "func": "function getOrdersArrayHash(LibOrder.Order[] memory orders)\n        public\n        pure\n        returns (bytes32)\n    {\n        bytes32[] memory ordersBytes = new bytes32[](orders.length);\n\n        for (uint256 i = 0; i < orders.length; i++) {\n            ordersBytes[i] = getOrderHash(orders[i]);\n        }\n        return keccak256(abi.encodePacked(ordersBytes));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMakerSigsArrayHash",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sigs",
+                "type": "bytes[] memory"
+            }
+        ],
+        "func": "function getMakerSigsArrayHash(bytes[] memory sigs)\n        public\n        pure\n        returns (bytes32)\n    {\n        bytes32[] memory sigsBytes = new bytes32[](sigs.length);\n\n        for (uint256 i = 0; i < sigs.length; i++) {\n            sigsBytes[i] = keccak256(sigs[i]);\n        }\n\n        return keccak256(abi.encodePacked(sigsBytes));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFillObjectHash",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "fillObject",
+                "type": "LibOrder.FillObject memory"
+            }
+        ],
+        "func": "function getFillObjectHash(LibOrder.FillObject memory fillObject)\n        public\n        pure\n        returns (bytes32)\n    {\n        return keccak256(\n            abi.encode(\n                EIP712_FILL_OBJECT_HASH,\n                getOrdersArrayHash(fillObject.orders),\n                getMakerSigsArrayHash(fillObject.makerSigs),\n                keccak256(abi.encodePacked(fillObject.takerAmounts)),\n                fillObject.fillSalt\n            )\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDetailsHash",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "details",
+                "type": "LibOrder.FillDetails memory"
+            }
+        ],
+        "func": "function getDetailsHash(LibOrder.FillDetails memory details)\n        public\n        view\n        returns (bytes32)\n    {\n        bytes32 structHash = keccak256(\n            abi.encode(\n                EIP712_DETAILS_HASH,\n                keccak256(bytes(details.action)),\n                keccak256(bytes(details.market)),\n                keccak256(bytes(details.betting)),\n                keccak256(bytes(details.stake)),\n                keccak256(bytes(details.odds)),\n                keccak256(bytes(details.returning)),\n                getFillObjectHash(details.fills)\n            )\n        );\n        return keccak256(\n            abi.encodePacked(\n                EIP191_HEADER,\n                EIP712_DOMAIN_HASH,\n                structHash\n            )\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDomainHash",
+        "visibility": "public",
+        "args": [],
+        "func": "function getDomainHash()\n        public\n        view\n        returns (bytes32)\n    {\n        return EIP712_DOMAIN_HASH;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOracleFees",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "func": "function getOracleFees(address token) public view returns (uint256) {\n        return oracleFees[token];\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the oracle fee for the given token.",
+            "    /// @param token The token of interest.",
+            "    /// @return The oracle fee for this token.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the oracle fee for the given token.\n    /// @param token The token of interest.\n    /// @return The oracle fee for this token.\n    ",
+        "@notice": "Gets the oracle fee for the given token.",
+        "@param1": "token The token of interest.",
+        "@return1": "The oracle fee for this token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setOracleFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "feeFrac",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setOracleFee(address token, uint256 feeFrac)\n        public\n        onlySystemParamsAdmin\n        underMaxOracleFee(feeFrac)\n    {\n        oracleFees[token] = feeFrac;\n\n        emit NewOracleFee(\n            token,\n            feeFrac\n        );\n    }",
+        "comments": [
+            "",
+            "    /// @notice Sets the oracle fee for the given token.",
+            "    /// @param token The token to set.",
+            "    /// @param feeFrac The numerator of the fee fraction",
+            "    "
+        ],
+        "comt": "\n    /// @notice Sets the oracle fee for the given token.\n    /// @param token The token to set.\n    /// @param feeFrac The numerator of the fee fraction\n    ",
+        "@notice": "Sets the oracle fee for the given token.",
+        "@param1": "token The token to set.",
+        "@param2": "feeFrac The numerator of the fee fraction",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fillOrders",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "fillDetails",
+                "type": "LibOrder.FillDetails memory"
+            },
+            {
+                "name": "executorSig",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function fillOrders(\n        LibOrder.FillDetails memory fillDetails,\n        bytes memory executorSig\n    )\n        public\n    {\n        address executor = fillDetails.fills.orders[0].executor;\n        bytes32 fillHash;\n\n        require(\n            fillDetails.fills.orders.length == fillDetails.fills.takerAmounts.length &&\n            fillDetails.fills.orders.length == fillDetails.fills.makerSigs.length,\n            \"INCORRECT_ARRAY_LENGTHS\"\n        );\n\n        if (executor != address(0)) {\n            fillHash = eip712FillHasher.getDetailsHash(fillDetails);\n\n            require(\n                fills.getFillHashSubmitted(fillHash) == false,\n                \"FILL_ALREADY_SUBMITTED\"\n            );\n\n            require(\n                ECDSA.recover(\n                    fillHash,\n                    executorSig\n                ) == executor,\n                \"EXECUTOR_SIGNATURE_MISMATCH\"\n            );\n\n            if (fillDetails.fills.orders.length > 1) {\n                for (uint256 i = 1; i < fillDetails.fills.orders.length; i++) {\n                    require(\n                        fillDetails.fills.orders[i].executor == executor,\n                        \"INCONSISTENT_EXECUTORS\"\n                    );\n                }\n            }\n\n            fills.setFillHashSubmitted(fillHash);\n        }\n\n        _fillOrders(\n            fillDetails.fills.orders,\n            fillDetails.fills.takerAmounts,\n            fillDetails.fills.makerSigs,\n            msg.sender,\n            fillHash\n        );\n\n    }",
+        "comments": [
+            "",
+            "    /// @notice Fills a bunch of orders simulatenously.",
+            "    /// @param fillDetails The fills to execute.",
+            "    /// @param executorSig The signature of the executor on this fill if the executor is set.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Fills a bunch of orders simulatenously.\n    /// @param fillDetails The fills to execute.\n    /// @param executorSig The signature of the executor on this fill if the executor is set.\n    ",
+        "@notice": "Fills a bunch of orders simulatenously.",
+        "@param1": "fillDetails The fills to execute.",
+        "@param2": "executorSig The signature of the executor on this fill if the executor is set.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "metaFillOrders",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "fillDetails",
+                "type": "LibOrder.FillDetails memory"
+            },
+            {
+                "name": "taker",
+                "type": "address"
+            },
+            {
+                "name": "takerSig",
+                "type": "bytes memory"
+            },
+            {
+                "name": "executorSig",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function metaFillOrders(\n        LibOrder.FillDetails memory fillDetails,\n        address taker,\n        bytes memory takerSig,\n        bytes memory executorSig\n    )\n        public\n    {\n        bytes32 fillHash = eip712FillHasher.getDetailsHash(fillDetails);\n\n        require(\n            ECDSA.recover(\n                fillHash,\n                takerSig\n            ) == taker,\n            \"TAKER_SIGNATURE_MISMATCH\"\n        );\n\n        require(\n            fills.getFillHashSubmitted(fillHash) == false,\n            \"FILL_ALREADY_SUBMITTED\"\n        );\n\n        address executor = fillDetails.fills.orders[0].executor;\n\n        if (executor != address(0)) {\n            require(\n                msg.sender == executor,\n                \"SENDER_MUST_BE_EXECUTOR\"\n            );\n            require(\n                ECDSA.recover(\n                    fillHash,\n                    executorSig\n                ) == executor,\n                \"EXECUTOR_SIGNATURE_MISMATCH\"\n            );\n        }\n\n        require(\n            fillDetails.fills.orders.length == fillDetails.fills.takerAmounts.length &&\n            fillDetails.fills.orders.length == fillDetails.fills.makerSigs.length,\n            \"INCORRECT_ARRAY_LENGTHS\"\n        );\n\n        if (fillDetails.fills.orders.length > 1) {\n            for (uint256 i = 1; i < fillDetails.fills.orders.length; i++) {\n                require(\n                    fillDetails.fills.orders[i].executor == executor,\n                    \"INCONSISTENT_EXECUTORS\"\n                );\n            }\n        }\n\n        _fillOrders(\n            fillDetails.fills.orders,\n            fillDetails.fills.takerAmounts,\n            fillDetails.fills.makerSigs,\n            taker,\n            fillHash\n        );\n\n        fills.setFillHashSubmitted(fillHash);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Fills a bunch of orders simulatenously in meta fashion",
+            "    /// @param fillDetails The details of the fill",
+            "    /// @param taker The taker for this fill.",
+            "    /// @param takerSig The signature of the taker for this fill.",
+            "    /// @param executorSig The signature of the executor on this order if the executor is set.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Fills a bunch of orders simulatenously in meta fashion\n    /// @param fillDetails The details of the fill\n    /// @param taker The taker for this fill.\n    /// @param takerSig The signature of the taker for this fill.\n    /// @param executorSig The signature of the executor on this order if the executor is set.\n    ",
+        "@notice": "Fills a bunch of orders simulatenously in meta fashion",
+        "@param1": "fillDetails The details of the fill",
+        "@param2": "taker The taker for this fill.",
+        "@param3": "takerSig The signature of the taker for this fill.",
+        "@param4": "executorSig The signature of the executor on this order if the executor is set.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fill",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function fill(\n        LibOrder.Order memory order,\n        uint256 amount\n    )\n        public\n        onlyFillOrder\n        returns (uint256)\n    {\n        bytes32 orderHash = order.getOrderHash();\n        filled[orderHash] = filled[orderHash].add(amount);\n        return filled[orderHash];\n    }",
+        "comments": [
+            "",
+            "    /// @notice Fill an order by the given amount.",
+            "    /// @param order The order to fill.",
+            "    /// @param amount The amount to fill it by.",
+            "    /// @return The new filled amount for this order.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Fill an order by the given amount.\n    /// @param order The order to fill.\n    /// @param amount The amount to fill it by.\n    /// @return The new filled amount for this order.\n    ",
+        "@notice": "Fill an order by the given amount.",
+        "@param1": "order The order to fill.",
+        "@param2": "amount The amount to fill it by.",
+        "@return1": "The new filled amount for this order.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancel",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            }
+        ],
+        "func": "function cancel(LibOrder.Order memory order)\n        public\n        onlyCancelOrderContract\n    {\n        bytes32 orderHash = order.getOrderHash();\n        cancelled[orderHash] = true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Cancels an order.",
+            "    /// @param order The order to cancel.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Cancels an order.\n    /// @param order The order to cancel.\n    ",
+        "@notice": "Cancels an order.",
+        "@param1": "order The order to cancel.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFillHashSubmitted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "fillHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function setFillHashSubmitted(bytes32 fillHash)\n        public\n        onlyFillOrder\n    {\n        fillHashSubmitted[fillHash] = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFilled",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "orderHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getFilled(bytes32 orderHash) public view returns (uint256) {\n        return filled[orderHash];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCancelled",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "orderHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getCancelled(bytes32 orderHash) public view returns (bool) {\n        return cancelled[orderHash];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFillHashSubmitted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "orderHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getFillHashSubmitted(bytes32 orderHash) public view returns (bool) {\n        return fillHashSubmitted[orderHash];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "orderHasSpace",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            },
+            {
+                "name": "takerAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function orderHasSpace(\n        LibOrder.Order memory order,\n        uint256 takerAmount\n    )\n        public\n        view\n        returns (bool)\n    {\n        return takerAmount <= remainingSpace(order);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Check if an order has sufficient space.",
+            "    /// @param order The order to examine.",
+            "    /// @param takerAmount The amount to fill.",
+            "    /// @return true if there is enough space, false otherwise.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Check if an order has sufficient space.\n    /// @param order The order to examine.\n    /// @param takerAmount The amount to fill.\n    /// @return true if there is enough space, false otherwise.\n    ",
+        "@notice": "Check if an order has sufficient space.",
+        "@param1": "order The order to examine.",
+        "@param2": "takerAmount The amount to fill.",
+        "@return1": "true if there is enough space, false otherwise.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "remainingSpace",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            }
+        ],
+        "func": "function remainingSpace(LibOrder.Order memory order)\n        public\n        view\n        returns (uint256)\n    {\n        bytes32 orderHash = order.getOrderHash();\n        if (cancelled[orderHash]) {\n            return 0;\n        } else {\n            return order.totalBetSize.sub(filled[orderHash]);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Gets the remaining space for an order.",
+            "    /// @param order The order to check.",
+            "    /// @return The remaining space on the order. It returns 0 if",
+            "    ///         the order is cancelled.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Gets the remaining space for an order.\n    /// @param order The order to check.\n    /// @return The remaining space on the order. It returns 0 if\n    ///         the order is cancelled.\n    ",
+        "@notice": "Gets the remaining space for an order.",
+        "@param1": "order The order to check.",
+        "@return1": "The remaining space on the order. It returns 0 if /// the order is cancelled.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isOrderCancelled",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            }
+        ],
+        "func": "function isOrderCancelled(LibOrder.Order memory order)\n        public\n        view\n        returns(bool)\n    {\n        bytes32 orderHash = order.getOrderHash();\n        return cancelled[orderHash];\n    }",
+        "comments": [
+            "",
+            "    /// @notice Checks if the order is cancelled.",
+            "    /// @param order The order to check.",
+            "    /// @return true if the order is cancelled, false otherwise.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Checks if the order is cancelled.\n    /// @param order The order to check.\n    /// @return true if the order is cancelled, false otherwise.\n    ",
+        "@notice": "Checks if the order is cancelled.",
+        "@param1": "order The order to check.",
+        "@return1": "true if the order is cancelled, false otherwise.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address token,\n        address from,\n        address to,\n        uint256 value\n    )\n        public\n        onlyFillOrder\n        returns (bool)\n    {\n        return IERC20(token).transferFrom(from, to, value);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Uses `transferFrom` and ERC20 approval to transfer tokens.",
+            "    ///         Only callable by whitelisted addresses.",
+            "    /// @param token The address of the ERC20 token to transfer on the user's behalf.",
+            "    /// @param from The address of the user.",
+            "    /// @param to The destination address.",
+            "    /// @param value The amount to transfer.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Uses `transferFrom` and ERC20 approval to transfer tokens.\n    ///         Only callable by whitelisted addresses.\n    /// @param token The address of the ERC20 token to transfer on the user's behalf.\n    /// @param from The address of the user.\n    /// @param to The destination address.\n    /// @param value The amount to transfer.\n    ",
+        "@notice": "Uses `transferFrom` and ERC20 approval to transfer tokens. /// Only callable by whitelisted addresses.",
+        "@param1": "token The address of the ERC20 token to transfer on the user's behalf.",
+        "@param2": "from The address of the user.",
+        "@param3": "to The destination address.",
+        "@param4": "value The amount to transfer.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

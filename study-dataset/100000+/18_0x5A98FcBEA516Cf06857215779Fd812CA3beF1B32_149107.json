@@ -1,0 +1,678 @@
+[
+    {
+        "transactions": 149107,
+        "function_num": 18
+    },
+    {
+        "name": "Controlled",
+        "visibility": "public",
+        "args": [],
+        "func": "function Controlled() public { controller = msg.sender;}",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeController",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newController",
+                "type": "address"
+            }
+        ],
+        "func": "function changeController(address _newController) onlyController public {\n controller = _newController;\n }",
+        "comments": [
+            "",
+            " /// @notice Changes the controller of the contract",
+            " /// @param _newController The new controller of the contract",
+            " "
+        ],
+        "comt": "\n /// @notice Changes the controller of the contract\n /// @param _newController The new controller of the contract\n ",
+        "@notice": "Changes the controller of the contract",
+        "@param1": "_newController The new controller of the contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "MiniMeToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenFactory",
+                "type": "MiniMeTokenFactory"
+            },
+            {
+                "name": "_parentToken",
+                "type": "MiniMeToken"
+            },
+            {
+                "name": "_parentSnapShotBlock",
+                "type": "uint"
+            },
+            {
+                "name": "_tokenName",
+                "type": "string"
+            },
+            {
+                "name": "_decimalUnits",
+                "type": "uint8"
+            },
+            {
+                "name": "_tokenSymbol",
+                "type": "string"
+            },
+            {
+                "name": "_transfersEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function MiniMeToken(\n MiniMeTokenFactory _tokenFactory,\n MiniMeToken _parentToken,\n uint _parentSnapShotBlock,\n string _tokenName,\n uint8 _decimalUnits,\n string _tokenSymbol,\n bool _transfersEnabled\n ) public\n {\n tokenFactory = _tokenFactory;\n name = _tokenName; // Set the name\n decimals = _decimalUnits; // Set the decimals\n symbol = _tokenSymbol; // Set the symbol\n parentToken = _parentToken;\n parentSnapShotBlock = _parentSnapShotBlock;\n transfersEnabled = _transfersEnabled;\n creationBlock = block.number;\n }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Constructor",
+            "////////////////",
+            "",
+            " /// @notice Constructor to create a MiniMeToken",
+            " /// @param _tokenFactory The address of the MiniMeTokenFactory contract that",
+            " /// will create the Clone token contracts, the token factory needs to be",
+            " /// deployed first",
+            " /// @param _parentToken Address of the parent token, set to 0x0 if it is a",
+            " /// new token",
+            " /// @param _parentSnapShotBlock Block of the parent token that will",
+            " /// determine the initial distribution of the clone token, set to 0 if it",
+            " /// is a new token",
+            " /// @param _tokenName Name of the new token",
+            " /// @param _decimalUnits Number of decimals of the new token",
+            " /// @param _tokenSymbol Token Symbol for the new token",
+            " /// @param _transfersEnabled If true, tokens will be able to be transferred",
+            " "
+        ],
+        "comt": "\n////////////////\n// Constructor\n////////////////\n\n /// @notice Constructor to create a MiniMeToken\n /// @param _tokenFactory The address of the MiniMeTokenFactory contract that\n /// will create the Clone token contracts, the token factory needs to be\n /// deployed first\n /// @param _parentToken Address of the parent token, set to 0x0 if it is a\n /// new token\n /// @param _parentSnapShotBlock Block of the parent token that will\n /// determine the initial distribution of the clone token, set to 0 if it\n /// is a new token\n /// @param _tokenName Name of the new token\n /// @param _decimalUnits Number of decimals of the new token\n /// @param _tokenSymbol Token Symbol for the new token\n /// @param _transfersEnabled If true, tokens will be able to be transferred\n ",
+        "@notice": "Constructor to create a MiniMeToken",
+        "@param1": "_tokenFactory The address of the MiniMeTokenFactory contract that /// will create the Clone token contracts, the token factory needs to be /// deployed first",
+        "@param2": "_parentToken Address of the parent token, set to 0x0 if it is a /// new token",
+        "@param3": "_parentSnapShotBlock Block of the parent token that will /// determine the initial distribution of the clone token, set to 0 if it /// is a new token",
+        "@param4": "_tokenName Name of the new token",
+        "@param5": "_decimalUnits Number of decimals of the new token",
+        "@param6": "_tokenSymbol Token Symbol for the new token",
+        "@param7": "_transfersEnabled If true, tokens will be able to be transferred",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _amount) public returns (bool success) {\n require(transfersEnabled);\n return doTransfer(msg.sender, _to, _amount);\n }",
+        "comments": [
+            "",
+            "",
+            "///////////////////",
+            "// ERC20 Methods",
+            "///////////////////",
+            "",
+            " /// @notice Send `_amount` tokens to `_to` from `msg.sender`",
+            " /// @param _to The address of the recipient",
+            " /// @param _amount The amount of tokens to be transferred",
+            " /// @return Whether the transfer was successful or not",
+            " "
+        ],
+        "comt": "\n\n///////////////////\n// ERC20 Methods\n///////////////////\n\n /// @notice Send `_amount` tokens to `_to` from `msg.sender`\n /// @param _to The address of the recipient\n /// @param _amount The amount of tokens to be transferred\n /// @return Whether the transfer was successful or not\n ",
+        "@notice": "Send `_amount` tokens to `_to` from `msg.sender`",
+        "@param1": "_to The address of the recipient",
+        "@param2": "_amount The amount of tokens to be transferred",
+        "@return1": "Whether the transfer was successful or not",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _amount) public returns (bool success) {\n\n // The controller of this contract can move tokens around at will,\n // this is important to recognize! Confirm that you trust the\n // controller of this contract, which in most situations should be\n // another open source smart contract or 0x0\n if (msg.sender != controller) {\n require(transfersEnabled);\n\n // The standard ERC 20 transferFrom functionality\n if (allowed[_from][msg.sender] < _amount)\n return false;\n allowed[_from][msg.sender] -= _amount;\n }\n return doTransfer(_from, _to, _amount);\n }",
+        "comments": [
+            "",
+            " /// @notice Send `_amount` tokens to `_to` from `_from` on the condition it",
+            " /// is approved by `_from`",
+            " /// @param _from The address holding the tokens being transferred",
+            " /// @param _to The address of the recipient",
+            " /// @param _amount The amount of tokens to be transferred",
+            " /// @return True if the transfer was successful",
+            " "
+        ],
+        "comt": "\n /// @notice Send `_amount` tokens to `_to` from `_from` on the condition it\n /// is approved by `_from`\n /// @param _from The address holding the tokens being transferred\n /// @param _to The address of the recipient\n /// @param _amount The amount of tokens to be transferred\n /// @return True if the transfer was successful\n ",
+        "@notice": "Send `_amount` tokens to `_to` from `_from` on the condition it /// is approved by `_from`",
+        "@param1": "_from The address holding the tokens being transferred",
+        "@param2": "_to The address of the recipient",
+        "@param3": "_amount The amount of tokens to be transferred",
+        "@return1": "True if the transfer was successful",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public constant returns (uint256 balance) {\n return balanceOfAt(_owner, block.number);\n }",
+        "comments": [
+            "",
+            " /// @param _owner The address that's balance is being requested",
+            " /// @return The balance of `_owner` at the current block",
+            " "
+        ],
+        "comt": "\n /// @param _owner The address that's balance is being requested\n /// @return The balance of `_owner` at the current block\n ",
+        "@param1": "_owner The address that's balance is being requested",
+        "@return1": "The balance of `_owner` at the current block",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _amount) public returns (bool success) {\n require(transfersEnabled);\n\n // To change the approve amount you first have to reduce the addresses`\n // allowance to zero by calling `approve(_spender,0)` if it is not\n // already 0 to mitigate the race condition described here:\n // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n require((_amount == 0) || (allowed[msg.sender][_spender] == 0));\n\n // Alerts the token controller of the approve function call\n if (isContract(controller)) {\n // Adding the ` == true` makes the linter shut up so...\n require(ITokenController(controller).onApprove(msg.sender, _spender, _amount) == true);\n }\n\n allowed[msg.sender][_spender] = _amount;\n Approval(msg.sender, _spender, _amount);\n return true;\n }",
+        "comments": [
+            "",
+            " /// @notice `msg.sender` approves `_spender` to spend `_amount` tokens on",
+            " /// its behalf. This is a modified version of the ERC20 approve function",
+            " /// to be a little bit safer",
+            " /// @param _spender The address of the account able to transfer the tokens",
+            " /// @param _amount The amount of tokens to be approved for transfer",
+            " /// @return True if the approval was successful",
+            " "
+        ],
+        "comt": "\n /// @notice `msg.sender` approves `_spender` to spend `_amount` tokens on\n /// its behalf. This is a modified version of the ERC20 approve function\n /// to be a little bit safer\n /// @param _spender The address of the account able to transfer the tokens\n /// @param _amount The amount of tokens to be approved for transfer\n /// @return True if the approval was successful\n ",
+        "@notice": "`msg.sender` approves `_spender` to spend `_amount` tokens on /// its behalf. This is a modified version of the ERC20 approve function /// to be a little bit safer",
+        "@param1": "_spender The address of the account able to transfer the tokens",
+        "@param2": "_amount The amount of tokens to be approved for transfer",
+        "@return1": "True if the approval was successful",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {\n return allowed[_owner][_spender];\n }",
+        "comments": [
+            "",
+            " /// @dev This function makes it easy to read the `allowed[]` map",
+            " /// @param _owner The address of the account that owns the token",
+            " /// @param _spender The address of the account able to transfer the tokens",
+            " /// @return Amount of remaining tokens of _owner that _spender is allowed",
+            " /// to spend",
+            " "
+        ],
+        "comt": "\n /// @dev This function makes it easy to read the `allowed[]` map\n /// @param _owner The address of the account that owns the token\n /// @param _spender The address of the account able to transfer the tokens\n /// @return Amount of remaining tokens of _owner that _spender is allowed\n /// to spend\n ",
+        "@dev": "This function makes it easy to read the `allowed[]` map",
+        "@param1": "_owner The address of the account that owns the token",
+        "@param2": "_spender The address of the account able to transfer the tokens",
+        "@return1": "Amount of remaining tokens of _owner that _spender is allowed /// to spend",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approveAndCall",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "ApproveAndCallFallBack"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_extraData",
+                "type": "bytes"
+            }
+        ],
+        "func": "function approveAndCall(ApproveAndCallFallBack _spender, uint256 _amount, bytes _extraData) public returns (bool success) {\n require(approve(_spender, _amount));\n\n _spender.receiveApproval(\n msg.sender,\n _amount,\n this,\n _extraData\n );\n\n return true;\n }",
+        "comments": [
+            "",
+            " /// @notice `msg.sender` approves `_spender` to send `_amount` tokens on",
+            " /// its behalf, and then a function is triggered in the contract that is",
+            " /// being approved, `_spender`. This allows users to use their tokens to",
+            " /// interact with contracts in one function call instead of two",
+            " /// @param _spender The address of the contract able to transfer the tokens",
+            " /// @param _amount The amount of tokens to be approved for transfer",
+            " /// @return True if the function call was successful",
+            " "
+        ],
+        "comt": "\n /// @notice `msg.sender` approves `_spender` to send `_amount` tokens on\n /// its behalf, and then a function is triggered in the contract that is\n /// being approved, `_spender`. This allows users to use their tokens to\n /// interact with contracts in one function call instead of two\n /// @param _spender The address of the contract able to transfer the tokens\n /// @param _amount The amount of tokens to be approved for transfer\n /// @return True if the function call was successful\n ",
+        "@notice": "`msg.sender` approves `_spender` to send `_amount` tokens on /// its behalf, and then a function is triggered in the contract that is /// being approved, `_spender`. This allows users to use their tokens to /// interact with contracts in one function call instead of two",
+        "@param1": "_spender The address of the contract able to transfer the tokens",
+        "@param2": "_amount The amount of tokens to be approved for transfer",
+        "@return1": "True if the function call was successful",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public constant returns (uint) {\n return totalSupplyAt(block.number);\n }",
+        "comments": [
+            "",
+            " /// @dev This function makes it easy to get the total number of tokens",
+            " /// @return The total number of tokens",
+            " "
+        ],
+        "comt": "\n /// @dev This function makes it easy to get the total number of tokens\n /// @return The total number of tokens\n ",
+        "@dev": "This function makes it easy to get the total number of tokens",
+        "@return1": "The total number of tokens",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfAt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_blockNumber",
+                "type": "uint"
+            }
+        ],
+        "func": "function balanceOfAt(address _owner, uint _blockNumber) public constant returns (uint) {\n\n // These next few lines are used when the balance of the token is\n // requested before a check point was ever created for this token, it\n // requires that the `parentToken.balanceOfAt` be queried at the\n // genesis block for that token as this contains initial balance of\n // this token\n if ((balances[_owner].length == 0) || (balances[_owner][0].fromBlock > _blockNumber)) {\n if (address(parentToken) != 0) {\n return parentToken.balanceOfAt(_owner, min(_blockNumber, parentSnapShotBlock));\n } else {\n // Has no parent\n return 0;\n }\n\n // This will return the expected balance during normal situations\n } else {\n return getValueAt(balances[_owner], _blockNumber);\n }\n }",
+        "comments": [
+            "",
+            "",
+            "////////////////",
+            "// Query balance and totalSupply in History",
+            "////////////////",
+            "",
+            " /// @dev Queries the balance of `_owner` at a specific `_blockNumber`",
+            " /// @param _owner The address from which the balance will be retrieved",
+            " /// @param _blockNumber The block number when the balance is queried",
+            " /// @return The balance at `_blockNumber`",
+            " "
+        ],
+        "comt": "\n\n////////////////\n// Query balance and totalSupply in History\n////////////////\n\n /// @dev Queries the balance of `_owner` at a specific `_blockNumber`\n /// @param _owner The address from which the balance will be retrieved\n /// @param _blockNumber The block number when the balance is queried\n /// @return The balance at `_blockNumber`\n ",
+        "@dev": "Queries the balance of `_owner` at a specific `_blockNumber`",
+        "@param1": "_owner The address from which the balance will be retrieved",
+        "@param2": "_blockNumber The block number when the balance is queried",
+        "@return1": "The balance at `_blockNumber`",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupplyAt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_blockNumber",
+                "type": "uint"
+            }
+        ],
+        "func": "function totalSupplyAt(uint _blockNumber) public constant returns(uint) {\n\n // These next few lines are used when the totalSupply of the token is\n // requested before a check point was ever created for this token, it\n // requires that the `parentToken.totalSupplyAt` be queried at the\n // genesis block for this token as that contains totalSupply of this\n // token at this block number.\n if ((totalSupplyHistory.length == 0) || (totalSupplyHistory[0].fromBlock > _blockNumber)) {\n if (address(parentToken) != 0) {\n return parentToken.totalSupplyAt(min(_blockNumber, parentSnapShotBlock));\n } else {\n return 0;\n }\n\n // This will return the expected totalSupply during normal situations\n } else {\n return getValueAt(totalSupplyHistory, _blockNumber);\n }\n }",
+        "comments": [
+            "",
+            " /// @notice Total amount of tokens at a specific `_blockNumber`.",
+            " /// @param _blockNumber The block number when the totalSupply is queried",
+            " /// @return The total amount of tokens at `_blockNumber`",
+            " "
+        ],
+        "comt": "\n /// @notice Total amount of tokens at a specific `_blockNumber`.\n /// @param _blockNumber The block number when the totalSupply is queried\n /// @return The total amount of tokens at `_blockNumber`\n ",
+        "@notice": "Total amount of tokens at a specific `_blockNumber`.",
+        "@param1": "_blockNumber The block number when the totalSupply is queried",
+        "@return1": "The total amount of tokens at `_blockNumber`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createCloneToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_cloneTokenName",
+                "type": "string"
+            },
+            {
+                "name": "_cloneDecimalUnits",
+                "type": "uint8"
+            },
+            {
+                "name": "_cloneTokenSymbol",
+                "type": "string"
+            },
+            {
+                "name": "_snapshotBlock",
+                "type": "uint"
+            },
+            {
+                "name": "_transfersEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function createCloneToken(\n string _cloneTokenName,\n uint8 _cloneDecimalUnits,\n string _cloneTokenSymbol,\n uint _snapshotBlock,\n bool _transfersEnabled\n ) public returns(MiniMeToken)\n {\n uint256 snapshot = _snapshotBlock == 0 ? block.number - 1 : _snapshotBlock;\n\n MiniMeToken cloneToken = tokenFactory.createCloneToken(\n this,\n snapshot,\n _cloneTokenName,\n _cloneDecimalUnits,\n _cloneTokenSymbol,\n _transfersEnabled\n );\n\n cloneToken.changeController(msg.sender);\n\n // An event to make the token easy to find on the blockchain\n NewCloneToken(address(cloneToken), snapshot);\n return cloneToken;\n }",
+        "comments": [
+            " /// if the block is zero than the actual block, the current block is used",
+            " /// @param _transfersEnabled True if transfers are allowed in the clone",
+            " /// @return The address of the new MiniMeToken Contract",
+            " "
+        ],
+        "comt": " /// if the block is zero than the actual block, the current block is used\n /// @param _transfersEnabled True if transfers are allowed in the clone\n /// @return The address of the new MiniMeToken Contract\n ",
+        "@param1": "_transfersEnabled True if transfers are allowed in the clone",
+        "@return1": "The address of the new MiniMeToken Contract",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "generateTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function generateTokens(address _owner, uint _amount) onlyController public returns (bool) {\n uint curTotalSupply = totalSupply();\n require(curTotalSupply + _amount >= curTotalSupply); // Check for overflow\n uint previousBalanceTo = balanceOf(_owner);\n require(previousBalanceTo + _amount >= previousBalanceTo); // Check for overflow\n updateValueAtNow(totalSupplyHistory, curTotalSupply + _amount);\n updateValueAtNow(balances[_owner], previousBalanceTo + _amount);\n Transfer(0, _owner, _amount);\n return true;\n }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Generate and destroy tokens",
+            "////////////////",
+            "",
+            " /// @notice Generates `_amount` tokens that are assigned to `_owner`",
+            " /// @param _owner The address that will be assigned the new tokens",
+            " /// @param _amount The quantity of tokens generated",
+            " /// @return True if the tokens are generated correctly",
+            " "
+        ],
+        "comt": "\n////////////////\n// Generate and destroy tokens\n////////////////\n\n /// @notice Generates `_amount` tokens that are assigned to `_owner`\n /// @param _owner The address that will be assigned the new tokens\n /// @param _amount The quantity of tokens generated\n /// @return True if the tokens are generated correctly\n ",
+        "@notice": "Generates `_amount` tokens that are assigned to `_owner`",
+        "@param1": "_owner The address that will be assigned the new tokens",
+        "@param2": "_amount The quantity of tokens generated",
+        "@return1": "True if the tokens are generated correctly",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "destroyTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function destroyTokens(address _owner, uint _amount) onlyController public returns (bool) {\n uint curTotalSupply = totalSupply();\n require(curTotalSupply >= _amount);\n uint previousBalanceFrom = balanceOf(_owner);\n require(previousBalanceFrom >= _amount);\n updateValueAtNow(totalSupplyHistory, curTotalSupply - _amount);\n updateValueAtNow(balances[_owner], previousBalanceFrom - _amount);\n Transfer(_owner, 0, _amount);\n return true;\n }",
+        "comments": [
+            "",
+            "",
+            " /// @notice Burns `_amount` tokens from `_owner`",
+            " /// @param _owner The address that will lose the tokens",
+            " /// @param _amount The quantity of tokens to burn",
+            " /// @return True if the tokens are burned correctly",
+            " "
+        ],
+        "comt": "\n\n /// @notice Burns `_amount` tokens from `_owner`\n /// @param _owner The address that will lose the tokens\n /// @param _amount The quantity of tokens to burn\n /// @return True if the tokens are burned correctly\n ",
+        "@notice": "Burns `_amount` tokens from `_owner`",
+        "@param1": "_owner The address that will lose the tokens",
+        "@param2": "_amount The quantity of tokens to burn",
+        "@return1": "True if the tokens are burned correctly",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enableTransfers",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_transfersEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function enableTransfers(bool _transfersEnabled) onlyController public {\n transfersEnabled = _transfersEnabled;\n }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Enable tokens transfers",
+            "////////////////",
+            "",
+            "",
+            " /// @notice Enables token holders to transfer their tokens freely if true",
+            " /// @param _transfersEnabled True if transfers are allowed in the clone",
+            " "
+        ],
+        "comt": "\n////////////////\n// Enable tokens transfers\n////////////////\n\n\n /// @notice Enables token holders to transfer their tokens freely if true\n /// @param _transfersEnabled True if transfers are allowed in the clone\n ",
+        "@notice": "Enables token holders to transfer their tokens freely if true",
+        "@param1": "_transfersEnabled True if transfers are allowed in the clone",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function claimTokens(address _token) onlyController public {\n if (_token == 0x0) {\n controller.transfer(this.balance);\n return;\n }\n\n MiniMeToken token = MiniMeToken(_token);\n uint balance = token.balanceOf(this);\n token.transfer(controller, balance);\n ClaimedTokens(_token, controller, balance);\n }",
+        "comments": [
+            "",
+            "//////////",
+            "// Safety Methods",
+            "//////////",
+            "",
+            " /// @notice This method can be used by the controller to extract mistakenly",
+            " /// sent tokens to this contract.",
+            " /// @param _token The address of the token contract that you want to recover",
+            "  /// set to 0 in case you want to extract ether.",
+            " "
+        ],
+        "comt": "\n//////////\n// Safety Methods\n//////////\n\n /// @notice This method can be used by the controller to extract mistakenly\n /// sent tokens to this contract.\n /// @param _token The address of the token contract that you want to recover\n  /// set to 0 in case you want to extract ether.\n ",
+        "@notice": "This method can be used by the controller to extract mistakenly /// sent tokens to this contract.",
+        "@param1": "_token The address of the token contract that you want to recover /// set to 0 in case you want to extract ether.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "createCloneToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_parentToken",
+                "type": "MiniMeToken"
+            },
+            {
+                "name": "_snapshotBlock",
+                "type": "uint"
+            },
+            {
+                "name": "_tokenName",
+                "type": "string"
+            },
+            {
+                "name": "_decimalUnits",
+                "type": "uint8"
+            },
+            {
+                "name": "_tokenSymbol",
+                "type": "string"
+            },
+            {
+                "name": "_transfersEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function createCloneToken(\n MiniMeToken _parentToken,\n uint _snapshotBlock,\n string _tokenName,\n uint8 _decimalUnits,\n string _tokenSymbol,\n bool _transfersEnabled\n ) public returns (MiniMeToken)\n {\n MiniMeToken newToken = new MiniMeToken(\n this,\n _parentToken,\n _snapshotBlock,\n _tokenName,\n _decimalUnits,\n _tokenSymbol,\n _transfersEnabled\n );\n\n newToken.changeController(msg.sender);\n return newToken;\n }",
+        "comments": [
+            " /// @notice Update the DApp by creating a new token with new functionalities",
+            " /// the msg.sender becomes the controller of this clone token",
+            " /// @param _parentToken Address of the token being cloned",
+            " /// @param _snapshotBlock Block of the parent token that will",
+            " /// determine the initial distribution of the clone token",
+            " /// @param _tokenName Name of the new token",
+            " /// @param _decimalUnits Number of decimals of the new token",
+            " /// @param _tokenSymbol Token Symbol for the new token",
+            " /// @param _transfersEnabled If true, tokens will be able to be transferred",
+            " /// @return The address of the new token contract",
+            " "
+        ],
+        "comt": "/// @notice Update the DApp by creating a new token with new functionalities\n /// the msg.sender becomes the controller of this clone token\n /// @param _parentToken Address of the token being cloned\n /// @param _snapshotBlock Block of the parent token that will\n /// determine the initial distribution of the clone token\n /// @param _tokenName Name of the new token\n /// @param _decimalUnits Number of decimals of the new token\n /// @param _tokenSymbol Token Symbol for the new token\n /// @param _transfersEnabled If true, tokens will be able to be transferred\n /// @return The address of the new token contract\n ",
+        "@dev": "This contract is used to generate clone contracts from a contract./// In solidity this is the way to create a contract from a contract of the/// same classcontract MiniMeTokenFactory {",
+        "@notice": "Update the DApp by creating a new token with new functionalities /// the msg.sender becomes the controller of this clone token",
+        "@param1": "_parentToken Address of the token being cloned",
+        "@param2": "_snapshotBlock Block of the parent token that will /// determine the initial distribution of the clone token",
+        "@param3": "_tokenName Name of the new token",
+        "@param4": "_decimalUnits Number of decimals of the new token",
+        "@param5": "_tokenSymbol Token Symbol for the new token",
+        "@param6": "_transfersEnabled If true, tokens will be able to be transferred",
+        "@return1": "The address of the new token contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

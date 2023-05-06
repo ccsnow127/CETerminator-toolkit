@@ -1,0 +1,792 @@
+[
+    {
+        "transactions": 40,
+        "function_num": 31
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n            return _owner;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev Returns the address of the current owner.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev Returns the address of the current owner.\n        */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n            _transferOwnership(address(0));\n        }",
+        "comments": [
+            "/**",
+            "        * @dev Leaves the contract without owner. It will not be possible to call",
+            "        * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "        *",
+            "        * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "        * thereby removing any functionality that is only available to the owner.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev Leaves the contract without owner. It will not be possible to call\n        * `onlyOwner` functions anymore. Can only be called by the current owner.\n        *\n        * NOTE: Renouncing ownership will leave the contract without an owner,\n        * thereby removing any functionality that is only available to the owner.\n        */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n            require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n            _transferOwnership(newOwner);\n        }",
+        "comments": [
+            "/**",
+            "        * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "        * Can only be called by the current owner.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev Transfers ownership of the contract to a new account (`newOwner`).\n        * Can only be called by the current owner.\n        */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n            return _name;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev Returns the name of the token.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev Returns the name of the token.\n        */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n            return _symbol;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev Returns the symbol of the token, usually a shorter version of the",
+            "        * name.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev Returns the symbol of the token, usually a shorter version of the\n        * name.\n        */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view virtual override returns (uint8) {\n            return 18;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev Returns the number of decimals used to get its user representation.",
+            "        * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "        * be displayed to a user as `5.05` (`505 / 10 ** 2`).",
+            "        *",
+            "        * Tokens usually opt for a value of 18, imitating the relationship between",
+            "        * Ether and Wei. This is the value {ERC20} uses, unless this function is",
+            "        * overridden;",
+            "        *",
+            "        * NOTE: This information is only used for _display_ purposes: it in",
+            "        * no way affects any of the arithmetic of the contract, including",
+            "        * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev Returns the number of decimals used to get its user representation.\n        * For example, if `decimals` equals `2`, a balance of `505` tokens should\n        * be displayed to a user as `5.05` (`505 / 10 ** 2`).\n        *\n        * Tokens usually opt for a value of 18, imitating the relationship between\n        * Ether and Wei. This is the value {ERC20} uses, unless this function is\n        * overridden;\n        *\n        * NOTE: This information is only used for _display_ purposes: it in\n        * no way affects any of the arithmetic of the contract, including\n        * {IERC20-balanceOf} and {IERC20-transfer}.\n        */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5.05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless this function is * overridden; * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n            return _totalSupply;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev See {IERC20-totalSupply}.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev See {IERC20-totalSupply}.\n        */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view virtual override returns (uint256) {\n            return _balances[account];\n        }",
+        "comments": [
+            "/**",
+            "        * @dev See {IERC20-balanceOf}.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev See {IERC20-balanceOf}.\n        */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n            _transfer(_msgSender(), recipient, amount);\n            return true;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev See {IERC20-transfer}.",
+            "        *",
+            "        * Requirements:",
+            "        *",
+            "        * - `recipient` cannot be the zero address.",
+            "        * - the caller must have a balance of at least `amount`.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev See {IERC20-transfer}.\n        *\n        * Requirements:\n        *\n        * - `recipient` cannot be the zero address.\n        * - the caller must have a balance of at least `amount`.\n        */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n            return _allowances[owner][spender];\n        }",
+        "comments": [
+            "/**",
+            "        * @dev See {IERC20-allowance}.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev See {IERC20-allowance}.\n        */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n            _approve(_msgSender(), spender, amount);\n            return true;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev See {IERC20-approve}.",
+            "        *",
+            "        * Requirements:",
+            "        *",
+            "        * - `spender` cannot be the zero address.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev See {IERC20-approve}.\n        *\n        * Requirements:\n        *\n        * - `spender` cannot be the zero address.\n        */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n            address sender,\n            address recipient,\n            uint256 amount\n        ) public virtual override returns (bool) {\n            _transfer(sender, recipient, amount);\n\n            uint256 currentAllowance = _allowances[sender][_msgSender()];\n            require(currentAllowance >= amount, \"ERC20: transfer amount exceeds allowance\");\n            unchecked {\n                _approve(sender, _msgSender(), currentAllowance - amount);\n            }\n\n            return true;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev See {IERC20-transferFrom}.",
+            "        *",
+            "        * Emits an {Approval} event indicating the updated allowance. This is not",
+            "        * required by the EIP. See the note at the beginning of {ERC20}.",
+            "        *",
+            "        * Requirements:",
+            "        *",
+            "        * - `sender` and `recipient` cannot be the zero address.",
+            "        * - `sender` must have a balance of at least `amount`.",
+            "        * - the caller must have allowance for ``sender``'s tokens of at least",
+            "        * `amount`.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev See {IERC20-transferFrom}.\n        *\n        * Emits an {Approval} event indicating the updated allowance. This is not\n        * required by the EIP. See the note at the beginning of {ERC20}.\n        *\n        * Requirements:\n        *\n        * - `sender` and `recipient` cannot be the zero address.\n        * - `sender` must have a balance of at least `amount`.\n        * - the caller must have allowance for ``sender``'s tokens of at least\n        * `amount`.\n        */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n            _approve(_msgSender(), spender, _allowances[_msgSender()][spender] + addedValue);\n            return true;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "        *",
+            "        * This is an alternative to {approve} that can be used as a mitigation for",
+            "        * problems described in {IERC20-approve}.",
+            "        *",
+            "        * Emits an {Approval} event indicating the updated allowance.",
+            "        *",
+            "        * Requirements:",
+            "        *",
+            "        * - `spender` cannot be the zero address.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev Atomically increases the allowance granted to `spender` by the caller.\n        *\n        * This is an alternative to {approve} that can be used as a mitigation for\n        * problems described in {IERC20-approve}.\n        *\n        * Emits an {Approval} event indicating the updated allowance.\n        *\n        * Requirements:\n        *\n        * - `spender` cannot be the zero address.\n        */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n            uint256 currentAllowance = _allowances[_msgSender()][spender];\n            require(currentAllowance >= subtractedValue, \"ERC20: decreased allowance below zero\");\n            unchecked {\n                _approve(_msgSender(), spender, currentAllowance - subtractedValue);\n            }\n\n            return true;\n        }",
+        "comments": [
+            "/**",
+            "        * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "        *",
+            "        * This is an alternative to {approve} that can be used as a mitigation for",
+            "        * problems described in {IERC20-approve}.",
+            "        *",
+            "        * Emits an {Approval} event indicating the updated allowance.",
+            "        *",
+            "        * Requirements:",
+            "        *",
+            "        * - `spender` cannot be the zero address.",
+            "        * - `spender` must have allowance for the caller of at least",
+            "        * `subtractedValue`.",
+            "        */",
+            ""
+        ],
+        "comt": "/**\n        * @dev Atomically decreases the allowance granted to `spender` by the caller.\n        *\n        * This is an alternative to {approve} that can be used as a mitigation for\n        * problems described in {IERC20-approve}.\n        *\n        * Emits an {Approval} event indicating the updated allowance.\n        *\n        * Requirements:\n        *\n        * - `spender` cannot be the zero address.\n        * - `spender` must have allowance for the caller of at least\n        * `subtractedValue`.\n        */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enableTrading",
+        "visibility": "external",
+        "args": [],
+        "func": "function enableTrading() external onlyOwner {\n            tradingActive = true;\n            swapEnabled = true;\n            lastLpBurnTime = block.timestamp;\n        }",
+        "comments": [
+            "",
+            "        // once enabled, can never be turned off",
+            "        "
+        ],
+        "comt": "\n        // once enabled, can never be turned off\n        ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeLimits",
+        "visibility": "external",
+        "args": [],
+        "func": "function removeLimits() external onlyOwner returns (bool) {\n            limitsInEffect = false;\n            return true;\n        }",
+        "comments": [
+            "",
+            "        // remove limits after token is stable",
+            "        "
+        ],
+        "comt": "\n        // remove limits after token is stable\n        ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "disableTransferDelay",
+        "visibility": "external",
+        "args": [],
+        "func": "function disableTransferDelay() external onlyOwner returns (bool) {\n            transferDelayEnabled = false;\n            return true;\n        }",
+        "comments": [
+            "",
+            "        // disable Transfer delay - cannot be reenabled",
+            "        "
+        ],
+        "comt": "\n        // disable Transfer delay - cannot be reenabled\n        ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateSwapTokensAtAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateSwapTokensAtAmount(uint256 newAmount)\n            external\n            onlyOwner\n            returns (bool)\n        {\n            require(\n                newAmount >= (totalSupply() * 1) / 100000,\n                \"Swap amount cannot be lower than 0.001% total supply.\"\n            );\n            require(\n                newAmount <= (totalSupply() * 5) / 1000,\n                \"Swap amount cannot be higher than 0.5% total supply.\"\n            );\n            swapTokensAtAmount = newAmount;\n            return true;\n        }",
+        "comments": [
+            "",
+            "        // change the minimum amount of tokens to sell from fees",
+            "        "
+        ],
+        "comt": "\n        // change the minimum amount of tokens to sell from fees\n        ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateMaxTxnAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newNum",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateMaxTxnAmount(uint256 newNum) external onlyOwner {\n            require(\n                newNum >= ((totalSupply() * 1) / 1000) / 1e18,\n                \"Cannot set maxTransactionAmount lower than 0.1%\"\n            );\n            maxTransactionAmount = newNum * (10**18);\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateMaxWalletAmount",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newNum",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateMaxWalletAmount(uint256 newNum) external onlyOwner {\n            require(\n                newNum >= ((totalSupply() * 5) / 1000) / 1e18,\n                \"Cannot set maxWallet lower than 0.5%\"\n            );\n            maxWallet = newNum * (10**18);\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "excludeFromMaxTransaction",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "updAds",
+                "type": "address"
+            },
+            {
+                "name": "isEx",
+                "type": "bool"
+            }
+        ],
+        "func": "function excludeFromMaxTransaction(address updAds, bool isEx)\n            public\n            onlyOwner\n        {\n            _isExcludedMaxTransactionAmount[updAds] = isEx;\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateSwapEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function updateSwapEnabled(bool enabled) external onlyOwner {\n            swapEnabled = enabled;\n        }",
+        "comments": [
+            "",
+            "        // only use to disable contract sales if absolutely necessary (emergency use only)",
+            "        "
+        ],
+        "comt": "\n        // only use to disable contract sales if absolutely necessary (emergency use only)\n        ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateBuyFees",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_marketingFee",
+                "type": "uint256"
+            },
+            {
+                "name": "_liquidityFee",
+                "type": "uint256"
+            },
+            {
+                "name": "_devFee",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateBuyFees(\n            uint256 _marketingFee,\n            uint256 _liquidityFee,\n            uint256 _devFee\n        ) external onlyOwner {\n            buyMarketingFee = _marketingFee;\n            buyLiquidityFee = _liquidityFee;\n            buyDevFee = _devFee;\n            buyTotalFees = buyMarketingFee + buyLiquidityFee + buyDevFee;\n            require(buyTotalFees <= 9, \"Must keep fees at 9% or less\");\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateSellFees",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_marketingFee",
+                "type": "uint256"
+            },
+            {
+                "name": "_liquidityFee",
+                "type": "uint256"
+            },
+            {
+                "name": "_devFee",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateSellFees(\n            uint256 _marketingFee,\n            uint256 _liquidityFee,\n            uint256 _devFee\n        ) external onlyOwner {\n            sellMarketingFee = _marketingFee;\n            sellLiquidityFee = _liquidityFee;\n            sellDevFee = _devFee;\n            sellTotalFees = sellMarketingFee + sellLiquidityFee + sellDevFee;\n            require(sellTotalFees <= 99, \"Must keep fees at 9% or less\");\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "excludeFromFees",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "excluded",
+                "type": "bool"
+            }
+        ],
+        "func": "function excludeFromFees(address account, bool excluded) public onlyOwner {\n            _isExcludedFromFees[account] = excluded;\n            emit ExcludeFromFees(account, excluded);\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAutomatedMarketMakerPair",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "pair",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "bool"
+            }
+        ],
+        "func": "function setAutomatedMarketMakerPair(address pair, bool value)\n            public\n            onlyOwner\n        {\n            require(\n                pair != uniswapV2Pair,\n                \"The pair cannot be removed from automatedMarketMakerPairs\"\n            );\n\n            _setAutomatedMarketMakerPair(pair, value);\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateMarketingWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newMarketingWallet",
+                "type": "address"
+            }
+        ],
+        "func": "function updateMarketingWallet(address newMarketingWallet)\n            external\n            onlyOwner\n        {\n            emit marketingWalletUpdated(newMarketingWallet, marketingWallet);\n            marketingWallet = newMarketingWallet;\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateDevWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newWallet",
+                "type": "address"
+            }
+        ],
+        "func": "function updateDevWallet(address newWallet) external onlyOwner {\n            emit devWalletUpdated(newWallet, devWallet);\n            devWallet = newWallet;\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isExcludedFromFees",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function isExcludedFromFees(address account) public view returns (bool) {\n            return _isExcludedFromFees[account];\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAutoLPBurnSettings",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_frequencyInSeconds",
+                "type": "uint256"
+            },
+            {
+                "name": "_percent",
+                "type": "uint256"
+            },
+            {
+                "name": "_Enabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function setAutoLPBurnSettings(\n            uint256 _frequencyInSeconds,\n            uint256 _percent,\n            bool _Enabled\n        ) external onlyOwner {\n            require(\n                _frequencyInSeconds >= 600,\n                \"cannot set buyback more often than every 10 minutes\"\n            );\n            require(\n                _percent <= 1000 && _percent >= 0,\n                \"Must set auto LP burn percent between 0% and 10%\"\n            );\n            lpBurnFrequency = _frequencyInSeconds;\n            percentForLPBurn = _percent;\n            lpBurnEnabled = _Enabled;\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "manualBurnLiquidityPairTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "percent",
+                "type": "uint256"
+            }
+        ],
+        "func": "function manualBurnLiquidityPairTokens(uint256 percent)\n            external\n            onlyOwner\n            returns (bool)\n        {\n            require(\n                block.timestamp > lastManualLpBurnTime + manualBurnFrequency,\n                \"Must wait for cooldown to finish\"\n            );\n            require(percent <= 1000, \"May not nuke more than 10% of tokens in LP\");\n            lastManualLpBurnTime = block.timestamp;\n\n            // get balance of liquidity pair\n            uint256 liquidityPairBalance = this.balanceOf(uniswapV2Pair);\n\n            // calculate amount to burn\n            uint256 amountToBurn = liquidityPairBalance.mul(percent).div(10000);\n\n            // pull tokens from UniswapPair liquidity and move to dead address permanently\n            if (amountToBurn > 0) {\n                super._transfer(uniswapV2Pair, address(0xdead), amountToBurn);\n            }\n\n            //sync price since this is not in a swap transaction!\n            IUniswapV2Pair pair = IUniswapV2Pair(uniswapV2Pair);\n            pair.sync();\n            emit ManualNukeLP();\n            return true;\n        }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

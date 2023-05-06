@@ -1,0 +1,612 @@
+[
+    {
+        "transactions": 72697,
+        "function_num": 19
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get token name.",
+            "     * @return Name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get token name.\n     * @return Name of the token.\n     */\n",
+        "@notice": "Get token name.",
+        "@return1": "Name of the token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "external",
+        "args": [],
+        "func": "function symbol() external view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get token symbol.",
+            "     * @return Symbol of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get token symbol.\n     * @return Symbol of the token.\n     */\n",
+        "@notice": "Get token symbol.",
+        "@return1": "Symbol of the token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "external",
+        "args": [],
+        "func": "function decimals() external pure returns (uint8) {\n        return 9;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get number of decimals used by the token.",
+            "     * @return Number of decimals used by the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get number of decimals used by the token.\n     * @return Number of decimals used by the token.\n     */\n",
+        "@notice": "Get number of decimals used by the token.",
+        "@return1": "Number of decimals used by the token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public pure override returns (uint256) {\n        // Ten trillion, i.e., 10,000,000,000,000 tokens.\n        return 1e13 * 1e9;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the maximum number of tokens.",
+            "     * @return The maximum number of tokens that will ever be in existence.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the maximum number of tokens.\n     * @return The maximum number of tokens that will ever be in existence.\n     */\n",
+        "@notice": "Get the maximum number of tokens.",
+        "@return1": "The maximum number of tokens that will ever be in existence.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) external view override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get token balance of given given account.",
+            "     * @param account Address to retrieve balance for.",
+            "     * @return The number of tokens owned by `account`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get token balance of given given account.\n     * @param account Address to retrieve balance for.\n     * @return The number of tokens owned by `account`.\n     */\n",
+        "@notice": "Get token balance of given given account.",
+        "@param1": "account Address to retrieve balance for.",
+        "@return1": "The number of tokens owned by `account`.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) external override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Transfer tokens from caller's address to another.",
+            "     * @param recipient Address to send the caller's tokens to.",
+            "     * @param amount The number of tokens to transfer to recipient.",
+            "     * @return True if transfer succeeds, else an error is raised.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Transfer tokens from caller's address to another.\n     * @param recipient Address to send the caller's tokens to.\n     * @param amount The number of tokens to transfer to recipient.\n     * @return True if transfer succeeds, else an error is raised.\n     */\n",
+        "@notice": "Transfer tokens from caller's address to another.",
+        "@param1": "recipient Address to send the caller's tokens to.",
+        "@param2": "amount The number of tokens to transfer to recipient.",
+        "@return1": "True if transfer succeeds, else an error is raised.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) external view override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the allowance `owner` has given `spender`.",
+            "     * @param owner The address on behalf of whom tokens can be spent by `spender`.",
+            "     * @param spender The address authorized to spend tokens on behalf of `owner`.",
+            "     * @return The allowance `owner` has given `spender`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the allowance `owner` has given `spender`.\n     * @param owner The address on behalf of whom tokens can be spent by `spender`.\n     * @param spender The address authorized to spend tokens on behalf of `owner`.\n     * @return The allowance `owner` has given `spender`.\n     */\n",
+        "@notice": "Get the allowance `owner` has given `spender`.",
+        "@param1": "owner The address on behalf of whom tokens can be spent by `spender`.",
+        "@param2": "spender The address authorized to spend tokens on behalf of `owner`.",
+        "@return1": "The allowance `owner` has given `spender`.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) external override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Approve address to spend caller's tokens.",
+            "     * @dev This method can be exploited by malicious spenders if their allowance is already non-zero. See the following",
+            "     * document for details: https://docs.google.com/document/d/1YLPtQxZu1UAvO9cZ1O2RPXBbT0mooh4DYKjA_jp-RLM/edit.",
+            "     * Ensure the spender can be trusted before calling this method if they've already been approved before. Otherwise",
+            "     * use either the `increaseAllowance`/`decreaseAllowance` functions, or first set their allowance to zero, before",
+            "     * setting a new allowance.",
+            "     * @param spender Address to authorize for token expenditure.",
+            "     * @param amount The number of tokens `spender` is allowed to spend.",
+            "     * @return True if the approval succeeds, else an error is raised.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Approve address to spend caller's tokens.\n     * @dev This method can be exploited by malicious spenders if their allowance is already non-zero. See the following\n     * document for details: https://docs.google.com/document/d/1YLPtQxZu1UAvO9cZ1O2RPXBbT0mooh4DYKjA_jp-RLM/edit.\n     * Ensure the spender can be trusted before calling this method if they've already been approved before. Otherwise\n     * use either the `increaseAllowance`/`decreaseAllowance` functions, or first set their allowance to zero, before\n     * setting a new allowance.\n     * @param spender Address to authorize for token expenditure.\n     * @param amount The number of tokens `spender` is allowed to spend.\n     * @return True if the approval succeeds, else an error is raised.\n     */\n",
+        "@notice": "Approve address to spend caller's tokens.",
+        "@dev": "This method can be exploited by malicious spenders if their allowance is already non-zero. See the following * document for details: https://docs.google.com/document/d/1YLPtQxZu1UAvO9cZ1O2RPXBbT0mooh4DYKjA_jp-RLM/edit. * Ensure the spender can be trusted before calling this method if they've already been approved before. Otherwise * use either the `increaseAllowance`/`decreaseAllowance` functions, or first set their allowance to zero, before * setting a new allowance.",
+        "@param1": "spender Address to authorize for token expenditure.",
+        "@param2": "amount The number of tokens `spender` is allowed to spend.",
+        "@return1": "True if the approval succeeds, else an error is raised.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) external override returns (bool) {\n        _transfer(sender, recipient, amount);\n\n        uint256 currentAllowance = _allowances[sender][_msgSender()];\n        require(\n            currentAllowance >= amount,\n            \"FLOKI:transferFrom:ALLOWANCE_EXCEEDED: Transfer amount exceeds allowance.\"\n        );\n        unchecked {\n            _approve(sender, _msgSender(), currentAllowance - amount);\n        }\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Transfer tokens from one address to another.",
+            "     * @param sender Address to move tokens from.",
+            "     * @param recipient Address to send the caller's tokens to.",
+            "     * @param amount The number of tokens to transfer to recipient.",
+            "     * @return True if the transfer succeeds, else an error is raised.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Transfer tokens from one address to another.\n     * @param sender Address to move tokens from.\n     * @param recipient Address to send the caller's tokens to.\n     * @param amount The number of tokens to transfer to recipient.\n     * @return True if the transfer succeeds, else an error is raised.\n     */\n",
+        "@notice": "Transfer tokens from one address to another.",
+        "@param1": "sender Address to move tokens from.",
+        "@param2": "recipient Address to send the caller's tokens to.",
+        "@param3": "amount The number of tokens to transfer to recipient.",
+        "@return1": "True if the transfer succeeds, else an error is raised.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) external returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender] + addedValue);\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Increase spender's allowance.",
+            "     * @param spender Address of user authorized to spend caller's tokens.",
+            "     * @param addedValue The number of tokens to add to `spender`'s allowance.",
+            "     * @return True if the allowance is successfully increased, else an error is raised.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Increase spender's allowance.\n     * @param spender Address of user authorized to spend caller's tokens.\n     * @param addedValue The number of tokens to add to `spender`'s allowance.\n     * @return True if the allowance is successfully increased, else an error is raised.\n     */\n",
+        "@notice": "Increase spender's allowance.",
+        "@param1": "spender Address of user authorized to spend caller's tokens.",
+        "@param2": "addedValue The number of tokens to add to `spender`'s allowance.",
+        "@return1": "True if the allowance is successfully increased, else an error is raised.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) external returns (bool) {\n        uint256 currentAllowance = _allowances[_msgSender()][spender];\n        require(\n            currentAllowance >= subtractedValue,\n            \"FLOKI:decreaseAllowance:ALLOWANCE_UNDERFLOW: Subtraction results in sub-zero allowance.\"\n        );\n        unchecked {\n            _approve(_msgSender(), spender, currentAllowance - subtractedValue);\n        }\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Decrease spender's allowance.",
+            "     * @param spender Address of user authorized to spend caller's tokens.",
+            "     * @param subtractedValue The number of tokens to remove from `spender`'s allowance.",
+            "     * @return True if the allowance is successfully decreased, else an error is raised.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Decrease spender's allowance.\n     * @param spender Address of user authorized to spend caller's tokens.\n     * @param subtractedValue The number of tokens to remove from `spender`'s allowance.\n     * @return True if the allowance is successfully decreased, else an error is raised.\n     */\n",
+        "@notice": "Decrease spender's allowance.",
+        "@param1": "spender Address of user authorized to spend caller's tokens.",
+        "@param2": "subtractedValue The number of tokens to remove from `spender`'s allowance.",
+        "@return1": "True if the allowance is successfully decreased, else an error is raised.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            }
+        ],
+        "func": "function delegate(address delegatee) external {\n        return _delegate(msg.sender, delegatee);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Delegate votes to given address.",
+            "     * @dev It should be noted that users that want to vote themselves, also need to call this method, albeit with their",
+            "     * own address.",
+            "     * @param delegatee Address to delegate votes to.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Delegate votes to given address.\n     * @dev It should be noted that users that want to vote themselves, also need to call this method, albeit with their\n     * own address.\n     * @param delegatee Address to delegate votes to.\n     */\n",
+        "@notice": "Delegate votes to given address.",
+        "@dev": "It should be noted that users that want to vote themselves, also need to call this method, albeit with their * own address.",
+        "@param1": "delegatee Address to delegate votes to.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateBySig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "expiry",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function delegateBySig(\n        address delegatee,\n        uint256 nonce,\n        uint256 expiry,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) external {\n        bytes32 domainSeparator = keccak256(\n            abi.encode(DOMAIN_TYPEHASH, keccak256(bytes(name())), block.chainid, address(this))\n        );\n        bytes32 structHash = keccak256(abi.encode(DELEGATION_TYPEHASH, delegatee, nonce, expiry));\n        bytes32 digest = keccak256(abi.encodePacked(\"\\x19\\x01\", domainSeparator, structHash));\n        address signatory = ecrecover(digest, v, r, s);\n\n        require(signatory != address(0), \"FLOKI:delegateBySig:INVALID_SIGNATURE: Received signature was invalid.\");\n        require(block.timestamp <= expiry, \"FLOKI:delegateBySig:EXPIRED_SIGNATURE: Received signature has expired.\");\n        require(nonce == nonces[signatory]++, \"FLOKI:delegateBySig:INVALID_NONCE: Received nonce was invalid.\");\n\n        return _delegate(signatory, delegatee);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Delegate votes from signatory to `delegatee`.",
+            "     * @param delegatee The address to delegate votes to.",
+            "     * @param nonce The contract state required to match the signature.",
+            "     * @param expiry The time at which to expire the signature.",
+            "     * @param v The recovery byte of the signature.",
+            "     * @param r Half of the ECDSA signature pair.",
+            "     * @param s Half of the ECDSA signature pair.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Delegate votes from signatory to `delegatee`.\n     * @param delegatee The address to delegate votes to.\n     * @param nonce The contract state required to match the signature.\n     * @param expiry The time at which to expire the signature.\n     * @param v The recovery byte of the signature.\n     * @param r Half of the ECDSA signature pair.\n     * @param s Half of the ECDSA signature pair.\n     */\n",
+        "@notice": "Delegate votes from signatory to `delegatee`.",
+        "@param1": "delegatee The address to delegate votes to.",
+        "@param2": "nonce The contract state required to match the signature.",
+        "@param3": "expiry The time at which to expire the signature.",
+        "@param4": "v The recovery byte of the signature.",
+        "@param5": "r Half of the ECDSA signature pair.",
+        "@param6": "s Half of the ECDSA signature pair.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVotesAtBlock",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "blockNumber",
+                "type": "uint32"
+            }
+        ],
+        "func": "function getVotesAtBlock(address account, uint32 blockNumber) public view returns (uint224) {\n        require(\n            blockNumber < block.number,\n            \"FLOKI:getVotesAtBlock:FUTURE_BLOCK: Cannot get votes at a block in the future.\"\n        );\n\n        uint32 nCheckpoints = numCheckpoints[account];\n        if (nCheckpoints == 0) {\n            return 0;\n        }\n\n        // First check most recent balance.\n        if (checkpoints[account][nCheckpoints - 1].blockNumber <= blockNumber) {\n            return checkpoints[account][nCheckpoints - 1].votes;\n        }\n\n        // Next check implicit zero balance.\n        if (checkpoints[account][0].blockNumber > blockNumber) {\n            return 0;\n        }\n\n        // Perform binary search.\n        uint32 lowerBound = 0;\n        uint32 upperBound = nCheckpoints - 1;\n        while (upperBound > lowerBound) {\n            uint32 center = upperBound - (upperBound - lowerBound) / 2;\n            Checkpoint memory checkpoint = checkpoints[account][center];\n\n            if (checkpoint.blockNumber == blockNumber) {\n                return checkpoint.votes;\n            } else if (checkpoint.blockNumber < blockNumber) {\n                lowerBound = center;\n            } else {\n                upperBound = center - 1;\n            }\n        }\n\n        // No exact block found. Use last known balance before that block number.\n        return checkpoints[account][lowerBound].votes;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Determine the number of votes for an account as of a block number.",
+            "     * @dev Block number must be a finalized block or else this function will revert to prevent misinformation.",
+            "     * @param account The address of the account to check.",
+            "     * @param blockNumber The block number to get the vote balance at.",
+            "     * @return The number of votes the account had as of the given block.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Determine the number of votes for an account as of a block number.\n     * @dev Block number must be a finalized block or else this function will revert to prevent misinformation.\n     * @param account The address of the account to check.\n     * @param blockNumber The block number to get the vote balance at.\n     * @return The number of votes the account had as of the given block.\n     */\n",
+        "@notice": "Determine the number of votes for an account as of a block number.",
+        "@dev": "Block number must be a finalized block or else this function will revert to prevent misinformation.",
+        "@param1": "account The address of the account to check.",
+        "@param2": "blockNumber The block number to get the vote balance at.",
+        "@return1": "The number of votes the account had as of the given block.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTaxHandler",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "taxHandlerAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setTaxHandler(address taxHandlerAddress) external onlyOwner {\n        address oldTaxHandlerAddress = address(taxHandler);\n        taxHandler = ITaxHandler(taxHandlerAddress);\n\n        emit TaxHandlerChanged(oldTaxHandlerAddress, taxHandlerAddress);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Set new tax handler contract.",
+            "     * @param taxHandlerAddress Address of new tax handler contract.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Set new tax handler contract.\n     * @param taxHandlerAddress Address of new tax handler contract.\n     */\n",
+        "@notice": "Set new tax handler contract.",
+        "@param1": "taxHandlerAddress Address of new tax handler contract.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTreasuryHandler",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "treasuryHandlerAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setTreasuryHandler(address treasuryHandlerAddress) external onlyOwner {\n        address oldTreasuryHandlerAddress = address(treasuryHandler);\n        treasuryHandler = ITreasuryHandler(treasuryHandlerAddress);\n\n        emit TreasuryHandlerChanged(oldTreasuryHandlerAddress, treasuryHandlerAddress);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Set new treasury handler contract.",
+            "     * @param treasuryHandlerAddress Address of new treasury handler contract.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Set new treasury handler contract.\n     * @param treasuryHandlerAddress Address of new treasury handler contract.\n     */\n",
+        "@notice": "Set new treasury handler contract.",
+        "@param1": "treasuryHandlerAddress Address of new treasury handler contract.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _setOwner(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _setOwner(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

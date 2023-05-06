@@ -1,0 +1,1386 @@
+[
+    {
+        "transactions": 5585,
+        "function_num": 32
+    },
+    {
+        "name": "setGateApproval",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_gateAddress",
+                "type": "address"
+            },
+            {
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setGateApproval(address _gateAddress, bool _approved)\n        external\n        onlyOwner\n        notZeroAddress(_gateAddress)\n    {\n        require(approvedGates[_gateAddress] != _approved, \"NO_CHANGE\");\n        approvedGates[_gateAddress] = _approved;\n        emit LogGateApprovalChanged(_gateAddress, _approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Set the approval status for a given Gate contract",
+            "     * @param _gateAddress - the address of the gate contract",
+            "     * @param _approved - approval status for the gate",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Set the approval status for a given Gate contract\n     * @param _gateAddress - the address of the gate contract\n     * @param _approved - approval status for the gate\n     */\n",
+        "@notice": "Set the approval status for a given Gate contract",
+        "@param1": "_gateAddress - the address of the gate contract",
+        "@param2": "_approved - approval status for the gate",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pause",
+        "visibility": "external",
+        "args": [],
+        "func": "function pause() external override onlyRouterOwner() {\n        _pause();\n        if (!Pausable(voucherKernel).paused()) { \n            IVoucherKernel(voucherKernel).pause();\n            ICashier(cashierAddress).pause();\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Pause the Cashier && the Voucher Kernel contracts in case of emergency.",
+            "     * All functions related to creating requestCreateOrder, requestVoucher, redeem, refund, complain, cancelOrFault,",
+            "     * cancelOrFaultVoucherSet, or withdraw will be paused and cannot be executed.",
+            "     * The withdrawEthOnDisaster function is a special function in the Cashier contract for withdrawing funds if contract is paused.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Pause the Cashier && the Voucher Kernel contracts in case of emergency.\n     * All functions related to creating requestCreateOrder, requestVoucher, redeem, refund, complain, cancelOrFault,\n     * cancelOrFaultVoucherSet, or withdraw will be paused and cannot be executed.\n     * The withdrawEthOnDisaster function is a special function in the Cashier contract for withdrawing funds if contract is paused.\n     */\n",
+        "@notice": "Pause the Cashier && the Voucher Kernel contracts in case of emergency. * All functions related to creating requestCreateOrder, requestVoucher, redeem, refund, complain, cancelOrFault, * cancelOrFaultVoucherSet, or withdraw will be paused and cannot be executed. * The withdrawEthOnDisaster function is a special function in the Cashier contract for withdrawing funds if contract is paused.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unpause",
+        "visibility": "external",
+        "args": [],
+        "func": "function unpause() external override onlyRouterOwner() {\n        require(ICashier(cashierAddress).canUnpause(), \"UF\"); //unpaused forbidden\n\n        _unpause();\n        if (Pausable(voucherKernel).paused()) { \n            IVoucherKernel(voucherKernel).unpause();\n            ICashier(cashierAddress).unpause();\n        }        \n    }",
+        "comments": [
+            "/**",
+            "     * @notice Unpause the Cashier && the Voucher Kernel contracts.",
+            "     * All functions related to creating requestCreateOrder, requestVoucher, redeem, refund, complain, cancelOrFault,",
+            "     * cancelOrFaultVoucherSet, or withdraw will be unpaused.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Unpause the Cashier && the Voucher Kernel contracts.\n     * All functions related to creating requestCreateOrder, requestVoucher, redeem, refund, complain, cancelOrFault,\n     * cancelOrFaultVoucherSet, or withdraw will be unpaused.\n     */\n",
+        "@notice": "Unpause the Cashier && the Voucher Kernel contracts. * All functions related to creating requestCreateOrder, requestVoucher, redeem, refund, complain, cancelOrFault, * cancelOrFaultVoucherSet, or withdraw will be unpaused.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCreateOrderETHETH",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_metadata",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function requestCreateOrderETHETH(uint256[] calldata _metadata)\n        external\n        payable\n        virtual\n        override\n        nonReentrant\n        whenNotPaused\n    {\n        checkLimits(_metadata, address(0), address(0), 0);\n        requestCreateOrder(_metadata, PaymentMethod.ETHETH, address(0), address(0), 0);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is",
+            "     * also known as a voucher set. Payment and deposits are specified in ETH.",
+            "     * @param _metadata metadata which is required for creation of a voucher set",
+            "     * Metadata array is used for consistency across the permutations of similar functions.",
+            "     * Some functions require other parameters, and the number of parameters causes stack too deep error.",
+            "     * The use of the matadata array mitigates the stack too deep error.",
+            "     *",
+            "     * uint256 _validFrom = _metadata[0];",
+            "     * uint256 _validTo = _metadata[1];",
+            "     * uint256 _price = _metadata[2];",
+            "     * uint256 _depositSe = _metadata[3];",
+            "     * uint256 _depositBu = _metadata[4];",
+            "     * uint256 _quantity = _metadata[5];",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is\n     * also known as a voucher set. Payment and deposits are specified in ETH.\n     * @param _metadata metadata which is required for creation of a voucher set\n     * Metadata array is used for consistency across the permutations of similar functions.\n     * Some functions require other parameters, and the number of parameters causes stack too deep error.\n     * The use of the matadata array mitigates the stack too deep error.\n     *\n     * uint256 _validFrom = _metadata[0];\n     * uint256 _validTo = _metadata[1];\n     * uint256 _price = _metadata[2];\n     * uint256 _depositSe = _metadata[3];\n     * uint256 _depositBu = _metadata[4];\n     * uint256 _quantity = _metadata[5];\n     */\n",
+        "@notice": "Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is * also known as a voucher set. Payment and deposits are specified in ETH.",
+        "@param1": "_metadata metadata which is required for creation of a voucher set * Metadata array is used for consistency across the permutations of similar functions. * Some functions require other parameters, and the number of parameters causes stack too deep error. * The use of the matadata array mitigates the stack too deep error. * * uint256 _validFrom = _metadata[0]; * uint256 _validTo = _metadata[1]; * uint256 _price = _metadata[2]; * uint256 _depositSe = _metadata[3]; * uint256 _depositBu = _metadata[4]; * uint256 _quantity = _metadata[5];",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCreateOrderETHETHConditional",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_metadata",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "_conditionalCommitInfo",
+                "type": "ConditionalCommitInfo calldata"
+            }
+        ],
+        "func": "function requestCreateOrderETHETHConditional(\n        uint256[] calldata _metadata, \n        ConditionalCommitInfo calldata _conditionalCommitInfo)\n        external\n        payable\n        override\n        nonReentrant\n        whenNotPaused\n        onlyApprovedGate(_conditionalCommitInfo.gateAddress)\n    {\n        checkLimits(_metadata, address(0), address(0), 0);\n        uint256 tokenIdSupply = requestCreateOrder(_metadata, PaymentMethod.ETHETH, address(0), address(0), 0);\n        finalizeConditionalOrder(tokenIdSupply, _conditionalCommitInfo);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set.",
+            "     * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20.",
+            "     * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function.",
+            "     * Payment and deposits are specified in ETH.",
+            "     * @param _metadata metadata which is required for creation of a voucher set",
+            "     * Metadata array is used for consistency across the permutations of similar functions.",
+            "     * Some functions require other parameters, and the number of parameters causes stack too deep error.",
+            "     * The use of the matadata array mitigates the stack too deep error.",
+            "     *",
+            "     * uint256 _validFrom = _metadata[0];",
+            "     * uint256 _validTo = _metadata[1];",
+            "     * uint256 _price = _metadata[2];",
+            "     * uint256 _depositSe = _metadata[3];",
+            "     * uint256 _depositBu = _metadata[4];",
+            "     * uint256 _quantity = _metadata[5];",
+            "     *",
+            "     * @param _conditionalCommitInfo struct that contains data pertaining to conditional commit:",
+            "     *",
+            "     * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher",
+            "     * in the voucher set created by this function.",
+            "     *",
+            "     * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition",
+            "     *",
+            "     * Condition condition - condition that will be checked when a user commits using a conditional token",
+            "     *",
+            "     * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token,",
+            "     * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.",
+            "     *",
+            "     * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set.\n     * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20.\n     * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function.\n     * Payment and deposits are specified in ETH.\n     * @param _metadata metadata which is required for creation of a voucher set\n     * Metadata array is used for consistency across the permutations of similar functions.\n     * Some functions require other parameters, and the number of parameters causes stack too deep error.\n     * The use of the matadata array mitigates the stack too deep error.\n     *\n     * uint256 _validFrom = _metadata[0];\n     * uint256 _validTo = _metadata[1];\n     * uint256 _price = _metadata[2];\n     * uint256 _depositSe = _metadata[3];\n     * uint256 _depositBu = _metadata[4];\n     * uint256 _quantity = _metadata[5];\n     *\n     * @param _conditionalCommitInfo struct that contains data pertaining to conditional commit:\n     *\n     * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher\n     * in the voucher set created by this function.\n     *\n     * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition\n     *\n     * Condition condition - condition that will be checked when a user commits using a conditional token\n     *\n     * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token,\n     * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.\n     *\n     * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately\n     */\n",
+        "@notice": "Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set. * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20. * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function. * Payment and deposits are specified in ETH.",
+        "@param1": "_metadata metadata which is required for creation of a voucher set * Metadata array is used for consistency across the permutations of similar functions. * Some functions require other parameters, and the number of parameters causes stack too deep error. * The use of the matadata array mitigates the stack too deep error. * * uint256 _validFrom = _metadata[0]; * uint256 _validTo = _metadata[1]; * uint256 _price = _metadata[2]; * uint256 _depositSe = _metadata[3]; * uint256 _depositBu = _metadata[4]; * uint256 _quantity = _metadata[5];",
+        "@param2": "_conditionalCommitInfo struct that contains data pertaining to conditional commit: * * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher * in the voucher set created by this function. * * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition * * Condition condition - condition that will be checked when a user commits using a conditional token * * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token, * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function. * * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCreateOrderTKNTKNWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenPriceAddress",
+                "type": "address"
+            },
+            {
+                "name": "_tokenDepositAddress",
+                "type": "address"
+            },
+            {
+                "name": "_tokensSent",
+                "type": "uint256"
+            },
+            {
+                "name": "_deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "_v",
+                "type": "uint8"
+            },
+            {
+                "name": "_r",
+                "type": "bytes32"
+            },
+            {
+                "name": "_s",
+                "type": "bytes32"
+            },
+            {
+                "name": "_metadata",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function requestCreateOrderTKNTKNWithPermit(\n        address _tokenPriceAddress,\n        address _tokenDepositAddress,\n        uint256 _tokensSent,\n        uint256 _deadline,\n        uint8 _v,\n        bytes32 _r,\n        bytes32 _s,\n        uint256[] calldata _metadata\n    )\n    external\n    override\n    nonReentrant\n    {\n        requestCreateOrderTKNTKNWithPermitInternal(\n            _tokenPriceAddress,\n            _tokenDepositAddress,\n            _tokensSent,\n            _deadline,\n            _v,\n            _r,\n            _s,\n            _metadata\n        );\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is",
+            "     * also known as a voucher set. Price and deposits are specified in tokens.",
+            "     * @param _tokenPriceAddress address of the token to be used for the price",
+            "     * @param _tokenDepositAddress address of the token to be used for the deposits",
+            "     * @param _tokensSent total number of tokens sent. Must be equal to seller deposit * quantity",
+            "     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612",
+            "     * @param _v signature component used to verify the permit. See EIP-2612",
+            "     * @param _r signature component used to verify the permit. See EIP-2612",
+            "     * @param _s signature component used to verify the permit. See EIP-2612",
+            "     * @param _metadata metadata which is required for creation of a voucher set",
+            "     * Metadata array is used for consistency across the permutations of similar functions.",
+            "     * Some functions require other parameters, and the number of parameters causes stack too deep error.",
+            "     * The use of the matadata array mitigates the stack too deep error.",
+            "     *",
+            "     * uint256 _validFrom = _metadata[0];",
+            "     * uint256 _validTo = _metadata[1];",
+            "     * uint256 _price = _metadata[2];",
+            "     * uint256 _depositSe = _metadata[3];",
+            "     * uint256 _depositBu = _metadata[4];",
+            "     * uint256 _quantity = _metadata[5];",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is\n     * also known as a voucher set. Price and deposits are specified in tokens.\n     * @param _tokenPriceAddress address of the token to be used for the price\n     * @param _tokenDepositAddress address of the token to be used for the deposits\n     * @param _tokensSent total number of tokens sent. Must be equal to seller deposit * quantity\n     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612\n     * @param _v signature component used to verify the permit. See EIP-2612\n     * @param _r signature component used to verify the permit. See EIP-2612\n     * @param _s signature component used to verify the permit. See EIP-2612\n     * @param _metadata metadata which is required for creation of a voucher set\n     * Metadata array is used for consistency across the permutations of similar functions.\n     * Some functions require other parameters, and the number of parameters causes stack too deep error.\n     * The use of the matadata array mitigates the stack too deep error.\n     *\n     * uint256 _validFrom = _metadata[0];\n     * uint256 _validTo = _metadata[1];\n     * uint256 _price = _metadata[2];\n     * uint256 _depositSe = _metadata[3];\n     * uint256 _depositBu = _metadata[4];\n     * uint256 _quantity = _metadata[5];\n     */\n",
+        "@notice": "Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is * also known as a voucher set. Price and deposits are specified in tokens.",
+        "@param1": "_tokenPriceAddress address of the token to be used for the price",
+        "@param2": "_tokenDepositAddress address of the token to be used for the deposits",
+        "@param3": "_tokensSent total number of tokens sent. Must be equal to seller deposit * quantity",
+        "@param4": "_deadline deadline after which permit signature is no longer valid. See EIP-2612",
+        "@param5": "_v signature component used to verify the permit. See EIP-2612",
+        "@param6": "_r signature component used to verify the permit. See EIP-2612",
+        "@param7": "_s signature component used to verify the permit. See EIP-2612",
+        "@param8": "_metadata metadata which is required for creation of a voucher set * Metadata array is used for consistency across the permutations of similar functions. * Some functions require other parameters, and the number of parameters causes stack too deep error. * The use of the matadata array mitigates the stack too deep error. * * uint256 _validFrom = _metadata[0]; * uint256 _validTo = _metadata[1]; * uint256 _price = _metadata[2]; * uint256 _depositSe = _metadata[3]; * uint256 _depositBu = _metadata[4]; * uint256 _quantity = _metadata[5];",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCreateOrderTKNTKNWithPermitConditional",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenPriceAddress",
+                "type": "address"
+            },
+            {
+                "name": "_tokenDepositAddress",
+                "type": "address"
+            },
+            {
+                "name": "_tokensSent",
+                "type": "uint256"
+            },
+            {
+                "name": "_deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "_v",
+                "type": "uint8"
+            },
+            {
+                "name": "_r",
+                "type": "bytes32"
+            },
+            {
+                "name": "_s",
+                "type": "bytes32"
+            },
+            {
+                "name": "_metadata",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "_conditionalCommitInfo",
+                "type": "ConditionalCommitInfo calldata"
+            }
+        ],
+        "func": "function requestCreateOrderTKNTKNWithPermitConditional(\n        address _tokenPriceAddress,\n        address _tokenDepositAddress,\n        uint256 _tokensSent,\n        uint256 _deadline,\n        uint8 _v,\n        bytes32 _r,\n        bytes32 _s,\n        uint256[] calldata _metadata,\n        ConditionalCommitInfo calldata _conditionalCommitInfo\n    )\n    external\n    override\n    nonReentrant\n    onlyApprovedGate(_conditionalCommitInfo.gateAddress)\n    {\n        uint256 tokenIdSupply = requestCreateOrderTKNTKNWithPermitInternal(\n            _tokenPriceAddress,\n            _tokenDepositAddress,\n            _tokensSent,\n            _deadline,\n            _v,\n            _r,\n            _s,\n            _metadata\n        );\n\n        finalizeConditionalOrder(tokenIdSupply, _conditionalCommitInfo);\n    \n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set.",
+            "     * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20.",
+            "     * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function.",
+            "     * Price and deposits are specified in tokens.",
+            "     * @param _tokenPriceAddress address of the token to be used for the price",
+            "     * @param _tokenDepositAddress address of the token to be used for the deposits",
+            "     * @param _tokensSent total number of tokens sent. Must be equal to seller deposit * quantity",
+            "     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612",
+            "     * @param _v signature component used to verify the permit. See EIP-2612",
+            "     * @param _r signature component used to verify the permit. See EIP-2612",
+            "     * @param _s signature component used to verify the permit. See EIP-2612",
+            "     * @param _metadata metadata which is required for creation of a voucher set",
+            "     * Metadata array is used for consistency across the permutations of similar functions.",
+            "     * Some functions require other parameters, and the number of parameters causes stack too deep error.",
+            "     * The use of the matadata array mitigates the stack too deep error.",
+            "     *",
+            "     * uint256 _validFrom = _metadata[0];",
+            "     * uint256 _validTo = _metadata[1];",
+            "     * uint256 _price = _metadata[2];",
+            "     * uint256 _depositSe = _metadata[3];",
+            "     * uint256 _depositBu = _metadata[4];",
+            "     * uint256 _quantity = _metadata[5];",
+            "     *",
+            "     * @param _conditionalCommitInfo struct that contains data pertaining to conditional commit:",
+            "     *",
+            "     * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher",
+            "     * in the voucher set created by this function.",
+            "     *",
+            "     * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition",
+            "     *",
+            "     * Condition condition - condition that will be checked when a user commits using a conditional token",
+            "     *",
+            "     * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token,",
+            "     * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.",
+            "     *",
+            "     * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set.\n     * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20.\n     * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function.\n     * Price and deposits are specified in tokens.\n     * @param _tokenPriceAddress address of the token to be used for the price\n     * @param _tokenDepositAddress address of the token to be used for the deposits\n     * @param _tokensSent total number of tokens sent. Must be equal to seller deposit * quantity\n     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612\n     * @param _v signature component used to verify the permit. See EIP-2612\n     * @param _r signature component used to verify the permit. See EIP-2612\n     * @param _s signature component used to verify the permit. See EIP-2612\n     * @param _metadata metadata which is required for creation of a voucher set\n     * Metadata array is used for consistency across the permutations of similar functions.\n     * Some functions require other parameters, and the number of parameters causes stack too deep error.\n     * The use of the matadata array mitigates the stack too deep error.\n     *\n     * uint256 _validFrom = _metadata[0];\n     * uint256 _validTo = _metadata[1];\n     * uint256 _price = _metadata[2];\n     * uint256 _depositSe = _metadata[3];\n     * uint256 _depositBu = _metadata[4];\n     * uint256 _quantity = _metadata[5];\n     *\n     * @param _conditionalCommitInfo struct that contains data pertaining to conditional commit:\n     *\n     * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher\n     * in the voucher set created by this function.\n     *\n     * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition\n     *\n     * Condition condition - condition that will be checked when a user commits using a conditional token\n     *\n     * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token,\n     * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.\n     *\n     * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately\n     */\n",
+        "@notice": "Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set. * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20. * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function. * Price and deposits are specified in tokens.",
+        "@param1": "_tokenPriceAddress address of the token to be used for the price",
+        "@param2": "_tokenDepositAddress address of the token to be used for the deposits",
+        "@param3": "_tokensSent total number of tokens sent. Must be equal to seller deposit * quantity",
+        "@param4": "_deadline deadline after which permit signature is no longer valid. See EIP-2612",
+        "@param5": "_v signature component used to verify the permit. See EIP-2612",
+        "@param6": "_r signature component used to verify the permit. See EIP-2612",
+        "@param7": "_s signature component used to verify the permit. See EIP-2612",
+        "@param8": "_metadata metadata which is required for creation of a voucher set * Metadata array is used for consistency across the permutations of similar functions. * Some functions require other parameters, and the number of parameters causes stack too deep error. * The use of the matadata array mitigates the stack too deep error. * * uint256 _validFrom = _metadata[0]; * uint256 _validTo = _metadata[1]; * uint256 _price = _metadata[2]; * uint256 _depositSe = _metadata[3]; * uint256 _depositBu = _metadata[4]; * uint256 _quantity = _metadata[5];",
+        "@param9": "_conditionalCommitInfo struct that contains data pertaining to conditional commit: * * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher * in the voucher set created by this function. * * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition * * Condition condition - condition that will be checked when a user commits using a conditional token * * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token, * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function. * * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCreateOrderETHTKNWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenDepositAddress",
+                "type": "address"
+            },
+            {
+                "name": "_tokensSent",
+                "type": "uint256"
+            },
+            {
+                "name": "_deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "_v",
+                "type": "uint8"
+            },
+            {
+                "name": "_r",
+                "type": "bytes32"
+            },
+            {
+                "name": "_s",
+                "type": "bytes32"
+            },
+            {
+                "name": "_metadata",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function requestCreateOrderETHTKNWithPermit(\n        address _tokenDepositAddress,\n        uint256 _tokensSent,\n        uint256 _deadline,\n        uint8 _v,\n        bytes32 _r,\n        bytes32 _s,\n        uint256[] calldata _metadata\n    )\n    external\n    override\n    nonReentrant\n    {\n        requestCreateOrderETHTKNWithPermitInternal( _tokenDepositAddress,\n         _tokensSent,\n         _deadline,\n         _v,\n         _r,\n         _s,\n        _metadata);\n\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is",
+            "     * also known as a voucher set. Price is specified in ETH and deposits are specified in tokens.",
+            "     * @param _tokenDepositAddress address of the token to be used for the deposits",
+            "     * @param _tokensSent total number of tokens sent. Must be equal to seller deposit * quantity",
+            "     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612",
+            "     * @param _v signature component used to verify the permit. See EIP-2612",
+            "     * @param _r signature component used to verify the permit. See EIP-2612",
+            "     * @param _s signature component used to verify the permit. See EIP-2612",
+            "     * @param _metadata metadata which is required for creation of a voucher set",
+            "     * Metadata array is used for consistency across the permutations of similar functions.",
+            "     * Some functions require other parameters, and the number of parameters causes stack too deep error.",
+            "     * The use of the matadata array mitigates the stack too deep error.",
+            "     *",
+            "     * uint256 _validFrom = _metadata[0];",
+            "     * uint256 _validTo = _metadata[1];",
+            "     * uint256 _price = _metadata[2];",
+            "     * uint256 _depositSe = _metadata[3];",
+            "     * uint256 _depositBu = _metadata[4];",
+            "     * uint256 _quantity = _metadata[5];",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is\n     * also known as a voucher set. Price is specified in ETH and deposits are specified in tokens.\n     * @param _tokenDepositAddress address of the token to be used for the deposits\n     * @param _tokensSent total number of tokens sent. Must be equal to seller deposit * quantity\n     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612\n     * @param _v signature component used to verify the permit. See EIP-2612\n     * @param _r signature component used to verify the permit. See EIP-2612\n     * @param _s signature component used to verify the permit. See EIP-2612\n     * @param _metadata metadata which is required for creation of a voucher set\n     * Metadata array is used for consistency across the permutations of similar functions.\n     * Some functions require other parameters, and the number of parameters causes stack too deep error.\n     * The use of the matadata array mitigates the stack too deep error.\n     *\n     * uint256 _validFrom = _metadata[0];\n     * uint256 _validTo = _metadata[1];\n     * uint256 _price = _metadata[2];\n     * uint256 _depositSe = _metadata[3];\n     * uint256 _depositBu = _metadata[4];\n     * uint256 _quantity = _metadata[5];\n     */\n",
+        "@notice": "Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is * also known as a voucher set. Price is specified in ETH and deposits are specified in tokens.",
+        "@param1": "_tokenDepositAddress address of the token to be used for the deposits",
+        "@param2": "_tokensSent total number of tokens sent. Must be equal to seller deposit * quantity",
+        "@param3": "_deadline deadline after which permit signature is no longer valid. See EIP-2612",
+        "@param4": "_v signature component used to verify the permit. See EIP-2612",
+        "@param5": "_r signature component used to verify the permit. See EIP-2612",
+        "@param6": "_s signature component used to verify the permit. See EIP-2612",
+        "@param7": "_metadata metadata which is required for creation of a voucher set * Metadata array is used for consistency across the permutations of similar functions. * Some functions require other parameters, and the number of parameters causes stack too deep error. * The use of the matadata array mitigates the stack too deep error. * * uint256 _validFrom = _metadata[0]; * uint256 _validTo = _metadata[1]; * uint256 _price = _metadata[2]; * uint256 _depositSe = _metadata[3]; * uint256 _depositBu = _metadata[4]; * uint256 _quantity = _metadata[5];",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCreateOrderETHTKNWithPermitConditional",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenDepositAddress",
+                "type": "address"
+            },
+            {
+                "name": "_tokensSent",
+                "type": "uint256"
+            },
+            {
+                "name": "_deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "_v",
+                "type": "uint8"
+            },
+            {
+                "name": "_r",
+                "type": "bytes32"
+            },
+            {
+                "name": "_s",
+                "type": "bytes32"
+            },
+            {
+                "name": "_metadata",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "_conditionalCommitInfo",
+                "type": "ConditionalCommitInfo calldata"
+            }
+        ],
+        "func": "function requestCreateOrderETHTKNWithPermitConditional(\n        address _tokenDepositAddress,\n        uint256 _tokensSent,\n        uint256 _deadline,\n        uint8 _v,\n        bytes32 _r,\n        bytes32 _s,\n        uint256[] calldata _metadata,\n        ConditionalCommitInfo calldata _conditionalCommitInfo\n    )\n    external\n    override\n    nonReentrant\n    onlyApprovedGate(_conditionalCommitInfo.gateAddress)\n    {\n        uint256 tokenIdSupply = requestCreateOrderETHTKNWithPermitInternal( _tokenDepositAddress,\n         _tokensSent,\n         _deadline,\n         _v,\n         _r,\n         _s,\n        _metadata);\n\n       finalizeConditionalOrder(tokenIdSupply, _conditionalCommitInfo);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set.",
+            "     * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20.",
+            "     * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function.",
+            "     * Price is specified in ETH and deposits are specified in tokens.",
+            "     * @param _tokenDepositAddress address of the token to be used for the deposits",
+            "     * @param _tokensSent total number of tokens sent. Must be equal to seller deposit * quantity",
+            "     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612",
+            "     * @param _v signature component used to verify the permit. See EIP-2612",
+            "     * @param _r signature component used to verify the permit. See EIP-2612",
+            "     * @param _s signature component used to verify the permit. See EIP-2612",
+            "     * @param _metadata metadata which is required for creation of a voucher set",
+            "     * Metadata array is used for consistency across the permutations of similar functions.",
+            "     * Some functions require other parameters, and the number of parameters causes stack too deep error.",
+            "     * The use of the matadata array mitigates the stack too deep error.",
+            "     *",
+            "     * uint256 _validFrom = _metadata[0];",
+            "     * uint256 _validTo = _metadata[1];",
+            "     * uint256 _price = _metadata[2];",
+            "     * uint256 _depositSe = _metadata[3];",
+            "     * uint256 _depositBu = _metadata[4];",
+            "     * uint256 _quantity = _metadata[5];",
+            "     *",
+            "     * @param _conditionalCommitInfo struct that contains data pertaining to conditional commit:",
+            "     *",
+            "     * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher",
+            "     * in the voucher set created by this function.",
+            "     *",
+            "     * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition",
+            "     *",
+            "     * Condition condition - condition that will be checked when a user commits using a conditional token",
+            "     *",
+            "     * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token,",
+            "     * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.",
+            "     *",
+            "     * ",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set.\n     * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20.\n     * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function.\n     * Price is specified in ETH and deposits are specified in tokens.\n     * @param _tokenDepositAddress address of the token to be used for the deposits\n     * @param _tokensSent total number of tokens sent. Must be equal to seller deposit * quantity\n     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612\n     * @param _v signature component used to verify the permit. See EIP-2612\n     * @param _r signature component used to verify the permit. See EIP-2612\n     * @param _s signature component used to verify the permit. See EIP-2612\n     * @param _metadata metadata which is required for creation of a voucher set\n     * Metadata array is used for consistency across the permutations of similar functions.\n     * Some functions require other parameters, and the number of parameters causes stack too deep error.\n     * The use of the matadata array mitigates the stack too deep error.\n     *\n     * uint256 _validFrom = _metadata[0];\n     * uint256 _validTo = _metadata[1];\n     * uint256 _price = _metadata[2];\n     * uint256 _depositSe = _metadata[3];\n     * uint256 _depositBu = _metadata[4];\n     * uint256 _quantity = _metadata[5];\n     *\n     * @param _conditionalCommitInfo struct that contains data pertaining to conditional commit:\n     *\n     * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher\n     * in the voucher set created by this function.\n     *\n     * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition\n     *\n     * Condition condition - condition that will be checked when a user commits using a conditional token\n     *\n     * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token,\n     * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.\n     *\n     * \n     */\n",
+        "@notice": "Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set. * The supply token/voucher set created should only be available to buyers who own a specific token of type ERC721, ERC1155, or ERC20. * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function. * Price is specified in ETH and deposits are specified in tokens.",
+        "@param1": "_tokenDepositAddress address of the token to be used for the deposits",
+        "@param2": "_tokensSent total number of tokens sent. Must be equal to seller deposit * quantity",
+        "@param3": "_deadline deadline after which permit signature is no longer valid. See EIP-2612",
+        "@param4": "_v signature component used to verify the permit. See EIP-2612",
+        "@param5": "_r signature component used to verify the permit. See EIP-2612",
+        "@param6": "_s signature component used to verify the permit. See EIP-2612",
+        "@param7": "_metadata metadata which is required for creation of a voucher set * Metadata array is used for consistency across the permutations of similar functions. * Some functions require other parameters, and the number of parameters causes stack too deep error. * The use of the matadata array mitigates the stack too deep error. * * uint256 _validFrom = _metadata[0]; * uint256 _validTo = _metadata[1]; * uint256 _price = _metadata[2]; * uint256 _depositSe = _metadata[3]; * uint256 _depositBu = _metadata[4]; * uint256 _quantity = _metadata[5];",
+        "@param8": "_conditionalCommitInfo struct that contains data pertaining to conditional commit: * * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher * in the voucher set created by this function. * * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition * * Condition condition - condition that will be checked when a user commits using a conditional token * * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token, * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCreateOrderTKNETH",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenPriceAddress",
+                "type": "address"
+            },
+            {
+                "name": "_metadata",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function requestCreateOrderTKNETH(\n        address _tokenPriceAddress,\n        uint256[] calldata _metadata\n    )\n    external\n    payable\n    override\n    nonReentrant\n    {\n        requestCreateOrderTKNETHInternal(_tokenPriceAddress, _metadata);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is",
+            "     * also known as a voucher set. Price is specified in tokens and the deposits are specified in ETH.",
+            "     * Since the price, which is specified in tokens, is not collected when a voucher set is created, there is no need to call",
+            "     * permit or transferFrom on the token at this time. The address of the price token is only recorded.",
+            "     * @param _tokenPriceAddress address of the token to be used for the deposits",
+            "     * @param _metadata metadata which is required for creation of a voucher set",
+            "     *  Metadata array is used for consistency across the permutations of similar functions.",
+            "     *  Some functions require other parameters, and the number of parameters causes stack too deep error.",
+            "     *  The use of the matadata array mitigates the stack too deep error.",
+            "     *",
+            "     * uint256 _validFrom = _metadata[0];",
+            "     * uint256 _validTo = _metadata[1];",
+            "     * uint256 _price = _metadata[2];",
+            "     * uint256 _depositSe = _metadata[3];",
+            "     * uint256 _depositBu = _metadata[4];",
+            "     * uint256 _quantity = _metadata[5];",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is\n     * also known as a voucher set. Price is specified in tokens and the deposits are specified in ETH.\n     * Since the price, which is specified in tokens, is not collected when a voucher set is created, there is no need to call\n     * permit or transferFrom on the token at this time. The address of the price token is only recorded.\n     * @param _tokenPriceAddress address of the token to be used for the deposits\n     * @param _metadata metadata which is required for creation of a voucher set\n     *  Metadata array is used for consistency across the permutations of similar functions.\n     *  Some functions require other parameters, and the number of parameters causes stack too deep error.\n     *  The use of the matadata array mitigates the stack too deep error.\n     *\n     * uint256 _validFrom = _metadata[0];\n     * uint256 _validTo = _metadata[1];\n     * uint256 _price = _metadata[2];\n     * uint256 _depositSe = _metadata[3];\n     * uint256 _depositBu = _metadata[4];\n     * uint256 _quantity = _metadata[5];\n     */\n",
+        "@notice": "Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is * also known as a voucher set. Price is specified in tokens and the deposits are specified in ETH. * Since the price, which is specified in tokens, is not collected when a voucher set is created, there is no need to call * permit or transferFrom on the token at this time. The address of the price token is only recorded.",
+        "@param1": "_tokenPriceAddress address of the token to be used for the deposits",
+        "@param2": "_metadata metadata which is required for creation of a voucher set * Metadata array is used for consistency across the permutations of similar functions. * Some functions require other parameters, and the number of parameters causes stack too deep error. * The use of the matadata array mitigates the stack too deep error. * * uint256 _validFrom = _metadata[0]; * uint256 _validTo = _metadata[1]; * uint256 _price = _metadata[2]; * uint256 _depositSe = _metadata[3]; * uint256 _depositBu = _metadata[4]; * uint256 _quantity = _metadata[5];",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "requestCreateOrderTKNETHConditional",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenPriceAddress",
+                "type": "address"
+            },
+            {
+                "name": "_metadata",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "_conditionalCommitInfo",
+                "type": "ConditionalCommitInfo calldata"
+            }
+        ],
+        "func": "function requestCreateOrderTKNETHConditional(\n        address _tokenPriceAddress,\n        uint256[] calldata _metadata,\n        ConditionalCommitInfo calldata _conditionalCommitInfo\n    )\n    external\n    payable\n    override\n    nonReentrant\n    onlyApprovedGate(_conditionalCommitInfo.gateAddress)\n    {\n        uint256 tokenIdSupply = requestCreateOrderTKNETHInternal(_tokenPriceAddress, _metadata);\n        finalizeConditionalOrder(tokenIdSupply, _conditionalCommitInfo);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set.",
+            "     * The supply token/voucher set created should only be available to buyers who own a specific specific token of type ERC721, ERC1155, or ERC20.",
+            "     * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function.",
+            "     * Price is specified in tokens and the deposits are specified in ETH.",
+            "     * Since the price, which is specified in tokens, is not collected when a voucher set is created, there is no need to call",
+            "     * permit or transferFrom on the token at this time. The address of the price token is only recorded.",
+            "     * @param _tokenPriceAddress address of the token to be used for the deposits",
+            "     * @param _metadata metadata which is required for creation of a voucher set",
+            "     *  Metadata array is used for consistency across the permutations of similar functions.",
+            "     *  Some functions require other parameters, and the number of parameters causes stack too deep error.",
+            "     *  The use of the matadata array mitigates the stack too deep error.",
+            "     *",
+            "     * uint256 _validFrom = _metadata[0];",
+            "     * uint256 _validTo = _metadata[1];",
+            "     * uint256 _price = _metadata[2];",
+            "     * uint256 _depositSe = _metadata[3];",
+            "     * uint256 _depositBu = _metadata[4];",
+            "     * uint256 _quantity = _metadata[5];",
+            "     *",
+            "     * @param _conditionalCommitInfo struct that contains data pertaining to conditional commit:",
+            "     *",
+            "     * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher",
+            "     * in the voucher set created by this function.",
+            "     *",
+            "     * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition",
+            "     *",
+            "     * Condition condition - condition that will be checked when a user commits using a conditional token",
+            "     *",
+            "     * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token,",
+            "     * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.",
+            "     *",
+            "     * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set.\n     * The supply token/voucher set created should only be available to buyers who own a specific specific token of type ERC721, ERC1155, or ERC20.\n     * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function.\n     * Price is specified in tokens and the deposits are specified in ETH.\n     * Since the price, which is specified in tokens, is not collected when a voucher set is created, there is no need to call\n     * permit or transferFrom on the token at this time. The address of the price token is only recorded.\n     * @param _tokenPriceAddress address of the token to be used for the deposits\n     * @param _metadata metadata which is required for creation of a voucher set\n     *  Metadata array is used for consistency across the permutations of similar functions.\n     *  Some functions require other parameters, and the number of parameters causes stack too deep error.\n     *  The use of the matadata array mitigates the stack too deep error.\n     *\n     * uint256 _validFrom = _metadata[0];\n     * uint256 _validTo = _metadata[1];\n     * uint256 _price = _metadata[2];\n     * uint256 _depositSe = _metadata[3];\n     * uint256 _depositBu = _metadata[4];\n     * uint256 _quantity = _metadata[5];\n     *\n     * @param _conditionalCommitInfo struct that contains data pertaining to conditional commit:\n     *\n     * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher\n     * in the voucher set created by this function.\n     *\n     * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition\n     *\n     * Condition condition - condition that will be checked when a user commits using a conditional token\n     *\n     * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token,\n     * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function.\n     *\n     * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately\n     */\n",
+        "@notice": "Issuer/Seller offers promise as supply token and needs to escrow the deposit. A supply token is also known as a voucher set. * The supply token/voucher set created should only be available to buyers who own a specific specific token of type ERC721, ERC1155, or ERC20. * This is the \"condition\" under which a buyer may commit to redeem a voucher that is part of the voucher set created by this function. * Price is specified in tokens and the deposits are specified in ETH. * Since the price, which is specified in tokens, is not collected when a voucher set is created, there is no need to call * permit or transferFrom on the token at this time. The address of the price token is only recorded.",
+        "@param1": "_tokenPriceAddress address of the token to be used for the deposits",
+        "@param2": "_metadata metadata which is required for creation of a voucher set * Metadata array is used for consistency across the permutations of similar functions. * Some functions require other parameters, and the number of parameters causes stack too deep error. * The use of the matadata array mitigates the stack too deep error. * * uint256 _validFrom = _metadata[0]; * uint256 _validTo = _metadata[1]; * uint256 _price = _metadata[2]; * uint256 _depositSe = _metadata[3]; * uint256 _depositBu = _metadata[4]; * uint256 _quantity = _metadata[5];",
+        "@param3": "_conditionalCommitInfo struct that contains data pertaining to conditional commit: * * uint256 conditionalTokenId - Id of the conditional token, ownership of which is a condition for committing to redeem a voucher * in the voucher set created by this function. * * uint256 threshold - the number that the balance of a tokenId must be greater than or equal to. Not used for OWNERSHIP condition * * Condition condition - condition that will be checked when a user commits using a conditional token * * address gateAddress - address of a gate contract that will handle the interaction between the BosonRouter contract and the conditional token, * ownership of which is a condition for committing to redeem a voucher in the voucher set created by this function. * * bool registerConditionalCommit - indicates whether Gate.registerVoucherSetId should be called. Gate.registerVoucherSetId can also be called separately",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "requestVoucherETHETH",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdSupply",
+                "type": "uint256"
+            },
+            {
+                "name": "_issuer",
+                "type": "address"
+            }
+        ],
+        "func": "function requestVoucherETHETH(uint256 _tokenIdSupply, address _issuer)\n    external\n    payable\n    override\n    nonReentrant\n    whenNotPaused\n    {\n        // check if _tokenIdSupply mapped to gate contract\n        // if yes, deactivate (user,_tokenIdSupply) to prevent double spending\n        deactivateConditionalCommit(_tokenIdSupply);\n\n        uint256 weiReceived = msg.value;\n\n        //checks\n        (uint256 price, uint256 depositBu) = IVoucherKernel(voucherKernel)\n            .getBuyerOrderCosts(_tokenIdSupply);\n        require(price.add(depositBu) == weiReceived, \"IF\"); //invalid funds\n\n        addEscrowAmountAndFillOrder(_tokenIdSupply, _issuer, PaymentMethod.ETHETH);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.",
+            "     * Price and deposit are specified in ETH",
+            "     * @param _tokenIdSupply    ID of the supply token",
+            "     * @param _issuer           Address of the issuer of the supply token",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.\n     * Price and deposit are specified in ETH\n     * @param _tokenIdSupply    ID of the supply token\n     * @param _issuer           Address of the issuer of the supply token\n     */\n",
+        "@notice": "Buyer requests/commits to redeem a voucher and receives Voucher Token in return. * Price and deposit are specified in ETH",
+        "@param1": "_tokenIdSupply ID of the supply token",
+        "@param2": "_issuer Address of the issuer of the supply token",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestVoucherTKNTKNWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdSupply",
+                "type": "uint256"
+            },
+            {
+                "name": "_issuer",
+                "type": "address"
+            },
+            {
+                "name": "_tokensSent",
+                "type": "uint256"
+            },
+            {
+                "name": "_deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "_vPrice",
+                "type": "uint8"
+            },
+            {
+                "name": "_rPrice",
+                "type": "bytes32"
+            },
+            {
+                "name": "_sPrice",
+                "type": "bytes32"
+            },
+            {
+                "name": "_vDeposit",
+                "type": "// tokenPrice\n        uint8"
+            },
+            {
+                "name": "_rDeposit",
+                "type": "bytes32"
+            },
+            {
+                "name": "tokenDeposits",
+                "type": "bytes32 _sDeposit //"
+            }
+        ],
+        "func": "function requestVoucherTKNTKNWithPermit(\n        uint256 _tokenIdSupply,\n        address _issuer,\n        uint256 _tokensSent,\n        uint256 _deadline,\n        uint8 _vPrice,\n        bytes32 _rPrice,\n        bytes32 _sPrice, // tokenPrice\n        uint8 _vDeposit,\n        bytes32 _rDeposit,\n        bytes32 _sDeposit // tokenDeposits\n    ) external override nonReentrant whenNotPaused {\n        // check if _tokenIdSupply mapped to gate contract\n        // if yes, deactivate (user,_tokenIdSupply) to prevent double spending\n        deactivateConditionalCommit(_tokenIdSupply);\n\n        (uint256 price, uint256 depositBu) = IVoucherKernel(voucherKernel)\n            .getBuyerOrderCosts(_tokenIdSupply);\n        require(_tokensSent.sub(depositBu) == price, \"IF\"); //invalid funds\n\n        address tokenPriceAddress = IVoucherKernel(voucherKernel)\n            .getVoucherPriceToken(_tokenIdSupply);\n        address tokenDepositAddress = IVoucherKernel(voucherKernel)\n            .getVoucherDepositToken(_tokenIdSupply);\n\n        permitTransferFromAndAddEscrow(\n            tokenPriceAddress,\n            price,\n            _deadline,\n            _vPrice,\n            _rPrice,\n            _sPrice\n        );\n\n        permitTransferFromAndAddEscrow(\n            tokenDepositAddress,\n            depositBu,\n            _deadline,\n            _vDeposit,\n            _rDeposit,\n            _sDeposit\n        );\n\n        IVoucherKernel(voucherKernel).fillOrder(\n            _tokenIdSupply,\n            _issuer,\n            msg.sender,\n            PaymentMethod.TKNTKN\n        );\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.",
+            "     * Price and deposit is specified in tokens.",
+            "     * @param _tokenIdSupply ID of the supply token",
+            "     * @param _issuer Address of the issuer of the supply token",
+            "     * @param _tokensSent total number of tokens sent. Must be equal to buyer deposit plus price",
+            "     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612",
+            "     * @param _vPrice v signature component  used to verify the permit on the price token. See EIP-2612",
+            "     * @param _rPrice r signature component used to verify the permit on the price token. See EIP-2612",
+            "     * @param _sPrice s signature component used to verify the permit on the price token. See EIP-2612",
+            "     * @param _vDeposit v signature component  used to verify the permit on the deposit token. See EIP-2612",
+            "     * @param _rDeposit r signature component used to verify the permit on the deposit token. See EIP-2612",
+            "     * @param _sDeposit s signature component used to verify the permit on the deposit token. See EIP-2612",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.\n     * Price and deposit is specified in tokens.\n     * @param _tokenIdSupply ID of the supply token\n     * @param _issuer Address of the issuer of the supply token\n     * @param _tokensSent total number of tokens sent. Must be equal to buyer deposit plus price\n     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612\n     * @param _vPrice v signature component  used to verify the permit on the price token. See EIP-2612\n     * @param _rPrice r signature component used to verify the permit on the price token. See EIP-2612\n     * @param _sPrice s signature component used to verify the permit on the price token. See EIP-2612\n     * @param _vDeposit v signature component  used to verify the permit on the deposit token. See EIP-2612\n     * @param _rDeposit r signature component used to verify the permit on the deposit token. See EIP-2612\n     * @param _sDeposit s signature component used to verify the permit on the deposit token. See EIP-2612\n     */\n",
+        "@notice": "Buyer requests/commits to redeem a voucher and receives Voucher Token in return. * Price and deposit is specified in tokens.",
+        "@param1": "_tokenIdSupply ID of the supply token",
+        "@param2": "_issuer Address of the issuer of the supply token",
+        "@param3": "_tokensSent total number of tokens sent. Must be equal to buyer deposit plus price",
+        "@param4": "_deadline deadline after which permit signature is no longer valid. See EIP-2612",
+        "@param5": "_vPrice v signature component used to verify the permit on the price token. See EIP-2612",
+        "@param6": "_rPrice r signature component used to verify the permit on the price token. See EIP-2612",
+        "@param7": "_sPrice s signature component used to verify the permit on the price token. See EIP-2612",
+        "@param8": "_vDeposit v signature component used to verify the permit on the deposit token. See EIP-2612",
+        "@param9": "_rDeposit r signature component used to verify the permit on the deposit token. See EIP-2612",
+        "@param10": "_sDeposit s signature component used to verify the permit on the deposit token. See EIP-2612",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestVoucherTKNTKNSameWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdSupply",
+                "type": "uint256"
+            },
+            {
+                "name": "_issuer",
+                "type": "address"
+            },
+            {
+                "name": "_tokensSent",
+                "type": "uint256"
+            },
+            {
+                "name": "_deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "_v",
+                "type": "uint8"
+            },
+            {
+                "name": "_r",
+                "type": "bytes32"
+            },
+            {
+                "name": "_s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function requestVoucherTKNTKNSameWithPermit(\n        uint256 _tokenIdSupply,\n        address _issuer,\n        uint256 _tokensSent,\n        uint256 _deadline,\n        uint8 _v,\n        bytes32 _r,\n        bytes32 _s\n    ) external override nonReentrant whenNotPaused {\n        // check if _tokenIdSupply mapped to gate contract\n        // if yes, deactivate (user,_tokenIdSupply) to prevent double spending\n        deactivateConditionalCommit(_tokenIdSupply);\n\n        (uint256 price, uint256 depositBu) = IVoucherKernel(voucherKernel)\n            .getBuyerOrderCosts(_tokenIdSupply);\n        require(_tokensSent.sub(depositBu) == price, \"IF\"); //invalid funds\n\n        address tokenPriceAddress = IVoucherKernel(voucherKernel)\n            .getVoucherPriceToken(_tokenIdSupply);\n        address tokenDepositAddress = IVoucherKernel(voucherKernel)\n            .getVoucherDepositToken(_tokenIdSupply);\n\n        require(tokenPriceAddress == tokenDepositAddress, \"TOKENS_ARE_NOT_THE_SAME\"); //invalid caller\n\n        // If tokenPriceAddress && tokenPriceAddress are the same\n        // practically it's not of importance to each we are sending the funds\n        permitTransferFromAndAddEscrow(\n            tokenPriceAddress,\n            _tokensSent,\n            _deadline,\n            _v,\n            _r,\n            _s\n        );\n\n        IVoucherKernel(voucherKernel).fillOrder(\n            _tokenIdSupply,\n            _issuer,\n            msg.sender,\n            PaymentMethod.TKNTKN\n        );\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.",
+            "     * Price and deposit is specified in tokens. The same token is used for both the price and deposit.",
+            "     * @param _tokenIdSupply ID of the supply token",
+            "     * @param _issuer address of the issuer of the supply token",
+            "     * @param _tokensSent total number of tokens sent. Must be equal to buyer deposit plus price",
+            "     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612",
+            "     * @param _v signature component used to verify the permit. See EIP-2612",
+            "     * @param _r signature component used to verify the permit. See EIP-2612",
+            "     * @param _s signature component used to verify the permit. See EIP-2612",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.\n     * Price and deposit is specified in tokens. The same token is used for both the price and deposit.\n     * @param _tokenIdSupply ID of the supply token\n     * @param _issuer address of the issuer of the supply token\n     * @param _tokensSent total number of tokens sent. Must be equal to buyer deposit plus price\n     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612\n     * @param _v signature component used to verify the permit. See EIP-2612\n     * @param _r signature component used to verify the permit. See EIP-2612\n     * @param _s signature component used to verify the permit. See EIP-2612\n     */\n",
+        "@notice": "Buyer requests/commits to redeem a voucher and receives Voucher Token in return. * Price and deposit is specified in tokens. The same token is used for both the price and deposit.",
+        "@param1": "_tokenIdSupply ID of the supply token",
+        "@param2": "_issuer address of the issuer of the supply token",
+        "@param3": "_tokensSent total number of tokens sent. Must be equal to buyer deposit plus price",
+        "@param4": "_deadline deadline after which permit signature is no longer valid. See EIP-2612",
+        "@param5": "_v signature component used to verify the permit. See EIP-2612",
+        "@param6": "_r signature component used to verify the permit. See EIP-2612",
+        "@param7": "_s signature component used to verify the permit. See EIP-2612",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestVoucherETHTKNWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdSupply",
+                "type": "uint256"
+            },
+            {
+                "name": "_issuer",
+                "type": "address"
+            },
+            {
+                "name": "_tokensDeposit",
+                "type": "uint256"
+            },
+            {
+                "name": "_deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "_v",
+                "type": "uint8"
+            },
+            {
+                "name": "_r",
+                "type": "bytes32"
+            },
+            {
+                "name": "_s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function requestVoucherETHTKNWithPermit(\n        uint256 _tokenIdSupply,\n        address _issuer,\n        uint256 _tokensDeposit,\n        uint256 _deadline,\n        uint8 _v,\n        bytes32 _r,\n        bytes32 _s\n    ) external payable override nonReentrant whenNotPaused {\n        // check if _tokenIdSupply mapped to gate contract\n        // if yes, deactivate (user,_tokenIdSupply) to prevent double spending\n        deactivateConditionalCommit(_tokenIdSupply);\n\n        (uint256 price, uint256 depositBu) = IVoucherKernel(voucherKernel)\n            .getBuyerOrderCosts(_tokenIdSupply);\n        require(price == msg.value, \"IP\"); //invalid price\n        require(depositBu == _tokensDeposit, \"ID\"); // invalid deposit\n\n        address tokenDepositAddress = IVoucherKernel(voucherKernel)\n            .getVoucherDepositToken(_tokenIdSupply);\n\n        permitTransferFromAndAddEscrow(\n            tokenDepositAddress,\n            _tokensDeposit,\n            _deadline,\n            _v,\n            _r,\n            _s\n        );\n\n        addEscrowAmountAndFillOrder(_tokenIdSupply, _issuer, PaymentMethod.ETHTKN);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.",
+            "     * Price is specified in ETH and deposit is specified in tokens",
+            "     * @param _tokenIdSupply ID of the supply token",
+            "     * @param _issuer address of the issuer of the supply token",
+            "     * @param _tokensDeposit number of tokens sent to cover buyer deposit",
+            "     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612",
+            "     * @param _v signature component used to verify the permit. See EIP-2612",
+            "     * @param _r signature component used to verify the permit. See EIP-2612",
+            "     * @param _s signature component used to verify the permit. See EIP-2612",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.\n     * Price is specified in ETH and deposit is specified in tokens\n     * @param _tokenIdSupply ID of the supply token\n     * @param _issuer address of the issuer of the supply token\n     * @param _tokensDeposit number of tokens sent to cover buyer deposit\n     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612\n     * @param _v signature component used to verify the permit. See EIP-2612\n     * @param _r signature component used to verify the permit. See EIP-2612\n     * @param _s signature component used to verify the permit. See EIP-2612\n     */\n",
+        "@notice": "Buyer requests/commits to redeem a voucher and receives Voucher Token in return. * Price is specified in ETH and deposit is specified in tokens",
+        "@param1": "_tokenIdSupply ID of the supply token",
+        "@param2": "_issuer address of the issuer of the supply token",
+        "@param3": "_tokensDeposit number of tokens sent to cover buyer deposit",
+        "@param4": "_deadline deadline after which permit signature is no longer valid. See EIP-2612",
+        "@param5": "_v signature component used to verify the permit. See EIP-2612",
+        "@param6": "_r signature component used to verify the permit. See EIP-2612",
+        "@param7": "_s signature component used to verify the permit. See EIP-2612",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestVoucherTKNETHWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdSupply",
+                "type": "uint256"
+            },
+            {
+                "name": "_issuer",
+                "type": "address"
+            },
+            {
+                "name": "_tokensPrice",
+                "type": "uint256"
+            },
+            {
+                "name": "_deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "_v",
+                "type": "uint8"
+            },
+            {
+                "name": "_r",
+                "type": "bytes32"
+            },
+            {
+                "name": "_s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function requestVoucherTKNETHWithPermit(\n        uint256 _tokenIdSupply,\n        address _issuer,\n        uint256 _tokensPrice,\n        uint256 _deadline,\n        uint8 _v,\n        bytes32 _r,\n        bytes32 _s\n    ) external payable virtual override nonReentrant whenNotPaused {\n        // check if _tokenIdSupply mapped to gate contract\n        // if yes, deactivate (user,_tokenIdSupply) to prevent double spending\n        deactivateConditionalCommit(_tokenIdSupply);\n\n        (uint256 price, uint256 depositBu) = IVoucherKernel(voucherKernel)\n            .getBuyerOrderCosts(_tokenIdSupply);\n        require(price == _tokensPrice, \"IP\"); //invalid price\n        require(depositBu == msg.value, \"ID\"); // invalid deposit\n\n        address tokenPriceAddress = IVoucherKernel(voucherKernel)\n            .getVoucherPriceToken(_tokenIdSupply);        \n\n        permitTransferFromAndAddEscrow(\n            tokenPriceAddress,\n            price,\n            _deadline,\n            _v,\n            _r,\n            _s\n        );\n\n        addEscrowAmountAndFillOrder(_tokenIdSupply, _issuer, PaymentMethod.TKNETH);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.",
+            "     * Price is specified in tokens and the deposit is specified in ETH",
+            "     * @param _tokenIdSupply ID of the supply token",
+            "     * @param _issuer address of the issuer of the supply token",
+            "     * @param _tokensPrice number of tokens sent to cover price",
+            "     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612",
+            "     * @param _v signature component used to verify the permit. See EIP-2612",
+            "     * @param _r signature component used to verify the permit. See EIP-2612",
+            "     * @param _s signature component used to verify the permit. See EIP-2612",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Buyer requests/commits to redeem a voucher and receives Voucher Token in return.\n     * Price is specified in tokens and the deposit is specified in ETH\n     * @param _tokenIdSupply ID of the supply token\n     * @param _issuer address of the issuer of the supply token\n     * @param _tokensPrice number of tokens sent to cover price\n     * @param _deadline deadline after which permit signature is no longer valid. See EIP-2612\n     * @param _v signature component used to verify the permit. See EIP-2612\n     * @param _r signature component used to verify the permit. See EIP-2612\n     * @param _s signature component used to verify the permit. See EIP-2612\n     */\n",
+        "@notice": "Buyer requests/commits to redeem a voucher and receives Voucher Token in return. * Price is specified in tokens and the deposit is specified in ETH",
+        "@param1": "_tokenIdSupply ID of the supply token",
+        "@param2": "_issuer address of the issuer of the supply token",
+        "@param3": "_tokensPrice number of tokens sent to cover price",
+        "@param4": "_deadline deadline after which permit signature is no longer valid. See EIP-2612",
+        "@param5": "_v signature component used to verify the permit. See EIP-2612",
+        "@param6": "_r signature component used to verify the permit. See EIP-2612",
+        "@param7": "_s signature component used to verify the permit. See EIP-2612",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "requestCancelOrFaultVoucherSet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdSupply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function requestCancelOrFaultVoucherSet(uint256 _tokenIdSupply)\n        external\n        override\n        nonReentrant\n        whenNotPaused\n    {\n        uint256 _burnedSupplyQty = IVoucherKernel(voucherKernel)\n            .cancelOrFaultVoucherSet(_tokenIdSupply, msg.sender);\n        ICashier(cashierAddress).withdrawDepositsSe(\n            _tokenIdSupply,\n            _burnedSupplyQty,\n            msg.sender\n        );\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Seller burns the remaining supply in the voucher set in case it's s/he no longer wishes to sell them.",
+            "     * Remaining seller deposit in escrow account is withdrawn and sent back to the seller",
+            "     * @param _tokenIdSupply an ID of a supply token (ERC-1155) which will be burned and for which deposits will be returned",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Seller burns the remaining supply in the voucher set in case it's s/he no longer wishes to sell them.\n     * Remaining seller deposit in escrow account is withdrawn and sent back to the seller\n     * @param _tokenIdSupply an ID of a supply token (ERC-1155) which will be burned and for which deposits will be returned\n     */\n",
+        "@notice": "Seller burns the remaining supply in the voucher set in case it's s/he no longer wishes to sell them. * Remaining seller deposit in escrow account is withdrawn and sent back to the seller",
+        "@param1": "_tokenIdSupply an ID of a supply token (ERC-1155) which will be burned and for which deposits will be returned",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeem",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdVoucher",
+                "type": "uint256"
+            }
+        ],
+        "func": "function redeem(uint256 _tokenIdVoucher) external override {\n        IVoucherKernel(voucherKernel).redeem(_tokenIdVoucher, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Redemption of the vouchers promise",
+            "     * @param _tokenIdVoucher   ID of the voucher",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Redemption of the vouchers promise\n     * @param _tokenIdVoucher   ID of the voucher\n     */\n",
+        "@notice": "Redemption of the vouchers promise",
+        "@param1": "_tokenIdVoucher ID of the voucher",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "refund",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdVoucher",
+                "type": "uint256"
+            }
+        ],
+        "func": "function refund(uint256 _tokenIdVoucher) external override {\n        IVoucherKernel(voucherKernel).refund(_tokenIdVoucher, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Refunding a voucher",
+            "     * @param _tokenIdVoucher   ID of the voucher",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Refunding a voucher\n     * @param _tokenIdVoucher   ID of the voucher\n     */\n",
+        "@notice": "Refunding a voucher",
+        "@param1": "_tokenIdVoucher ID of the voucher",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "complain",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdVoucher",
+                "type": "uint256"
+            }
+        ],
+        "func": "function complain(uint256 _tokenIdVoucher) external override {\n        IVoucherKernel(voucherKernel).complain(_tokenIdVoucher, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Issue a complaint for a voucher",
+            "     * @param _tokenIdVoucher   ID of the voucher",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Issue a complaint for a voucher\n     * @param _tokenIdVoucher   ID of the voucher\n     */\n",
+        "@notice": "Issue a complaint for a voucher",
+        "@param1": "_tokenIdVoucher ID of the voucher",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancelOrFault",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdVoucher",
+                "type": "uint256"
+            }
+        ],
+        "func": "function cancelOrFault(uint256 _tokenIdVoucher) external override {\n        IVoucherKernel(voucherKernel).cancelOrFault(\n            _tokenIdVoucher,\n            msg.sender\n        );\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Cancel/Fault transaction by the Seller, admitting to a fault or backing out of the deal",
+            "     * @param _tokenIdVoucher   ID of the voucher",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Cancel/Fault transaction by the Seller, admitting to a fault or backing out of the deal\n     * @param _tokenIdVoucher   ID of the voucher\n     */\n",
+        "@notice": "Cancel/Fault transaction by the Seller, admitting to a fault or backing out of the deal",
+        "@param1": "_tokenIdVoucher ID of the voucher",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCashierAddress",
+        "visibility": "external",
+        "args": [],
+        "func": "function getCashierAddress() external view override returns (address) {\n        return cashierAddress;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the address of Cashier contract",
+            "     * @return Address of Cashier address",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the address of Cashier contract\n     * @return Address of Cashier address\n     */\n",
+        "@notice": "Get the address of Cashier contract",
+        "@return1": "Address of Cashier address",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVoucherKernelAddress",
+        "visibility": "external",
+        "args": [],
+        "func": "function getVoucherKernelAddress()\n        external\n        view\n        override\n        returns (address)\n    {\n        return voucherKernel;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the address of Voucher Kernel contract",
+            "     * @return Address of Voucher Kernel contract",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the address of Voucher Kernel contract\n     * @return Address of Voucher Kernel contract\n     */\n",
+        "@notice": "Get the address of Voucher Kernel contract",
+        "@return1": "Address of Voucher Kernel contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTokenRegistryAddress",
+        "visibility": "external",
+        "args": [],
+        "func": "function getTokenRegistryAddress()\n        external\n        view\n        override\n        returns (address)\n    {\n        return tokenRegistry;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the address of Token Registry contract",
+            "     * @return Address of Token Registrycontract",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the address of Token Registry contract\n     * @return Address of Token Registrycontract\n     */\n",
+        "@notice": "Get the address of Token Registry contract",
+        "@return1": "Address of Token Registrycontract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVoucherSetToGateContract",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenIdSupply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getVoucherSetToGateContract(uint256 _tokenIdSupply)\n        external\n        view\n        override\n        returns (address)\n    {\n        return voucherSetToGateContract[_tokenIdSupply];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the address of the gate contract that handles conditional commit of certain voucher set",
+            "     * @param _tokenIdSupply    ID of the supply token",
+            "     * @return Address of the gate contract or zero address if there is no conditional commit",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the address of the gate contract that handles conditional commit of certain voucher set\n     * @param _tokenIdSupply    ID of the supply token\n     * @return Address of the gate contract or zero address if there is no conditional commit\n     */\n",
+        "@notice": "Get the address of the gate contract that handles conditional commit of certain voucher set",
+        "@param1": "_tokenIdSupply ID of the supply token",
+        "@return1": "Address of the gate contract or zero address if there is no conditional commit",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setVoucherKernelAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_voucherKernelAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setVoucherKernelAddress(address _voucherKernelAddress)\n        external\n        onlyOwner\n        notZeroAddress(_voucherKernelAddress)\n        whenPaused\n    {\n        voucherKernel = _voucherKernelAddress;\n\n        emit LogVoucherKernelSet(_voucherKernelAddress, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Set the address of the VoucherKernel contract",
+            "     * @param _voucherKernelAddress   The address of the VoucherKernel contract",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Set the address of the VoucherKernel contract\n     * @param _voucherKernelAddress   The address of the VoucherKernel contract\n     */\n",
+        "@notice": "Set the address of the VoucherKernel contract",
+        "@param1": "_voucherKernelAddress The address of the VoucherKernel contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTokenRegistryAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenRegistryAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setTokenRegistryAddress(address _tokenRegistryAddress)\n        external\n        onlyOwner\n        notZeroAddress(_tokenRegistryAddress)\n        whenPaused\n    {\n        tokenRegistry = _tokenRegistryAddress;\n\n        emit LogTokenRegistrySet(_tokenRegistryAddress, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Set the address of the TokenRegistry contract",
+            "     * @param _tokenRegistryAddress   The address of the TokenRegistry contract",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Set the address of the TokenRegistry contract\n     * @param _tokenRegistryAddress   The address of the TokenRegistry contract\n     */\n",
+        "@notice": "Set the address of the TokenRegistry contract",
+        "@param1": "_tokenRegistryAddress The address of the TokenRegistry contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setCashierAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_cashierAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setCashierAddress(address _cashierAddress)\n        external\n        onlyOwner\n        notZeroAddress(_cashierAddress)\n        whenPaused\n    {\n        cashierAddress = _cashierAddress;\n\n        emit LogCashierSet(_cashierAddress, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Set the address of the Cashier contract",
+            "     * @param _cashierAddress   The address of the Cashier contract",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Set the address of the Cashier contract\n     * @param _cashierAddress   The address of the Cashier contract\n     */\n",
+        "@notice": "Set the address of the Cashier contract",
+        "@param1": "_cashierAddress The address of the Cashier contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "paused",
+        "visibility": "public",
+        "args": [],
+        "func": "function paused() public view virtual returns (bool) {\n        return _paused;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns true if the contract is paused, and false otherwise.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns true if the contract is paused, and false otherwise.\n     */\n",
+        "@dev": "Returns true if the contract is paused, and false otherwise.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

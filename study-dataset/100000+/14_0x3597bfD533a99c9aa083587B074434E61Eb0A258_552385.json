@@ -1,0 +1,337 @@
+[
+    {
+        "transactions": 552385,
+        "function_num": 14
+    },
+    {
+        "name": "isToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function isToken() public constant returns (bool weAre) {\n    return true;\n  }",
+        "comments": [
+            "/* Interface declaration */",
+            ""
+        ],
+        "comt": "/* Interface declaration */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isUpgradeAgent",
+        "visibility": "public",
+        "args": [],
+        "func": "function isUpgradeAgent() public constant returns (bool) {\n    return true;\n  }",
+        "comments": [
+            "/** Interface marker */",
+            ""
+        ],
+        "comt": "/** Interface marker */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function upgrade(uint256 value) public {\n\n      UpgradeState state = getUpgradeState();\n      if(!(state == UpgradeState.ReadyToUpgrade || state == UpgradeState.Upgrading)) {\n        // Called in a bad state\n        throw;\n      }\n\n      // Validate input value.\n      if (value == 0) throw;\n\n      balances[msg.sender] = safeSub(balances[msg.sender], value);\n\n      // Take tokens out from circulation\n      totalSupply = safeSub(totalSupply, value);\n      totalUpgraded = safeAdd(totalUpgraded, value);\n\n      // Upgrade agent reissues the tokens\n      upgradeAgent.upgradeFrom(msg.sender, value);\n      Upgrade(msg.sender, upgradeAgent, value);\n  }",
+        "comments": [
+            "/**",
+            "   * Allow the token holder to upgrade some of their tokens to a new contract.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Allow the token holder to upgrade some of their tokens to a new contract.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUpgradeAgent",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "agent",
+                "type": "address"
+            }
+        ],
+        "func": "function setUpgradeAgent(address agent) external {\n\n      if(!canUpgrade()) {\n        // The token is not yet in a state that we could think upgrading\n        throw;\n      }\n\n      if (agent == 0x0) throw;\n      // Only a master can designate the next agent\n      if (msg.sender != upgradeMaster) throw;\n      // Upgrade has already begun for an agent\n      if (getUpgradeState() == UpgradeState.Upgrading) throw;\n\n      upgradeAgent = UpgradeAgent(agent);\n\n      // Bad interface\n      if(!upgradeAgent.isUpgradeAgent()) throw;\n      // Make sure that token supplies match in source and target\n      if (upgradeAgent.originalSupply() != totalSupply) throw;\n\n      UpgradeAgentSet(upgradeAgent);\n  }",
+        "comments": [
+            "/**",
+            "   * Set an upgrade agent that handles",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Set an upgrade agent that handles\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUpgradeState",
+        "visibility": "public",
+        "args": [],
+        "func": "function getUpgradeState() public constant returns(UpgradeState) {\n    if(!canUpgrade()) return UpgradeState.NotAllowed;\n    else if(address(upgradeAgent) == 0x00) return UpgradeState.WaitingForAgent;\n    else if(totalUpgraded == 0) return UpgradeState.ReadyToUpgrade;\n    else return UpgradeState.Upgrading;\n  }",
+        "comments": [
+            "/**",
+            "   * Get the state of the token upgrade.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Get the state of the token upgrade.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUpgradeMaster",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "master",
+                "type": "address"
+            }
+        ],
+        "func": "function setUpgradeMaster(address master) public {\n      if (master == 0x0) throw;\n      if (msg.sender != upgradeMaster) throw;\n      upgradeMaster = master;\n  }",
+        "comments": [
+            "/**",
+            "   * Change the upgrade master.",
+            "   *",
+            "   * This allows us to set a new owner for the upgrade mechanism.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Change the upgrade master.\n   *\n   * This allows us to set a new owner for the upgrade mechanism.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "canUpgrade",
+        "visibility": "public",
+        "args": [],
+        "func": "function canUpgrade() public constant returns(bool) {\n     return true;\n  }",
+        "comments": [
+            "/**",
+            "   * Child contract can enable to provide the condition when the upgrade can begun.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Child contract can enable to provide the condition when the upgrade can begun.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setReleaseAgent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "func": "function setReleaseAgent(address addr) onlyOwner inReleaseState(false) public {\n\n    // We don't do interface check here as we might want to a normal wallet address to act as a release agent\n    releaseAgent = addr;\n  }",
+        "comments": [
+            "/**",
+            "   * Set the contract that can call release and make the token transferable.",
+            "   *",
+            "   * Design choice. Allow reset the release agent to fix fat finger mistakes.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Set the contract that can call release and make the token transferable.\n   *\n   * Design choice. Allow reset the release agent to fix fat finger mistakes.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTransferAgent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "name": "state",
+                "type": "bool"
+            }
+        ],
+        "func": "function setTransferAgent(address addr, bool state) onlyOwner inReleaseState(false) public {\n    transferAgents[addr] = state;\n  }",
+        "comments": [
+            "/**",
+            "   * Owner can allow a particular address (a crowdsale contract) to transfer tokens despite the lock up period.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Owner can allow a particular address (a crowdsale contract) to transfer tokens despite the lock up period.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "releaseTokenTransfer",
+        "visibility": "public",
+        "args": [],
+        "func": "function releaseTokenTransfer() public onlyReleaseAgent {\n    released = true;\n  }",
+        "comments": [
+            "/**",
+            "   * One way function to release the tokens to the wild.",
+            "   *",
+            "   * Can be called only from the release agent that is the final ICO contract. It is only called if the crowdsale has been success (first milestone reached).",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * One way function to release the tokens to the wild.\n   *\n   * Can be called only from the release agent that is the final ICO contract. It is only called if the crowdsale has been success (first milestone reached).\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(address receiver, uint amount) onlyMintAgent canMint public {\n    totalSupply = totalSupply.plus(amount);\n    balances[receiver] = balances[receiver].plus(amount);\n\n    // This will make the mint transaction apper in EtherScan.io\n    // We can remove this after there is a standardized minting event\n    Transfer(0, receiver, amount);\n  }",
+        "comments": [
+            "/**",
+            "   * Create new tokens and allocate them to an address..",
+            "   *",
+            "   * Only callably by a crowdsale contract (mint agent).",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Create new tokens and allocate them to an address..\n   *\n   * Only callably by a crowdsale contract (mint agent).\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMintAgent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "name": "state",
+                "type": "bool"
+            }
+        ],
+        "func": "function setMintAgent(address addr, bool state) onlyOwner canMint public {\n    mintAgents[addr] = state;\n    MintingAgentChanged(addr, state);\n  }",
+        "comments": [
+            "/**",
+            "   * Owner can allow a crowdsale contract to mint new tokens.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Owner can allow a crowdsale contract to mint new tokens.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "releaseTokenTransfer",
+        "visibility": "public",
+        "args": [],
+        "func": "function releaseTokenTransfer() public onlyReleaseAgent {\n    mintingFinished = true;\n    super.releaseTokenTransfer();\n  }",
+        "comments": [
+            "/**",
+            "   * When token is released to be transferable, enforce no new tokens can be created.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * When token is released to be transferable, enforce no new tokens can be created.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "canUpgrade",
+        "visibility": "public",
+        "args": [],
+        "func": "function canUpgrade() public constant returns(bool) {\n    return released && super.canUpgrade();\n  }",
+        "comments": [
+            "/**",
+            "   * Allow upgrade agent functionality kick in only if the crowdsale was success.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Allow upgrade agent functionality kick in only if the crowdsale was success.\n   */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

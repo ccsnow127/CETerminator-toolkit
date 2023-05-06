@@ -1,0 +1,1636 @@
+[
+    {
+        "transactions": 8081,
+        "function_num": 63
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the name of the token.\n     */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the symbol of the token, usually a shorter version of the",
+            "     * name.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the symbol of the token, usually a shorter version of the\n     * name.\n     */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view override returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of decimals used to get its user representation.",
+            "     * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "     * be displayed to a user as `5,05` (`505 / 10 ** 2`).",
+            "     *",
+            "     * Tokens usually opt for a value of 18, imitating the relationship between",
+            "     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is",
+            "     * called.",
+            "     *",
+            "     * NOTE: This information is only used for _display_ purposes: it in",
+            "     * no way affects any of the arithmetic of the contract, including",
+            "     * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of decimals used to get its user representation.\n     * For example, if `decimals` equals `2`, a balance of `505` tokens should\n     * be displayed to a user as `5,05` (`505 / 10 ** 2`).\n     *\n     * Tokens usually opt for a value of 18, imitating the relationship between\n     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is\n     * called.\n     *\n     * NOTE: This information is only used for _display_ purposes: it in\n     * no way affects any of the arithmetic of the contract, including\n     * {IERC20-balanceOf} and {IERC20-transfer}.\n     */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5,05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is * called. * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}.\n     */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(_msgSender(), recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(_msgSender(), spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address sender, address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, \"ERC20: transfer amount exceeds allowance\"));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20};",
+            "     *",
+            "     * Requirements:",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20};\n     *\n     * Requirements:\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}; * * Requirements: * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, \"ERC20: decreased allowance below zero\"));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address _to, uint256 _amount) public {\n        require(maxSupplyHit != true, \"max supply hit\");\n        require(msg.sender == titoAddress, \"not Tito\");\n        uint256 supply = totalSupply();\n        if (supply.add(_amount) >= MAX_SUPPLY) {\n            _amount = MAX_SUPPLY.sub(supply);\n            maxSupplyHit = true;\n        }\n\n        if (_amount > 0) {\n            _mint(_to, _amount);\n            _moveDelegates(address(0), _delegates[_to], _amount);\n        }\n    }",
+        "comments": [
+            "",
+            "    // Creates `_amount` token to `_to`. Can only be called by the Tito contract.",
+            "    "
+        ],
+        "comt": "\n    // Creates `_amount` token to `_to`. Can only be called by the Tito contract.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setContractAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_titoAddress",
+                "type": "address"
+            },
+            {
+                "name": "_whirlpoolAddress",
+                "type": "address payable"
+            },
+            {
+                "name": "_surfPoolAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setContractAddresses(address _titoAddress, address payable _whirlpoolAddress, address _surfPoolAddress) public onlyOwner {\n        if (_titoAddress != address(0)) titoAddress = _titoAddress;\n        if (_whirlpoolAddress != address(0)) whirlpoolAddress = _whirlpoolAddress;\n        if (_surfPoolAddress != address(0)) surfPoolAddress = _surfPoolAddress;\n    }",
+        "comments": [
+            "",
+            "    // Sets the addresses of the Tito farming contract, the Whirlpool staking contract, and the Uniswap SURF-ETH LP token",
+            "    "
+        ],
+        "comt": "\n    // Sets the addresses of the Tito farming contract, the Whirlpool staking contract, and the Uniswap SURF-ETH LP token\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTransferFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_transferFee",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setTransferFee(uint256 _transferFee) public onlyOwner {\n        require(_transferFee <= 100, \"over 10%\");\n        transferFee = _transferFee;\n    }",
+        "comments": [
+            "",
+            "    // Sets the SURF transfer fee that gets rewarded to Whirlpool stakers. Can't be higher than 10%.",
+            "    "
+        ],
+        "comt": "\n    // Sets the SURF transfer fee that gets rewarded to Whirlpool stakers. Can't be higher than 10%.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addToTransferWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_addToSenderWhitelist",
+                "type": "bool"
+            },
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function addToTransferWhitelist(bool _addToSenderWhitelist, address _address) public onlyOwner {\n        if (_addToSenderWhitelist == true) senderWhitelist[_address] = true;\n        else recipientWhitelist[_address] = true;\n    }",
+        "comments": [
+            "",
+            "    // Add an address to the sender or recipient transfer whitelist",
+            "    "
+        ],
+        "comt": "\n    // Add an address to the sender or recipient transfer whitelist\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeFromTransferWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_removeFromSenderWhitelist",
+                "type": "bool"
+            },
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function removeFromTransferWhitelist(bool _removeFromSenderWhitelist, address _address) public onlyOwner {\n        if (_removeFromSenderWhitelist == true) senderWhitelist[_address] = false;\n        else recipientWhitelist[_address] = false;\n    }",
+        "comments": [
+            "",
+            "    // Remove an address from the sender or recipient transfer whitelist",
+            "    "
+        ],
+        "comt": "\n    // Remove an address from the sender or recipient transfer whitelist\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "migrateLockedLPTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function migrateLockedLPTokens(address _to, uint256 _amount) public onlyOwner {\n        IERC20 surfPool = IERC20(surfPoolAddress);\n        require(_amount > 0 && _amount <= surfPool.balanceOf(address(this)), \"bad amount\");\n        surfPool.transfer(_to, _amount);\n    }",
+        "comments": [
+            "",
+            "    // Both the Tito and Whirlpool contracts will lock the SURF-ETH LP tokens they receive from their staking/unstaking fees here (ensuring liquidity forever).",
+            "    // This function allows SURF token holders to decide what to do with the locked LP tokens in the future",
+            "    "
+        ],
+        "comt": "\n    // Both the Tito and Whirlpool contracts will lock the SURF-ETH LP tokens they receive from their staking/unstaking fees here (ensuring liquidity forever).\n    // This function allows SURF token holders to decide what to do with the locked LP tokens in the future\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approveAndCall",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_tokens",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function approveAndCall(address _spender, uint256 _tokens, bytes calldata _data) external returns (bool) {\n        approve(_spender, _tokens);\n        Callable(_spender).receiveApproval(msg.sender, _tokens, address(this), _data);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferAndCall",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokens",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function transferAndCall(address _to, uint256 _tokens, bytes calldata _data) external returns (bool) {\n        uint256 _balanceBefore = balanceOf(_to);\n        transfer(_to, _tokens);\n        uint256 _tokensReceived = balanceOf(_to) - _balanceBefore;\n        uint32 _size;\n        assembly {\n            _size := extcodesize(_to)\n        }\n        if (_size > 0) {\n            require(Callable(_to).tokenCallback(msg.sender, _tokensReceived, _data));\n        }\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegates",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegator",
+                "type": "address"
+            }
+        ],
+        "func": "function delegates(address delegator) external view returns (address) {\n        return _delegates[delegator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Delegate votes from `msg.sender` to `delegatee`",
+            "     * @param delegator The address to get delegatee for",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Delegate votes from `msg.sender` to `delegatee`\n     * @param delegator The address to get delegatee for\n     */\n",
+        "@dev": "Delegate votes from `msg.sender` to `delegatee`",
+        "@param1": "delegator The address to get delegatee for",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            }
+        ],
+        "func": "function delegate(address delegatee) external {\n        return _delegate(msg.sender, delegatee);\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Delegate votes from `msg.sender` to `delegatee`",
+            "    * @param delegatee The address to delegate votes to",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Delegate votes from `msg.sender` to `delegatee`\n    * @param delegatee The address to delegate votes to\n    */\n",
+        "@dev": "Delegate votes from `msg.sender` to `delegatee`",
+        "@param1": "delegatee The address to delegate votes to",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateBySig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            },
+            {
+                "name": "nonce",
+                "type": "uint"
+            },
+            {
+                "name": "expiry",
+                "type": "uint"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function delegateBySig(address delegatee, uint nonce, uint expiry, uint8 v, bytes32 r, bytes32 s) external {\n        bytes32 domainSeparator = keccak256(\n            abi.encode(\n                DOMAIN_TYPEHASH,\n                keccak256(bytes(name())),\n                getChainId(),\n                address(this)\n            )\n        );\n\n        bytes32 structHash = keccak256(\n            abi.encode(\n                DELEGATION_TYPEHASH,\n                delegatee,\n                nonce,\n                expiry\n            )\n        );\n\n        bytes32 digest = keccak256(\n            abi.encodePacked(\n                \"\\x19\\x01\",\n                domainSeparator,\n                structHash\n            )\n        );\n\n        address signatory = ecrecover(digest, v, r, s);\n        require(signatory != address(0), \"SURF::delegateBySig: invalid signature\");\n        require(nonce == nonces[signatory]++, \"SURF::delegateBySig: invalid nonce\");\n        require(now <= expiry, \"SURF::delegateBySig: signature expired\");\n        return _delegate(signatory, delegatee);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Delegates votes from signatory to `delegatee`",
+            "     * @param delegatee The address to delegate votes to",
+            "     * @param nonce The contract state required to match the signature",
+            "     * @param expiry The time at which to expire the signature",
+            "     * @param v The recovery byte of the signature",
+            "     * @param r Half of the ECDSA signature pair",
+            "     * @param s Half of the ECDSA signature pair",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Delegates votes from signatory to `delegatee`\n     * @param delegatee The address to delegate votes to\n     * @param nonce The contract state required to match the signature\n     * @param expiry The time at which to expire the signature\n     * @param v The recovery byte of the signature\n     * @param r Half of the ECDSA signature pair\n     * @param s Half of the ECDSA signature pair\n     */\n",
+        "@dev": "Delegates votes from signatory to `delegatee`",
+        "@param1": "delegatee The address to delegate votes to",
+        "@param2": "nonce The contract state required to match the signature",
+        "@param3": "expiry The time at which to expire the signature",
+        "@param4": "v The recovery byte of the signature",
+        "@param5": "r Half of the ECDSA signature pair",
+        "@param6": "s Half of the ECDSA signature pair",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCurrentVotes",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function getCurrentVotes(address account) external view returns (uint256) {\n        uint32 nCheckpoints = numCheckpoints[account];\n        return nCheckpoints > 0 ? checkpoints[account][nCheckpoints - 1].votes : 0;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the current votes balance for `account`",
+            "     * @param account The address to get votes balance",
+            "     * @return The number of current votes for `account`",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the current votes balance for `account`\n     * @param account The address to get votes balance\n     * @return The number of current votes for `account`\n     */\n",
+        "@dev": "Gets the current votes balance for `account`",
+        "@param1": "account The address to get votes balance",
+        "@return1": "The number of current votes for `account`",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPriorVotes",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "blockNumber",
+                "type": "uint"
+            }
+        ],
+        "func": "function getPriorVotes(address account, uint blockNumber) external view returns (uint256) {\n        require(blockNumber < block.number, \"SURF::getPriorVotes: not yet determined\");\n\n        uint32 nCheckpoints = numCheckpoints[account];\n        if (nCheckpoints == 0) {\n            return 0;\n        }\n\n        // First check most recent balance\n        if (checkpoints[account][nCheckpoints - 1].fromBlock <= blockNumber) {\n            return checkpoints[account][nCheckpoints - 1].votes;\n        }\n\n        // Next check implicit zero balance\n        if (checkpoints[account][0].fromBlock > blockNumber) {\n            return 0;\n        }\n\n        uint32 lower = 0;\n        uint32 upper = nCheckpoints - 1;\n        while (upper > lower) {\n            uint32 center = upper - (upper - lower) / 2; // ceil, avoiding overflow\n            Checkpoint memory cp = checkpoints[account][center];\n            if (cp.fromBlock == blockNumber) {\n                return cp.votes;\n            } else if (cp.fromBlock < blockNumber) {\n                lower = center;\n            } else {\n                upper = center - 1;\n            }\n        }\n        return checkpoints[account][lower].votes;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Determine the prior number of votes for an account as of a block number",
+            "     * @dev Block number must be a finalized block or else this function will revert to prevent misinformation.",
+            "     * @param account The address of the account to check",
+            "     * @param blockNumber The block number to get the vote balance at",
+            "     * @return The number of votes the account had as of the given block",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Determine the prior number of votes for an account as of a block number\n     * @dev Block number must be a finalized block or else this function will revert to prevent misinformation.\n     * @param account The address of the account to check\n     * @param blockNumber The block number to get the vote balance at\n     * @return The number of votes the account had as of the given block\n     */\n",
+        "@dev": "Determine the prior number of votes for an account as of a block number * Block number must be a finalized block or else this function will revert to prevent misinformation.",
+        "@param1": "account The address of the account to check",
+        "@param2": "blockNumber The block number to get the vote balance at",
+        "@return1": "The number of votes the account had as of the given block",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "poolLength",
+        "visibility": "external",
+        "args": [],
+        "func": "function poolLength() external view returns (uint256) {\n        return poolInfo.length;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAllPoolInfoFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "func": "function getAllPoolInfoFor(address _user) external view returns (address[] memory tokens, address[] memory lpTokens, bool[] memory isUnis, uint[] memory aprs, uint[] memory lastSurfRewardBlocks, uint[2][] memory accTokensPerShares, uint[17][] memory metadatas) {\n        (tokens, lpTokens, isUnis, aprs, lastSurfRewardBlocks, accTokensPerShares) = _getAllPoolData();\n        metadatas = _getAllPoolMetadataFor(_user);\n    }",
+        "comments": [
+            "",
+            "    // View function to see all of the data for all pools on the frontend",
+            "    "
+        ],
+        "comt": "\n    // View function to see all of the data for all pools on the frontend\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAllInfoFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "func": "function getAllInfoFor(address _user) external view returns (bool poolActive, uint256[8] memory info) {\n        poolActive = surfPoolActive;\n        info[0] = blocksUntilLaunch();\n        info[1] = blocksUntilSurfPoolCanBeActivated();\n        info[2] = blocksUntilSoftLaunchEnds();\n        info[3] = surf.totalSupply();\n        info[4] = _getSurfPrice();\n        if (surfPoolActive) {\n            info[5] = IERC20(surfPoolAddress).balanceOf(address(surf));\n        }\n        info[6] = surfSentToWhirlpool;\n        info[7] = surf.balanceOf(_user);\n    }",
+        "comments": [
+            "",
+            "    // View function to show all relevant platform info on the frontend",
+            "    "
+        ],
+        "comt": "\n    // View function to show all relevant platform info on the frontend\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "blocksUntilLaunch",
+        "visibility": "public",
+        "args": [],
+        "func": "function blocksUntilLaunch() public view returns (uint256) {\n        if (block.number >= startBlock) return 0;\n        else return startBlock.sub(block.number);\n    }",
+        "comments": [
+            "",
+            "    // View function to see the number of blocks remaining until launch on the frontend",
+            "    "
+        ],
+        "comt": "\n    // View function to see the number of blocks remaining until launch on the frontend\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "blocksUntilSurfPoolCanBeActivated",
+        "visibility": "public",
+        "args": [],
+        "func": "function blocksUntilSurfPoolCanBeActivated() public view returns (uint256) {\n        uint256 surfPoolActivationBlock = startBlock + SOFT_LAUNCH_DURATION.div(2);\n        if (block.number >= surfPoolActivationBlock) return 0;\n        else return surfPoolActivationBlock.sub(block.number);\n    }",
+        "comments": [
+            "",
+            "    // View function to see the number of blocks remaining until the SURF pool can be activated on the frontend",
+            "    "
+        ],
+        "comt": "\n    // View function to see the number of blocks remaining until the SURF pool can be activated on the frontend\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "blocksUntilSoftLaunchEnds",
+        "visibility": "public",
+        "args": [],
+        "func": "function blocksUntilSoftLaunchEnds() public view returns (uint256) {\n        uint256 softLaunchEndBlock = startBlock + SOFT_LAUNCH_DURATION;\n        if (block.number >= softLaunchEndBlock) return 0;\n        else return softLaunchEndBlock.sub(block.number);\n    }",
+        "comments": [
+            "",
+            "    // View function to see the number of blocks remaining until the Soft Launch ends on the frontend",
+            "    "
+        ],
+        "comt": "\n    // View function to see the number of blocks remaining until the Soft Launch ends on the frontend\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "massUpdatePools",
+        "visibility": "public",
+        "args": [],
+        "func": "function massUpdatePools() public {\n        uint256 length = poolInfo.length;\n        for (uint256 pid = (surfPoolActive == true ? 0 : 1); pid < length; ++pid) {\n            updatePool(pid);\n        }\n    }",
+        "comments": [
+            "",
+            "    // Update reward variables for all pools. Be careful of gas spending!",
+            "    "
+        ],
+        "comt": "\n    // Update reward variables for all pools. Be careful of gas spending!\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updatePool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_pid",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updatePool(uint256 _pid) public {\n        require(msg.sender == tx.origin || msg.sender == owner() || contractWhitelist[msg.sender] == true, \"no contracts\"); // Prevent flash loan attacks that manipulate prices.\n        \n        PoolInfo storage pool = poolInfo[_pid];\n        uint256 lpSupply = _getPoolSupply(_pid);\n\n        // Handle the UNI staking rewards contract for the LP token if one exists.\n        // The SURF-ETH pool would break by using the UNI staking rewards contract if one is made for it so it will be ignored\n        if (_pid != 0) {\n            // Check to see if the LP token has a UNI staking rewards contract to forward deposits to so that users can earn both SURF and UNI\n            if (pool.uniStakeContract == address(0)) {\n                (address uniStakeContract,) = uniStakingFactory.stakingRewardsInfoByStakingToken(address(pool.lpToken));\n\n                // If a UNI staking rewards contract exists then transfer all of the LP tokens to it to start earning UNI\n                if (uniStakeContract != address(0)) {\n                    pool.uniStakeContract = uniStakeContract;\n\n                    if (lpSupply > 0) {\n                        pool.lpToken.safeApprove(uniStakeContract, 0);\n                        pool.lpToken.approve(uniStakeContract, lpSupply);\n                        IStakingRewards(pool.uniStakeContract).stake(lpSupply);\n                    }\n                }\n            }\n\n            // A UNI staking rewards contract for this LP token is being used so get any pending UNI rewards\n            if (pool.uniStakeContract != address(0)) {\n                uint256 pendingUniTokens = IStakingRewards(pool.uniStakeContract).earned(address(this));\n                if (pendingUniTokens > 0) {\n                    uint256 uniBalanceBefore = uniToken.balanceOf(address(this));\n                    IStakingRewards(pool.uniStakeContract).getReward();\n                    uint256 uniBalanceAfter = uniToken.balanceOf(address(this));\n                    pendingUniTokens = uniBalanceAfter.sub(uniBalanceBefore);\n                    pool.accUniPerShare = pool.accUniPerShare.add(pendingUniTokens.mul(1e12).div(lpSupply));\n                }\n            }\n        }\n\n        // Only update the pool if the max SURF supply hasn't been hit\n        if (surf.maxSupplyHit() != true) {\n            \n            if ((block.number <= pool.lastSurfRewardBlock) || (_pid == 0 && surfPoolActive != true)) {\n                return;\n            }\n            if (lpSupply == 0) {\n                pool.lastSurfRewardBlock = block.number;\n                return;\n            }\n\n            uint256 surfReward = _calculateSurfReward(_pid, lpSupply);\n\n            // Make sure that surfReward won't push the total supply of SURF past surf.MAX_SUPPLY()\n            uint256 surfTotalSupply = surf.totalSupply();\n            if (surfTotalSupply.add(surfReward) >= surf.MAX_SUPPLY()) {\n                surfReward = surf.MAX_SUPPLY().sub(surfTotalSupply);\n            }\n\n            // surf.mint(devAddress, surfReward.div(10)); Not minting 10% to the devs like Sushi, Sashimi, and Takeout do\n\n            if (surfReward > 0) {\n                surf.mint(address(this), surfReward);\n                pool.accSurfPerShare = pool.accSurfPerShare.add(surfReward.mul(1e12).div(lpSupply));\n                pool.lastSurfRewardBlock = block.number;\n            }\n\n            if (surf.maxSupplyHit() == true) {\n                whirlpool.activate();\n            }\n        }\n    }",
+        "comments": [
+            "",
+            "    // Update reward variables of the given pool to be up-to-date.",
+            "    "
+        ],
+        "comt": "\n    // Update reward variables of the given pool to be up-to-date.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deposit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_pid",
+                "type": "uint256"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function deposit(uint256 _pid, uint256 _amount) external {\n        depositFor(_pid, msg.sender, _amount);\n    }",
+        "comments": [
+            "",
+            "    // Deposits LP tokens in the specified pool to start earning the user SURF",
+            "    "
+        ],
+        "comt": "\n    // Deposits LP tokens in the specified pool to start earning the user SURF\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositFor",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_pid",
+                "type": "uint256"
+            },
+            {
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function depositFor(uint256 _pid, address _user, uint256 _amount) public {\n        require(msg.sender == tx.origin || contractWhitelist[msg.sender] == true, \"no contracts\");\n        require(surf.maxSupplyHit() != true, \"pools closed\");\n        require(_pid != 0 || surfPoolActive == true, \"surf pool not active\");\n        require(_amount > 0, \"deposit something\");\n\n        updatePool(_pid);\n\n        PoolInfo storage pool = poolInfo[_pid];\n        UserInfo storage user = userInfo[_pid][_user];\n\n        // The sender needs to give approval to the Tito contract for the specified amount of the LP token first\n        pool.lpToken.safeTransferFrom(address(msg.sender), address(this), _amount);\n\n        // Claim any pending SURF and UNI\n        _claimRewardsFromPool(_pid, _user);\n        \n        // Each pool has a 10% staking fee. If staking in the SURF-ETH pool, 100% of the fee gets permanently locked in the SURF contract (gives SURF liquidity forever).\n        // If staking in any other pool, 50% of the fee is used to buyback SURF which is sent to the Whirlpool staking contract where it will start getting distributed to stakers after the max supply is hit, and 50% goes to the team.\n        // The team is never minted or rewarded SURF for any reason to keep things as fair as possible.\n        uint256 stakingFeeAmount = _amount.div(10);\n        uint256 remainingUserAmount = _amount.sub(stakingFeeAmount);\n\n        // If a UNI staking rewards contract is available, use it\n        if (pool.uniStakeContract != address(0)) {\n            pool.lpToken.safeApprove(pool.uniStakeContract, 0);\n            pool.lpToken.approve(pool.uniStakeContract, remainingUserAmount);\n            IStakingRewards(pool.uniStakeContract).stake(remainingUserAmount);\n        }\n\n        // The user is depositing to the SURF-ETH pool so permanently lock all of the LP tokens from the staking fee in the SURF contract\n        if (_pid == 0) {\n            pool.lpToken.transfer(address(surf), stakingFeeAmount);\n        } else {\n            // Remove the liquidity from the pool\n            uint256 deadline = block.timestamp + 5 minutes;\n            pool.lpToken.approve(address(uniswapRouter), stakingFeeAmount);\n            uniswapRouter.removeLiquidityETHSupportingFeeOnTransferTokens(address(pool.token), stakingFeeAmount, 0, 0, address(this), deadline);\n\n            // Swap the ERC-20 token for ETH\n            uint256 ethBalanceBeforeSwap = address(this).balance;\n\n            uint256 tokensToSwap = pool.token.balanceOf(address(this));\n            require(tokensToSwap > 0, \"bad token swap\");\n            address[] memory poolPath = new address[](2);\n            poolPath[0] = address(pool.token);\n            poolPath[1] = address(weth);\n            pool.token.approve(address(uniswapRouter), tokensToSwap);\n            uniswapRouter.swapExactTokensForETHSupportingFeeOnTransferTokens(tokensToSwap, 0, poolPath, address(this), deadline);\n\n            uint256 ethBalanceAfterSwap = address(this).balance;\n            uint256 ethReceivedFromStakingFee;\n            uint256 teamFeeAmount;\n\n            // If surfPoolActive == true then perform a buyback of SURF using all of the ETH in the contract and then send it to the Whirlpool staking contract. Otherwise, the ETH will be used to seed the initial liquidity in the SURF-ETH Uniswap pool when activateSurfPool is called\n            if (surfPoolActive == true) {\n                require(ethBalanceAfterSwap > 0, \"bad eth swap\");\n\n                teamFeeAmount = ethBalanceAfterSwap.div(2);\n                ethReceivedFromStakingFee = ethBalanceAfterSwap.sub(teamFeeAmount);\n\n                // The SURF-ETH pool is active, so let's use the ETH to buyback SURF and send it to the Whirlpool staking contract\n                uint256 surfBought = _buySurf(ethReceivedFromStakingFee);\n\n                // Send the SURF rewards to the Whirlpool staking contract\n                surfSentToWhirlpool += surfBought;\n                _safeSurfTransfer(address(whirlpool), surfBought);\n            } else {\n                ethReceivedFromStakingFee = ethBalanceAfterSwap.sub(ethBalanceBeforeSwap);\n                require(ethReceivedFromStakingFee > 0, \"bad eth swap\");\n\n                teamFeeAmount = ethReceivedFromStakingFee.div(2);\n            }\n\n            if (teamFeeAmount > 0) devAddress.transfer(teamFeeAmount);\n        }\n\n        // Add the remaining amount to the user's staked balance\n        uint256 _currentRewardDebt = 0;\n        uint256 _currentUniRewardDebt = 0;\n        if (surfPoolActive != true) {\n            _currentRewardDebt = user.staked.mul(pool.accSurfPerShare).div(1e12).sub(user.rewardDebt);\n            _currentUniRewardDebt = user.staked.mul(pool.accUniPerShare).div(1e12).sub(user.uniRewardDebt);\n        }\n        user.staked = user.staked.add(remainingUserAmount);\n        user.rewardDebt = user.staked.mul(pool.accSurfPerShare).div(1e12).sub(_currentRewardDebt);\n        user.uniRewardDebt = user.staked.mul(pool.accUniPerShare).div(1e12).sub(_currentUniRewardDebt);\n\n        emit Deposit(_user, _pid, _amount);\n    }",
+        "comments": [
+            "",
+            "    // Deposits LP tokens in the specified pool on behalf of another user",
+            "    "
+        ],
+        "comt": "\n    // Deposits LP tokens in the specified pool on behalf of another user\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claim",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_pid",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claim(uint256 _pid) public {\n        require(surfPoolActive == true, \"surf pool not active\");\n        updatePool(_pid);\n        _claimRewardsFromPool(_pid, msg.sender);\n        UserInfo storage user = userInfo[_pid][msg.sender];\n        PoolInfo memory pool = poolInfo[_pid];\n        user.rewardDebt = user.staked.mul(pool.accSurfPerShare).div(1e12);\n        user.uniRewardDebt = user.staked.mul(pool.accUniPerShare).div(1e12);\n    }",
+        "comments": [
+            "",
+            "    // Claim all earned SURF and UNI from a single pool. Claiming won't work until surfPoolActive == true",
+            "    "
+        ],
+        "comt": "\n    // Claim all earned SURF and UNI from a single pool. Claiming won't work until surfPoolActive == true\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimAll",
+        "visibility": "public",
+        "args": [],
+        "func": "function claimAll() public {\n        require(surfPoolActive == true, \"surf pool not active\");\n\n        uint256 totalPendingSurfAmount = 0;\n        uint256 totalPendingUniAmount = 0;\n        \n        uint256 length = poolInfo.length;\n        for (uint256 pid = 0; pid < length; ++pid) {\n            UserInfo storage user = userInfo[pid][msg.sender];\n\n            if (user.staked > 0) {\n                updatePool(pid);\n\n                PoolInfo storage pool = poolInfo[pid];\n                uint256 accSurfPerShare = pool.accSurfPerShare;\n                uint256 accUniPerShare = pool.accUniPerShare;\n\n                uint256 pendingPoolSurfRewards = user.staked.mul(accSurfPerShare).div(1e12).sub(user.rewardDebt);\n                user.claimed += pendingPoolSurfRewards;\n                totalPendingSurfAmount = totalPendingSurfAmount.add(pendingPoolSurfRewards);\n                user.rewardDebt = user.staked.mul(accSurfPerShare).div(1e12);\n\n                uint256 pendingPoolUniRewards = user.staked.mul(accUniPerShare).div(1e12).sub(user.uniRewardDebt);\n                user.uniClaimed += pendingPoolUniRewards;\n                totalPendingUniAmount = totalPendingUniAmount.add(pendingPoolUniRewards);\n                user.uniRewardDebt = user.staked.mul(accUniPerShare).div(1e12);\n            }\n        }\n\n        require(totalPendingSurfAmount > 0 || totalPendingUniAmount > 0, \"nothing to claim\");\n\n        uint256 uniBalance = uniToken.balanceOf(address(this));\n        if (totalPendingUniAmount > uniBalance) totalPendingUniAmount = uniBalance;\n        if (totalPendingUniAmount > 0) uniToken.transfer(msg.sender, totalPendingUniAmount);\n\n        if (totalPendingSurfAmount > 0) _safeSurfTransfer(msg.sender, totalPendingSurfAmount);\n\n        emit ClaimAll(msg.sender, totalPendingSurfAmount, totalPendingUniAmount);\n    }",
+        "comments": [
+            "",
+            "    // Claim all earned SURF and UNI from all pools. Claiming won't work until surfPoolActive == true",
+            "    "
+        ],
+        "comt": "\n    // Claim all earned SURF and UNI from all pools. Claiming won't work until surfPoolActive == true\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_pid",
+                "type": "uint256"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 _pid, uint256 _amount) public {\n        require(surfPoolActive == true, \"surf pool not active\");\n        UserInfo storage user = userInfo[_pid][msg.sender];\n        require(_amount > 0 && user.staked >= _amount, \"withdraw: not good\");\n        \n        updatePool(_pid);\n\n        // Claim any pending SURF and UNI\n        _claimRewardsFromPool(_pid, msg.sender);\n\n        PoolInfo memory pool = poolInfo[_pid];\n\n        // If a UNI staking rewards contract is in use, withdraw from it\n        if (pool.uniStakeContract != address(0)) {\n            IStakingRewards(pool.uniStakeContract).withdraw(_amount);\n        }\n\n        user.staked = user.staked.sub(_amount);\n        user.rewardDebt = user.staked.mul(pool.accSurfPerShare).div(1e12);\n        user.uniRewardDebt = user.staked.mul(pool.accUniPerShare).div(1e12);\n\n        pool.lpToken.safeTransfer(address(msg.sender), _amount);\n        emit Withdraw(msg.sender, _pid, _amount);\n    }",
+        "comments": [
+            "",
+            "    // Withdraw LP tokens and earned SURF from Tito. Withdrawing won't work until surfPoolActive == true",
+            "    "
+        ],
+        "comt": "\n    // Withdraw LP tokens and earned SURF from Tito. Withdrawing won't work until surfPoolActive == true\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "migrateSURFLPtoWhirlpool",
+        "visibility": "public",
+        "args": [],
+        "func": "function migrateSURFLPtoWhirlpool() public {\n        require(whirlpool.active() == true, \"whirlpool not active\");\n        UserInfo storage user = userInfo[0][msg.sender];\n        uint256 amountToMigrate = user.staked;\n        require(amountToMigrate > 0, \"migrate: not good\");\n        \n        updatePool(0);\n\n        // Claim any pending SURF\n        _claimRewardsFromPool(0, msg.sender);\n\n        user.staked = 0;\n        user.rewardDebt = 0;\n\n        poolInfo[0].lpToken.approve(address(whirlpool), amountToMigrate);\n        whirlpool.stakeFor(msg.sender, amountToMigrate);\n        emit Withdraw(msg.sender, 0, amountToMigrate);\n    }",
+        "comments": [
+            "",
+            "    // Convenience function to allow users to migrate all of their staked SURF-ETH LP tokens from Tito to the Whirlpool staking contract after the max supply is hit. Migrating won't work until whirlpool.active() == true",
+            "    "
+        ],
+        "comt": "\n    // Convenience function to allow users to migrate all of their staked SURF-ETH LP tokens from Tito to the Whirlpool staking contract after the max supply is hit. Migrating won't work until whirlpool.active() == true\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "emergencyWithdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_pid",
+                "type": "uint256"
+            }
+        ],
+        "func": "function emergencyWithdraw(uint256 _pid) public {\n        UserInfo storage user = userInfo[_pid][msg.sender];\n        uint256 staked = user.staked;\n        require(staked > 0, \"no tokens\");\n\n        PoolInfo memory pool = poolInfo[_pid];\n\n        // If a UNI staking rewards contract is in use, withdraw from it\n        if (pool.uniStakeContract != address(0)) {\n            IStakingRewards(pool.uniStakeContract).withdraw(staked);\n        }\n        \n        user.staked = 0;\n        user.rewardDebt = 0;\n        user.uniRewardDebt = 0;\n\n        pool.lpToken.safeTransfer(address(msg.sender), staked);\n        emit EmergencyWithdraw(msg.sender, _pid, staked);\n    }",
+        "comments": [
+            "",
+            "    // Withdraw without caring about rewards. EMERGENCY ONLY.",
+            "    "
+        ],
+        "comt": "\n    // Withdraw without caring about rewards. EMERGENCY ONLY.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "activateSurfPool",
+        "visibility": "public",
+        "args": [],
+        "func": "function activateSurfPool() public {\n        require(surfPoolActive == false, \"already active\");\n        require(block.number > startBlock + SOFT_LAUNCH_DURATION.div(2), \"too soon\");\n        uint256 initialEthLiquidity = address(this).balance;\n        require(initialEthLiquidity > 0, \"need ETH\");\n\n        massUpdatePools();\n\n        // The ETH raised from the staking fees collected before surfPoolActive == true is used to seed the ETH side of the SURF-ETH Uniswap pool.\n        // This means that the higher the staking volume during the first 500 blocks, the higher the initial price of SURF\n        if (donatedETH > 0 && donatedETH < initialEthLiquidity) initialEthLiquidity = initialEthLiquidity.sub(donatedETH);\n\n        // Mint 1,000,000 new SURF to seed the SURF liquidity in the SURF-ETH Uniswap pool\n        uint256 initialSurfLiquidity = 1000000 * 10**18;\n        surf.mint(address(this), initialSurfLiquidity);\n\n        // Add the liquidity to the SURF-ETH Uniswap pool\n        surf.approve(address(uniswapRouter), initialSurfLiquidity);\n        ( , , uint256 lpTokensReceived) = uniswapRouter.addLiquidityETH{value: initialEthLiquidity}(address(surf), initialSurfLiquidity, 0, 0, address(this), block.timestamp + 5 minutes);\n\n        // Activate the SURF-ETH pool\n        initialSurfPoolETH = initialEthLiquidity;\n        surfPoolActive = true;\n\n        // Permanently lock the LP tokens in the SURF contract\n        IERC20(surfPoolAddress).transfer(address(surf), lpTokensReceived);\n\n        // Buy SURF with all of the donatedETH from partner projects. This SURF will be sent to the Whirlpool staking contract and will start getting distributed to all stakers when the max supply is hit\n        uint256 donatedAmount = donatedETH;\n        uint256 ethBalance = address(this).balance;\n        if (donatedAmount > ethBalance) donatedAmount = ethBalance;\n        if (donatedAmount > 0) {\n            uint256 surfBought = _buySurf(donatedAmount);\n\n            // Send the SURF rewards to the Whirlpool staking contract\n            surfSentToWhirlpool += surfBought;\n            _safeSurfTransfer(address(whirlpool), surfBought);\n            donatedETH = 0;\n        }\n\n        emit SurfPoolActive(msg.sender, initialSurfLiquidity, initialEthLiquidity);\n    }",
+        "comments": [
+            "",
+            "    // Creates the SURF-ETH Uniswap pool and adds the initial liqudity that will be permanently locked. Can be called by anyone, but no sooner than 500 blocks after launch. ",
+            "    "
+        ],
+        "comt": "\n    // Creates the SURF-ETH Uniswap pool and adds the initial liqudity that will be permanently locked. Can be called by anyone, but no sooner than 500 blocks after launch. \n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "donate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_lpToken",
+                "type": "address"
+            }
+        ],
+        "func": "function donate(address _lpToken) public payable {\n        require(msg.value >= minimumDonationAmount);\n        require(donaters[_lpToken] == address(0));\n\n        donatedETH = donatedETH.add(msg.value);\n        donaters[_lpToken] = msg.sender;\n        donations[_lpToken] = msg.value;\n    }",
+        "comments": [
+            "",
+            "    // For use by partner teams that are donating to the SURF community. The funds will be used to purchase SURF tokens which will be distributed to stakers once the max supply is hit",
+            "    "
+        ],
+        "comt": "\n    // For use by partner teams that are donating to the SURF community. The funds will be used to purchase SURF tokens which will be distributed to stakers once the max supply is hit\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeDonation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_lpToken",
+                "type": "address"
+            }
+        ],
+        "func": "function removeDonation(address _lpToken) public {\n        require(block.number < startBlock); // Donations can only be removed if the beach hasn't been added by the startBlock\n        \n        address returnAddress = donaters[_lpToken];\n        require(msg.sender == returnAddress);\n        \n        uint256 donationAmount = donations[_lpToken];\n        require(donationAmount > 0);\n        \n        uint256 ethBalance = address(this).balance;\n        require(donationAmount <= ethBalance);\n\n        // Only refund the donation if the beach wasn't created\n        require(existingPools[_lpToken] != true);\n\n        donatedETH = donatedETH.sub(donationAmount);\n        donaters[_lpToken] = address(0);\n        donations[_lpToken] = 0;\n\n        msg.sender.transfer(donationAmount);\n    }",
+        "comments": [
+            "",
+            "    // For use by partner teams that donated to the SURF community. The funds can be removed if a beach wasn't created for the specified lp token (meaning the SURF team didn't hold up their end of the agreement)",
+            "    "
+        ],
+        "comt": "\n    // For use by partner teams that donated to the SURF community. The funds can be removed if a beach wasn't created for the specified lp token (meaning the SURF team didn't hold up their end of the agreement)\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setWhirlpoolContract",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_whirlpool",
+                "type": "Whirlpool"
+            }
+        ],
+        "func": "function setWhirlpoolContract(Whirlpool _whirlpool) public onlyOwner {\n        whirlpool = _whirlpool;\n    }",
+        "comments": [
+            "",
+            "    //////////////////////////",
+            "    // Governance Functions //",
+            "    //////////////////////////",
+            "    // The following functions can only be called by the owner (the SURF token holder governance contract)",
+            "",
+            "    // Sets the address of the Whirlpool staking contract that bought SURF gets sent to for distribution to stakers once the max supply is hit",
+            "    "
+        ],
+        "comt": "\n    //////////////////////////\n    // Governance Functions //\n    //////////////////////////\n    // The following functions can only be called by the owner (the SURF token holder governance contract)\n\n    // Sets the address of the Whirlpool staking contract that bought SURF gets sent to for distribution to stakers once the max supply is hit\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addPool",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "name": "_lpToken",
+                "type": "address"
+            },
+            {
+                "name": "_apr",
+                "type": "uint256"
+            },
+            {
+                "name": "_requireDonation",
+                "type": "bool"
+            }
+        ],
+        "func": "function addPool(address _token, address _lpToken, uint256 _apr, bool _requireDonation) public onlyOwner {\n        require(surf.maxSupplyHit() != true);\n        require(existingPools[_lpToken] != true, \"pool exists\");\n        require(_requireDonation != true || donations[_lpToken] >= minimumDonationAmount, \"must donate\");\n\n        _addPool(_token, _lpToken);\n        if (_apr != DEFAULT_APR) poolInfo[poolInfo.length-1].apr = _apr;\n    }",
+        "comments": [
+            "",
+            "    // Add a new LP Token pool",
+            "    "
+        ],
+        "comt": "\n    // Add a new LP Token pool\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApr",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_pid",
+                "type": "uint256"
+            },
+            {
+                "name": "_apr",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setApr(uint256 _pid, uint256 _apr) public onlyOwner {\n        require(surf.maxSupplyHit() != true);\n        updatePool(_pid);\n        poolInfo[_pid].apr = _apr;\n    }",
+        "comments": [
+            "",
+            "    // Update the given pool's APR",
+            "    "
+        ],
+        "comt": "\n    // Update the given pool's APR\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addToWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_contractAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function addToWhitelist(address _contractAddress) public onlyOwner {\n        contractWhitelist[_contractAddress] = true;\n    }",
+        "comments": [
+            "",
+            "    // Add a contract to the whitelist so that it can interact with Tito. This is needed for the Aegis pool contract to be able to stake on behalf of everyone in the pool.",
+            "    // We want limited interaction from contracts due to the growing \"flash loan\" trend that can be used to dramatically manipulate a token's price in a single block.",
+            "    "
+        ],
+        "comt": "\n    // Add a contract to the whitelist so that it can interact with Tito. This is needed for the Aegis pool contract to be able to stake on behalf of everyone in the pool.\n    // We want limited interaction from contracts due to the growing \"flash loan\" trend that can be used to dramatically manipulate a token's price in a single block.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeFromWhitelist",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_contractAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function removeFromWhitelist(address _contractAddress) public onlyOwner {\n        contractWhitelist[_contractAddress] = false;\n    }",
+        "comments": [
+            "",
+            "    // Remove a contract from the whitelist",
+            "    "
+        ],
+        "comt": "\n    // Remove a contract from the whitelist\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "activate",
+        "visibility": "public",
+        "args": [],
+        "func": "function activate() public {\n        require(active != true, \"already active\");\n        require(surf.maxSupplyHit() == true, \"too soon\");\n\n        active = true;\n\n        // Now that the Whirlpool staking contract is active, reward 1% of the initialSurfReward per day for 100 days\n        startTime = block.timestamp + INITIAL_PAYOUT_INTERVAL; // The first payout can be processed 24 hours after activation\n        lastPayout = startTime;\n        initialSurfRewardPerDay = initialSurfReward.div(100);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addSurfReward",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function addSurfReward(address _from, uint256 _amount) public {\n        require(msg.sender == address(surf), \"not surf contract\");\n        require(tito.surfPoolActive() == true, \"no surf pool\");\n        require(_amount > 0, \"no surf\");\n\n        if (active != true || totalStaked == 0) {\n            initialSurfReward = initialSurfReward.add(_amount);\n        } else {\n            totalPendingSurf = totalPendingSurf.add(_amount);\n            accSurfPerShare = accSurfPerShare.add(_amount.mul(1e12).div(totalStaked));\n        }\n\n        emit SurfRewardAdded(_from, _amount);\n    }",
+        "comments": [
+            "",
+            "    // The _transfer function in the SURF contract calls this to let the Whirlpool contract know that it received the specified amount of SURF to be distributed to stakers ",
+            "    "
+        ],
+        "comt": "\n    // The _transfer function in the SURF contract calls this to let the Whirlpool contract know that it received the specified amount of SURF to be distributed to stakers \n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addEthReward",
+        "visibility": "public",
+        "args": [],
+        "func": "function addEthReward() public payable {\n        require(tito.surfPoolActive() == true, \"no surf pool\");\n\n        // We will purchase SURF with all of the ETH in the contract in case some was sent directly to the contract instead of using addEthReward\n        uint256 ethBalance = address(this).balance;\n        require(ethBalance > 0, \"no eth\");\n\n        // Use the ETH to buyback SURF which will be distributed to stakers\n        _buySurf(ethBalance);\n\n        // The _transfer function in the SURF contract calls the Whirlpool contract's updateSurfReward function so we don't need to update the balances after buying the SURF\n        emit EthRewardAdded(msg.sender, msg.value);\n    }",
+        "comments": [
+            "",
+            "    // Allows external sources to add ETH to the contract which is used to buy and then distribute SURF to stakers",
+            "    "
+        ],
+        "comt": "\n    // Allows external sources to add ETH to the contract which is used to buy and then distribute SURF to stakers\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(uint256 _amount) public {\n        stakeFor(msg.sender, _amount);\n    }",
+        "comments": [
+            "",
+            "    // Stake SURF-ETH LP tokens to get rewarded with more SURF",
+            "    "
+        ],
+        "comt": "\n    // Stake SURF-ETH LP tokens to get rewarded with more SURF\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stakeFor",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stakeFor(address _user, uint256 _amount) public {\n        require(active == true, \"not active\");\n        require(_amount > 0, \"stake something\");\n\n        _processInitialPayouts();\n\n        // Claim any pending SURF\n        _claimReward(_user);\n\n        surfPool.safeTransferFrom(address(msg.sender), address(this), _amount);\n\n        UserInfo storage user = userInfo[_user];\n        totalStaked = totalStaked.add(_amount);\n        user.staked = user.staked.add(_amount);\n        user.rewardDebt = user.staked.mul(accSurfPerShare).div(1e12);\n        emit Stake(_user, _amount);\n    }",
+        "comments": [
+            "",
+            "    // Stake SURF-ETH LP tokens on behalf of another address",
+            "    "
+        ],
+        "comt": "\n    // Stake SURF-ETH LP tokens on behalf of another address\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claim",
+        "visibility": "public",
+        "args": [],
+        "func": "function claim() public {\n        require(active == true, \"not active\");\n        UserInfo storage user = userInfo[msg.sender];\n        require(user.staked > 0, \"no stake\");\n        \n        _processInitialPayouts();\n\n        // Claim any pending SURF\n        _claimReward(msg.sender);\n\n        user.rewardDebt = user.staked.mul(accSurfPerShare).div(1e12);\n    }",
+        "comments": [
+            "",
+            "    // Claim earned SURF. Claiming won't work until active == true",
+            "    "
+        ],
+        "comt": "\n    // Claim earned SURF. Claiming won't work until active == true\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdraw(uint256 _amount) public {\n        require(active == true, \"not active\");\n        UserInfo storage user = userInfo[msg.sender];\n        require(_amount > 0 && user.staked >= _amount, \"withdraw: not good\");\n        \n        _processInitialPayouts();\n\n        uint256 unstakingFeeAmount = _amount.mul(unstakingFee).div(1000);\n        uint256 remainingUserAmount = _amount.sub(unstakingFeeAmount);\n\n        // Half of the LP tokens kept by the unstaking fee will be locked forever in the SURF contract, the other half will be converted to SURF and distributed to stakers\n        uint256 lpTokensToConvertToSurf = unstakingFeeAmount.mul(unstakingFeeConvertToSurfAmount).div(1000);\n        uint256 lpTokensToLock = unstakingFeeAmount.sub(lpTokensToConvertToSurf);\n\n        // Remove the liquidity from the Uniswap SURF-ETH pool and buy SURF with the ETH received\n        // The _transfer function in the SURF.sol contract automatically calls whirlpool.addSurfReward() so we don't have to in this function\n        if (lpTokensToConvertToSurf > 0) {\n            surfPool.approve(address(uniswapRouter), lpTokensToConvertToSurf);\n            uniswapRouter.removeLiquidityETHSupportingFeeOnTransferTokens(address(surf), lpTokensToConvertToSurf, 0, 0, address(this), block.timestamp + 5 minutes);\n            addEthReward();\n        }\n\n        // Permanently lock the LP tokens in the SURF contract\n        if (lpTokensToLock > 0) surfPool.transfer(address(surf), lpTokensToLock);\n\n        // Claim any pending SURF\n        _claimReward(msg.sender);\n\n        totalStaked = totalStaked.sub(_amount);\n        user.staked = user.staked.sub(_amount);\n        surfPool.safeTransfer(address(msg.sender), remainingUserAmount);\n        user.rewardDebt = user.staked.mul(accSurfPerShare).div(1e12);\n        emit Withdraw(msg.sender, remainingUserAmount);\n    }",
+        "comments": [
+            "",
+            "    // Unstake and withdraw SURF-ETH LP tokens and any pending SURF rewards. There is a 10% unstaking fee, meaning the user will only receive 90% of their LP tokens back.",
+            "    // For the LP tokens kept by the unstaking fee, 50% will get locked forever in the SURF contract, and 50% will get converted to SURF and distributed to stakers.",
+            "    "
+        ],
+        "comt": "\n    // Unstake and withdraw SURF-ETH LP tokens and any pending SURF rewards. There is a 10% unstaking fee, meaning the user will only receive 90% of their LP tokens back.\n    // For the LP tokens kept by the unstaking fee, 50% will get locked forever in the SURF contract, and 50% will get converted to SURF and distributed to stakers.\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUnstakingFee",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_unstakingFee",
+                "type": "uint256"
+            },
+            {
+                "name": "_convertToSurfAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setUnstakingFee(uint256 _unstakingFee, uint256 _convertToSurfAmount) public onlyOwner {\n        require(_unstakingFee <= 500, \"over 50%\");\n        require(_convertToSurfAmount <= 1000, \"bad amount\");\n        unstakingFee = _unstakingFee;\n        unstakingFeeConvertToSurfAmount = _convertToSurfAmount;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "recoverERC20",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function recoverERC20(address _tokenAddress) public onlyOwner {\n        require(_tokenAddress != address(surf) && _tokenAddress != address(surfPool));\n        IERC20 token = IERC20(_tokenAddress);\n        uint256 tokenBalance = token.balanceOf(address(this));\n        token.transfer(msg.sender, tokenBalance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "payoutNumber",
+        "visibility": "public",
+        "args": [],
+        "func": "function payoutNumber() public view returns (uint256) {\n        if (block.timestamp < startTime) return 0;\n\n        uint256 payout = (block.timestamp - startTime).div(INITIAL_PAYOUT_INTERVAL);\n        if (payout > 100) return 100;\n        else return payout;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "timeUntilNextPayout",
+        "visibility": "public",
+        "args": [],
+        "func": "function timeUntilNextPayout() public view returns (uint256) {\n        if (initialSurfReward == 0) return 0;\n        else {\n            uint256 payout = payoutNumber();\n            uint256 nextPayout = startTime.add((payout + 1).mul(INITIAL_PAYOUT_INTERVAL));\n            return nextPayout - block.timestamp;\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rewardAtPayout",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_payoutNumber",
+                "type": "uint256"
+            }
+        ],
+        "func": "function rewardAtPayout(uint256 _payoutNumber) public view returns (uint256) {\n        if (_payoutNumber == 0) return 0;\n        return initialSurfRewardPerDay * _payoutNumber;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAllInfoFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "func": "function getAllInfoFor(address _user) external view returns (bool isActive, uint256[12] memory info) {\n        isActive = active;\n        info[0] = surf.balanceOf(address(this));\n        info[1] = initialSurfReward;\n        info[2] = totalPendingSurf;\n        info[3] = startTime;\n        info[4] = lastPayout;\n        info[5] = totalStaked;\n        info[6] = surf.balanceOf(_user);\n        if (tito.surfPoolActive()) {\n            info[7] = surfPool.balanceOf(_user);\n            info[8] = surfPool.allowance(_user, address(this));\n        }\n        info[9] = userInfo[_user].staked;\n        info[10] = userInfo[_user].staked.mul(accSurfPerShare).div(1e12).sub(userInfo[_user].rewardDebt);\n        info[11] = userInfo[_user].claimed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

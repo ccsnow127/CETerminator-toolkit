@@ -1,0 +1,1000 @@
+[
+    {
+        "transactions": 257699,
+        "function_num": 29
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() virtual public view returns (string memory) {\n return _name;\n }",
+        "comments": [
+            "/**",
+            " * @dev Returns the name of the token.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Returns the name of the token.\n */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() virtual public view returns (string memory) {\n return _symbol;\n }",
+        "comments": [
+            "/**",
+            " * @dev Returns the symbol of the token, usually a shorter version of the",
+            " * name.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Returns the symbol of the token, usually a shorter version of the\n * name.\n */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() virtual public view returns (uint8) {\n return _decimals;\n }",
+        "comments": [
+            "/**",
+            " * @dev Returns the number of decimals used to get its user representation.",
+            " * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            " * be displayed to a user as `5,05` (`505 / 10 ** 2`).",
+            " *",
+            " * Tokens usually opt for a value of 18, imitating the relationship between",
+            " * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is",
+            " * called.",
+            " *",
+            " * NOTE: This information is only used for _display_ purposes: it in",
+            " * no way affects any of the arithmetic of the contract, including",
+            " * {IERC20-balanceOf} and {IERC20-transfer}.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Returns the number of decimals used to get its user representation.\n * For example, if `decimals` equals `2`, a balance of `505` tokens should\n * be displayed to a user as `5,05` (`505 / 10 ** 2`).\n *\n * Tokens usually opt for a value of 18, imitating the relationship between\n * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is\n * called.\n *\n * NOTE: This information is only used for _display_ purposes: it in\n * no way affects any of the arithmetic of the contract, including\n * {IERC20-balanceOf} and {IERC20-transfer}.\n */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5,05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is * called. * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view override returns (uint256) {\n return _totalSupply;\n }",
+        "comments": [
+            "/**",
+            " * @dev See {IERC20-totalSupply}.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev See {IERC20-totalSupply}.\n */\n",
+        "@dev": "See {IERC20-totalSupply}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n return _balances[account];\n }",
+        "comments": [
+            "/**",
+            " * @dev See {IERC20-balanceOf}.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev See {IERC20-balanceOf}.\n */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n _transfer(_msgSender(), recipient, amount);\n return true;\n }",
+        "comments": [
+            "/**",
+            " * @dev See {IERC20-transfer}.",
+            " *",
+            " * Requirements:",
+            " *",
+            " * - `recipient` cannot be the zero address.",
+            " * - the caller must have a balance of at least `amount`.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev See {IERC20-transfer}.\n *\n * Requirements:\n *\n * - `recipient` cannot be the zero address.\n * - the caller must have a balance of at least `amount`.\n */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n return _allowances[owner][spender];\n }",
+        "comments": [
+            "/**",
+            " * @dev See {IERC20-allowance}.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev See {IERC20-allowance}.\n */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n _approve(_msgSender(), spender, amount);\n return true;\n }",
+        "comments": [
+            "/**",
+            " * @dev See {IERC20-approve}.",
+            " *",
+            " * Requirements:",
+            " *",
+            " * - `spender` cannot be the zero address.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev See {IERC20-approve}.\n *\n * Requirements:\n *\n * - `spender` cannot be the zero address.\n */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address sender, address recipient, uint256 amount) public virtual override returns (bool) {\n _transfer(sender, recipient, amount);\n _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, \"ERC20: transfer amount exceeds allowance\"));\n return true;\n }",
+        "comments": [
+            "/**",
+            " * @dev See {IERC20-transferFrom}.",
+            " *",
+            " * Emits an {Approval} event indicating the updated allowance. This is not",
+            " * required by the EIP. See the note at the beginning of {ERC20};",
+            " *",
+            " * Requirements:",
+            " * - `sender` and `recipient` cannot be the zero address.",
+            " * - `sender` must have a balance of at least `amount`.",
+            " * - the caller must have allowance for ``sender``'s tokens of at least",
+            " * `amount`.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev See {IERC20-transferFrom}.\n *\n * Emits an {Approval} event indicating the updated allowance. This is not\n * required by the EIP. See the note at the beginning of {ERC20};\n *\n * Requirements:\n * - `sender` and `recipient` cannot be the zero address.\n * - `sender` must have a balance of at least `amount`.\n * - the caller must have allowance for ``sender``'s tokens of at least\n * `amount`.\n */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}; * * Requirements: * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));\n return true;\n }",
+        "comments": [
+            "/**",
+            " * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            " *",
+            " * This is an alternative to {approve} that can be used as a mitigation for",
+            " * problems described in {IERC20-approve}.",
+            " *",
+            " * Emits an {Approval} event indicating the updated allowance.",
+            " *",
+            " * Requirements:",
+            " *",
+            " * - `spender` cannot be the zero address.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Atomically increases the allowance granted to `spender` by the caller.\n *\n * This is an alternative to {approve} that can be used as a mitigation for\n * problems described in {IERC20-approve}.\n *\n * Emits an {Approval} event indicating the updated allowance.\n *\n * Requirements:\n *\n * - `spender` cannot be the zero address.\n */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, \"ERC20: decreased allowance below zero\"));\n return true;\n }",
+        "comments": [
+            "/**",
+            " * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            " *",
+            " * This is an alternative to {approve} that can be used as a mitigation for",
+            " * problems described in {IERC20-approve}.",
+            " *",
+            " * Emits an {Approval} event indicating the updated allowance.",
+            " *",
+            " * Requirements:",
+            " *",
+            " * - `spender` cannot be the zero address.",
+            " * - `spender` must have allowance for the caller of at least",
+            " * `subtractedValue`.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Atomically decreases the allowance granted to `spender` by the caller.\n *\n * This is an alternative to {approve} that can be used as a mitigation for\n * problems described in {IERC20-approve}.\n *\n * Emits an {Approval} event indicating the updated allowance.\n *\n * Requirements:\n *\n * - `spender` cannot be the zero address.\n * - `spender` must have allowance for the caller of at least\n * `subtractedValue`.\n */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n return _owner;\n }",
+        "comments": [
+            "/**",
+            " * @dev Returns the address of the current owner.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Returns the address of the current owner.\n */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n emit OwnershipTransferred(_owner, address(0));\n _owner = address(0);\n }",
+        "comments": [
+            "/**",
+            " * @dev Leaves the contract without owner. It will not be possible to call",
+            " * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            " *",
+            " * NOTE: Renouncing ownership will leave the contract without an owner,",
+            " * thereby removing any functionality that is only available to the owner.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Leaves the contract without owner. It will not be possible to call\n * `onlyOwner` functions anymore. Can only be called by the current owner.\n *\n * NOTE: Renouncing ownership will leave the contract without an owner,\n * thereby removing any functionality that is only available to the owner.\n */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n require(newOwner != address(0), 'Ownable: new owner is the zero address');\n emit OwnershipTransferred(_owner, newOwner);\n _owner = newOwner;\n }",
+        "comments": [
+            "/**",
+            " * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            " * Can only be called by the current owner.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Transfers ownership of the contract to a new account (`newOwner`).\n * Can only be called by the current owner.\n */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateByType",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            },
+            {
+                "name": "delegationType",
+                "type": "DelegationType"
+            }
+        ],
+        "func": "function delegateByType(\n address delegatee,\n DelegationType delegationType\n )\n external\n override\n {\n _delegateByType(msg.sender, delegatee, delegationType);\n }",
+        "comments": [
+            "",
+            " // ============ External Functions ============",
+            "",
+            " /**",
+            " * @notice Delegates a specific governance power to a delegatee.",
+            " *",
+            " * @param delegatee The address to delegate power to.",
+            " * @param delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).",
+            " */",
+            " "
+        ],
+        "comt": "\n // ============ External Functions ============\n\n /**\n * @notice Delegates a specific governance power to a delegatee.\n *\n * @param delegatee The address to delegate power to.\n * @param delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).\n */\n ",
+        "@notice": "Delegates a specific governance power to a delegatee.",
+        "@param1": "delegatee The address to delegate power to.",
+        "@param2": "delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            }
+        ],
+        "func": "function delegate(\n address delegatee\n )\n external\n override\n {\n _delegateByType(msg.sender, delegatee, DelegationType.VOTING_POWER);\n _delegateByType(msg.sender, delegatee, DelegationType.PROPOSITION_POWER);\n }",
+        "comments": [
+            "/**",
+            " * @notice Delegates all governance powers to a delegatee.",
+            " *",
+            " * @param delegatee The address to delegate power to.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Delegates all governance powers to a delegatee.\n *\n * @param delegatee The address to delegate power to.\n */\n",
+        "@notice": "Delegates all governance powers to a delegatee.",
+        "@param1": "delegatee The address to delegate power to.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDelegateeByType",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegator",
+                "type": "address"
+            },
+            {
+                "name": "delegationType",
+                "type": "DelegationType"
+            }
+        ],
+        "func": "function getDelegateeByType(\n address delegator,\n DelegationType delegationType\n )\n external\n override\n view\n returns (address)\n {\n (, , mapping(address => address) storage delegates) = _getDelegationDataByType(delegationType);\n\n return _getDelegatee(delegator, delegates);\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the delegatee of a user.",
+            " *",
+            " * @param delegator The address of the delegator.",
+            " * @param delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the delegatee of a user.\n *\n * @param delegator The address of the delegator.\n * @param delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).\n */\n",
+        "@notice": "Returns the delegatee of a user.",
+        "@param1": "delegator The address of the delegator.",
+        "@param2": "delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPowerCurrent",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "name": "delegationType",
+                "type": "DelegationType"
+            }
+        ],
+        "func": "function getPowerCurrent(\n address user,\n DelegationType delegationType\n )\n external\n override\n view\n returns (uint256)\n {\n (\n mapping(address => mapping(uint256 => Snapshot)) storage snapshots,\n mapping(address => uint256) storage snapshotsCounts,\n // delegates\n ) = _getDelegationDataByType(delegationType);\n\n return _searchByBlockNumber(snapshots, snapshotsCounts, user, block.number);\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the current power of a user. The current power is the power delegated",
+            " * at the time of the last snapshot.",
+            " *",
+            " * @param user The user whose power to query.",
+            " * @param delegationType The type of power (VOTING_POWER, PROPOSITION_POWER).",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the current power of a user. The current power is the power delegated\n * at the time of the last snapshot.\n *\n * @param user The user whose power to query.\n * @param delegationType The type of power (VOTING_POWER, PROPOSITION_POWER).\n */\n",
+        "@notice": "Returns the current power of a user. The current power is the power delegated * at the time of the last snapshot.",
+        "@param1": "user The user whose power to query.",
+        "@param2": "delegationType The type of power (VOTING_POWER, PROPOSITION_POWER).",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPowerAtBlock",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "name": "blockNumber",
+                "type": "uint256"
+            },
+            {
+                "name": "delegationType",
+                "type": "DelegationType"
+            }
+        ],
+        "func": "function getPowerAtBlock(\n address user,\n uint256 blockNumber,\n DelegationType delegationType\n )\n external\n override\n view\n returns (uint256)\n {\n (\n mapping(address => mapping(uint256 => Snapshot)) storage snapshots,\n mapping(address => uint256) storage snapshotsCounts,\n // delegates\n ) = _getDelegationDataByType(delegationType);\n\n return _searchByBlockNumber(snapshots, snapshotsCounts, user, blockNumber);\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the power of a user at a certain block.",
+            " *",
+            " * @param user The user whose power to query.",
+            " * @param blockNumber The block number at which to get the user's power.",
+            " * @param delegationType The type of power (VOTING_POWER, PROPOSITION_POWER).",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the power of a user at a certain block.\n *\n * @param user The user whose power to query.\n * @param blockNumber The block number at which to get the user's power.\n * @param delegationType The type of power (VOTING_POWER, PROPOSITION_POWER).\n */\n",
+        "@notice": "Returns the power of a user at a certain block.",
+        "@param1": "user The user whose power to query.",
+        "@param2": "blockNumber The block number at which to get the user's power.",
+        "@param3": "delegationType The type of power (VOTING_POWER, PROPOSITION_POWER).",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addToTokenTransferAllowlist",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addressesToAdd",
+                "type": "address[] calldata"
+            }
+        ],
+        "func": "function addToTokenTransferAllowlist(\n address[] calldata addressesToAdd\n )\n external\n onlyOwner\n {\n for (uint256 i = 0; i < addressesToAdd.length; i++) {\n require(\n !_tokenTransferAllowlist[addressesToAdd[i]],\n 'ADDRESS_EXISTS_IN_TRANSFER_ALLOWLIST'\n );\n _tokenTransferAllowlist[addressesToAdd[i]] = true;\n emit TransferAllowlistUpdated(addressesToAdd[i], true);\n }\n }",
+        "comments": [
+            "",
+            " // ============ Other Functions ============",
+            "",
+            " /**",
+            " * @notice Adds addresses to the token transfer allowlist. Reverts if any of the addresses",
+            " * already exist in the allowlist. Only callable by owner.",
+            " *",
+            " * @param addressesToAdd Addresses to add to the token transfer allowlist.",
+            " */",
+            " "
+        ],
+        "comt": "\n // ============ Other Functions ============\n\n /**\n * @notice Adds addresses to the token transfer allowlist. Reverts if any of the addresses\n * already exist in the allowlist. Only callable by owner.\n *\n * @param addressesToAdd Addresses to add to the token transfer allowlist.\n */\n ",
+        "@notice": "Adds addresses to the token transfer allowlist. Reverts if any of the addresses * already exist in the allowlist. Only callable by owner.",
+        "@param1": "addressesToAdd Addresses to add to the token transfer allowlist.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "removeFromTokenTransferAllowlist",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "addressesToRemove",
+                "type": "address[] calldata"
+            }
+        ],
+        "func": "function removeFromTokenTransferAllowlist(\n address[] calldata addressesToRemove\n )\n external\n onlyOwner\n {\n for (uint256 i = 0; i < addressesToRemove.length; i++) {\n require(\n _tokenTransferAllowlist[addressesToRemove[i]],\n 'ADDRESS_DOES_NOT_EXIST_IN_TRANSFER_ALLOWLIST'\n );\n _tokenTransferAllowlist[addressesToRemove[i]] = false;\n emit TransferAllowlistUpdated(addressesToRemove[i], false);\n }\n }",
+        "comments": [
+            "/**",
+            " * @notice Removes addresses from the token transfer allowlist. Reverts if any of the addresses",
+            " * don't exist in the allowlist. Only callable by owner.",
+            " *",
+            " * @param addressesToRemove Addresses to remove from the token transfer allowlist.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Removes addresses from the token transfer allowlist. Reverts if any of the addresses\n * don't exist in the allowlist. Only callable by owner.\n *\n * @param addressesToRemove Addresses to remove from the token transfer allowlist.\n */\n",
+        "@notice": "Removes addresses from the token transfer allowlist. Reverts if any of the addresses * don't exist in the allowlist. Only callable by owner.",
+        "@param1": "addressesToRemove Addresses to remove from the token transfer allowlist.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "updateTransfersRestrictedBefore",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "transfersRestrictedBefore",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateTransfersRestrictedBefore(\n uint256 transfersRestrictedBefore\n )\n external\n onlyOwner\n {\n uint256 previousTransfersRestrictedBefore = _transfersRestrictedBefore;\n require(\n block.timestamp < previousTransfersRestrictedBefore,\n 'TRANSFER_RESTRICTION_ENDED'\n );\n require(\n previousTransfersRestrictedBefore <= transfersRestrictedBefore,\n 'NEW_TRANSFER_RESTRICTION_TOO_EARLY'\n );\n require(\n transfersRestrictedBefore <= TRANSFER_RESTRICTION_LIFTED_NO_LATER_THAN,\n 'AFTER_MAX_TRANSFER_RESTRICTION'\n );\n\n _transfersRestrictedBefore = transfersRestrictedBefore;\n\n emit TransfersRestrictedBeforeUpdated(transfersRestrictedBefore);\n }",
+        "comments": [
+            "/**",
+            " * @notice Updates the transfer restriction. Reverts if the transfer restriction has already passed,",
+            " * the new transfer restriction is earlier than the previous one, or the new transfer restriction is",
+            " * after the maximum transfer restriction.",
+            " *",
+            " * @param transfersRestrictedBefore The timestamp on and after which non-allowlisted transfers may occur.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Updates the transfer restriction. Reverts if the transfer restriction has already passed,\n * the new transfer restriction is earlier than the previous one, or the new transfer restriction is\n * after the maximum transfer restriction.\n *\n * @param transfersRestrictedBefore The timestamp on and after which non-allowlisted transfers may occur.\n */\n",
+        "@notice": "Updates the transfer restriction. Reverts if the transfer restriction has already passed, * the new transfer restriction is earlier than the previous one, or the new transfer restriction is * after the maximum transfer restriction.",
+        "@param1": "transfersRestrictedBefore The timestamp on and after which non-allowlisted transfers may occur.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(\n address recipient,\n uint256 amount\n )\n external\n onlyOwner\n {\n require(\n block.timestamp >= _mintingRestrictedBefore,\n 'MINT_TOO_EARLY'\n );\n require(\n amount <= totalSupply().mul(MINT_MAX_PERCENT).div(100),\n 'MAX_MINT_EXCEEDED'\n );\n\n // Update the next allowed minting time.\n _mintingRestrictedBefore = block.timestamp.add(MINT_MIN_INTERVAL);\n\n // Mint the amount.\n _mint(recipient, amount);\n }",
+        "comments": [
+            "/**",
+            " * @notice Mint new tokens. Only callable by owner after the required time period has elapsed.",
+            " *",
+            " * @param recipient The address to receive minted tokens.",
+            " * @param amount The number of tokens to mint.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Mint new tokens. Only callable by owner after the required time period has elapsed.\n *\n * @param recipient The address to receive minted tokens.\n * @param amount The number of tokens to mint.\n */\n",
+        "@notice": "Mint new tokens. Only callable by owner after the required time period has elapsed.",
+        "@param1": "recipient The address to receive minted tokens.",
+        "@param2": "amount The number of tokens to mint.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "permit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function permit(\n address owner,\n address spender,\n uint256 value,\n uint256 deadline,\n uint8 v,\n bytes32 r,\n bytes32 s\n )\n external\n {\n require(\n owner != address(0),\n 'INVALID_OWNER'\n );\n require(\n block.timestamp <= deadline,\n 'INVALID_EXPIRATION'\n );\n uint256 currentValidNonce = _nonces[owner];\n bytes32 digest = keccak256(\n abi.encodePacked(\n '\\x19\\x01',\n DOMAIN_SEPARATOR,\n keccak256(abi.encode(PERMIT_TYPEHASH, owner, spender, value, currentValidNonce, deadline))\n )\n );\n\n require(\n owner == ecrecover(digest, v, r, s),\n 'INVALID_SIGNATURE'\n );\n _nonces[owner] = currentValidNonce.add(1);\n _approve(owner, spender, value);\n }",
+        "comments": [
+            "/**",
+            " * @notice Implements the permit function as specified in EIP-2612.",
+            " *",
+            " * @param owner Address of the token owner.",
+            " * @param spender Address of the spender.",
+            " * @param value Amount of allowance.",
+            " * @param deadline Expiration timestamp for the signature.",
+            " * @param v Signature param.",
+            " * @param r Signature param.",
+            " * @param s Signature param.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Implements the permit function as specified in EIP-2612.\n *\n * @param owner Address of the token owner.\n * @param spender Address of the spender.\n * @param value Amount of allowance.\n * @param deadline Expiration timestamp for the signature.\n * @param v Signature param.\n * @param r Signature param.\n * @param s Signature param.\n */\n",
+        "@notice": "Implements the permit function as specified in EIP-2612.",
+        "@param1": "owner Address of the token owner.",
+        "@param2": "spender Address of the spender.",
+        "@param3": "value Amount of allowance.",
+        "@param4": "deadline Expiration timestamp for the signature.",
+        "@param5": "v Signature param.",
+        "@param6": "r Signature param.",
+        "@param7": "s Signature param.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "nonces",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function nonces(\n address owner\n )\n external\n view\n returns (uint256)\n {\n return _nonces[owner];\n }",
+        "comments": [
+            "/**",
+            " * @notice Get the next valid nonce for EIP-712 signatures.",
+            " *",
+            " * This nonce should be used when signing for any of the following functions:",
+            " * - permit()",
+            " * - delegateByTypeBySig()",
+            " * - delegateBySig()",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get the next valid nonce for EIP-712 signatures.\n *\n * This nonce should be used when signing for any of the following functions:\n * - permit()\n * - delegateByTypeBySig()\n * - delegateBySig()\n */\n",
+        "@notice": "Get the next valid nonce for EIP-712 signatures. * * This nonce should be used when signing for any of the following functions: * - permit() * - delegateByTypeBySig() * - delegateBySig()",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(\n address recipient,\n uint256 amount\n )\n public\n override\n returns (bool)\n {\n _requireTransferAllowed(_msgSender(), recipient);\n return super.transfer(recipient, amount);\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n address sender,\n address recipient,\n uint256 amount\n )\n public\n override\n returns (bool)\n {\n _requireTransferAllowed(sender, recipient);\n return super.transferFrom(sender, recipient, amount);\n }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateByTypeBySig",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            },
+            {
+                "name": "delegationType",
+                "type": "DelegationType"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "expiry",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function delegateByTypeBySig(\n address delegatee,\n DelegationType delegationType,\n uint256 nonce,\n uint256 expiry,\n uint8 v,\n bytes32 r,\n bytes32 s\n )\n public\n {\n bytes32 structHash = keccak256(\n abi.encode(DELEGATE_BY_TYPE_TYPEHASH, delegatee, uint256(delegationType), nonce, expiry)\n );\n bytes32 digest = keccak256(abi.encodePacked('\\x19\\x01', DOMAIN_SEPARATOR, structHash));\n address signer = ecrecover(digest, v, r, s);\n require(\n signer != address(0),\n 'INVALID_SIGNATURE'\n );\n require(\n nonce == _nonces[signer]++,\n 'INVALID_NONCE'\n );\n require(\n block.timestamp <= expiry,\n 'INVALID_EXPIRATION'\n );\n _delegateByType(signer, delegatee, delegationType);\n }",
+        "comments": [
+            "/**",
+            " * @dev Delegates specific governance power from signer to `delegatee` using an EIP-712 signature.",
+            " *",
+            " * @param delegatee The address to delegate votes to.",
+            " * @param delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).",
+            " * @param nonce The signer's nonce for EIP-712 signatures on this contract.",
+            " * @param expiry Expiration timestamp for the signature.",
+            " * @param v Signature param.",
+            " * @param r Signature param.",
+            " * @param s Signature param.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Delegates specific governance power from signer to `delegatee` using an EIP-712 signature.\n *\n * @param delegatee The address to delegate votes to.\n * @param delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).\n * @param nonce The signer's nonce for EIP-712 signatures on this contract.\n * @param expiry Expiration timestamp for the signature.\n * @param v Signature param.\n * @param r Signature param.\n * @param s Signature param.\n */\n",
+        "@dev": "Delegates specific governance power from signer to `delegatee` using an EIP-712 signature.",
+        "@param1": "delegatee The address to delegate votes to.",
+        "@param2": "delegationType The type of delegation (VOTING_POWER, PROPOSITION_POWER).",
+        "@param3": "nonce The signer's nonce for EIP-712 signatures on this contract.",
+        "@param4": "expiry Expiration timestamp for the signature.",
+        "@param5": "v Signature param.",
+        "@param6": "r Signature param.",
+        "@param7": "s Signature param.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateBySig",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "expiry",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function delegateBySig(\n address delegatee,\n uint256 nonce,\n uint256 expiry,\n uint8 v,\n bytes32 r,\n bytes32 s\n )\n public\n {\n bytes32 structHash = keccak256(abi.encode(DELEGATE_TYPEHASH, delegatee, nonce, expiry));\n bytes32 digest = keccak256(abi.encodePacked('\\x19\\x01', DOMAIN_SEPARATOR, structHash));\n address signer = ecrecover(digest, v, r, s);\n require(\n signer != address(0),\n 'INVALID_SIGNATURE'\n );\n require(\n nonce == _nonces[signer]++,\n 'INVALID_NONCE'\n );\n require(\n block.timestamp <= expiry,\n 'INVALID_EXPIRATION'\n );\n _delegateByType(signer, delegatee, DelegationType.VOTING_POWER);\n _delegateByType(signer, delegatee, DelegationType.PROPOSITION_POWER);\n }",
+        "comments": [
+            "/**",
+            " * @dev Delegates both governance powers from signer to `delegatee` using an EIP-712 signature.",
+            " *",
+            " * @param delegatee The address to delegate votes to.",
+            " * @param nonce The signer's nonce for EIP-712 signatures on this contract.",
+            " * @param expiry Expiration timestamp for the signature.",
+            " * @param v Signature param.",
+            " * @param r Signature param.",
+            " * @param s Signature param.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Delegates both governance powers from signer to `delegatee` using an EIP-712 signature.\n *\n * @param delegatee The address to delegate votes to.\n * @param nonce The signer's nonce for EIP-712 signatures on this contract.\n * @param expiry Expiration timestamp for the signature.\n * @param v Signature param.\n * @param r Signature param.\n * @param s Signature param.\n */\n",
+        "@dev": "Delegates both governance powers from signer to `delegatee` using an EIP-712 signature.",
+        "@param1": "delegatee The address to delegate votes to.",
+        "@param2": "nonce The signer's nonce for EIP-712 signatures on this contract.",
+        "@param3": "expiry Expiration timestamp for the signature.",
+        "@param4": "v Signature param.",
+        "@param5": "r Signature param.",
+        "@param6": "s Signature param.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

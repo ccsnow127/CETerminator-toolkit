@@ -1,0 +1,1709 @@
+[
+    {
+        "transactions": 962441,
+        "function_num": 44
+    },
+    {
+        "name": "clipperSwapToWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "clipperExchange",
+                "type": "IClipperExchangeInterface"
+            },
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "srcToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "dstToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "inputAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "outputAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "goodUntil",
+                "type": "uint256"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "vs",
+                "type": "bytes32"
+            },
+            {
+                "name": "permit",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function clipperSwapToWithPermit(\n        IClipperExchangeInterface clipperExchange,\n        address payable recipient,\n        IERC20 srcToken,\n        IERC20 dstToken,\n        uint256 inputAmount,\n        uint256 outputAmount,\n        uint256 goodUntil,\n        bytes32 r,\n        bytes32 vs,\n        bytes calldata permit\n    ) external returns(uint256 returnAmount) {\n        srcToken.safePermit(permit);\n        return clipperSwapTo(clipperExchange, recipient, srcToken, dstToken, inputAmount, outputAmount, goodUntil, r, vs);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Same as `clipperSwapTo` but calls permit first,",
+            "    /// allowing to approve token spending and make a swap in one transaction.",
+            "    /// @dev See tests for examples",
+            "    /// @param recipient Address that will receive swap funds",
+            "    /// @param srcToken Source token",
+            "    /// @param dstToken Destination token",
+            "    /// @param inputAmount Amount of source tokens to swap",
+            "    /// @param outputAmount Amount of destination tokens to receive",
+            "    /// @param goodUntil Timestamp until the swap will be valid",
+            "    /// @param r Clipper order signature (r part)",
+            "    /// @param vs Clipper order signature (vs part)",
+            "    /// @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.",
+            "    /// @return returnAmount Amount of destination tokens received",
+            "    "
+        ],
+        "comt": "\n    /// @notice Same as `clipperSwapTo` but calls permit first,\n    /// allowing to approve token spending and make a swap in one transaction.\n    /// @dev See tests for examples\n    /// @param recipient Address that will receive swap funds\n    /// @param srcToken Source token\n    /// @param dstToken Destination token\n    /// @param inputAmount Amount of source tokens to swap\n    /// @param outputAmount Amount of destination tokens to receive\n    /// @param goodUntil Timestamp until the swap will be valid\n    /// @param r Clipper order signature (r part)\n    /// @param vs Clipper order signature (vs part)\n    /// @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.\n    /// @return returnAmount Amount of destination tokens received\n    ",
+        "@notice": "Same as `clipperSwapTo` but calls permit first, /// allowing to approve token spending and make a swap in one transaction.",
+        "@dev": "See tests for examples",
+        "@param1": "recipient Address that will receive swap funds",
+        "@param2": "srcToken Source token",
+        "@param3": "dstToken Destination token",
+        "@param4": "inputAmount Amount of source tokens to swap",
+        "@param5": "outputAmount Amount of destination tokens to receive",
+        "@param6": "goodUntil Timestamp until the swap will be valid",
+        "@param7": "r Clipper order signature (r part)",
+        "@param8": "vs Clipper order signature (vs part)",
+        "@param9": "permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.",
+        "@return1": "returnAmount Amount of destination tokens received",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "clipperSwap",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "clipperExchange",
+                "type": "IClipperExchangeInterface"
+            },
+            {
+                "name": "srcToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "dstToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "inputAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "outputAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "goodUntil",
+                "type": "uint256"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "vs",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function clipperSwap(\n        IClipperExchangeInterface clipperExchange,\n        IERC20 srcToken,\n        IERC20 dstToken,\n        uint256 inputAmount,\n        uint256 outputAmount,\n        uint256 goodUntil,\n        bytes32 r,\n        bytes32 vs\n    ) external payable returns(uint256 returnAmount) {\n        return clipperSwapTo(clipperExchange, payable(msg.sender), srcToken, dstToken, inputAmount, outputAmount, goodUntil, r, vs);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Same as `clipperSwapTo` but uses `msg.sender` as recipient",
+            "    /// @param srcToken Source token",
+            "    /// @param dstToken Destination token",
+            "    /// @param inputAmount Amount of source tokens to swap",
+            "    /// @param outputAmount Amount of destination tokens to receive",
+            "    /// @param goodUntil Timestamp until the swap will be valid",
+            "    /// @param r Clipper order signature (r part)",
+            "    /// @param vs Clipper order signature (vs part)",
+            "    /// @return returnAmount Amount of destination tokens received",
+            "    "
+        ],
+        "comt": "\n    /// @notice Same as `clipperSwapTo` but uses `msg.sender` as recipient\n    /// @param srcToken Source token\n    /// @param dstToken Destination token\n    /// @param inputAmount Amount of source tokens to swap\n    /// @param outputAmount Amount of destination tokens to receive\n    /// @param goodUntil Timestamp until the swap will be valid\n    /// @param r Clipper order signature (r part)\n    /// @param vs Clipper order signature (vs part)\n    /// @return returnAmount Amount of destination tokens received\n    ",
+        "@notice": "Same as `clipperSwapTo` but uses `msg.sender` as recipient",
+        "@param1": "srcToken Source token",
+        "@param2": "dstToken Destination token",
+        "@param3": "inputAmount Amount of source tokens to swap",
+        "@param4": "outputAmount Amount of destination tokens to receive",
+        "@param5": "goodUntil Timestamp until the swap will be valid",
+        "@param6": "r Clipper order signature (r part)",
+        "@param7": "vs Clipper order signature (vs part)",
+        "@return1": "returnAmount Amount of destination tokens received",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "clipperSwapTo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "clipperExchange",
+                "type": "IClipperExchangeInterface"
+            },
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "srcToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "dstToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "inputAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "outputAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "goodUntil",
+                "type": "uint256"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "vs",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function clipperSwapTo(\n        IClipperExchangeInterface clipperExchange,\n        address payable recipient,\n        IERC20 srcToken,\n        IERC20 dstToken,\n        uint256 inputAmount,\n        uint256 outputAmount,\n        uint256 goodUntil,\n        bytes32 r,\n        bytes32 vs\n    ) public payable returns(uint256 returnAmount) {\n        bool srcETH = srcToken == _ETH;\n        if (srcETH) {\n            if (msg.value != inputAmount) revert RouterErrors.InvalidMsgValue();\n        } else if (srcToken == _WETH) {\n            srcETH = true;\n            if (msg.value != 0) revert RouterErrors.InvalidMsgValue();\n            // _WETH.transferFrom(msg.sender, address(this), inputAmount);\n            // _WETH.withdraw(inputAmount);\n            address weth = address(_WETH);\n            bytes4 transferFromSelector = _WETH.transferFrom.selector;\n            bytes4 withdrawSelector = _WETH.withdraw.selector;\n            /// @solidity memory-safe-assembly\n            assembly { // solhint-disable-line no-inline-assembly\n                let ptr := mload(0x40)\n\n                mstore(ptr, transferFromSelector)\n                mstore(add(ptr, 0x04), caller())\n                mstore(add(ptr, 0x24), address())\n                mstore(add(ptr, 0x44), inputAmount)\n                if iszero(call(gas(), weth, 0, ptr, 0x64, 0, 0)) {\n                    returndatacopy(ptr, 0, returndatasize())\n                    revert(ptr, returndatasize())\n                }\n\n                mstore(ptr, withdrawSelector)\n                mstore(add(ptr, 0x04), inputAmount)\n                if iszero(call(gas(), weth, 0, ptr, 0x24, 0, 0)) {\n                    returndatacopy(ptr, 0, returndatasize())\n                    revert(ptr, returndatasize())\n                }\n            }\n        } else {\n            if (msg.value != 0) revert RouterErrors.InvalidMsgValue();\n            srcToken.safeTransferFrom(msg.sender, address(clipperExchange), inputAmount);\n        }\n\n        if (srcETH) {\n            // clipperExchange.sellEthForToken{value: inputAmount}(address(dstToken), inputAmount, outputAmount, goodUntil, recipient, signature, _INCH_TAG);\n            address clipper = address(clipperExchange);\n            bytes4 selector = clipperExchange.sellEthForToken.selector;\n            /// @solidity memory-safe-assembly\n            assembly { // solhint-disable-line no-inline-assembly\n                let ptr := mload(0x40)\n\n                mstore(ptr, selector)\n                mstore(add(ptr, 0x04), dstToken)\n                mstore(add(ptr, 0x24), inputAmount)\n                mstore(add(ptr, 0x44), outputAmount)\n                mstore(add(ptr, 0x64), goodUntil)\n                mstore(add(ptr, 0x84), recipient)\n                mstore(add(ptr, 0xa4), add(27, shr(_SIGNATURE_V_SHIFT, vs)))\n                mstore(add(ptr, 0xc4), r)\n                mstore(add(ptr, 0xe4), and(vs, _SIGNATURE_S_MASK))\n                mstore(add(ptr, 0x104), 0x120)\n                mstore(add(ptr, 0x143), _INCH_TAG_WITH_LENGTH_PREFIX)\n                if iszero(call(gas(), clipper, inputAmount, ptr, 0x149, 0, 0)) {\n                    returndatacopy(ptr, 0, returndatasize())\n                    revert(ptr, returndatasize())\n                }\n            }\n        } else if (dstToken == _ETH || dstToken == _WETH) {\n            // clipperExchange.sellTokenForEth(address(srcToken), inputAmount, outputAmount, goodUntil, recipient, signature, _INCH_TAG);\n            address clipper = address(clipperExchange);\n            bytes4 selector = clipperExchange.sellTokenForEth.selector;\n            /// @solidity memory-safe-assembly\n            assembly { // solhint-disable-line no-inline-assembly\n                let ptr := mload(0x40)\n\n                mstore(ptr, selector)\n                mstore(add(ptr, 0x04), srcToken)\n                mstore(add(ptr, 0x24), inputAmount)\n                mstore(add(ptr, 0x44), outputAmount)\n                mstore(add(ptr, 0x64), goodUntil)\n                switch iszero(dstToken)\n                case 1 {\n                    mstore(add(ptr, 0x84), recipient)\n                }\n                default {\n                    mstore(add(ptr, 0x84), address())\n                }\n                mstore(add(ptr, 0xa4), add(27, shr(_SIGNATURE_V_SHIFT, vs)))\n                mstore(add(ptr, 0xc4), r)\n                mstore(add(ptr, 0xe4), and(vs, _SIGNATURE_S_MASK))\n                mstore(add(ptr, 0x104), 0x120)\n                mstore(add(ptr, 0x143), _INCH_TAG_WITH_LENGTH_PREFIX)\n                if iszero(call(gas(), clipper, 0, ptr, 0x149, 0, 0)) {\n                    returndatacopy(ptr, 0, returndatasize())\n                    revert(ptr, returndatasize())\n                }\n            }\n\n            if (dstToken == _WETH) {\n                // _WETH.deposit{value: outputAmount}();\n                // _WETH.transfer(recipient, outputAmount);\n                address weth = address(_WETH);\n                bytes4 depositSelector = _WETH.deposit.selector;\n                bytes4 transferSelector = _WETH.transfer.selector;\n                /// @solidity memory-safe-assembly\n                assembly { // solhint-disable-line no-inline-assembly\n                    let ptr := mload(0x40)\n\n                    mstore(ptr, depositSelector)\n                    if iszero(call(gas(), weth, outputAmount, ptr, 0x04, 0, 0)) {\n                        returndatacopy(ptr, 0, returndatasize())\n                        revert(ptr, returndatasize())\n                    }\n\n                    mstore(ptr, transferSelector)\n                    mstore(add(ptr, 0x04), recipient)\n                    mstore(add(ptr, 0x24), outputAmount)\n                    if iszero(call(gas(), weth, 0, ptr, 0x44, 0, 0)) {\n                        returndatacopy(ptr, 0, returndatasize())\n                        revert(ptr, returndatasize())\n                    }\n                }\n            }\n        } else {\n            // clipperExchange.swap(address(srcToken), address(dstToken), inputAmount, outputAmount, goodUntil, recipient, signature, _INCH_TAG);\n            address clipper = address(clipperExchange);\n            bytes4 selector = clipperExchange.swap.selector;\n            /// @solidity memory-safe-assembly\n            assembly { // solhint-disable-line no-inline-assembly\n                let ptr := mload(0x40)\n\n                mstore(ptr, selector)\n                mstore(add(ptr, 0x04), srcToken)\n                mstore(add(ptr, 0x24), dstToken)\n                mstore(add(ptr, 0x44), inputAmount)\n                mstore(add(ptr, 0x64), outputAmount)\n                mstore(add(ptr, 0x84), goodUntil)\n                mstore(add(ptr, 0xa4), recipient)\n                mstore(add(ptr, 0xc4), add(27, shr(_SIGNATURE_V_SHIFT, vs)))\n                mstore(add(ptr, 0xe4), r)\n                mstore(add(ptr, 0x104), and(vs, _SIGNATURE_S_MASK))\n                mstore(add(ptr, 0x124), 0x140)\n                mstore(add(ptr, 0x163), _INCH_TAG_WITH_LENGTH_PREFIX)\n                if iszero(call(gas(), clipper, 0, ptr, 0x169, 0, 0)) {\n                    returndatacopy(ptr, 0, returndatasize())\n                    revert(ptr, returndatasize())\n                }\n            }\n        }\n\n        return outputAmount;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Performs swap using Clipper exchange. Wraps and unwraps ETH if required.",
+            "    /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited",
+            "    /// @param recipient Address that will receive swap funds",
+            "    /// @param srcToken Source token",
+            "    /// @param dstToken Destination token",
+            "    /// @param inputAmount Amount of source tokens to swap",
+            "    /// @param outputAmount Amount of destination tokens to receive",
+            "    /// @param goodUntil Timestamp until the swap will be valid",
+            "    /// @param r Clipper order signature (r part)",
+            "    /// @param vs Clipper order signature (vs part)",
+            "    /// @return returnAmount Amount of destination tokens received",
+            "    "
+        ],
+        "comt": "\n    /// @notice Performs swap using Clipper exchange. Wraps and unwraps ETH if required.\n    /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited\n    /// @param recipient Address that will receive swap funds\n    /// @param srcToken Source token\n    /// @param dstToken Destination token\n    /// @param inputAmount Amount of source tokens to swap\n    /// @param outputAmount Amount of destination tokens to receive\n    /// @param goodUntil Timestamp until the swap will be valid\n    /// @param r Clipper order signature (r part)\n    /// @param vs Clipper order signature (vs part)\n    /// @return returnAmount Amount of destination tokens received\n    ",
+        "@notice": "Performs swap using Clipper exchange. Wraps and unwraps ETH if required. /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited",
+        "@param1": "recipient Address that will receive swap funds",
+        "@param2": "srcToken Source token",
+        "@param3": "dstToken Destination token",
+        "@param4": "inputAmount Amount of source tokens to swap",
+        "@param5": "outputAmount Amount of destination tokens to receive",
+        "@param6": "goodUntil Timestamp until the swap will be valid",
+        "@param7": "r Clipper order signature (r part)",
+        "@param8": "vs Clipper order signature (vs part)",
+        "@return1": "returnAmount Amount of destination tokens received",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "swap",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "executor",
+                "type": "IAggregationExecutor"
+            },
+            {
+                "name": "desc",
+                "type": "SwapDescription calldata"
+            },
+            {
+                "name": "permit",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function swap(\n        IAggregationExecutor executor,\n        SwapDescription calldata desc,\n        bytes calldata permit,\n        bytes calldata data\n    )\n        external\n        payable\n        returns (\n            uint256 returnAmount,\n            uint256 spentAmount\n        )\n    {\n        if (desc.minReturnAmount == 0) revert ZeroMinReturn();\n\n        IERC20 srcToken = desc.srcToken;\n        IERC20 dstToken = desc.dstToken;\n\n        bool srcETH = srcToken.isETH();\n        if (desc.flags & _REQUIRES_EXTRA_ETH != 0) {\n            if (msg.value <= (srcETH ? desc.amount : 0)) revert RouterErrors.InvalidMsgValue();\n        } else {\n            if (msg.value != (srcETH ? desc.amount : 0)) revert RouterErrors.InvalidMsgValue();\n        }\n\n        if (!srcETH) {\n            if (permit.length > 0) {\n                srcToken.safePermit(permit);\n            }\n            srcToken.safeTransferFrom(msg.sender, desc.srcReceiver, desc.amount);\n        }\n\n        _execute(executor, msg.sender, desc.amount, data);\n\n        spentAmount = desc.amount;\n        // we leave 1 wei on the router for gas optimisations reasons\n        returnAmount = dstToken.uniBalanceOf(address(this));\n        if (returnAmount == 0) revert ZeroReturnAmount();\n        unchecked { returnAmount--; }\n\n        if (desc.flags & _PARTIAL_FILL != 0) {\n            uint256 unspentAmount = srcToken.uniBalanceOf(address(this));\n            if (unspentAmount > 1) {\n                // we leave 1 wei on the router for gas optimisations reasons\n                unchecked { unspentAmount--; }\n                spentAmount -= unspentAmount;\n                srcToken.uniTransfer(payable(msg.sender), unspentAmount);\n            }\n            if (returnAmount * desc.amount < desc.minReturnAmount * spentAmount) revert RouterErrors.ReturnAmountIsNotEnough();\n        } else {\n            if (returnAmount < desc.minReturnAmount) revert RouterErrors.ReturnAmountIsNotEnough();\n        }\n\n        address payable dstReceiver = (desc.dstReceiver == address(0)) ? payable(msg.sender) : desc.dstReceiver;\n        dstToken.uniTransfer(dstReceiver, returnAmount);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Performs a swap, delegating all calls encoded in `data` to `executor`. See tests for usage examples",
+            "    /// @dev router keeps 1 wei of every token on the contract balance for gas optimisations reasons. This affects first swap of every token by leaving 1 wei on the contract.",
+            "    /// @param executor Aggregation executor that executes calls described in `data`",
+            "    /// @param desc Swap description",
+            "    /// @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.",
+            "    /// @param data Encoded calls that `caller` should execute in between of swaps",
+            "    /// @return returnAmount Resulting token amount",
+            "    /// @return spentAmount Source token amount",
+            "    "
+        ],
+        "comt": "\n    /// @notice Performs a swap, delegating all calls encoded in `data` to `executor`. See tests for usage examples\n    /// @dev router keeps 1 wei of every token on the contract balance for gas optimisations reasons. This affects first swap of every token by leaving 1 wei on the contract.\n    /// @param executor Aggregation executor that executes calls described in `data`\n    /// @param desc Swap description\n    /// @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.\n    /// @param data Encoded calls that `caller` should execute in between of swaps\n    /// @return returnAmount Resulting token amount\n    /// @return spentAmount Source token amount\n    ",
+        "@notice": "Performs a swap, delegating all calls encoded in `data` to `executor`. See tests for usage examples",
+        "@dev": "router keeps 1 wei of every token on the contract balance for gas optimisations reasons. This affects first swap of every token by leaving 1 wei on the contract.",
+        "@param1": "executor Aggregation executor that executes calls described in `data`",
+        "@param2": "desc Swap description",
+        "@param3": "permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.",
+        "@param4": "data Encoded calls that `caller` should execute in between of swaps",
+        "@return1": "returnAmount Resulting token amount",
+        "@return2": "spentAmount Source token amount",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unoswapToWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "srcToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "minReturn",
+                "type": "uint256"
+            },
+            {
+                "name": "pools",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "permit",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function unoswapToWithPermit(\n        address payable recipient,\n        IERC20 srcToken,\n        uint256 amount,\n        uint256 minReturn,\n        uint256[] calldata pools,\n        bytes calldata permit\n    ) external returns(uint256 returnAmount) {\n        srcToken.safePermit(permit);\n        return _unoswap(recipient, srcToken, amount, minReturn, pools);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Same as `unoswapTo` but calls permit first,",
+            "    /// allowing to approve token spending and make a swap in one transaction.",
+            "    /// @param recipient Address that will receive swapped funds",
+            "    /// @param srcToken Source token",
+            "    /// @param amount Amount of source tokens to swap",
+            "    /// @param minReturn Minimal allowed returnAmount to make transaction commit",
+            "    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+            "    /// @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.",
+            "    /// See tests for examples",
+            "    "
+        ],
+        "comt": "\n    /// @notice Same as `unoswapTo` but calls permit first,\n    /// allowing to approve token spending and make a swap in one transaction.\n    /// @param recipient Address that will receive swapped funds\n    /// @param srcToken Source token\n    /// @param amount Amount of source tokens to swap\n    /// @param minReturn Minimal allowed returnAmount to make transaction commit\n    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen\n    /// @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.\n    /// See tests for examples\n    ",
+        "@notice": "Same as `unoswapTo` but calls permit first, /// allowing to approve token spending and make a swap in one transaction.",
+        "@param1": "recipient Address that will receive swapped funds",
+        "@param2": "srcToken Source token",
+        "@param3": "amount Amount of source tokens to swap",
+        "@param4": "minReturn Minimal allowed returnAmount to make transaction commit",
+        "@param5": "pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+        "@param6": "permit Should contain valid permit that can be used in `IERC20Permit.permit` calls. /// See tests for examples",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unoswapTo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "srcToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "minReturn",
+                "type": "uint256"
+            },
+            {
+                "name": "pools",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function unoswapTo(\n        address payable recipient,\n        IERC20 srcToken,\n        uint256 amount,\n        uint256 minReturn,\n        uint256[] calldata pools\n    ) external payable returns(uint256 returnAmount) {\n        return _unoswap(recipient, srcToken, amount, minReturn, pools);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Performs swap using Uniswap exchange. Wraps and unwraps ETH if required.",
+            "    /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited",
+            "    /// @param recipient Address that will receive swapped funds",
+            "    /// @param srcToken Source token",
+            "    /// @param amount Amount of source tokens to swap",
+            "    /// @param minReturn Minimal allowed returnAmount to make transaction commit",
+            "    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+            "    "
+        ],
+        "comt": "\n    /// @notice Performs swap using Uniswap exchange. Wraps and unwraps ETH if required.\n    /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited\n    /// @param recipient Address that will receive swapped funds\n    /// @param srcToken Source token\n    /// @param amount Amount of source tokens to swap\n    /// @param minReturn Minimal allowed returnAmount to make transaction commit\n    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen\n    ",
+        "@notice": "Performs swap using Uniswap exchange. Wraps and unwraps ETH if required. /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited",
+        "@param1": "recipient Address that will receive swapped funds",
+        "@param2": "srcToken Source token",
+        "@param3": "amount Amount of source tokens to swap",
+        "@param4": "minReturn Minimal allowed returnAmount to make transaction commit",
+        "@param5": "pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unoswap",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "srcToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "minReturn",
+                "type": "uint256"
+            },
+            {
+                "name": "pools",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function unoswap(\n        IERC20 srcToken,\n        uint256 amount,\n        uint256 minReturn,\n        uint256[] calldata pools\n    ) external payable returns(uint256 returnAmount) {\n        return _unoswap(payable(msg.sender), srcToken, amount, minReturn, pools);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Performs swap using Uniswap exchange. Wraps and unwraps ETH if required.",
+            "    /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited",
+            "    /// @param srcToken Source token",
+            "    /// @param amount Amount of source tokens to swap",
+            "    /// @param minReturn Minimal allowed returnAmount to make transaction commit",
+            "    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+            "    "
+        ],
+        "comt": "\n    /// @notice Performs swap using Uniswap exchange. Wraps and unwraps ETH if required.\n    /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited\n    /// @param srcToken Source token\n    /// @param amount Amount of source tokens to swap\n    /// @param minReturn Minimal allowed returnAmount to make transaction commit\n    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen\n    ",
+        "@notice": "Performs swap using Uniswap exchange. Wraps and unwraps ETH if required. /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited",
+        "@param1": "srcToken Source token",
+        "@param2": "amount Amount of source tokens to swap",
+        "@param3": "minReturn Minimal allowed returnAmount to make transaction commit",
+        "@param4": "pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "uniswapV3SwapToWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "srcToken",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "minReturn",
+                "type": "uint256"
+            },
+            {
+                "name": "pools",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "permit",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function uniswapV3SwapToWithPermit(\n        address payable recipient,\n        IERC20 srcToken,\n        uint256 amount,\n        uint256 minReturn,\n        uint256[] calldata pools,\n        bytes calldata permit\n    ) external returns(uint256 returnAmount) {\n        srcToken.safePermit(permit);\n        return _uniswapV3Swap(recipient, amount, minReturn, pools);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Same as `uniswapV3SwapTo` but calls permit first,",
+            "    /// allowing to approve token spending and make a swap in one transaction.",
+            "    /// @param recipient Address that will receive swap funds",
+            "    /// @param srcToken Source token",
+            "    /// @param amount Amount of source tokens to swap",
+            "    /// @param minReturn Minimal allowed returnAmount to make transaction commit",
+            "    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+            "    /// @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.",
+            "    /// See tests for examples",
+            "    "
+        ],
+        "comt": "\n    /// @notice Same as `uniswapV3SwapTo` but calls permit first,\n    /// allowing to approve token spending and make a swap in one transaction.\n    /// @param recipient Address that will receive swap funds\n    /// @param srcToken Source token\n    /// @param amount Amount of source tokens to swap\n    /// @param minReturn Minimal allowed returnAmount to make transaction commit\n    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen\n    /// @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.\n    /// See tests for examples\n    ",
+        "@notice": "Same as `uniswapV3SwapTo` but calls permit first, /// allowing to approve token spending and make a swap in one transaction.",
+        "@param1": "recipient Address that will receive swap funds",
+        "@param2": "srcToken Source token",
+        "@param3": "amount Amount of source tokens to swap",
+        "@param4": "minReturn Minimal allowed returnAmount to make transaction commit",
+        "@param5": "pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+        "@param6": "permit Should contain valid permit that can be used in `IERC20Permit.permit` calls. /// See tests for examples",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "uniswapV3Swap",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "minReturn",
+                "type": "uint256"
+            },
+            {
+                "name": "pools",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function uniswapV3Swap(\n        uint256 amount,\n        uint256 minReturn,\n        uint256[] calldata pools\n    ) external payable returns(uint256 returnAmount) {\n        return _uniswapV3Swap(payable(msg.sender), amount, minReturn, pools);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Same as `uniswapV3SwapTo` but uses `msg.sender` as recipient",
+            "    /// @param amount Amount of source tokens to swap",
+            "    /// @param minReturn Minimal allowed returnAmount to make transaction commit",
+            "    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+            "    "
+        ],
+        "comt": "\n    /// @notice Same as `uniswapV3SwapTo` but uses `msg.sender` as recipient\n    /// @param amount Amount of source tokens to swap\n    /// @param minReturn Minimal allowed returnAmount to make transaction commit\n    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen\n    ",
+        "@notice": "Same as `uniswapV3SwapTo` but uses `msg.sender` as recipient",
+        "@param1": "amount Amount of source tokens to swap",
+        "@param2": "minReturn Minimal allowed returnAmount to make transaction commit",
+        "@param3": "pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "uniswapV3SwapTo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address payable"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "minReturn",
+                "type": "uint256"
+            },
+            {
+                "name": "pools",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function uniswapV3SwapTo(\n        address payable recipient,\n        uint256 amount,\n        uint256 minReturn,\n        uint256[] calldata pools\n    ) external payable returns(uint256 returnAmount) {\n        return _uniswapV3Swap(recipient, amount, minReturn, pools);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Performs swap using Uniswap V3 exchange. Wraps and unwraps ETH if required.",
+            "    /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited",
+            "    /// @param recipient Address that will receive swap funds",
+            "    /// @param amount Amount of source tokens to swap",
+            "    /// @param minReturn Minimal allowed returnAmount to make transaction commit",
+            "    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+            "    "
+        ],
+        "comt": "\n    /// @notice Performs swap using Uniswap V3 exchange. Wraps and unwraps ETH if required.\n    /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited\n    /// @param recipient Address that will receive swap funds\n    /// @param amount Amount of source tokens to swap\n    /// @param minReturn Minimal allowed returnAmount to make transaction commit\n    /// @param pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen\n    ",
+        "@notice": "Performs swap using Uniswap V3 exchange. Wraps and unwraps ETH if required. /// Sending non-zero `msg.value` for anything but ETH swaps is prohibited",
+        "@param1": "recipient Address that will receive swap funds",
+        "@param2": "amount Amount of source tokens to swap",
+        "@param3": "minReturn Minimal allowed returnAmount to make transaction commit",
+        "@param4": "pools Pools chain used for swaps. Pools src and dst tokens should match to make swap happen",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "uniswapV3SwapCallback",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "amount0Delta",
+                "type": "int256"
+            },
+            {
+                "name": "amount1Delta",
+                "type": "int256"
+            },
+            {
+                "name": "*/",
+                "type": "bytes calldata /* data"
+            }
+        ],
+        "func": "function uniswapV3SwapCallback(\n        int256 amount0Delta,\n        int256 amount1Delta,\n        bytes calldata /* data */\n    ) external override {\n        assembly {  // solhint-disable-line no-inline-assembly\n            function reRevert() {\n                returndatacopy(0, 0, returndatasize())\n                revert(0, returndatasize())\n            }\n\n            function validateERC20Transfer(status) {\n                if iszero(status) {\n                    reRevert()\n                }\n                let success := or(\n                    iszero(returndatasize()),                       // empty return data\n                    and(gt(returndatasize(), 31), eq(mload(0), 1))  // true in return data\n                )\n                if iszero(success) {\n                    mstore(0, 0xf27f64e400000000000000000000000000000000000000000000000000000000)  // ERC20TransferFailed()\n                    revert(0, 4)\n                }\n            }\n\n            let emptyPtr := mload(0x40)\n            let resultPtr := add(emptyPtr, 0x15)  // 0x15 = _FF_FACTORY size\n\n            mstore(emptyPtr, _SELECTORS)\n            if iszero(staticcall(gas(), caller(), emptyPtr, 0x4, resultPtr, 0x20)) {\n                reRevert()\n            }\n            if iszero(staticcall(gas(), caller(), add(emptyPtr, 0x4), 0x4, add(resultPtr, 0x20), 0x20)) {\n                reRevert()\n            }\n            if iszero(staticcall(gas(), caller(), add(emptyPtr, 0x8), 0x4, add(resultPtr, 0x40), 0x20)) {\n                reRevert()\n            }\n\n            let token\n            let amount\n            switch sgt(amount0Delta, 0)\n            case 1 {\n                token := mload(resultPtr)\n                amount := amount0Delta\n            }\n            default {\n                token := mload(add(resultPtr, 0x20))\n                amount := amount1Delta\n            }\n\n            mstore(emptyPtr, _FF_FACTORY)\n            mstore(resultPtr, keccak256(resultPtr, 0x60)) // Compute the inner hash in-place\n            mstore(add(resultPtr, 0x20), _POOL_INIT_CODE_HASH)\n            let pool := and(keccak256(emptyPtr, 0x55), _ADDRESS_MASK)\n            if xor(pool, caller()) {\n                mstore(0, 0xb2c0272200000000000000000000000000000000000000000000000000000000)  // BadPool()\n                revert(0, 4)\n            }\n\n            let payer := calldataload(0x84)\n            mstore(emptyPtr, _SELECTORS)\n            switch eq(payer, address())\n            case 1 {\n                // token.safeTransfer(msg.sender,amount)\n                mstore(add(emptyPtr, 0x10), caller())\n                mstore(add(emptyPtr, 0x30), amount)\n                validateERC20Transfer(\n                    call(gas(), token, 0, add(emptyPtr, 0x0c), 0x44, 0, 0x20)\n                )\n            }\n            default {\n                // token.safeTransferFrom(payer, msg.sender, amount);\n                mstore(add(emptyPtr, 0x14), payer)\n                mstore(add(emptyPtr, 0x34), caller())\n                mstore(add(emptyPtr, 0x54), amount)\n                validateERC20Transfer(\n                    call(gas(), token, 0, add(emptyPtr, 0x10), 0x64, 0, 0x20)\n                )\n            }\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @inheritdoc IUniswapV3SwapCallback",
+            "    "
+        ],
+        "comt": "\n    /// @inheritdoc IUniswapV3SwapCallback\n    ",
+        "@inheritdoc": "IUniswapV3SwapCallback",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "invalidatorForOrderRFQ",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "maker",
+                "type": "address"
+            },
+            {
+                "name": "slot",
+                "type": "uint256"
+            }
+        ],
+        "func": "function invalidatorForOrderRFQ(address maker, uint256 slot) external view returns(uint256 /* result */) {\n        return _invalidator[maker][slot];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns bitmask for double-spend invalidators based on lowest byte of order.info and filled quotes",
+            "     * @param maker Maker address",
+            "     * @param slot Slot number to return bitmask for",
+            "     * @return result Each bit represents whether corresponding was already invalidated",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns bitmask for double-spend invalidators based on lowest byte of order.info and filled quotes\n     * @param maker Maker address\n     * @param slot Slot number to return bitmask for\n     * @return result Each bit represents whether corresponding was already invalidated\n     */\n",
+        "@notice": "Returns bitmask for double-spend invalidators based on lowest byte of order.info and filled quotes",
+        "@param1": "maker Maker address",
+        "@param2": "slot Slot number to return bitmask for",
+        "@return1": "result Each bit represents whether corresponding was already invalidated",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancelOrderRFQ",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "orderInfo",
+                "type": "uint256"
+            }
+        ],
+        "func": "function cancelOrderRFQ(uint256 orderInfo) external {\n        _invalidateOrder(msg.sender, orderInfo, 0);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Cancels order's quote",
+            "     * @param orderInfo Order info (only order id in lowest 64 bits is used)",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Cancels order's quote\n     * @param orderInfo Order info (only order id in lowest 64 bits is used)\n     */\n",
+        "@notice": "Cancels order's quote",
+        "@param1": "orderInfo Order info (only order id in lowest 64 bits is used)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancelOrderRFQ",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "orderInfo",
+                "type": "uint256"
+            },
+            {
+                "name": "additionalMask",
+                "type": "uint256"
+            }
+        ],
+        "func": "function cancelOrderRFQ(uint256 orderInfo, uint256 additionalMask) external {\n        _invalidateOrder(msg.sender, orderInfo, additionalMask);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Cancels multiple order's quotes",
+            "    "
+        ],
+        "comt": "\n    /// @notice Cancels multiple order's quotes\n    ",
+        "@notice": "Cancels multiple order's quotes",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fillOrderRFQ",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderRFQLib.OrderRFQ memory"
+            },
+            {
+                "name": "signature",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "flagsAndAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function fillOrderRFQ(\n        OrderRFQLib.OrderRFQ memory order,\n        bytes calldata signature,\n        uint256 flagsAndAmount\n    ) external payable returns(uint256 /* filledMakingAmount */, uint256 /* filledTakingAmount */, bytes32 /* orderHash */) {\n        return fillOrderRFQTo(order, signature, flagsAndAmount, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Fills order's quote, fully or partially (whichever is possible)",
+            "     * @param order Order quote to fill",
+            "     * @param signature Signature to confirm quote ownership",
+            "     * @param flagsAndAmount Fill configuration flags with amount packed in one slot",
+            "     * @return filledMakingAmount Actual amount transferred from maker to taker",
+            "     * @return filledTakingAmount Actual amount transferred from taker to maker",
+            "     * @return orderHash Hash of the filled order",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Fills order's quote, fully or partially (whichever is possible)\n     * @param order Order quote to fill\n     * @param signature Signature to confirm quote ownership\n     * @param flagsAndAmount Fill configuration flags with amount packed in one slot\n     * @return filledMakingAmount Actual amount transferred from maker to taker\n     * @return filledTakingAmount Actual amount transferred from taker to maker\n     * @return orderHash Hash of the filled order\n     */\n",
+        "@notice": "Fills order's quote, fully or partially (whichever is possible)",
+        "@param1": "order Order quote to fill",
+        "@param2": "signature Signature to confirm quote ownership",
+        "@param3": "flagsAndAmount Fill configuration flags with amount packed in one slot",
+        "@return1": "filledMakingAmount Actual amount transferred from maker to taker",
+        "@return2": "filledTakingAmount Actual amount transferred from taker to maker",
+        "@return3": "orderHash Hash of the filled order",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fillOrderRFQCompact",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderRFQLib.OrderRFQ memory"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "vs",
+                "type": "bytes32"
+            },
+            {
+                "name": "flagsAndAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function fillOrderRFQCompact(\n        OrderRFQLib.OrderRFQ memory order,\n        bytes32 r,\n        bytes32 vs,\n        uint256 flagsAndAmount\n    ) external payable returns(uint256 filledMakingAmount, uint256 filledTakingAmount, bytes32 orderHash) {\n        orderHash = order.hash(_domainSeparatorV4());\n        if (flagsAndAmount & _SIGNER_SMART_CONTRACT_HINT != 0) {\n            if (flagsAndAmount & _IS_VALID_SIGNATURE_65_BYTES != 0) {\n                if (!ECDSA.isValidSignature65(order.maker, orderHash, r, vs)) revert RFQBadSignature();\n            } else {\n                if (!ECDSA.isValidSignature(order.maker, orderHash, r, vs)) revert RFQBadSignature();\n            }\n        } else {\n            if(!ECDSA.recoverOrIsValidSignature(order.maker, orderHash, r, vs)) revert RFQBadSignature();\n        }\n\n        (filledMakingAmount, filledTakingAmount) = _fillOrderRFQTo(order, flagsAndAmount, msg.sender);\n        emit OrderFilledRFQ(orderHash, filledMakingAmount);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Fills order's quote, fully or partially, with compact signature",
+            "     * @param order Order quote to fill",
+            "     * @param r R component of signature",
+            "     * @param vs VS component of signature",
+            "     * @param flagsAndAmount Fill configuration flags with amount packed in one slot",
+            "     * - Bits 0-252 contain the amount to fill",
+            "     * - Bit 253 is used to indicate whether signature is 64-bit (0) or 65-bit (1)",
+            "     * - Bit 254 is used to indicate whether smart contract (1) signed the order or not (0)",
+            "     * - Bit 255 is used to indicate whether maker (1) or taker amount (0) is given in the amount parameter",
+            "     * @return filledMakingAmount Actual amount transferred from maker to taker",
+            "     * @return filledTakingAmount Actual amount transferred from taker to maker",
+            "     * @return orderHash Hash of the filled order",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Fills order's quote, fully or partially, with compact signature\n     * @param order Order quote to fill\n     * @param r R component of signature\n     * @param vs VS component of signature\n     * @param flagsAndAmount Fill configuration flags with amount packed in one slot\n     * - Bits 0-252 contain the amount to fill\n     * - Bit 253 is used to indicate whether signature is 64-bit (0) or 65-bit (1)\n     * - Bit 254 is used to indicate whether smart contract (1) signed the order or not (0)\n     * - Bit 255 is used to indicate whether maker (1) or taker amount (0) is given in the amount parameter\n     * @return filledMakingAmount Actual amount transferred from maker to taker\n     * @return filledTakingAmount Actual amount transferred from taker to maker\n     * @return orderHash Hash of the filled order\n     */\n",
+        "@notice": "Fills order's quote, fully or partially, with compact signature",
+        "@param1": "order Order quote to fill",
+        "@param2": "r R component of signature",
+        "@param3": "vs VS component of signature",
+        "@param4": "flagsAndAmount Fill configuration flags with amount packed in one slot * - Bits 0-252 contain the amount to fill * - Bit 253 is used to indicate whether signature is 64-bit (0) or 65-bit (1) * - Bit 254 is used to indicate whether smart contract (1) signed the order or not (0) * - Bit 255 is used to indicate whether maker (1) or taker amount (0) is given in the amount parameter",
+        "@return1": "filledMakingAmount Actual amount transferred from maker to taker",
+        "@return2": "filledTakingAmount Actual amount transferred from taker to maker",
+        "@return3": "orderHash Hash of the filled order",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fillOrderRFQToWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderRFQLib.OrderRFQ memory"
+            },
+            {
+                "name": "signature",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "flagsAndAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "target",
+                "type": "address"
+            },
+            {
+                "name": "permit",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function fillOrderRFQToWithPermit(\n        OrderRFQLib.OrderRFQ memory order,\n        bytes calldata signature,\n        uint256 flagsAndAmount,\n        address target,\n        bytes calldata permit\n    ) external returns(uint256 /* filledMakingAmount */, uint256 /* filledTakingAmount */, bytes32 /* orderHash */) {\n        IERC20(order.takerAsset).safePermit(permit);\n        return fillOrderRFQTo(order, signature, flagsAndAmount, target);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Same as `fillOrderRFQTo` but calls permit first.",
+            "     * It allows to approve token spending and make a swap in one transaction.",
+            "     * Also allows to specify funds destination instead of `msg.sender`",
+            "     * @param order Order quote to fill",
+            "     * @param signature Signature to confirm quote ownership",
+            "     * @param flagsAndAmount Fill configuration flags with amount packed in one slot",
+            "     * @param target Address that will receive swap funds",
+            "     * @param permit Should consist of abiencoded token address and encoded `IERC20Permit.permit` call.",
+            "     * @return filledMakingAmount Actual amount transferred from maker to taker",
+            "     * @return filledTakingAmount Actual amount transferred from taker to maker",
+            "     * @return orderHash Hash of the filled order",
+            "     * @dev See tests for examples",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Same as `fillOrderRFQTo` but calls permit first.\n     * It allows to approve token spending and make a swap in one transaction.\n     * Also allows to specify funds destination instead of `msg.sender`\n     * @param order Order quote to fill\n     * @param signature Signature to confirm quote ownership\n     * @param flagsAndAmount Fill configuration flags with amount packed in one slot\n     * @param target Address that will receive swap funds\n     * @param permit Should consist of abiencoded token address and encoded `IERC20Permit.permit` call.\n     * @return filledMakingAmount Actual amount transferred from maker to taker\n     * @return filledTakingAmount Actual amount transferred from taker to maker\n     * @return orderHash Hash of the filled order\n     * @dev See tests for examples\n     */\n",
+        "@notice": "Same as `fillOrderRFQTo` but calls permit first. * It allows to approve token spending and make a swap in one transaction. * Also allows to specify funds destination instead of `msg.sender`",
+        "@param1": "order Order quote to fill",
+        "@param2": "signature Signature to confirm quote ownership",
+        "@param3": "flagsAndAmount Fill configuration flags with amount packed in one slot",
+        "@param4": "target Address that will receive swap funds",
+        "@param5": "permit Should consist of abiencoded token address and encoded `IERC20Permit.permit` call.",
+        "@return1": "filledMakingAmount Actual amount transferred from maker to taker",
+        "@return2": "filledTakingAmount Actual amount transferred from taker to maker",
+        "@return3": "orderHash Hash of the filled order",
+        "@dev": "See tests for examples",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fillOrderRFQTo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderRFQLib.OrderRFQ memory"
+            },
+            {
+                "name": "signature",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "flagsAndAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "target",
+                "type": "address"
+            }
+        ],
+        "func": "function fillOrderRFQTo(\n        OrderRFQLib.OrderRFQ memory order,\n        bytes calldata signature,\n        uint256 flagsAndAmount,\n        address target\n    ) public payable returns(uint256 filledMakingAmount, uint256 filledTakingAmount, bytes32 orderHash) {\n        orderHash = order.hash(_domainSeparatorV4());\n        if (flagsAndAmount & _SIGNER_SMART_CONTRACT_HINT != 0) {\n            if (flagsAndAmount & _IS_VALID_SIGNATURE_65_BYTES != 0 && signature.length != 65) revert RFQBadSignature();\n            if (!ECDSA.isValidSignature(order.maker, orderHash, signature)) revert RFQBadSignature();\n        } else {\n            if(!ECDSA.recoverOrIsValidSignature(order.maker, orderHash, signature)) revert RFQBadSignature();\n        }\n        (filledMakingAmount, filledTakingAmount) = _fillOrderRFQTo(order, flagsAndAmount, target);\n        emit OrderFilledRFQ(orderHash, filledMakingAmount);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Same as `fillOrderRFQ` but allows to specify funds destination instead of `msg.sender`",
+            "     * @param order Order quote to fill",
+            "     * @param signature Signature to confirm quote ownership",
+            "     * @param flagsAndAmount Fill configuration flags with amount packed in one slot",
+            "     * @param target Address that will receive swap funds",
+            "     * @return filledMakingAmount Actual amount transferred from maker to taker",
+            "     * @return filledTakingAmount Actual amount transferred from taker to maker",
+            "     * @return orderHash Hash of the filled order",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Same as `fillOrderRFQ` but allows to specify funds destination instead of `msg.sender`\n     * @param order Order quote to fill\n     * @param signature Signature to confirm quote ownership\n     * @param flagsAndAmount Fill configuration flags with amount packed in one slot\n     * @param target Address that will receive swap funds\n     * @return filledMakingAmount Actual amount transferred from maker to taker\n     * @return filledTakingAmount Actual amount transferred from taker to maker\n     * @return orderHash Hash of the filled order\n     */\n",
+        "@notice": "Same as `fillOrderRFQ` but allows to specify funds destination instead of `msg.sender`",
+        "@param1": "order Order quote to fill",
+        "@param2": "signature Signature to confirm quote ownership",
+        "@param3": "flagsAndAmount Fill configuration flags with amount packed in one slot",
+        "@param4": "target Address that will receive swap funds",
+        "@return1": "filledMakingAmount Actual amount transferred from maker to taker",
+        "@return2": "filledTakingAmount Actual amount transferred from taker to maker",
+        "@return3": "orderHash Hash of the filled order",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseNonce",
+        "visibility": "external",
+        "args": [],
+        "func": "function increaseNonce() external {\n        advanceNonce(1);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Advances nonce by one",
+            "    "
+        ],
+        "comt": "\n    /// @notice Advances nonce by one\n    ",
+        "@notice": "Advances nonce by one",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "advanceNonce",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "amount",
+                "type": "uint8"
+            }
+        ],
+        "func": "function advanceNonce(uint8 amount) public {\n        if (amount == 0) revert AdvanceNonceFailed();\n        uint256 newNonce = nonce[msg.sender] + amount;\n        nonce[msg.sender] = newNonce;\n        emit NonceIncreased(msg.sender, newNonce);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Advances nonce by specified amount",
+            "    "
+        ],
+        "comt": "\n    /// @notice Advances nonce by specified amount\n    ",
+        "@notice": "Advances nonce by specified amount",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "nonceEquals",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "makerAddress",
+                "type": "address"
+            },
+            {
+                "name": "makerNonce",
+                "type": "uint256"
+            }
+        ],
+        "func": "function nonceEquals(address makerAddress, uint256 makerNonce) public view returns(bool) {\n        return nonce[makerAddress] == makerNonce;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Checks if `makerAddress` has specified `makerNonce`",
+            "    /// @return Result True if `makerAddress` has specified nonce. Otherwise, false",
+            "    "
+        ],
+        "comt": "\n    /// @notice Checks if `makerAddress` has specified `makerNonce`\n    /// @return Result True if `makerAddress` has specified nonce. Otherwise, false\n    ",
+        "@notice": "Checks if `makerAddress` has specified `makerNonce`",
+        "@return1": "Result True if `makerAddress` has specified nonce. Otherwise, false",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "or",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "offsets",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function or(uint256 offsets, bytes calldata data) public view returns(bool) {\n        uint256 current;\n        uint256 previous;\n        for (uint256 i = 0; (current = uint32(offsets >> i)) != 0; i += 32) {\n            (bool success, uint256 res) = _selfStaticCall(data[previous:current]);\n            if (success && res == 1) {\n                return true;\n            }\n            previous = current;\n        }\n        return false;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Calls every target with corresponding data",
+            "    /// @return Result True if call to any target returned True. Otherwise, false",
+            "    "
+        ],
+        "comt": "\n    /// @notice Calls every target with corresponding data\n    /// @return Result True if call to any target returned True. Otherwise, false\n    ",
+        "@notice": "Calls every target with corresponding data",
+        "@return1": "Result True if call to any target returned True. Otherwise, false",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "and",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "offsets",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function and(uint256 offsets, bytes calldata data) public view returns(bool) {\n        uint256 current;\n        uint256 previous;\n        for (uint256 i = 0; (current = uint32(offsets >> i)) != 0; i += 32) {\n            (bool success, uint256 res) = _selfStaticCall(data[previous:current]);\n            if (!success || res != 1) {\n                return false;\n            }\n            previous = current;\n        }\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Calls every target with corresponding data",
+            "    /// @return Result True if calls to all targets returned True. Otherwise, false",
+            "    "
+        ],
+        "comt": "\n    /// @notice Calls every target with corresponding data\n    /// @return Result True if calls to all targets returned True. Otherwise, false\n    ",
+        "@notice": "Calls every target with corresponding data",
+        "@return1": "Result True if calls to all targets returned True. Otherwise, false",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "eq",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function eq(uint256 value, bytes calldata data) public view returns(bool) {\n        (bool success, uint256 res) = _selfStaticCall(data);\n        return success && res == value;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Calls target with specified data and tests if it's equal to the value",
+            "    /// @param value Value to test",
+            "    /// @return Result True if call to target returns the same value as `value`. Otherwise, false",
+            "    "
+        ],
+        "comt": "\n    /// @notice Calls target with specified data and tests if it's equal to the value\n    /// @param value Value to test\n    /// @return Result True if call to target returns the same value as `value`. Otherwise, false\n    ",
+        "@notice": "Calls target with specified data and tests if it's equal to the value",
+        "@param1": "value Value to test",
+        "@return1": "Result True if call to target returns the same value as `value`. Otherwise, false",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function lt(uint256 value, bytes calldata data) public view returns(bool) {\n        (bool success, uint256 res) = _selfStaticCall(data);\n        return success && res < value;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Calls target with specified data and tests if it's lower than value",
+            "    /// @param value Value to test",
+            "    /// @return Result True if call to target returns value which is lower than `value`. Otherwise, false",
+            "    "
+        ],
+        "comt": "\n    /// @notice Calls target with specified data and tests if it's lower than value\n    /// @param value Value to test\n    /// @return Result True if call to target returns value which is lower than `value`. Otherwise, false\n    ",
+        "@notice": "Calls target with specified data and tests if it's lower than value",
+        "@param1": "value Value to test",
+        "@return1": "Result True if call to target returns value which is lower than `value`. Otherwise, false",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "gt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function gt(uint256 value, bytes calldata data) public view returns(bool) {\n        (bool success, uint256 res) = _selfStaticCall(data);\n        return success && res > value;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Calls target with specified data and tests if it's bigger than value",
+            "    /// @param value Value to test",
+            "    /// @return Result True if call to target returns value which is bigger than `value`. Otherwise, false",
+            "    "
+        ],
+        "comt": "\n    /// @notice Calls target with specified data and tests if it's bigger than value\n    /// @param value Value to test\n    /// @return Result True if call to target returns value which is bigger than `value`. Otherwise, false\n    ",
+        "@notice": "Calls target with specified data and tests if it's bigger than value",
+        "@param1": "value Value to test",
+        "@return1": "Result True if call to target returns value which is bigger than `value`. Otherwise, false",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "timestampBelow",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "time",
+                "type": "uint256"
+            }
+        ],
+        "func": "function timestampBelow(uint256 time) public view returns(bool) {\n        return block.timestamp < time;  // solhint-disable-line not-rely-on-time\n    }",
+        "comments": [
+            "",
+            "    /// @notice Checks passed time against block timestamp",
+            "    /// @return Result True if current block timestamp is lower than `time`. Otherwise, false",
+            "    "
+        ],
+        "comt": "\n    /// @notice Checks passed time against block timestamp\n    /// @return Result True if current block timestamp is lower than `time`. Otherwise, false\n    ",
+        "@notice": "Checks passed time against block timestamp",
+        "@return1": "Result True if current block timestamp is lower than `time`. Otherwise, false",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "arbitraryStaticCall",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "target",
+                "type": "address"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function arbitraryStaticCall(address target, bytes calldata data) public view returns(uint256) {\n        (bool success, uint256 res) = _staticcallForUint(target, data);\n        if (!success) revert ArbitraryStaticCallFailed();\n        return res;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Performs an arbitrary call to target with data",
+            "    /// @return Result Bytes transmuted to uint256",
+            "    "
+        ],
+        "comt": "\n    /// @notice Performs an arbitrary call to target with data\n    /// @return Result Bytes transmuted to uint256\n    ",
+        "@notice": "Performs an arbitrary call to target with data",
+        "@return1": "Result Bytes transmuted to uint256",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "timestampBelowAndNonceEquals",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "timeNonceAccount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function timestampBelowAndNonceEquals(uint256 timeNonceAccount) public view returns(bool) {\n        uint256 _time = uint48(timeNonceAccount >> 208);\n        uint256 _nonce = uint48(timeNonceAccount >> 160);\n        address _account = address(uint160(timeNonceAccount));\n        return timestampBelow(_time) && nonceEquals(_account, _nonce);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "remaining",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "orderHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function remaining(bytes32 orderHash) external view returns(uint256 /* amount */) {\n        uint256 amount = _remaining[orderHash];\n        if (amount == _ORDER_DOES_NOT_EXIST) revert UnknownOrder();\n        unchecked { return amount - 1; }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-remaining}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-remaining}.\n     */\n",
+        "@notice": "See {IOrderMixin-remaining}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "remainingRaw",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "orderHash",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function remainingRaw(bytes32 orderHash) external view returns(uint256 /* rawAmount */) {\n        return _remaining[orderHash];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-remainingRaw}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-remainingRaw}.\n     */\n",
+        "@notice": "See {IOrderMixin-remainingRaw}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "remainingsRaw",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "orderHashes",
+                "type": "bytes32[] memory"
+            }
+        ],
+        "func": "function remainingsRaw(bytes32[] memory orderHashes) external view returns(uint256[] memory /* rawAmounts */) {\n        uint256[] memory results = new uint256[](orderHashes.length);\n        for (uint256 i = 0; i < orderHashes.length; i++) {\n            results[i] = _remaining[orderHashes[i]];\n        }\n        return results;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-remainingsRaw}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-remainingsRaw}.\n     */\n",
+        "@notice": "See {IOrderMixin-remainingsRaw}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "simulate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "target",
+                "type": "address"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function simulate(address target, bytes calldata data) external {\n        // solhint-disable-next-line avoid-low-level-calls\n        (bool success, bytes memory result) = target.delegatecall(data);\n        revert SimulationResults(success, result);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-simulate}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-simulate}.\n     */\n",
+        "@notice": "See {IOrderMixin-simulate}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancelOrder",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderLib.Order calldata"
+            }
+        ],
+        "func": "function cancelOrder(OrderLib.Order calldata order) external returns(uint256 orderRemaining, bytes32 orderHash) {\n        if (order.maker != msg.sender) revert AccessDenied();\n\n        orderHash = hashOrder(order);\n        orderRemaining = _remaining[orderHash];\n        if (orderRemaining == _ORDER_FILLED) revert AlreadyFilled();\n        emit OrderCanceled(msg.sender, orderHash, orderRemaining);\n        _remaining[orderHash] = _ORDER_FILLED;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-cancelOrder}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-cancelOrder}.\n     */\n",
+        "@notice": "See {IOrderMixin-cancelOrder}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fillOrder",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderLib.Order calldata"
+            },
+            {
+                "name": "signature",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "interaction",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "makingAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "takingAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "skipPermitAndThresholdAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function fillOrder(\n        OrderLib.Order calldata order,\n        bytes calldata signature,\n        bytes calldata interaction,\n        uint256 makingAmount,\n        uint256 takingAmount,\n        uint256 skipPermitAndThresholdAmount\n    ) external payable returns(uint256 /* actualMakingAmount */, uint256 /* actualTakingAmount */, bytes32 /* orderHash */) {\n        return fillOrderTo(order, signature, interaction, makingAmount, takingAmount, skipPermitAndThresholdAmount, msg.sender);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-fillOrder}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-fillOrder}.\n     */\n",
+        "@notice": "See {IOrderMixin-fillOrder}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fillOrderToWithPermit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderLib.Order calldata"
+            },
+            {
+                "name": "signature",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "interaction",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "makingAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "takingAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "skipPermitAndThresholdAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "target",
+                "type": "address"
+            },
+            {
+                "name": "permit",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function fillOrderToWithPermit(\n        OrderLib.Order calldata order,\n        bytes calldata signature,\n        bytes calldata interaction,\n        uint256 makingAmount,\n        uint256 takingAmount,\n        uint256 skipPermitAndThresholdAmount,\n        address target,\n        bytes calldata permit\n    ) external returns(uint256 /* actualMakingAmount */, uint256 /* actualTakingAmount */, bytes32 /* orderHash */) {\n        if (permit.length < 20) revert PermitLengthTooLow();\n        {  // Stack too deep\n            (address token, bytes calldata permitData) = permit.decodeTargetAndCalldata();\n            IERC20(token).safePermit(permitData);\n        }\n        return fillOrderTo(order, signature, interaction, makingAmount, takingAmount, skipPermitAndThresholdAmount, target);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-fillOrderToWithPermit}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-fillOrderToWithPermit}.\n     */\n",
+        "@notice": "See {IOrderMixin-fillOrderToWithPermit}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fillOrderTo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order_",
+                "type": "OrderLib.Order calldata"
+            },
+            {
+                "name": "signature",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "interaction",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "makingAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "takingAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "skipPermitAndThresholdAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "target",
+                "type": "address"
+            }
+        ],
+        "func": "function fillOrderTo(\n        OrderLib.Order calldata order_,\n        bytes calldata signature,\n        bytes calldata interaction,\n        uint256 makingAmount,\n        uint256 takingAmount,\n        uint256 skipPermitAndThresholdAmount,\n        address target\n    ) public payable returns(uint256 actualMakingAmount, uint256 actualTakingAmount, bytes32 orderHash) {\n        if (target == address(0)) revert ZeroTargetIsForbidden();\n        orderHash = hashOrder(order_);\n\n        OrderLib.Order calldata order = order_; // Helps with \"Stack too deep\"\n        actualMakingAmount = makingAmount;\n        actualTakingAmount = takingAmount;\n\n        uint256 remainingMakingAmount = _remaining[orderHash];\n        if (remainingMakingAmount == _ORDER_FILLED) revert RemainingAmountIsZero();\n        if (order.allowedSender != address(0) && order.allowedSender != msg.sender) revert PrivateOrder();\n        if (remainingMakingAmount == _ORDER_DOES_NOT_EXIST) {\n            // First fill: validate order and permit maker asset\n            if (!ECDSA.recoverOrIsValidSignature(order.maker, orderHash, signature)) revert BadSignature();\n            remainingMakingAmount = order.makingAmount;\n\n            bytes calldata permit = order.permit();\n            if (skipPermitAndThresholdAmount & _SKIP_PERMIT_FLAG == 0 && permit.length >= 20) {\n                // proceed only if taker is willing to execute permit and its length is enough to store address\n                (address token, bytes calldata permitCalldata) = permit.decodeTargetAndCalldata();\n                IERC20(token).safePermit(permitCalldata);\n                if (_remaining[orderHash] != _ORDER_DOES_NOT_EXIST) revert ReentrancyDetected();\n            }\n        } else {\n            unchecked { remainingMakingAmount -= 1; }\n        }\n\n        // Check if order is valid\n        if (order.predicate().length > 0) {\n            if (!checkPredicate(order)) revert PredicateIsNotTrue();\n        }\n\n        // Compute maker and taker assets amount\n        if ((actualTakingAmount == 0) == (actualMakingAmount == 0)) {\n            revert OnlyOneAmountShouldBeZero();\n        } else if (actualTakingAmount == 0) {\n            if (actualMakingAmount > remainingMakingAmount) {\n                actualMakingAmount = remainingMakingAmount;\n            }\n            actualTakingAmount = _getTakingAmount(order.getTakingAmount(), order.makingAmount, actualMakingAmount, order.takingAmount, remainingMakingAmount, orderHash);\n            uint256 thresholdAmount = skipPermitAndThresholdAmount & _THRESHOLD_MASK;\n            // check that actual rate is not worse than what was expected\n            // actualTakingAmount / actualMakingAmount <= thresholdAmount / makingAmount\n            if (actualTakingAmount * makingAmount > thresholdAmount * actualMakingAmount) revert TakingAmountTooHigh();\n        } else {\n            actualMakingAmount = _getMakingAmount(order.getMakingAmount(), order.takingAmount, actualTakingAmount, order.makingAmount, remainingMakingAmount, orderHash);\n            if (actualMakingAmount > remainingMakingAmount) {\n                actualMakingAmount = remainingMakingAmount;\n                actualTakingAmount = _getTakingAmount(order.getTakingAmount(), order.makingAmount, actualMakingAmount, order.takingAmount, remainingMakingAmount, orderHash);\n                if (actualTakingAmount > takingAmount) revert TakingAmountIncreased();\n            }\n            uint256 thresholdAmount = skipPermitAndThresholdAmount & _THRESHOLD_MASK;\n            // check that actual rate is not worse than what was expected\n            // actualMakingAmount / actualTakingAmount >= thresholdAmount / takingAmount\n            if (actualMakingAmount * takingAmount < thresholdAmount * actualTakingAmount) revert MakingAmountTooLow();\n        }\n\n        if (actualMakingAmount == 0 || actualTakingAmount == 0) revert SwapWithZeroAmount();\n\n        // Update remaining amount in storage\n        unchecked {\n            remainingMakingAmount = remainingMakingAmount - actualMakingAmount;\n            _remaining[orderHash] = remainingMakingAmount + 1;\n        }\n        emit OrderFilled(order_.maker, orderHash, remainingMakingAmount);\n\n        // Maker can handle funds interactively\n        if (order.preInteraction().length >= 20) {\n            // proceed only if interaction length is enough to store address\n            (address interactionTarget, bytes calldata interactionData) = order.preInteraction().decodeTargetAndCalldata();\n            PreInteractionNotificationReceiver(interactionTarget).fillOrderPreInteraction(\n                orderHash, order.maker, msg.sender, actualMakingAmount, actualTakingAmount, remainingMakingAmount, interactionData\n            );\n        }\n\n        // Maker => Taker\n        if (!_callTransferFrom(\n            order.makerAsset,\n            order.maker,\n            target,\n            actualMakingAmount,\n            order.makerAssetData()\n        )) revert TransferFromMakerToTakerFailed();\n\n        if (interaction.length >= 20) {\n            // proceed only if interaction length is enough to store address\n            (address interactionTarget, bytes calldata interactionData) = interaction.decodeTargetAndCalldata();\n            uint256 offeredTakingAmount = InteractionNotificationReceiver(interactionTarget).fillOrderInteraction(\n                msg.sender, actualMakingAmount, actualTakingAmount, interactionData\n            );\n\n            if (offeredTakingAmount > actualTakingAmount &&\n                !OrderLib.getterIsFrozen(order.getMakingAmount()) &&\n                !OrderLib.getterIsFrozen(order.getTakingAmount()))\n            {\n                actualTakingAmount = offeredTakingAmount;\n            }\n        }\n\n        // Taker => Maker\n        if (order.takerAsset == address(_WETH) && msg.value > 0) {\n            if (msg.value < actualTakingAmount) revert Errors.InvalidMsgValue();\n            if (msg.value > actualTakingAmount) {\n                unchecked {\n                    (bool success, ) = msg.sender.call{value: msg.value - actualTakingAmount}(\"\");  // solhint-disable-line avoid-low-level-calls\n                    if (!success) revert Errors.ETHTransferFailed();\n                }\n            }\n            _WETH.deposit{ value: actualTakingAmount }();\n            _WETH.transfer(order.receiver == address(0) ? order.maker : order.receiver, actualTakingAmount);\n        } else {\n            if (msg.value != 0) revert Errors.InvalidMsgValue();\n            if (!_callTransferFrom(\n                order.takerAsset,\n                msg.sender,\n                order.receiver == address(0) ? order.maker : order.receiver,\n                actualTakingAmount,\n                order.takerAssetData()\n            )) revert TransferFromTakerToMakerFailed();\n        }\n\n        // Maker can handle funds interactively\n        if (order.postInteraction().length >= 20) {\n            // proceed only if interaction length is enough to store address\n            (address interactionTarget, bytes calldata interactionData) = order.postInteraction().decodeTargetAndCalldata();\n            PostInteractionNotificationReceiver(interactionTarget).fillOrderPostInteraction(\n                 orderHash, order.maker, msg.sender, actualMakingAmount, actualTakingAmount, remainingMakingAmount, interactionData\n            );\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-fillOrderTo}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-fillOrderTo}.\n     */\n",
+        "@notice": "See {IOrderMixin-fillOrderTo}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkPredicate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderLib.Order calldata"
+            }
+        ],
+        "func": "function checkPredicate(OrderLib.Order calldata order) public view returns(bool) {\n        (bool success, uint256 res) = _selfStaticCall(order.predicate());\n        return success && res == 1;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-checkPredicate}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-checkPredicate}.\n     */\n",
+        "@notice": "See {IOrderMixin-checkPredicate}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "hashOrder",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "order",
+                "type": "OrderLib.Order calldata"
+            }
+        ],
+        "func": "function hashOrder(OrderLib.Order calldata order) public view returns(bytes32) {\n        return order.hash(_domainSeparatorV4());\n    }",
+        "comments": [
+            "/**",
+            "     * @notice See {IOrderMixin-hashOrder}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice See {IOrderMixin-hashOrder}.\n     */\n",
+        "@notice": "See {IOrderMixin-hashOrder}.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rescueFunds",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function rescueFunds(IERC20 token, uint256 amount) external onlyOwner {\n        token.uniTransfer(payable(msg.sender), amount);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Retrieves funds accidently sent directly to the contract address",
+            "     * @param token ERC20 token to retrieve",
+            "     * @param amount amount to retrieve",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Retrieves funds accidently sent directly to the contract address\n     * @param token ERC20 token to retrieve\n     * @param amount amount to retrieve\n     */\n",
+        "@notice": "Retrieves funds accidently sent directly to the contract address",
+        "@param1": "token ERC20 token to retrieve",
+        "@param2": "amount amount to retrieve",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "destroy",
+        "visibility": "external",
+        "args": [],
+        "func": "function destroy() external onlyOwner {\n        selfdestruct(payable(msg.sender));\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Destroys the contract and sends eth to sender. Use with caution.",
+            "     * The only case when the use of the method is justified is if there is an exploit found.",
+            "     * And the damage from the exploit is greater than from just an urgent contract change.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Destroys the contract and sends eth to sender. Use with caution.\n     * The only case when the use of the method is justified is if there is an exploit found.\n     * And the damage from the exploit is greater than from just an urgent contract change.\n     */\n",
+        "@notice": "Destroys the contract and sends eth to sender. Use with caution. * The only case when the use of the method is justified is if there is an exploit found. * And the damage from the exploit is greater than from just an urgent contract change.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

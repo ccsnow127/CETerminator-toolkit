@@ -1,0 +1,201 @@
+[
+    {
+        "transactions": 1,
+        "function_num": 5
+    },
+    {
+        "name": "abs",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_number",
+                "type": "int256"
+            }
+        ],
+        "func": "function abs(int256 _number) public pure returns (uint256) {\n        return _number < 0 ? uint256(_number * (-1)) : uint256(_number);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Takes the absolute value of a given number",
+            "     * @dev Helper function",
+            "     * @param _number The specified number",
+            "     * @return The absolute value of the number",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Takes the absolute value of a given number\n     * @dev Helper function\n     * @param _number The specified number\n     * @return The absolute value of the number\n     */\n",
+        "@notice": "Takes the absolute value of a given number",
+        "@dev": "Helper function",
+        "@param1": "_number The specified number",
+        "@return1": "The absolute value of the number",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPremium",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "st",
+                "type": "uint256"
+            },
+            {
+                "name": "expiryTimestamp",
+                "type": "uint256"
+            },
+            {
+                "name": "isPut",
+                "type": "bool"
+            }
+        ],
+        "func": "function getPremium(\n        uint256 st,\n        uint256 expiryTimestamp,\n        bool isPut\n    ) external view returns (uint256 premium) {\n        require(\n            expiryTimestamp > block.timestamp,\n            \"Expiry must be in the future!\"\n        );\n\n        uint256 spotPrice = priceOracle.latestAnswer();\n\n        (uint256 sp, uint256 v, uint256 t) =\n            blackScholesParams(spotPrice, expiryTimestamp);\n\n        (uint256 call, uint256 put) = quoteAll(t, v, sp, st);\n\n        // Multiplier to convert oracle latestAnswer to 18 decimals\n        uint256 assetOracleMultiplier =\n            10 **\n                (\n                    uint256(18).sub(\n                        isPut ? stablesOracleDecimals : priceOracleDecimals\n                    )\n                );\n        // Make option premium denominated in the underlying\n        // asset for call vaults and USDC for put vaults\n        premium = isPut\n            ? wdiv(put, stablesOracle.latestAnswer().mul(assetOracleMultiplier))\n            : wdiv(call, spotPrice.mul(assetOracleMultiplier));\n\n        // Convert to 18 decimals\n        premium = premium.mul(assetOracleMultiplier);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Calculates the premium of the provided option using Black-Scholes",
+            "     * References for Black-Scholes:",
+            "       https://www.macroption.com/black-scholes-formula/",
+            "       https://www.investopedia.com/terms/b/blackscholes.asp",
+            "       https://www.erieri.com/blackscholes",
+            "       https://goodcalculators.com/black-scholes-calculator/",
+            "       https://www.calkoo.com/en/black-scholes-option-pricing-model",
+            "     * @param st is the strike price of the option",
+            "     * @param expiryTimestamp is the unix timestamp of expiry",
+            "     * @param isPut is whether the option is a put option",
+            "     * @return premium for 100 contracts with 18 decimals i.e.",
+            "     * 500*10**18 = 500 USDC for 100 contracts for puts,",
+            "     * 5*10**18 = 5 of underlying asset (ETH, WBTC, etc.) for 100 contracts for calls,",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Calculates the premium of the provided option using Black-Scholes\n     * References for Black-Scholes:\n       https://www.macroption.com/black-scholes-formula/\n       https://www.investopedia.com/terms/b/blackscholes.asp\n       https://www.erieri.com/blackscholes\n       https://goodcalculators.com/black-scholes-calculator/\n       https://www.calkoo.com/en/black-scholes-option-pricing-model\n     * @param st is the strike price of the option\n     * @param expiryTimestamp is the unix timestamp of expiry\n     * @param isPut is whether the option is a put option\n     * @return premium for 100 contracts with 18 decimals i.e.\n     * 500*10**18 = 500 USDC for 100 contracts for puts,\n     * 5*10**18 = 5 of underlying asset (ETH, WBTC, etc.) for 100 contracts for calls,\n     */\n",
+        "@notice": "Calculates the premium of the provided option using Black-Scholes * References for Black-Scholes: https://www.macroption.com/black-scholes-formula/ https://www.investopedia.com/terms/b/blackscholes.asp https://www.erieri.com/blackscholes https://goodcalculators.com/black-scholes-calculator/ https://www.calkoo.com/en/black-scholes-option-pricing-model",
+        "@param1": "st is the strike price of the option",
+        "@param2": "expiryTimestamp is the unix timestamp of expiry",
+        "@param3": "isPut is whether the option is a put option",
+        "@return1": "premium for 100 contracts with 18 decimals i.e. * 500*10**18 = 500 USDC for 100 contracts for puts, * 5*10**18 = 5 of underlying asset (ETH, WBTC, etc.) for 100 contracts for calls,",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "getOptionDelta",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "st",
+                "type": "uint256"
+            },
+            {
+                "name": "expiryTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getOptionDelta(uint256 st, uint256 expiryTimestamp)\n        external\n        view\n        returns (uint256 delta)\n    {\n        require(\n            expiryTimestamp > block.timestamp,\n            \"Expiry must be in the future!\"\n        );\n\n        uint256 spotPrice = priceOracle.latestAnswer();\n        (uint256 sp, uint256 v, uint256 t) =\n            blackScholesParams(spotPrice, expiryTimestamp);\n\n        uint256 d1;\n        uint256 d2;\n\n        // Divide delta by 10 ** 10 to bring it to 4 decimals for strike selection\n        if (sp >= st) {\n            (d1, d2) = derivatives(t, v, sp, st);\n            delta = Math.ncdf((Math.FIXED_1 * d1) / 1e18).div(10**10);\n        } else {\n            // If underlying < strike price notice we switch st <-> sp passed into d\n            (d1, d2) = derivatives(t, v, st, sp);\n            delta = uint256(10)\n                .mul(10**13)\n                .sub(Math.ncdf((Math.FIXED_1 * d2) / 1e18))\n                .div(10**10);\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Calculates the option's delta",
+            "     * Formula reference: `d_1` in https://www.investopedia.com/terms/b/blackscholes.asp",
+            "     * http://www.optiontradingpedia.com/options_delta.htm",
+            "     * https://www.macroption.com/black-scholes-formula/",
+            "     * @param st is the strike price of the option",
+            "     * @param expiryTimestamp is the unix timestamp of expiry",
+            "     * @return delta for given option. 4 decimals (ex: 8100 = 0.81 delta) as this is what strike selection",
+            "     * module recognizes",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Calculates the option's delta\n     * Formula reference: `d_1` in https://www.investopedia.com/terms/b/blackscholes.asp\n     * http://www.optiontradingpedia.com/options_delta.htm\n     * https://www.macroption.com/black-scholes-formula/\n     * @param st is the strike price of the option\n     * @param expiryTimestamp is the unix timestamp of expiry\n     * @return delta for given option. 4 decimals (ex: 8100 = 0.81 delta) as this is what strike selection\n     * module recognizes\n     */\n",
+        "@notice": "Calculates the option's delta * Formula reference: `d_1` in https://www.investopedia.com/terms/b/blackscholes.asp * http://www.optiontradingpedia.com/options_delta.htm * https://www.macroption.com/black-scholes-formula",
+        "@param1": "st is the strike price of the option",
+        "@param2": "expiryTimestamp is the unix timestamp of expiry",
+        "@return1": "delta for given option. 4 decimals (ex: 8100 = 0.81 delta) as this is what strike selection * module recognizes",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "getOptionDelta",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "sp",
+                "type": "uint256"
+            },
+            {
+                "name": "st",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint256"
+            },
+            {
+                "name": "expiryTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getOptionDelta(\n        uint256 sp,\n        uint256 st,\n        uint256 v,\n        uint256 expiryTimestamp\n    ) external view returns (uint256 delta) {\n        require(\n            expiryTimestamp > block.timestamp,\n            \"Expiry must be in the future!\"\n        );\n\n        // days until expiry\n        uint256 t = expiryTimestamp.sub(block.timestamp).div(1 days);\n\n        uint256 d1;\n        uint256 d2;\n\n        // Divide delta by 10 ** 10 to bring it to 4 decimals for strike selection\n        if (sp >= st) {\n            (d1, d2) = derivatives(t, v, sp, st);\n            delta = Math.ncdf((Math.FIXED_1 * d1) / 1e18).div(10**10);\n        } else {\n            // If underlying < strike price notice we switch st <-> sp passed into d\n            (d1, d2) = derivatives(t, v, st, sp);\n            delta = uint256(10)\n                .mul(10**13)\n                .sub(Math.ncdf((Math.FIXED_1 * d2) / 1e18))\n                .div(10**10);\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Calculates the option's delta",
+            "     * Formula reference: `d_1` in https://www.investopedia.com/terms/b/blackscholes.asp",
+            "     * http://www.optiontradingpedia.com/options_delta.htm",
+            "     * https://www.macroption.com/black-scholes-formula/",
+            "     * @param sp is the spot price of the option",
+            "     * @param st is the strike price of the option",
+            "     * @param v is the annualized volatility of the underlying asset",
+            "     * @param expiryTimestamp is the unix timestamp of expiry",
+            "     * @return delta for given option. 4 decimals (ex: 8100 = 0.81 delta) as this is what strike selection",
+            "     * module recognizes",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Calculates the option's delta\n     * Formula reference: `d_1` in https://www.investopedia.com/terms/b/blackscholes.asp\n     * http://www.optiontradingpedia.com/options_delta.htm\n     * https://www.macroption.com/black-scholes-formula/\n     * @param sp is the spot price of the option\n     * @param st is the strike price of the option\n     * @param v is the annualized volatility of the underlying asset\n     * @param expiryTimestamp is the unix timestamp of expiry\n     * @return delta for given option. 4 decimals (ex: 8100 = 0.81 delta) as this is what strike selection\n     * module recognizes\n     */\n",
+        "@notice": "Calculates the option's delta * Formula reference: `d_1` in https://www.investopedia.com/terms/b/blackscholes.asp * http://www.optiontradingpedia.com/options_delta.htm * https://www.macroption.com/black-scholes-formula",
+        "@param1": "sp is the spot price of the option",
+        "@param2": "st is the strike price of the option",
+        "@param3": "v is the annualized volatility of the underlying asset",
+        "@param4": "expiryTimestamp is the unix timestamp of expiry",
+        "@return1": "delta for given option. 4 decimals (ex: 8100 = 0.81 delta) as this is what strike selection * module recognizes",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "getUnderlyingPrice",
+        "visibility": "external",
+        "args": [],
+        "func": "function getUnderlyingPrice() external view returns (uint256 price) {\n        price = priceOracle.latestAnswer();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Calculates the underlying assets price",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Calculates the underlying assets price\n     */\n",
+        "@notice": "Calculates the underlying assets price",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

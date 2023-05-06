@@ -1,0 +1,249 @@
+[
+    {
+        "transactions": 120624,
+        "function_num": 8
+    },
+    {
+        "name": "STPTToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function STPTToken() public {\n    symbol = \"STPT\";\n    name = \"STPT\";\n    decimals = 18;\n    _totalSupply = 2000000000 * 10**uint(decimals);\n    balances[msg.sender] = _totalSupply;\n    emit Transfer(address(0), msg.sender, _totalSupply);\n  }",
+        "comments": [
+            "",
+            "",
+            "  // ------------------------------------------------------------------------",
+            "  // Constructor",
+            "  // ------------------------------------------------------------------------",
+            "  "
+        ],
+        "comt": "\n\n  // ------------------------------------------------------------------------\n  // Constructor\n  // ------------------------------------------------------------------------\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public constant returns (uint) {\n    return _totalSupply  - balances[address(0)];\n  }",
+        "comments": [
+            "",
+            "  // ------------------------------------------------------------------------",
+            "  // Total supply",
+            "  // ------------------------------------------------------------------------",
+            "  "
+        ],
+        "comt": "\n  // ------------------------------------------------------------------------\n  // Total supply\n  // ------------------------------------------------------------------------\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address tokenOwner) public constant returns (uint balance) {\n    return balances[tokenOwner];\n  }",
+        "comments": [
+            "",
+            "  // ------------------------------------------------------------------------",
+            "  // Get the token balance for account `tokenOwner`",
+            "  // ------------------------------------------------------------------------",
+            "  "
+        ],
+        "comt": "\n  // ------------------------------------------------------------------------\n  // Get the token balance for account `tokenOwner`\n  // ------------------------------------------------------------------------\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokens",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address to, uint tokens) public returns (bool success) {\n    balances[msg.sender] = balances[msg.sender].sub(tokens);\n    balances[to] = balances[to].add(tokens);\n    emit Transfer(msg.sender, to, tokens);\n    return true;\n  }",
+        "comments": [
+            "",
+            "  // ------------------------------------------------------------------------",
+            "  // Transfer the balance from token owner's account to `to` account",
+            "  // - Owner's account must have sufficient balance to transfer",
+            "  // - 0 value transfers are allowed",
+            "  // ------------------------------------------------------------------------",
+            "  "
+        ],
+        "comt": "\n  // ------------------------------------------------------------------------\n  // Transfer the balance from token owner's account to `to` account\n  // - Owner's account must have sufficient balance to transfer\n  // - 0 value transfers are allowed\n  // ------------------------------------------------------------------------\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "tokens",
+                "type": "uint"
+            }
+        ],
+        "func": "function approve(address spender, uint tokens) public returns (bool success) {\n    allowed[msg.sender][spender] = tokens;\n    emit Approval(msg.sender, spender, tokens);\n    return true;\n  }",
+        "comments": [
+            "",
+            "  // ------------------------------------------------------------------------",
+            "  // Token owner can approve for `spender` to transferFrom(...) `tokens`",
+            "  // from the token owner's account",
+            "  //",
+            "  // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md",
+            "  // recommends that there are no checks for the approval double-spend attack",
+            "  // as this should be implemented in user interfaces",
+            "  // ------------------------------------------------------------------------",
+            "  "
+        ],
+        "comt": "\n  // ------------------------------------------------------------------------\n  // Token owner can approve for `spender` to transferFrom(...) `tokens`\n  // from the token owner's account\n  //\n  // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md\n  // recommends that there are no checks for the approval double-spend attack\n  // as this should be implemented in user interfaces\n  // ------------------------------------------------------------------------\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokens",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint tokens) public returns (bool success) {\n    balances[from] = balances[from].sub(tokens);\n    allowed[from][msg.sender] = allowed[from][msg.sender].sub(tokens);\n    balances[to] = balances[to].add(tokens);\n    emit Transfer(from, to, tokens);\n    return true;\n  }",
+        "comments": [
+            "",
+            "  // ------------------------------------------------------------------------",
+            "  // Transfer `tokens` from the `from` account to the `to` account",
+            "  //",
+            "  // The calling account must already have sufficient tokens approve(...)-d",
+            "  // for spending from the `from` account and",
+            "  // - From account must have sufficient balance to transfer",
+            "  // - Spender must have sufficient allowance to transfer",
+            "  // - 0 value transfers are allowed",
+            "  // ------------------------------------------------------------------------",
+            "  "
+        ],
+        "comt": "\n  // ------------------------------------------------------------------------\n  // Transfer `tokens` from the `from` account to the `to` account\n  //\n  // The calling account must already have sufficient tokens approve(...)-d\n  // for spending from the `from` account and\n  // - From account must have sufficient balance to transfer\n  // - Spender must have sufficient allowance to transfer\n  // - 0 value transfers are allowed\n  // ------------------------------------------------------------------------\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenOwner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address tokenOwner, address spender) public constant returns (uint remaining) {\n    return allowed[tokenOwner][spender];\n  }",
+        "comments": [
+            "",
+            "  // ------------------------------------------------------------------------",
+            "  // Returns the amount of tokens approved by the owner that can be",
+            "  // transferred to the spender's account",
+            "  // ------------------------------------------------------------------------",
+            "  "
+        ],
+        "comt": "\n  // ------------------------------------------------------------------------\n  // Returns the amount of tokens approved by the owner that can be\n  // transferred to the spender's account\n  // ------------------------------------------------------------------------\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approveAndCall",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "tokens",
+                "type": "uint"
+            },
+            {
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "func": "function approveAndCall(address spender, uint tokens, bytes data) public returns (bool success) {\n    allowed[msg.sender][spender] = tokens;\n    emit Approval(msg.sender, spender, tokens);\n    ApproveAndCallFallBack(spender).receiveApproval(msg.sender, tokens, this, data);\n    return true;\n  }",
+        "comments": [
+            "",
+            "  // ------------------------------------------------------------------------",
+            "  // Token owner can approve for `spender` to transferFrom(...) `tokens`",
+            "  // from the token owner's account. The `spender` contract function",
+            "  // `receiveApproval(...)` is then executed",
+            "  // ------------------------------------------------------------------------",
+            "  "
+        ],
+        "comt": "\n  // ------------------------------------------------------------------------\n  // Token owner can approve for `spender` to transferFrom(...) `tokens`\n  // from the token owner's account. The `spender` contract function\n  // `receiveApproval(...)` is then executed\n  // ------------------------------------------------------------------------\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

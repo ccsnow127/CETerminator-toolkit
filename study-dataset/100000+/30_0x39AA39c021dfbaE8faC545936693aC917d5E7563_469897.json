@@ -1,0 +1,938 @@
+[
+    {
+        "transactions": 469897,
+        "function_num": 30
+    },
+    {
+        "name": "transfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address dst, uint256 amount) external nonReentrant returns (bool) {\n return transferTokens(msg.sender, msg.sender, dst, amount) == uint(Error.NO_ERROR);\n }",
+        "comments": [
+            "/**",
+            " * @notice Transfer `amount` tokens from `msg.sender` to `dst`",
+            " * @param dst The address of the destination account",
+            " * @param amount The number of tokens to transfer",
+            " * @return Whether or not the transfer succeeded",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Transfer `amount` tokens from `msg.sender` to `dst`\n * @param dst The address of the destination account\n * @param amount The number of tokens to transfer\n * @return Whether or not the transfer succeeded\n */\n",
+        "@notice": "Transfer `amount` tokens from `msg.sender` to `dst`",
+        "@param1": "dst The address of the destination account",
+        "@param2": "amount The number of tokens to transfer",
+        "@return1": "Whether or not the transfer succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address src, address dst, uint256 amount) external nonReentrant returns (bool) {\n return transferTokens(msg.sender, src, dst, amount) == uint(Error.NO_ERROR);\n }",
+        "comments": [
+            "/**",
+            " * @notice Transfer `amount` tokens from `src` to `dst`",
+            " * @param src The address of the source account",
+            " * @param dst The address of the destination account",
+            " * @param amount The number of tokens to transfer",
+            " * @return Whether or not the transfer succeeded",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Transfer `amount` tokens from `src` to `dst`\n * @param src The address of the source account\n * @param dst The address of the destination account\n * @param amount The number of tokens to transfer\n * @return Whether or not the transfer succeeded\n */\n",
+        "@notice": "Transfer `amount` tokens from `src` to `dst`",
+        "@param1": "src The address of the source account",
+        "@param2": "dst The address of the destination account",
+        "@param3": "amount The number of tokens to transfer",
+        "@return1": "Whether or not the transfer succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) external returns (bool) {\n address src = msg.sender;\n transferAllowances[src][spender] = amount;\n emit Approval(src, spender, amount);\n return true;\n }",
+        "comments": [
+            "/**",
+            " * @notice Approve `spender` to transfer up to `amount` from `src`",
+            " * @dev This will overwrite the approval amount for `spender`",
+            " * and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)",
+            " * @param spender The address of the account which may transfer tokens",
+            " * @param amount The number of tokens that are approved (-1 means infinite)",
+            " * @return Whether or not the approval succeeded",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Approve `spender` to transfer up to `amount` from `src`\n * @dev This will overwrite the approval amount for `spender`\n * and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)\n * @param spender The address of the account which may transfer tokens\n * @param amount The number of tokens that are approved (-1 means infinite)\n * @return Whether or not the approval succeeded\n */\n",
+        "@notice": "Approve `spender` to transfer up to `amount` from `src`",
+        "@dev": "This will overwrite the approval amount for `spender` * and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)",
+        "@param1": "spender The address of the account which may transfer tokens",
+        "@param2": "amount The number of tokens that are approved (-1 means infinite)",
+        "@return1": "Whether or not the approval succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) external view returns (uint256) {\n return transferAllowances[owner][spender];\n }",
+        "comments": [
+            "/**",
+            " * @notice Get the current allowance from `owner` for `spender`",
+            " * @param owner The address of the account which owns the tokens to be spent",
+            " * @param spender The address of the account which may transfer tokens",
+            " * @return The number of tokens allowed to be spent (-1 means infinite)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get the current allowance from `owner` for `spender`\n * @param owner The address of the account which owns the tokens to be spent\n * @param spender The address of the account which may transfer tokens\n * @return The number of tokens allowed to be spent (-1 means infinite)\n */\n",
+        "@notice": "Get the current allowance from `owner` for `spender`",
+        "@param1": "owner The address of the account which owns the tokens to be spent",
+        "@param2": "spender The address of the account which may transfer tokens",
+        "@return1": "The number of tokens allowed to be spent (-1 means infinite)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) external view returns (uint256) {\n return accountTokens[owner];\n }",
+        "comments": [
+            "/**",
+            " * @notice Get the token balance of the `owner`",
+            " * @param owner The address of the account to query",
+            " * @return The number of tokens owned by `owner`",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get the token balance of the `owner`\n * @param owner The address of the account to query\n * @return The number of tokens owned by `owner`\n */\n",
+        "@notice": "Get the token balance of the `owner`",
+        "@param1": "owner The address of the account to query",
+        "@return1": "The number of tokens owned by `owner`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfUnderlying",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOfUnderlying(address owner) external returns (uint) {\n Exp memory exchangeRate = Exp({mantissa: exchangeRateCurrent()});\n (MathError mErr, uint balance) = mulScalarTruncate(exchangeRate, accountTokens[owner]);\n require(mErr == MathError.NO_ERROR);\n return balance;\n }",
+        "comments": [
+            "/**",
+            " * @notice Get the underlying balance of the `owner`",
+            " * @dev This also accrues interest in a transaction",
+            " * @param owner The address of the account to query",
+            " * @return The amount of underlying owned by `owner`",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get the underlying balance of the `owner`\n * @dev This also accrues interest in a transaction\n * @param owner The address of the account to query\n * @return The amount of underlying owned by `owner`\n */\n",
+        "@notice": "Get the underlying balance of the `owner`",
+        "@dev": "This also accrues interest in a transaction",
+        "@param1": "owner The address of the account to query",
+        "@return1": "The amount of underlying owned by `owner`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAccountSnapshot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function getAccountSnapshot(address account) external view returns (uint, uint, uint, uint) {\n uint cTokenBalance = accountTokens[account];\n uint borrowBalance;\n uint exchangeRateMantissa;\n\n MathError mErr;\n\n (mErr, borrowBalance) = borrowBalanceStoredInternal(account);\n if (mErr != MathError.NO_ERROR) {\n return (uint(Error.MATH_ERROR), 0, 0, 0);\n }\n\n (mErr, exchangeRateMantissa) = exchangeRateStoredInternal();\n if (mErr != MathError.NO_ERROR) {\n return (uint(Error.MATH_ERROR), 0, 0, 0);\n }\n\n return (uint(Error.NO_ERROR), cTokenBalance, borrowBalance, exchangeRateMantissa);\n }",
+        "comments": [
+            "/**",
+            " * @notice Get a snapshot of the account's balances, and the cached exchange rate",
+            " * @dev This is used by comptroller to more efficiently perform liquidity checks.",
+            " * @param account Address of the account to snapshot",
+            " * @return (possible error, token balance, borrow balance, exchange rate mantissa)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get a snapshot of the account's balances, and the cached exchange rate\n * @dev This is used by comptroller to more efficiently perform liquidity checks.\n * @param account Address of the account to snapshot\n * @return (possible error, token balance, borrow balance, exchange rate mantissa)\n */\n",
+        "@notice": "Get a snapshot of the account's balances, and the cached exchange rate",
+        "@dev": "This is used by comptroller to more efficiently perform liquidity checks.",
+        "@param1": "account Address of the account to snapshot",
+        "@return1": "(possible error, token balance, borrow balance, exchange rate mantissa)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "borrowRatePerBlock",
+        "visibility": "external",
+        "args": [],
+        "func": "function borrowRatePerBlock() external view returns (uint) {\n (uint opaqueErr, uint borrowRateMantissa) = interestRateModel.getBorrowRate(getCashPrior(), totalBorrows, totalReserves);\n require(opaqueErr == 0, \"borrowRatePerBlock: interestRateModel.borrowRate failed\"); // semi-opaque\n return borrowRateMantissa;\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the current per-block borrow interest rate for this cToken",
+            " * @return The borrow interest rate per block, scaled by 1e18",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the current per-block borrow interest rate for this cToken\n * @return The borrow interest rate per block, scaled by 1e18\n */\n",
+        "@notice": "Returns the current per-block borrow interest rate for this cToken",
+        "@return1": "The borrow interest rate per block, scaled by 1e18",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supplyRatePerBlock",
+        "visibility": "external",
+        "args": [],
+        "func": "function supplyRatePerBlock() external view returns (uint) {\n /* We calculate the supply rate:\n * underlying = totalSupply \u00d7 exchangeRate\n * borrowsPer = totalBorrows \u00f7 underlying\n * supplyRate = borrowRate \u00d7 (1-reserveFactor) \u00d7 borrowsPer\n */\n uint exchangeRateMantissa = exchangeRateStored();\n\n (uint e0, uint borrowRateMantissa) = interestRateModel.getBorrowRate(getCashPrior(), totalBorrows, totalReserves);\n require(e0 == 0, \"supplyRatePerBlock: calculating borrowRate failed\"); // semi-opaque\n\n (MathError e1, Exp memory underlying) = mulScalar(Exp({mantissa: exchangeRateMantissa}), totalSupply);\n require(e1 == MathError.NO_ERROR, \"supplyRatePerBlock: calculating underlying failed\");\n\n (MathError e2, Exp memory borrowsPer) = divScalarByExp(totalBorrows, underlying);\n require(e2 == MathError.NO_ERROR, \"supplyRatePerBlock: calculating borrowsPer failed\");\n\n (MathError e3, Exp memory oneMinusReserveFactor) = subExp(Exp({mantissa: mantissaOne}), Exp({mantissa: reserveFactorMantissa}));\n require(e3 == MathError.NO_ERROR, \"supplyRatePerBlock: calculating oneMinusReserveFactor failed\");\n\n (MathError e4, Exp memory supplyRate) = mulExp3(Exp({mantissa: borrowRateMantissa}), oneMinusReserveFactor, borrowsPer);\n require(e4 == MathError.NO_ERROR, \"supplyRatePerBlock: calculating supplyRate failed\");\n\n return supplyRate.mantissa;\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the current per-block supply interest rate for this cToken",
+            " * @return The supply interest rate per block, scaled by 1e18",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the current per-block supply interest rate for this cToken\n * @return The supply interest rate per block, scaled by 1e18\n */\n",
+        "@notice": "Returns the current per-block supply interest rate for this cToken",
+        "@return1": "The supply interest rate per block, scaled by 1e18",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalBorrowsCurrent",
+        "visibility": "external",
+        "args": [],
+        "func": "function totalBorrowsCurrent() external nonReentrant returns (uint) {\n require(accrueInterest() == uint(Error.NO_ERROR), \"accrue interest failed\");\n return totalBorrows;\n }",
+        "comments": [
+            "/**",
+            " * @notice Returns the current total borrows plus accrued interest",
+            " * @return The total borrows with interest",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Returns the current total borrows plus accrued interest\n * @return The total borrows with interest\n */\n",
+        "@notice": "Returns the current total borrows plus accrued interest",
+        "@return1": "The total borrows with interest",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "borrowBalanceCurrent",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function borrowBalanceCurrent(address account) external nonReentrant returns (uint) {\n require(accrueInterest() == uint(Error.NO_ERROR), \"accrue interest failed\");\n return borrowBalanceStored(account);\n }",
+        "comments": [
+            "/**",
+            " * @notice Accrue interest to updated borrowIndex and then calculate account's borrow balance using the updated borrowIndex",
+            " * @param account The address whose balance should be calculated after updating borrowIndex",
+            " * @return The calculated balance",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accrue interest to updated borrowIndex and then calculate account's borrow balance using the updated borrowIndex\n * @param account The address whose balance should be calculated after updating borrowIndex\n * @return The calculated balance\n */\n",
+        "@notice": "Accrue interest to updated borrowIndex and then calculate account's borrow balance using the updated borrowIndex",
+        "@param1": "account The address whose balance should be calculated after updating borrowIndex",
+        "@return1": "The calculated balance",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "borrowBalanceStored",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function borrowBalanceStored(address account) public view returns (uint) {\n (MathError err, uint result) = borrowBalanceStoredInternal(account);\n require(err == MathError.NO_ERROR, \"borrowBalanceStored: borrowBalanceStoredInternal failed\");\n return result;\n }",
+        "comments": [
+            "/**",
+            " * @notice Return the borrow balance of account based on stored data",
+            " * @param account The address whose balance should be calculated",
+            " * @return The calculated balance",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Return the borrow balance of account based on stored data\n * @param account The address whose balance should be calculated\n * @return The calculated balance\n */\n",
+        "@notice": "Return the borrow balance of account based on stored data",
+        "@param1": "account The address whose balance should be calculated",
+        "@return1": "The calculated balance",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exchangeRateCurrent",
+        "visibility": "public",
+        "args": [],
+        "func": "function exchangeRateCurrent() public nonReentrant returns (uint) {\n require(accrueInterest() == uint(Error.NO_ERROR), \"accrue interest failed\");\n return exchangeRateStored();\n }",
+        "comments": [
+            "/**",
+            " * @notice Accrue interest then return the up-to-date exchange rate",
+            " * @return Calculated exchange rate scaled by 1e18",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accrue interest then return the up-to-date exchange rate\n * @return Calculated exchange rate scaled by 1e18\n */\n",
+        "@notice": "Accrue interest then return the up-to-date exchange rate",
+        "@return1": "Calculated exchange rate scaled by 1e18",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "exchangeRateStored",
+        "visibility": "public",
+        "args": [],
+        "func": "function exchangeRateStored() public view returns (uint) {\n (MathError err, uint result) = exchangeRateStoredInternal();\n require(err == MathError.NO_ERROR, \"exchangeRateStored: exchangeRateStoredInternal failed\");\n return result;\n }",
+        "comments": [
+            "/**",
+            " * @notice Calculates the exchange rate from the underlying to the CToken",
+            " * @dev This function does not accrue interest before calculating the exchange rate",
+            " * @return Calculated exchange rate scaled by 1e18",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Calculates the exchange rate from the underlying to the CToken\n * @dev This function does not accrue interest before calculating the exchange rate\n * @return Calculated exchange rate scaled by 1e18\n */\n",
+        "@notice": "Calculates the exchange rate from the underlying to the CToken",
+        "@dev": "This function does not accrue interest before calculating the exchange rate",
+        "@return1": "Calculated exchange rate scaled by 1e18",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCash",
+        "visibility": "external",
+        "args": [],
+        "func": "function getCash() external view returns (uint) {\n return getCashPrior();\n }",
+        "comments": [
+            "/**",
+            " * @notice Get cash balance of this cToken in the underlying asset",
+            " * @return The quantity of underlying asset owned by this contract",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Get cash balance of this cToken in the underlying asset\n * @return The quantity of underlying asset owned by this contract\n */\n",
+        "@notice": "Get cash balance of this cToken in the underlying asset",
+        "@return1": "The quantity of underlying asset owned by this contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "accrueInterest",
+        "visibility": "public",
+        "args": [],
+        "func": "function accrueInterest() public returns (uint) {\n AccrueInterestLocalVars memory vars;\n\n /* Calculate the current borrow interest rate */\n (vars.opaqueErr, vars.borrowRateMantissa) = interestRateModel.getBorrowRate(getCashPrior(), totalBorrows, totalReserves);\n require(vars.borrowRateMantissa <= borrowRateMaxMantissa, \"borrow rate is absurdly high\");\n if (vars.opaqueErr != 0) {\n return failOpaque(Error.INTEREST_RATE_MODEL_ERROR, FailureInfo.ACCRUE_INTEREST_BORROW_RATE_CALCULATION_FAILED, vars.opaqueErr);\n }\n\n /* Remember the initial block number */\n vars.currentBlockNumber = getBlockNumber();\n\n /* Calculate the number of blocks elapsed since the last accrual */\n (vars.mathErr, vars.blockDelta) = subUInt(vars.currentBlockNumber, accrualBlockNumber);\n assert(vars.mathErr == MathError.NO_ERROR); // Block delta should always succeed and if it doesn't, blow up.\n\n /*\n * Calculate the interest accumulated into borrows and reserves and the new index:\n * simpleInterestFactor = borrowRate * blockDelta\n * interestAccumulated = simpleInterestFactor * totalBorrows\n * totalBorrowsNew = interestAccumulated + totalBorrows\n * totalReservesNew = interestAccumulated * reserveFactor + totalReserves\n * borrowIndexNew = simpleInterestFactor * borrowIndex + borrowIndex\n */\n (vars.mathErr, vars.simpleInterestFactor) = mulScalar(Exp({mantissa: vars.borrowRateMantissa}), vars.blockDelta);\n if (vars.mathErr != MathError.NO_ERROR) {\n return failOpaque(Error.MATH_ERROR, FailureInfo.ACCRUE_INTEREST_SIMPLE_INTEREST_FACTOR_CALCULATION_FAILED, uint(vars.mathErr));\n }\n\n (vars.mathErr, vars.interestAccumulated) = mulScalarTruncate(vars.simpleInterestFactor, totalBorrows);\n if (vars.mathErr != MathError.NO_ERROR) {\n return failOpaque(Error.MATH_ERROR, FailureInfo.ACCRUE_INTEREST_ACCUMULATED_INTEREST_CALCULATION_FAILED, uint(vars.mathErr));\n }\n\n (vars.mathErr, vars.totalBorrowsNew) = addUInt(vars.interestAccumulated, totalBorrows);\n if (vars.mathErr != MathError.NO_ERROR) {\n return failOpaque(Error.MATH_ERROR, FailureInfo.ACCRUE_INTEREST_NEW_TOTAL_BORROWS_CALCULATION_FAILED, uint(vars.mathErr));\n }\n\n (vars.mathErr, vars.totalReservesNew) = mulScalarTruncateAddUInt(Exp({mantissa: reserveFactorMantissa}), vars.interestAccumulated, totalReserves);\n if (vars.mathErr != MathError.NO_ERROR) {\n return failOpaque(Error.MATH_ERROR, FailureInfo.ACCRUE_INTEREST_NEW_TOTAL_RESERVES_CALCULATION_FAILED, uint(vars.mathErr));\n }\n\n (vars.mathErr, vars.borrowIndexNew) = mulScalarTruncateAddUInt(vars.simpleInterestFactor, borrowIndex, borrowIndex);\n if (vars.mathErr != MathError.NO_ERROR) {\n return failOpaque(Error.MATH_ERROR, FailureInfo.ACCRUE_INTEREST_NEW_BORROW_INDEX_CALCULATION_FAILED, uint(vars.mathErr));\n }\n\n /////////////////////////\n // EFFECTS & INTERACTIONS\n // (No safe failures beyond this point)\n\n /* We write the previously calculated values into storage */\n accrualBlockNumber = vars.currentBlockNumber;\n borrowIndex = vars.borrowIndexNew;\n totalBorrows = vars.totalBorrowsNew;\n totalReserves = vars.totalReservesNew;\n\n /* We emit an AccrueInterest event */\n emit AccrueInterest(vars.interestAccumulated, vars.borrowIndexNew, totalBorrows);\n\n return uint(Error.NO_ERROR);\n }",
+        "comments": [
+            "/**",
+            " * @notice Applies accrued interest to total borrows and reserves.",
+            " * @dev This calculates interest accrued from the last checkpointed block",
+            " * up to the current block and writes new checkpoint to storage.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Applies accrued interest to total borrows and reserves.\n * @dev This calculates interest accrued from the last checkpointed block\n * up to the current block and writes new checkpoint to storage.\n */\n",
+        "@notice": "Applies accrued interest to total borrows and reserves.",
+        "@dev": "This calculates interest accrued from the last checkpointed block * up to the current block and writes new checkpoint to storage.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "seize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "liquidator",
+                "type": "address"
+            },
+            {
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "name": "seizeTokens",
+                "type": "uint"
+            }
+        ],
+        "func": "function seize(address liquidator, address borrower, uint seizeTokens) external nonReentrant returns (uint) {\n /* Fail if seize not allowed */\n uint allowed = comptroller.seizeAllowed(address(this), msg.sender, liquidator, borrower, seizeTokens);\n if (allowed != 0) {\n return failOpaque(Error.COMPTROLLER_REJECTION, FailureInfo.LIQUIDATE_SEIZE_COMPTROLLER_REJECTION, allowed);\n }\n\n /* Fail if borrower = liquidator */\n if (borrower == liquidator) {\n return fail(Error.INVALID_ACCOUNT_PAIR, FailureInfo.LIQUIDATE_SEIZE_LIQUIDATOR_IS_BORROWER);\n }\n\n MathError mathErr;\n uint borrowerTokensNew;\n uint liquidatorTokensNew;\n\n /*\n * We calculate the new borrower and liquidator token balances, failing on underflow/overflow:\n * borrowerTokensNew = accountTokens[borrower] - seizeTokens\n * liquidatorTokensNew = accountTokens[liquidator] + seizeTokens\n */\n (mathErr, borrowerTokensNew) = subUInt(accountTokens[borrower], seizeTokens);\n if (mathErr != MathError.NO_ERROR) {\n return failOpaque(Error.MATH_ERROR, FailureInfo.LIQUIDATE_SEIZE_BALANCE_DECREMENT_FAILED, uint(mathErr));\n }\n\n (mathErr, liquidatorTokensNew) = addUInt(accountTokens[liquidator], seizeTokens);\n if (mathErr != MathError.NO_ERROR) {\n return failOpaque(Error.MATH_ERROR, FailureInfo.LIQUIDATE_SEIZE_BALANCE_INCREMENT_FAILED, uint(mathErr));\n }\n\n /////////////////////////\n // EFFECTS & INTERACTIONS\n // (No safe failures beyond this point)\n\n /* We write the previously calculated values into storage */\n accountTokens[borrower] = borrowerTokensNew;\n accountTokens[liquidator] = liquidatorTokensNew;\n\n /* Emit a Transfer event */\n emit Transfer(borrower, liquidator, seizeTokens);\n\n /* We call the defense hook */\n comptroller.seizeVerify(address(this), msg.sender, liquidator, borrower, seizeTokens);\n\n return uint(Error.NO_ERROR);\n }",
+        "comments": [
+            "/**",
+            " * @notice Transfers collateral tokens (this market) to the liquidator.",
+            " * @dev Will fail unless called by another cToken during the process of liquidation.",
+            " * Its absolutely critical to use msg.sender as the borrowed cToken and not a parameter.",
+            " * @param liquidator The account receiving seized collateral",
+            " * @param borrower The account having collateral seized",
+            " * @param seizeTokens The number of cTokens to seize",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Transfers collateral tokens (this market) to the liquidator.\n * @dev Will fail unless called by another cToken during the process of liquidation.\n * Its absolutely critical to use msg.sender as the borrowed cToken and not a parameter.\n * @param liquidator The account receiving seized collateral\n * @param borrower The account having collateral seized\n * @param seizeTokens The number of cTokens to seize\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Transfers collateral tokens (this market) to the liquidator.",
+        "@dev": "Will fail unless called by another cToken during the process of liquidation. * Its absolutely critical to use msg.sender as the borrowed cToken and not a parameter.",
+        "@param1": "liquidator The account receiving seized collateral",
+        "@param2": "borrower The account having collateral seized",
+        "@param3": "seizeTokens The number of cTokens to seize",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setPendingAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newPendingAdmin",
+                "type": "address payable"
+            }
+        ],
+        "func": "function _setPendingAdmin(address payable newPendingAdmin) external returns (uint) {\n // Check caller = admin\n if (msg.sender != admin) {\n return fail(Error.UNAUTHORIZED, FailureInfo.SET_PENDING_ADMIN_OWNER_CHECK);\n }\n\n // Save current value, if any, for inclusion in log\n address oldPendingAdmin = pendingAdmin;\n\n // Store pendingAdmin with value newPendingAdmin\n pendingAdmin = newPendingAdmin;\n\n // Emit NewPendingAdmin(oldPendingAdmin, newPendingAdmin)\n emit NewPendingAdmin(oldPendingAdmin, newPendingAdmin);\n\n return uint(Error.NO_ERROR);\n }",
+        "comments": [
+            "/**",
+            " * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+            " * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+            " * @param newPendingAdmin New pending admin.",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " *",
+            " * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.\n * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.\n * @param newPendingAdmin New pending admin.\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n *\n * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?\n */\n",
+        "@notice": "Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+        "@dev": "Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.",
+        "@param1": "newPendingAdmin New pending admin.",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details) * * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_acceptAdmin",
+        "visibility": "external",
+        "args": [],
+        "func": "function _acceptAdmin() external returns (uint) {\n // Check caller is pendingAdmin and pendingAdmin \u2260 address(0)\n if (msg.sender != pendingAdmin || msg.sender == address(0)) {\n return fail(Error.UNAUTHORIZED, FailureInfo.ACCEPT_ADMIN_PENDING_ADMIN_CHECK);\n }\n\n // Save current values for inclusion in log\n address oldAdmin = admin;\n address oldPendingAdmin = pendingAdmin;\n\n // Store admin with value pendingAdmin\n admin = pendingAdmin;\n\n // Clear the pending value\n pendingAdmin = address(0);\n\n emit NewAdmin(oldAdmin, admin);\n emit NewPendingAdmin(oldPendingAdmin, pendingAdmin);\n\n return uint(Error.NO_ERROR);\n }",
+        "comments": [
+            "/**",
+            " * @notice Accepts transfer of admin rights. msg.sender must be pendingAdmin",
+            " * @dev Admin function for pending admin to accept role and update admin",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accepts transfer of admin rights. msg.sender must be pendingAdmin\n * @dev Admin function for pending admin to accept role and update admin\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Accepts transfer of admin rights. msg.sender must be pendingAdmin",
+        "@dev": "Admin function for pending admin to accept role and update admin",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setComptroller",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newComptroller",
+                "type": "ComptrollerInterface"
+            }
+        ],
+        "func": "function _setComptroller(ComptrollerInterface newComptroller) public returns (uint) {\n // Check caller is admin\n if (msg.sender != admin) {\n return fail(Error.UNAUTHORIZED, FailureInfo.SET_COMPTROLLER_OWNER_CHECK);\n }\n\n ComptrollerInterface oldComptroller = comptroller;\n // Ensure invoke comptroller.isComptroller() returns true\n require(newComptroller.isComptroller(), \"marker method returned false\");\n\n // Set market's comptroller to newComptroller\n comptroller = newComptroller;\n\n // Emit NewComptroller(oldComptroller, newComptroller)\n emit NewComptroller(oldComptroller, newComptroller);\n\n return uint(Error.NO_ERROR);\n }",
+        "comments": [
+            "/**",
+            " * @notice Sets a new comptroller for the market",
+            " * @dev Admin function to set a new comptroller",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sets a new comptroller for the market\n * @dev Admin function to set a new comptroller\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sets a new comptroller for the market",
+        "@dev": "Admin function to set a new comptroller",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setReserveFactor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newReserveFactorMantissa",
+                "type": "uint"
+            }
+        ],
+        "func": "function _setReserveFactor(uint newReserveFactorMantissa) external nonReentrant returns (uint) {\n uint error = accrueInterest();\n if (error != uint(Error.NO_ERROR)) {\n // accrueInterest emits logs on errors, but on top of that we want to log the fact that an attempted reserve factor change failed.\n return fail(Error(error), FailureInfo.SET_RESERVE_FACTOR_ACCRUE_INTEREST_FAILED);\n }\n // _setReserveFactorFresh emits reserve-factor-specific logs on errors, so we don't need to.\n return _setReserveFactorFresh(newReserveFactorMantissa);\n }",
+        "comments": [
+            "/**",
+            " * @notice accrues interest and sets a new reserve factor for the protocol using _setReserveFactorFresh",
+            " * @dev Admin function to accrue interest and set a new reserve factor",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice accrues interest and sets a new reserve factor for the protocol using _setReserveFactorFresh\n * @dev Admin function to accrue interest and set a new reserve factor\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "accrues interest and sets a new reserve factor for the protocol using _setReserveFactorFresh",
+        "@dev": "Admin function to accrue interest and set a new reserve factor",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_reduceReserves",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "reduceAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function _reduceReserves(uint reduceAmount) external nonReentrant returns (uint) {\n uint error = accrueInterest();\n if (error != uint(Error.NO_ERROR)) {\n // accrueInterest emits logs on errors, but on top of that we want to log the fact that an attempted reduce reserves failed.\n return fail(Error(error), FailureInfo.REDUCE_RESERVES_ACCRUE_INTEREST_FAILED);\n }\n // _reduceReservesFresh emits reserve-reduction-specific logs on errors, so we don't need to.\n return _reduceReservesFresh(reduceAmount);\n }",
+        "comments": [
+            "/**",
+            " * @notice Accrues interest and reduces reserves by transferring to admin",
+            " * @param reduceAmount Amount of reduction to reserves",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Accrues interest and reduces reserves by transferring to admin\n * @param reduceAmount Amount of reduction to reserves\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Accrues interest and reduces reserves by transferring to admin",
+        "@param1": "reduceAmount Amount of reduction to reserves",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setInterestRateModel",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newInterestRateModel",
+                "type": "InterestRateModel"
+            }
+        ],
+        "func": "function _setInterestRateModel(InterestRateModel newInterestRateModel) public returns (uint) {\n uint error = accrueInterest();\n if (error != uint(Error.NO_ERROR)) {\n // accrueInterest emits logs on errors, but on top of that we want to log the fact that an attempted change of interest rate model failed\n return fail(Error(error), FailureInfo.SET_INTEREST_RATE_MODEL_ACCRUE_INTEREST_FAILED);\n }\n // _setInterestRateModelFresh emits interest-rate-model-update-specific logs on errors, so we don't need to.\n return _setInterestRateModelFresh(newInterestRateModel);\n }",
+        "comments": [
+            "/**",
+            " * @notice accrues interest and updates the interest rate model using _setInterestRateModelFresh",
+            " * @dev Admin function to accrue interest and update the interest rate model",
+            " * @param newInterestRateModel the new interest rate model to use",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice accrues interest and updates the interest rate model using _setInterestRateModelFresh\n * @dev Admin function to accrue interest and update the interest rate model\n * @param newInterestRateModel the new interest rate model to use\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "accrues interest and updates the interest rate model using _setInterestRateModelFresh",
+        "@dev": "Admin function to accrue interest and update the interest rate model",
+        "@param1": "newInterestRateModel the new interest rate model to use",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "mintAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(uint mintAmount) external returns (uint) {\n return mintInternal(mintAmount);\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender supplies assets into the market and receives cTokens in exchange",
+            " * @dev Accrues interest whether or not the operation succeeds, unless reverted",
+            " * @param mintAmount The amount of the underlying asset to supply",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender supplies assets into the market and receives cTokens in exchange\n * @dev Accrues interest whether or not the operation succeeds, unless reverted\n * @param mintAmount The amount of the underlying asset to supply\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender supplies assets into the market and receives cTokens in exchange",
+        "@dev": "Accrues interest whether or not the operation succeeds, unless reverted",
+        "@param1": "mintAmount The amount of the underlying asset to supply",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeem",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "redeemTokens",
+                "type": "uint"
+            }
+        ],
+        "func": "function redeem(uint redeemTokens) external returns (uint) {\n return redeemInternal(redeemTokens);\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender redeems cTokens in exchange for the underlying asset",
+            " * @dev Accrues interest whether or not the operation succeeds, unless reverted",
+            " * @param redeemTokens The number of cTokens to redeem into underlying",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender redeems cTokens in exchange for the underlying asset\n * @dev Accrues interest whether or not the operation succeeds, unless reverted\n * @param redeemTokens The number of cTokens to redeem into underlying\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender redeems cTokens in exchange for the underlying asset",
+        "@dev": "Accrues interest whether or not the operation succeeds, unless reverted",
+        "@param1": "redeemTokens The number of cTokens to redeem into underlying",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeemUnderlying",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "redeemAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function redeemUnderlying(uint redeemAmount) external returns (uint) {\n return redeemUnderlyingInternal(redeemAmount);\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender redeems cTokens in exchange for a specified amount of underlying asset",
+            " * @dev Accrues interest whether or not the operation succeeds, unless reverted",
+            " * @param redeemAmount The amount of underlying to redeem",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender redeems cTokens in exchange for a specified amount of underlying asset\n * @dev Accrues interest whether or not the operation succeeds, unless reverted\n * @param redeemAmount The amount of underlying to redeem\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender redeems cTokens in exchange for a specified amount of underlying asset",
+        "@dev": "Accrues interest whether or not the operation succeeds, unless reverted",
+        "@param1": "redeemAmount The amount of underlying to redeem",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "borrow",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "borrowAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function borrow(uint borrowAmount) external returns (uint) {\n return borrowInternal(borrowAmount);\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender borrows assets from the protocol to their own address",
+            " * @param borrowAmount The amount of the underlying asset to borrow",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender borrows assets from the protocol to their own address\n * @param borrowAmount The amount of the underlying asset to borrow\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender borrows assets from the protocol to their own address",
+        "@param1": "borrowAmount The amount of the underlying asset to borrow",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "repayBorrow",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "repayAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function repayBorrow(uint repayAmount) external returns (uint) {\n return repayBorrowInternal(repayAmount);\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender repays their own borrow",
+            " * @param repayAmount The amount to repay",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender repays their own borrow\n * @param repayAmount The amount to repay\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender repays their own borrow",
+        "@param1": "repayAmount The amount to repay",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "repayBorrowBehalf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "name": "repayAmount",
+                "type": "uint"
+            }
+        ],
+        "func": "function repayBorrowBehalf(address borrower, uint repayAmount) external returns (uint) {\n return repayBorrowBehalfInternal(borrower, repayAmount);\n }",
+        "comments": [
+            "/**",
+            " * @notice Sender repays a borrow belonging to borrower",
+            " * @param borrower the account with the debt being payed off",
+            " * @param repayAmount The amount to repay",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice Sender repays a borrow belonging to borrower\n * @param borrower the account with the debt being payed off\n * @param repayAmount The amount to repay\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "Sender repays a borrow belonging to borrower",
+        "@param1": "borrower the account with the debt being payed off",
+        "@param2": "repayAmount The amount to repay",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "liquidateBorrow",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "name": "repayAmount",
+                "type": "uint"
+            },
+            {
+                "name": "cTokenCollateral",
+                "type": "CToken"
+            }
+        ],
+        "func": "function liquidateBorrow(address borrower, uint repayAmount, CToken cTokenCollateral) external returns (uint) {\n return liquidateBorrowInternal(borrower, repayAmount, cTokenCollateral);\n }",
+        "comments": [
+            "/**",
+            " * @notice The sender liquidates the borrowers collateral.",
+            " * The collateral seized is transferred to the liquidator.",
+            " * @param borrower The borrower of this cToken to be liquidated",
+            " * @param cTokenCollateral The market in which to seize collateral from the borrower",
+            " * @param repayAmount The amount of the underlying borrowed asset to repay",
+            " * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @notice The sender liquidates the borrowers collateral.\n * The collateral seized is transferred to the liquidator.\n * @param borrower The borrower of this cToken to be liquidated\n * @param cTokenCollateral The market in which to seize collateral from the borrower\n * @param repayAmount The amount of the underlying borrowed asset to repay\n * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n */\n",
+        "@notice": "The sender liquidates the borrowers collateral. * The collateral seized is transferred to the liquidator.",
+        "@param1": "borrower The borrower of this cToken to be liquidated",
+        "@param2": "cTokenCollateral The market in which to seize collateral from the borrower",
+        "@param3": "repayAmount The amount of the underlying borrowed asset to repay",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

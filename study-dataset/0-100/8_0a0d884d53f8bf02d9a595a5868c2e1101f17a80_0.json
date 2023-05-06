@@ -1,0 +1,272 @@
+[
+    {
+        "transactions": 0,
+        "function_num": 8
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address _newOwner) external onlyOwner {\n        if (_newOwner == LibAsset.NULL_ADDRESS) revert NoNullOwner();\n        if (_newOwner == msg.sender) revert NewOwnerMustNotBeSelf();\n        pendingOwner = _newOwner;\n        emit OwnershipTransferRequested(msg.sender, pendingOwner);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Initiates transfer of ownership to a new address",
+            "    /// @param _newOwner the address to transfer ownership to",
+            "    "
+        ],
+        "comt": "\n    /// @notice Initiates transfer of ownership to a new address\n    /// @param _newOwner the address to transfer ownership to\n    ",
+        "@notice": "Initiates transfer of ownership to a new address",
+        "@param1": "_newOwner the address to transfer ownership to",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancelOwnershipTransfer",
+        "visibility": "external",
+        "args": [],
+        "func": "function cancelOwnershipTransfer() external onlyOwner {\n        if (pendingOwner == LibAsset.NULL_ADDRESS) revert NoPendingOwnershipTransfer();\n        pendingOwner = LibAsset.NULL_ADDRESS;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Cancel transfer of ownership",
+            "    "
+        ],
+        "comt": "\n    /// @notice Cancel transfer of ownership\n    ",
+        "@notice": "Cancel transfer of ownership",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "confirmOwnershipTransfer",
+        "visibility": "external",
+        "args": [],
+        "func": "function confirmOwnershipTransfer() external {\n        address _pendingOwner = pendingOwner;\n        if (msg.sender != _pendingOwner) revert NotPendingOwner();\n        emit OwnershipTransferred(owner, _pendingOwner);\n        owner = _pendingOwner;\n        pendingOwner = LibAsset.NULL_ADDRESS;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Confirms transfer of ownership to the calling address (msg.sender)",
+            "    "
+        ],
+        "comt": "\n    /// @notice Confirms transfer of ownership to the calling address (msg.sender)\n    ",
+        "@notice": "Confirms transfer of ownership to the calling address (msg.sender)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setStargateRouter",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_sgRouter",
+                "type": "address"
+            }
+        ],
+        "func": "function setStargateRouter(address _sgRouter) external onlyOwner {\n        sgRouter = _sgRouter;\n        emit StargateRouterSet(_sgRouter);\n    }",
+        "comments": [
+            "",
+            "    /// External Methods ///",
+            "",
+            "    /// @notice set stargate router",
+            "    /// @param _sgRouter the stargate router address",
+            "    "
+        ],
+        "comt": "\n    /// External Methods ///\n\n    /// @notice set stargate router\n    /// @param _sgRouter the stargate router address\n    ",
+        "@notice": "set stargate router",
+        "@param1": "_sgRouter the stargate router address",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRecoverGas",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_recoverGas",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setRecoverGas(uint256 _recoverGas) external onlyOwner {\n        recoverGas = _recoverGas;\n        emit RecoverGasSet(_recoverGas);\n    }",
+        "comments": [
+            "",
+            "    /// @notice set execution recoverGas",
+            "    /// @param _recoverGas recoverGas",
+            "    "
+        ],
+        "comt": "\n    /// @notice set execution recoverGas\n    /// @param _recoverGas recoverGas\n    ",
+        "@notice": "set execution recoverGas",
+        "@param1": "_recoverGas recoverGas",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "sgReceive",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint16",
+                "type": "uint16"
+            },
+            {
+                "name": "memory",
+                "type": "// _srcChainId unused\n        bytes"
+            },
+            {
+                "name": "uint256",
+                "type": "// _srcAddress unused\n       "
+            },
+            {
+                "name": "_token",
+                "type": "// _nonce unused\n        address"
+            },
+            {
+                "name": "_amountLD",
+                "type": "uint256"
+            },
+            {
+                "name": "_payload",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function sgReceive(\n        uint16, // _srcChainId unused\n        bytes memory, // _srcAddress unused\n        uint256, // _nonce unused\n        address _token,\n        uint256 _amountLD,\n        bytes memory _payload\n    ) external nonReentrant onlySGRouter {\n        (bytes32 transactionId, LibSwap.SwapData[] memory swapData, , address receiver) = abi.decode(\n            _payload,\n            (bytes32, LibSwap.SwapData[], address, address)\n        );\n\n        if (gasleft() < recoverGas) {\n            if (LibAsset.isNativeAsset(_token)) {\n                receiver.call{ value: _amountLD }(\"\");\n            } else {\n                IERC20(_token).safeTransfer(receiver, _amountLD);\n            }\n\n            emit LiFiTransferCompleted(transactionId, _token, receiver, _amountLD, block.timestamp);\n            return;\n        }\n\n        _swapAndCompleteBridgeTokens(transactionId, swapData, _token, payable(receiver), _amountLD, true);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Completes a cross-chain transaction on the receiving chain.",
+            "    /// @dev This function is called from Stargate Router.",
+            "    /// @param * (unused) The remote chainId sending the tokens",
+            "    /// @param * (unused) The remote Bridge address",
+            "    /// @param * (unused) Nonce",
+            "    /// @param * (unused) The token contract on the local chain",
+            "    /// @param _amountLD The amount of local _token contract tokens",
+            "    /// @param _payload The data to execute",
+            "    "
+        ],
+        "comt": "\n    /// @notice Completes a cross-chain transaction on the receiving chain.\n    /// @dev This function is called from Stargate Router.\n    /// @param * (unused) The remote chainId sending the tokens\n    /// @param * (unused) The remote Bridge address\n    /// @param * (unused) Nonce\n    /// @param * (unused) The token contract on the local chain\n    /// @param _amountLD The amount of local _token contract tokens\n    /// @param _payload The data to execute\n    ",
+        "@notice": "Completes a cross-chain transaction on the receiving chain.",
+        "@dev": "This function is called from Stargate Router.",
+        "@param1": "* (unused) The remote chainId sending the tokens",
+        "@param2": "* (unused) The remote Bridge address",
+        "@param3": "* (unused) Nonce",
+        "@param4": "* (unused) The token contract on the local chain",
+        "@param5": "_amountLD The amount of local _token contract tokens",
+        "@param6": "_payload The data to execute",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "swapAndCompleteBridgeTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_transactionId",
+                "type": "bytes32"
+            },
+            {
+                "name": "_swapData",
+                "type": "LibSwap.SwapData[] memory"
+            },
+            {
+                "name": "assetId",
+                "type": "address"
+            },
+            {
+                "name": "receiver",
+                "type": "address payable"
+            }
+        ],
+        "func": "function swapAndCompleteBridgeTokens(\n        bytes32 _transactionId,\n        LibSwap.SwapData[] memory _swapData,\n        address assetId,\n        address payable receiver\n    ) external payable nonReentrant {\n        if (LibAsset.isNativeAsset(assetId)) {\n            _swapAndCompleteBridgeTokens(_transactionId, _swapData, assetId, receiver, msg.value, false);\n        } else {\n            uint256 allowance = IERC20(assetId).allowance(msg.sender, address(this));\n            LibAsset.depositAsset(assetId, allowance);\n            _swapAndCompleteBridgeTokens(_transactionId, _swapData, assetId, receiver, allowance, false);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Performs a swap before completing a cross-chain transaction",
+            "    /// @param _transactionId the transaction id associated with the operation",
+            "    /// @param _swapData array of data needed for swaps",
+            "    /// @param assetId token received from the other chain",
+            "    /// @param receiver address that will receive tokens in the end",
+            "    "
+        ],
+        "comt": "\n    /// @notice Performs a swap before completing a cross-chain transaction\n    /// @param _transactionId the transaction id associated with the operation\n    /// @param _swapData array of data needed for swaps\n    /// @param assetId token received from the other chain\n    /// @param receiver address that will receive tokens in the end\n    ",
+        "@notice": "Performs a swap before completing a cross-chain transaction",
+        "@param1": "_transactionId the transaction id associated with the operation",
+        "@param2": "_swapData array of data needed for swaps",
+        "@param3": "assetId token received from the other chain",
+        "@param4": "receiver address that will receive tokens in the end",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pullToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "assetId",
+                "type": "address"
+            },
+            {
+                "name": "receiver",
+                "type": "address payable"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function pullToken(\n        address assetId,\n        address payable receiver,\n        uint256 amount\n    ) external onlyOwner {\n        if (LibAsset.isNativeAsset(assetId)) {\n            receiver.call{ value: amount }(\"\");\n        } else {\n            IERC20(assetId).safeTransfer(receiver, amount);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice Send remaining token to receiver",
+            "    /// @param assetId token received from the other chain",
+            "    /// @param receiver address that will receive tokens in the end",
+            "    /// @param amount amount of token",
+            "    "
+        ],
+        "comt": "\n    /// @notice Send remaining token to receiver\n    /// @param assetId token received from the other chain\n    /// @param receiver address that will receive tokens in the end\n    /// @param amount amount of token\n    ",
+        "@notice": "Send remaining token to receiver",
+        "@param1": "assetId token received from the other chain",
+        "@param2": "receiver address that will receive tokens in the end",
+        "@param3": "amount amount of token",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

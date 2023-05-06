@@ -1,0 +1,857 @@
+[
+    {
+        "transactions": 2332,
+        "function_num": 37
+    },
+    {
+        "name": "singlePurchase",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "purchaseDetails",
+                "type": "PurchaseDetails memory"
+            },
+            {
+                "name": "feeRecipientFirst",
+                "type": "address"
+            },
+            {
+                "name": "feeRecipientSecond",
+                "type": "address"
+            }
+        ],
+        "func": "function singlePurchase(PurchaseDetails memory purchaseDetails, address feeRecipientFirst, address feeRecipientSecond) external payable {\n        requireNotPaused();\n\n        (bool success, uint feeAmountFirst, uint feeAmountSecond) = purchase(purchaseDetails, false);\n        emit Execution(success);\n        \n        transferFee(feeAmountFirst, feeRecipientFirst);\n        transferFee(feeAmountSecond, feeRecipientSecond);\n\n        transferChange();\n    }",
+        "comments": [
+            "/**",
+            "        @notice executes a single purchase",
+            "        @param purchaseDetails - deatails about the purchase (more info in PurchaseDetails struct)",
+            "        @param feeRecipientFirst - address of the first fee recipient",
+            "        @param feeRecipientSecond - address of the second fee recipient",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n        @notice executes a single purchase\n        @param purchaseDetails - deatails about the purchase (more info in PurchaseDetails struct)\n        @param feeRecipientFirst - address of the first fee recipient\n        @param feeRecipientSecond - address of the second fee recipient\n     */\n",
+        "@notice": "executes a single purchase",
+        "@param1": "purchaseDetails - deatails about the purchase (more info in PurchaseDetails struct)",
+        "@param2": "feeRecipientFirst - address of the first fee recipient",
+        "@param3": "feeRecipientSecond - address of the second fee recipient",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "bulkPurchase",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "purchaseDetails",
+                "type": "PurchaseDetails[] memory"
+            },
+            {
+                "name": "feeRecipientFirst",
+                "type": "address"
+            },
+            {
+                "name": "feeRecipientSecond",
+                "type": "address"
+            },
+            {
+                "name": "allowFail",
+                "type": "bool"
+            }
+        ],
+        "func": "function bulkPurchase(PurchaseDetails[] memory purchaseDetails, address feeRecipientFirst, address feeRecipientSecond, bool allowFail) external payable {\n        requireNotPaused();\n\n        uint sumFirstFees = 0;\n        uint sumSecondFees = 0;\n        bool result = false;\n\n        for (uint i = 0; i < purchaseDetails.length; i++) {\n            (bool success, uint firstFeeAmount, uint secondFeeAmount) = purchase(purchaseDetails[i], allowFail);\n\n            result = result || success;\n            emit Execution(success);\n\n            sumFirstFees = sumFirstFees.add(firstFeeAmount);\n            sumSecondFees = sumSecondFees.add(secondFeeAmount);\n        }\n\n        require(result, \"no successful executions\");\n\n        transferFee(sumFirstFees, feeRecipientFirst);\n        transferFee(sumSecondFees, feeRecipientSecond);\n\n        transferChange();\n    }",
+        "comments": [
+            "/**",
+            "        @notice executes an array of purchases",
+            "        @param purchaseDetails - array of deatails about the purchases (more info in PurchaseDetails struct)",
+            "        @param feeRecipientFirst - address of the first fee recipient",
+            "        @param feeRecipientSecond - address of the second fee recipient",
+            "        @param allowFail - true if fails while executing orders are allowed, false if fail of a single order means fail of the whole batch",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n        @notice executes an array of purchases\n        @param purchaseDetails - array of deatails about the purchases (more info in PurchaseDetails struct)\n        @param feeRecipientFirst - address of the first fee recipient\n        @param feeRecipientSecond - address of the second fee recipient\n        @param allowFail - true if fails while executing orders are allowed, false if fail of a single order means fail of the whole batch\n     */\n",
+        "@notice": "executes an array of purchases",
+        "@param1": "purchaseDetails - array of deatails about the purchases (more info in PurchaseDetails struct)",
+        "@param2": "feeRecipientFirst - address of the first fee recipient",
+        "@param3": "feeRecipientSecond - address of the second fee recipient",
+        "@param4": "allowFail - true if fails while executing orders are allowed, false if fail of a single order means fail of the whole batch",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "__TransferProxy_init",
+        "visibility": "external",
+        "args": [],
+        "func": "function __TransferProxy_init() external initializer {\n        __Ownable_init();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "erc721safeTransferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC721Upgradeable"
+            },
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function erc721safeTransferFrom(IERC721Upgradeable token, address from, address to, uint256 tokenId) override external onlyOperator {\n        token.safeTransferFrom(from, to, tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "erc1155safeTransferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC1155Upgradeable"
+            },
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function erc1155safeTransferFrom(IERC1155Upgradeable token, address from, address to, uint256 id, uint256 value, bytes calldata data) override external onlyOperator {\n        token.safeTransferFrom(from, to, id, value, data);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "__ERC20TransferProxy_init",
+        "visibility": "external",
+        "args": [],
+        "func": "function __ERC20TransferProxy_init() external initializer {\n        __Ownable_init();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "erc20safeTransferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20Upgradeable"
+            },
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function erc20safeTransferFrom(IERC20Upgradeable token, address from, address to, uint256 value) override external onlyOperator {\n        require(token.transferFrom(from, to, value), \"failure while transferring\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTransferProxy",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "assetType",
+                "type": "bytes4"
+            },
+            {
+                "name": "proxy",
+                "type": "address"
+            }
+        ],
+        "func": "function setTransferProxy(bytes4 assetType, address proxy) external onlyOwner {\n        proxies[assetType] = proxy;\n        emit ProxyChange(assetType, proxy);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRoyaltiesRegistry",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newRoyaltiesRegistry",
+                "type": "IRoyaltiesProvider"
+            }
+        ],
+        "func": "function setRoyaltiesRegistry(IRoyaltiesProvider newRoyaltiesRegistry) external onlyOwner {\n        royaltiesRegistry = newRoyaltiesRegistry;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "__RoyaltiesRegistry_init",
+        "visibility": "external",
+        "args": [],
+        "func": "function __RoyaltiesRegistry_init() external initializer {\n        __Ownable_init_unchained();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setProviderByToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "provider",
+                "type": "address"
+            }
+        ],
+        "func": "function setProviderByToken(address token, address provider) external {\n        checkOwner(token);\n        setRoyaltiesType(token, 4, provider);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getProvider",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "func": "function getProvider(address token) public view returns(address) {\n        return address(royaltiesProviders[token]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoyaltiesType",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "func": "function getRoyaltiesType(address token) external view returns(uint) {\n        return _getRoyaltiesType(royaltiesProviders[token]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "forceSetRoyaltiesType",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "royaltiesType",
+                "type": "uint"
+            }
+        ],
+        "func": "function forceSetRoyaltiesType(address token, uint royaltiesType) external {\n        checkOwner(token);\n        setRoyaltiesType(token, royaltiesType, getProvider(token));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "clearRoyaltiesType",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "func": "function clearRoyaltiesType(address token) external {\n        checkOwner(token);\n        royaltiesProviders[token] = uint(getProvider(token));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRoyaltiesByToken",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "royalties",
+                "type": "LibPart.Part[] memory"
+            }
+        ],
+        "func": "function setRoyaltiesByToken(address token, LibPart.Part[] memory royalties) external {\n        checkOwner(token);\n        //clearing royaltiesProviders value for the token\n        delete royaltiesProviders[token];\n        // setting royaltiesType = 1 for the token\n        setRoyaltiesType(token, 1, address(0));\n        uint sumRoyalties = 0;\n        delete royaltiesByToken[token];\n        for (uint i = 0; i < royalties.length; i++) {\n            require(royalties[i].account != address(0x0), \"RoyaltiesByToken recipient should be present\");\n            require(royalties[i].value != 0, \"Royalty value for RoyaltiesByToken should be > 0\");\n            royaltiesByToken[token].royalties.push(royalties[i]);\n            sumRoyalties += royalties[i].value;\n        }\n        require(sumRoyalties < 10000, \"Set by token royalties sum more, than 100%\");\n        royaltiesByToken[token].initialized = true;\n        emit RoyaltiesSetForContract(token, royalties);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoyalties",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint"
+            }
+        ],
+        "func": "function getRoyalties(address token, uint tokenId) override external returns (LibPart.Part[] memory) {\n        uint royaltiesProviderData = royaltiesProviders[token];\n\n        address royaltiesProvider = address(royaltiesProviderData);\n        uint royaltiesType = _getRoyaltiesType(royaltiesProviderData);\n\n        // case when royaltiesType is not set\n        if (royaltiesType == 0) {\n            // calculating royalties type for token\n            royaltiesType = calculateRoyaltiesType(token, royaltiesProvider);\n            \n            //saving royalties type\n            setRoyaltiesType(token, royaltiesType, royaltiesProvider);\n        }\n\n        //case royaltiesType = 1, royalties are set in royaltiesByToken\n        if (royaltiesType == 1) {\n            return royaltiesByToken[token].royalties;\n        }\n\n        //case royaltiesType = 2, royalties rarible v2\n        if (royaltiesType == 2) {\n            return getRoyaltiesRaribleV2(token,tokenId);\n        }\n\n        //case royaltiesType = 3, royalties rarible v1\n        if (royaltiesType == 3) {\n            return getRoyaltiesRaribleV1(token, tokenId);\n        }\n\n        //case royaltiesType = 4, royalties from external provider\n        if (royaltiesType == 4) {\n            return providerExtractor(token, tokenId, royaltiesProvider);\n        }\n\n        //case royaltiesType = 5, royalties EIP-2981\n        if (royaltiesType == 5) {\n            return getRoyaltiesEIP2981(token, tokenId);\n        }\n\n        // case royaltiesType = 6, unknown/empty royalties\n        if (royaltiesType == 6) {\n            return new LibPart.Part[](0);\n        } \n\n        revert(\"something wrong in getRoyalties\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "__OperatorRole_init",
+        "visibility": "external",
+        "args": [],
+        "func": "function __OperatorRole_init() external initializer {\n        __Context_init_unchained();\n        __Ownable_init_unchained();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addOperator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function addOperator(address operator) external onlyOwner {\n        operators[operator] = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeOperator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function removeOperator(address operator) external onlyOwner {\n        operators[operator] = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pause",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_paused",
+                "type": "bool"
+            }
+        ],
+        "func": "function pause(bool _paused) external onlyOwner {\n        paused = _paused;\n        emit Paused(_paused);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cancel",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "order",
+                "type": "LibOrder.Order memory"
+            }
+        ],
+        "func": "function cancel(LibOrder.Order memory order) external {\n        require(_msgSender() == order.maker, \"not a maker\");\n        require(order.salt != 0, \"0 salt can't be used\");\n        bytes32 orderKeyHash = LibOrder.hashKey(order);\n        fills[orderKeyHash] = UINT256_MAX;\n        emit Cancel(orderKeyHash);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "directPurchase",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "direct",
+                "type": "LibDirectTransfer.Purchase calldata"
+            }
+        ],
+        "func": "function directPurchase(\n        LibDirectTransfer.Purchase calldata direct\n    ) external payable{\n        LibAsset.AssetType memory paymentAssetType = getPaymentAssetType(direct.paymentToken);\n                \n        LibOrder.Order memory sellOrder = LibOrder.Order(\n            direct.sellOrderMaker,\n            LibAsset.Asset(\n                LibAsset.AssetType(\n                    direct.nftAssetClass,\n                    direct.nftData\n                ),\n                direct.sellOrderNftAmount\n            ),\n            address(0),\n            LibAsset.Asset(\n                paymentAssetType,\n                direct.sellOrderPaymentAmount\n            ),\n            direct.sellOrderSalt,\n            direct.sellOrderStart,\n            direct.sellOrderEnd,\n            direct.sellOrderDataType,\n            direct.sellOrderData\n        );\n\n        LibOrder.Order memory buyOrder = LibOrder.Order(\n            address(0),\n            LibAsset.Asset(\n                paymentAssetType,\n                direct.buyOrderPaymentAmount\n            ),\n            address(0),\n            LibAsset.Asset(\n                LibAsset.AssetType(\n                    direct.nftAssetClass,\n                    direct.nftData\n                ),\n                direct.buyOrderNftAmount\n            ),\n            0,\n            0,\n            0,\n            getOtherOrderType(direct.sellOrderDataType),\n            direct.buyOrderData\n        );\n\n        validateFull(sellOrder, direct.sellOrderSignature);\n\n        matchAndTransfer(sellOrder, buyOrder);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "directAcceptBid",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "direct",
+                "type": "LibDirectTransfer.AcceptBid calldata"
+            }
+        ],
+        "func": "function directAcceptBid(\n        LibDirectTransfer.AcceptBid calldata direct\n    ) external payable {\n        LibAsset.AssetType memory paymentAssetType = getPaymentAssetType(direct.paymentToken);\n\n        LibOrder.Order memory buyOrder = LibOrder.Order(\n            direct.bidMaker,\n            LibAsset.Asset(\n                paymentAssetType,\n                direct.bidPaymentAmount\n            ),\n            address(0),\n            LibAsset.Asset(\n                LibAsset.AssetType(\n                    direct.nftAssetClass,\n                    direct.nftData\n                ),\n                direct.bidNftAmount\n            ),\n            direct.bidSalt,\n            direct.bidStart,\n            direct.bidEnd,\n            direct.bidDataType,\n            direct.bidData\n        );\n\n        LibOrder.Order memory sellOrder = LibOrder.Order(\n            address(0),\n            LibAsset.Asset(\n                LibAsset.AssetType(\n                    direct.nftAssetClass,\n                    direct.nftData\n                ),\n                direct.sellOrderNftAmount\n            ),\n            address(0),\n            LibAsset.Asset(\n                paymentAssetType,\n                direct.sellOrderPaymentAmount\n            ),\n            0,\n            0,\n            0,\n            getOtherOrderType(direct.bidDataType),\n            direct.sellOrderData\n        );\n\n        validateFull(buyOrder, direct.bidSignature);\n\n        matchAndTransfer(sellOrder, buyOrder);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "matchOrders",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "orderLeft",
+                "type": "LibOrder.Order memory"
+            },
+            {
+                "name": "signatureLeft",
+                "type": "bytes memory"
+            },
+            {
+                "name": "orderRight",
+                "type": "LibOrder.Order memory"
+            },
+            {
+                "name": "signatureRight",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function matchOrders(\n        LibOrder.Order memory orderLeft,\n        bytes memory signatureLeft,\n        LibOrder.Order memory orderRight,\n        bytes memory signatureRight\n    ) external payable {\n        validateOrders(orderLeft, signatureLeft, orderRight, signatureRight);\n        matchAndTransfer(orderLeft, orderRight);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "__ExchangeV2_init",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_transferProxy",
+                "type": "address"
+            },
+            {
+                "name": "_erc20TransferProxy",
+                "type": "address"
+            },
+            {
+                "name": "newProtocolFee",
+                "type": "uint"
+            },
+            {
+                "name": "newDefaultFeeReceiver",
+                "type": "address"
+            },
+            {
+                "name": "newRoyaltiesProvider",
+                "type": "IRoyaltiesProvider"
+            }
+        ],
+        "func": "function __ExchangeV2_init(\n        address _transferProxy,\n        address _erc20TransferProxy,\n        uint newProtocolFee,\n        address newDefaultFeeReceiver,\n        IRoyaltiesProvider newRoyaltiesProvider\n    ) external initializer {\n        __Context_init_unchained();\n        __Ownable_init_unchained();\n        __TransferExecutor_init_unchained(_transferProxy, _erc20TransferProxy);\n        __RaribleTransferManager_init_unchained(newProtocolFee, newDefaultFeeReceiver, newRoyaltiesProvider);\n        __OrderValidator_init_unchained();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAssetMatcher",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "assetType",
+                "type": "bytes4"
+            },
+            {
+                "name": "matcher",
+                "type": "address"
+            }
+        ],
+        "func": "function setAssetMatcher(bytes4 assetType, address matcher) external onlyOwner {\n        matchers[assetType] = matcher;\n        emit MatcherChange(assetType, matcher);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onERC721Received",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "memory",
+                "type": "bytes"
+            }
+        ],
+        "func": "function onERC721Received(address, address, uint256, bytes memory) public virtual override returns (bytes4) {\n        return this.onERC721Received.selector;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onERC1155Received",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "memory",
+                "type": "bytes"
+            }
+        ],
+        "func": "function onERC1155Received(address, address, uint256, uint256, bytes memory) public virtual override returns (bytes4) {\n        return this.onERC1155Received.selector;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onERC1155BatchReceived",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "memory",
+                "type": "uint256[]"
+            },
+            {
+                "name": "memory",
+                "type": "uint256[]"
+            },
+            {
+                "name": "memory",
+                "type": "bytes"
+            }
+        ],
+        "func": "function onERC1155BatchReceived(address, address, uint256[] memory, uint256[] memory, bytes memory) public virtual override returns (bytes4) {\n        return this.onERC1155BatchReceived.selector;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return _supportedInterfaces[interfaceId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

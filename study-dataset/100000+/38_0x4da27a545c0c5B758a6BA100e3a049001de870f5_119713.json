@@ -1,0 +1,1163 @@
+[
+    {
+        "transactions": 119713,
+        "function_num": 38
+    },
+    {
+        "name": "admin",
+        "visibility": "external",
+        "args": [],
+        "func": "function admin() external ifAdmin returns (address) {\n        return _admin();\n    }",
+        "comments": [
+            "/**",
+            "     * @return The address of the proxy admin.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return The address of the proxy admin.\n     */\n",
+        "@return1": "The address of the proxy admin.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "implementation",
+        "visibility": "external",
+        "args": [],
+        "func": "function implementation() external ifAdmin returns (address) {\n        return _implementation();\n    }",
+        "comments": [
+            "/**",
+            "     * @return The address of the implementation.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return The address of the implementation.\n     */\n",
+        "@return1": "The address of the implementation.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAdmin",
+                "type": "address"
+            }
+        ],
+        "func": "function changeAdmin(address newAdmin) external ifAdmin {\n        require(newAdmin != address(0), 'Cannot change the admin of a proxy to the zero address');\n        emit AdminChanged(_admin(), newAdmin);\n        _setAdmin(newAdmin);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Changes the admin of the proxy.",
+            "     * Only the current admin can call this function.",
+            "     * @param newAdmin Address to transfer proxy administration to.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Changes the admin of the proxy.\n     * Only the current admin can call this function.\n     * @param newAdmin Address to transfer proxy administration to.\n     */\n",
+        "@dev": "Changes the admin of the proxy. * Only the current admin can call this function.",
+        "@param1": "newAdmin Address to transfer proxy administration to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeTo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            }
+        ],
+        "func": "function upgradeTo(address newImplementation) external ifAdmin {\n        _upgradeTo(newImplementation);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Upgrade the backing implementation of the proxy.",
+            "     * Only the admin can call this function.",
+            "     * @param newImplementation Address of the new implementation.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Upgrade the backing implementation of the proxy.\n     * Only the admin can call this function.\n     * @param newImplementation Address of the new implementation.\n     */\n",
+        "@dev": "Upgrade the backing implementation of the proxy. * Only the admin can call this function.",
+        "@param1": "newImplementation Address of the new implementation.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeToAndCall",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function upgradeToAndCall(address newImplementation, bytes calldata data)\n        external\n        payable\n        ifAdmin\n    {\n        _upgradeTo(newImplementation);\n        (bool success, ) = newImplementation.delegatecall(data);\n        require(success);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Upgrade the backing implementation of the proxy and call a function",
+            "     * on the new implementation.",
+            "     * This is useful to initialize the proxied contract.",
+            "     * @param newImplementation Address of the new implementation.",
+            "     * @param data Data to send as msg.data in the low level call.",
+            "     * It should include the signature and the parameters of the function to be called, as described in",
+            "     * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Upgrade the backing implementation of the proxy and call a function\n     * on the new implementation.\n     * This is useful to initialize the proxied contract.\n     * @param newImplementation Address of the new implementation.\n     * @param data Data to send as msg.data in the low level call.\n     * It should include the signature and the parameters of the function to be called, as described in\n     * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.\n     */\n",
+        "@dev": "Upgrade the backing implementation of the proxy and call a function * on the new implementation. * This is useful to initialize the proxied contract.",
+        "@param1": "newImplementation Address of the new implementation.",
+        "@param2": "data Data to send as msg.data in the low level call. * It should include the signature and the parameters of the function to be called, as described in * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public override view returns (string memory) {\n    return _name;\n  }",
+        "comments": [
+            "/**",
+            "   * @return the name of the token",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @return the name of the token\n   **/\n",
+        "@return1": "the name of the token",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public override view returns (string memory) {\n    return _symbol;\n  }",
+        "comments": [
+            "/**",
+            "   * @return the symbol of the token",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @return the symbol of the token\n   **/\n",
+        "@return1": "the symbol of the token",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public override view returns (uint8) {\n    return _decimals;\n  }",
+        "comments": [
+            "/**",
+            "   * @return the decimals of the token",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @return the decimals of the token\n   **/\n",
+        "@return1": "the decimals of the token",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public override view returns (uint256) {\n    return _totalSupply;\n  }",
+        "comments": [
+            "/**",
+            "   * @return the total supply of the token",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @return the total supply of the token\n   **/\n",
+        "@return1": "the total supply of the token",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public override view returns (uint256) {\n    return _balances[account];\n  }",
+        "comments": [
+            "/**",
+            "   * @return the balance of the token",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @return the balance of the token\n   **/\n",
+        "@return1": "the balance of the token",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n    _transfer(_msgSender(), recipient, amount);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev executes a transfer of tokens from msg.sender to recipient",
+            "   * @param recipient the recipient of the tokens",
+            "   * @param amount the amount of tokens being transferred",
+            "   * @return true if the transfer succeeds, false otherwise",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev executes a transfer of tokens from msg.sender to recipient\n   * @param recipient the recipient of the tokens\n   * @param amount the amount of tokens being transferred\n   * @return true if the transfer succeeds, false otherwise\n   **/\n",
+        "@dev": "executes a transfer of tokens from msg.sender to recipient",
+        "@param1": "recipient the recipient of the tokens",
+        "@param2": "amount the amount of tokens being transferred",
+        "@return1": "true if the transfer succeeds, false otherwise",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender)\n    public\n    virtual\n    override\n    view\n    returns (uint256)\n  {\n    return _allowances[owner][spender];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev returns the allowance of spender on the tokens owned by owner",
+            "   * @param owner the owner of the tokens",
+            "   * @param spender the user allowed to spend the owner's tokens",
+            "   * @return the amount of owner's tokens spender is allowed to spend",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev returns the allowance of spender on the tokens owned by owner\n   * @param owner the owner of the tokens\n   * @param spender the user allowed to spend the owner's tokens\n   * @return the amount of owner's tokens spender is allowed to spend\n   **/\n",
+        "@dev": "returns the allowance of spender on the tokens owned by owner",
+        "@param1": "owner the owner of the tokens",
+        "@param2": "spender the user allowed to spend the owner's tokens",
+        "@return1": "the amount of owner's tokens spender is allowed to spend",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n    _approve(_msgSender(), spender, amount);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev allows spender to spend the tokens owned by msg.sender",
+            "   * @param spender the user allowed to spend msg.sender tokens",
+            "   * @return true",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev allows spender to spend the tokens owned by msg.sender\n   * @param spender the user allowed to spend msg.sender tokens\n   * @return true\n   **/\n",
+        "@dev": "allows spender to spend the tokens owned by msg.sender",
+        "@param1": "spender the user allowed to spend msg.sender tokens",
+        "@return1": "true",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n    address sender,\n    address recipient,\n    uint256 amount\n  ) public virtual override returns (bool) {\n    _transfer(sender, recipient, amount);\n    _approve(\n      sender,\n      _msgSender(),\n      _allowances[sender][_msgSender()].sub(amount, 'ERC20: transfer amount exceeds allowance')\n    );\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev executes a transfer of token from sender to recipient, if msg.sender is allowed to do so",
+            "   * @param sender the owner of the tokens",
+            "   * @param recipient the recipient of the tokens",
+            "   * @param amount the amount of tokens being transferred",
+            "   * @return true if the transfer succeeds, false otherwise",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev executes a transfer of token from sender to recipient, if msg.sender is allowed to do so\n   * @param sender the owner of the tokens\n   * @param recipient the recipient of the tokens\n   * @param amount the amount of tokens being transferred\n   * @return true if the transfer succeeds, false otherwise\n   **/\n",
+        "@dev": "executes a transfer of token from sender to recipient, if msg.sender is allowed to do so",
+        "@param1": "sender the owner of the tokens",
+        "@param2": "recipient the recipient of the tokens",
+        "@param3": "amount the amount of tokens being transferred",
+        "@return1": "true if the transfer succeeds, false otherwise",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n    _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev increases the allowance of spender to spend msg.sender tokens",
+            "   * @param spender the user allowed to spend on behalf of msg.sender",
+            "   * @param addedValue the amount being added to the allowance",
+            "   * @return true",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev increases the allowance of spender to spend msg.sender tokens\n   * @param spender the user allowed to spend on behalf of msg.sender\n   * @param addedValue the amount being added to the allowance\n   * @return true\n   **/\n",
+        "@dev": "increases the allowance of spender to spend msg.sender tokens",
+        "@param1": "spender the user allowed to spend on behalf of msg.sender",
+        "@param2": "addedValue the amount being added to the allowance",
+        "@return1": "true",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue)\n    public\n    virtual\n    returns (bool)\n  {\n    _approve(\n      _msgSender(),\n      spender,\n      _allowances[_msgSender()][spender].sub(\n        subtractedValue,\n        'ERC20: decreased allowance below zero'\n      )\n    );\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev decreases the allowance of spender to spend msg.sender tokens",
+            "   * @param spender the user allowed to spend on behalf of msg.sender",
+            "   * @param subtractedValue the amount being subtracted to the allowance",
+            "   * @return true",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev decreases the allowance of spender to spend msg.sender tokens\n   * @param spender the user allowed to spend on behalf of msg.sender\n   * @param subtractedValue the amount being subtracted to the allowance\n   * @return true\n   **/\n",
+        "@dev": "decreases the allowance of spender to spend msg.sender tokens",
+        "@param1": "spender the user allowed to spend on behalf of msg.sender",
+        "@param2": "subtractedValue the amount being subtracted to the allowance",
+        "@return1": "true",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_logic",
+                "type": "address"
+            },
+            {
+                "name": "_admin",
+                "type": "address"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function initialize(\n        address _logic,\n        address _admin,\n        bytes memory _data\n    ) public payable {\n        require(_implementation() == address(0));\n        InitializableUpgradeabilityProxy.initialize(_logic, _data);\n        assert(ADMIN_SLOT == bytes32(uint256(keccak256('eip1967.proxy.admin')) - 1));\n        _setAdmin(_admin);\n    }",
+        "comments": [
+            "/**",
+            "     * Contract initializer.",
+            "     * @param _logic address of the initial implementation.",
+            "     * @param _admin Address of the proxy administrator.",
+            "     * @param _data Data to send as msg.data to the implementation to initialize the proxied contract.",
+            "     * It should include the signature and the parameters of the function to be called, as described in",
+            "     * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.",
+            "     * This parameter is optional, if no data is given the initialization call to proxied contract will be skipped.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * Contract initializer.\n     * @param _logic address of the initial implementation.\n     * @param _admin Address of the proxy administrator.\n     * @param _data Data to send as msg.data to the implementation to initialize the proxied contract.\n     * It should include the signature and the parameters of the function to be called, as described in\n     * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.\n     * This parameter is optional, if no data is given the initialization call to proxied contract will be skipped.\n     */\n",
+        "@param1": "_logic address of the initial implementation.",
+        "@param2": "_admin Address of the proxy administrator.",
+        "@param3": "_data Data to send as msg.data to the implementation to initialize the proxied contract. * It should include the signature and the parameters of the function to be called, as described in * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding. * This parameter is optional, if no data is given the initialization call to proxied contract will be skipped.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_logic",
+                "type": "address"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function initialize(address _logic, bytes memory _data) public payable {\n        require(_implementation() == address(0));\n        assert(\n            IMPLEMENTATION_SLOT == bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)\n        );\n        _setImplementation(_logic);\n        if (_data.length > 0) {\n            (bool success, ) = _logic.delegatecall(_data);\n            require(success);\n        }\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Contract initializer.",
+            "     * @param _logic Address of the initial implementation.",
+            "     * @param _data Data to send as msg.data to the implementation to initialize the proxied contract.",
+            "     * It should include the signature and the parameters of the function to be called, as described in",
+            "     * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.",
+            "     * This parameter is optional, if no data is given the initialization call to proxied contract will be skipped.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Contract initializer.\n     * @param _logic Address of the initial implementation.\n     * @param _data Data to send as msg.data to the implementation to initialize the proxied contract.\n     * It should include the signature and the parameters of the function to be called, as described in\n     * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding.\n     * This parameter is optional, if no data is given the initialization call to proxied contract will be skipped.\n     */\n",
+        "@dev": "Contract initializer.",
+        "@param1": "_logic Address of the initial implementation.",
+        "@param2": "_data Data to send as msg.data to the implementation to initialize the proxied contract. * It should include the signature and the parameters of the function to be called, as described in * https://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#function-selector-and-argument-encoding. * This parameter is optional, if no data is given the initialization call to proxied contract will be skipped.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handleActionOnAic",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "name": "userBalance",
+                "type": "uint256"
+            },
+            {
+                "name": "totalSupply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function handleActionOnAic(\n    address user,\n    uint256 userBalance,\n    uint256 totalSupply\n  ) external {\n    _aic.handleAction(user, userBalance, totalSupply);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setUserBalanceAndSupply",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "userBalance",
+                "type": "uint256"
+            },
+            {
+                "name": "totalSupply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setUserBalanceAndSupply(uint256 userBalance, uint256 totalSupply) public {\n    _userBalance = userBalance;\n    _totalSupply = totalSupply;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getScaledUserBalanceAndSupply",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "func": "function getScaledUserBalanceAndSupply(address user)\n    external\n    override\n    view\n    returns (uint256, uint256)\n  {\n    return (_userBalance, _totalSupply);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cleanUserState",
+        "visibility": "external",
+        "args": [],
+        "func": "function cleanUserState() external {\n    _userBalance = 0;\n    _totalSupply = 0;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onTransfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onTransfer(address from, address to, uint256 amount) external override {\n        emit MockHookEvent();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "configureAssets",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "assetsConfigInput",
+                "type": "DistributionTypes.AssetConfigInput[] calldata"
+            }
+        ],
+        "func": "function configureAssets(DistributionTypes.AssetConfigInput[] calldata assetsConfigInput) external override {\n    require(msg.sender == EMISSION_MANAGER, 'ONLY_EMISSION_MANAGER');\n\n    for (uint256 i = 0; i < assetsConfigInput.length; i++) {\n      AssetData storage assetConfig = assets[assetsConfigInput[i].underlyingAsset];\n\n      _updateAssetStateInternal(\n        assetsConfigInput[i].underlyingAsset,\n        assetConfig,\n        assetsConfigInput[i].totalStaked\n      );\n\n      assetConfig.emissionPerSecond = assetsConfigInput[i].emissionPerSecond;\n\n      emit AssetConfigUpdated(\n        assetsConfigInput[i].underlyingAsset,\n        assetsConfigInput[i].emissionPerSecond\n      );\n    }\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Configures the distribution of rewards for a list of assets",
+            "   * @param assetsConfigInput The list of configurations to apply",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Configures the distribution of rewards for a list of assets\n   * @param assetsConfigInput The list of configurations to apply\n   **/\n",
+        "@dev": "Configures the distribution of rewards for a list of assets",
+        "@param1": "assetsConfigInput The list of configurations to apply",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUserAssetData",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "name": "asset",
+                "type": "address"
+            }
+        ],
+        "func": "function getUserAssetData(address user, address asset) public view returns (uint256) {\n    return assets[asset].users[user];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Returns the data of an user on a distribution",
+            "   * @param user Address of the user",
+            "   * @param asset The address of the reference asset of the distribution",
+            "   * @return The new index",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Returns the data of an user on a distribution\n   * @param user Address of the user\n   * @param asset The address of the reference asset of the distribution\n   * @return The new index\n   **/\n",
+        "@dev": "Returns the data of an user on a distribution",
+        "@param1": "user Address of the user",
+        "@param2": "asset The address of the reference asset of the distribution",
+        "@return1": "The new index",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [],
+        "func": "function initialize() external initializer {\n    // to unlock possibility to stake on behalf of the user\n    REWARD_TOKEN.approve(address(PSM), type(uint256).max);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Called by the proxy contract. Not used at the moment, but for the future",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Called by the proxy contract. Not used at the moment, but for the future\n   **/\n",
+        "@dev": "Called by the proxy contract. Not used at the moment, but for the future",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handleAction",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "name": "userBalance",
+                "type": "uint256"
+            },
+            {
+                "name": "totalSupply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function handleAction(\n    address user,\n    uint256 userBalance,\n    uint256 totalSupply\n  ) external override {\n    uint256 accruedRewards = _updateUserAssetInternal(user, msg.sender, userBalance, totalSupply);\n    if (accruedRewards != 0) {\n      _usersUnclaimedRewards[user] = _usersUnclaimedRewards[user].add(accruedRewards);\n      emit RewardsAccrued(user, accruedRewards);\n    }\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Called by the corresponding asset on any update that affects the rewards distribution",
+            "   * @param user The address of the user",
+            "   * @param userBalance The balance of the user of the asset in the lending pool",
+            "   * @param totalSupply The total supply of the asset in the lending pool",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Called by the corresponding asset on any update that affects the rewards distribution\n   * @param user The address of the user\n   * @param userBalance The balance of the user of the asset in the lending pool\n   * @param totalSupply The total supply of the asset in the lending pool\n   **/\n",
+        "@dev": "Called by the corresponding asset on any update that affects the rewards distribution",
+        "@param1": "user The address of the user",
+        "@param2": "userBalance The balance of the user of the asset in the lending pool",
+        "@param3": "totalSupply The total supply of the asset in the lending pool",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRewardsBalance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "assets",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "func": "function getRewardsBalance(address[] calldata assets, address user)\n    external\n    override\n    view\n    returns (uint256)\n  {\n    uint256 unclaimedRewards = _usersUnclaimedRewards[user];\n\n    DistributionTypes.UserStakeInput[] memory userState = new DistributionTypes.UserStakeInput[](\n      assets.length\n    );\n    for (uint256 i = 0; i < assets.length; i++) {\n      userState[i].underlyingAsset = assets[i];\n      (userState[i].stakedByUser, userState[i].totalStaked) = IAToken(assets[i])\n        .getScaledUserBalanceAndSupply(user);\n    }\n    unclaimedRewards = unclaimedRewards.add(_getUnclaimedRewards(user, userState));\n    return unclaimedRewards;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Returns the total of rewards of an user, already accrued + not yet accrued",
+            "   * @param user The address of the user",
+            "   * @return The rewards",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Returns the total of rewards of an user, already accrued + not yet accrued\n   * @param user The address of the user\n   * @return The rewards\n   **/\n",
+        "@dev": "Returns the total of rewards of an user, already accrued + not yet accrued",
+        "@param1": "user The address of the user",
+        "@return1": "The rewards",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimRewards",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "assets",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "stake",
+                "type": "bool"
+            }
+        ],
+        "func": "function claimRewards(\n    address[] calldata assets,\n    uint256 amount,\n    address to,\n    bool stake\n  ) external override returns (uint256) {\n    if (amount == 0) {\n      return 0;\n    }\n    address user = msg.sender;\n    uint256 unclaimedRewards = _usersUnclaimedRewards[user];\n\n    DistributionTypes.UserStakeInput[] memory userState = new DistributionTypes.UserStakeInput[](\n      assets.length\n    );\n    for (uint256 i = 0; i < assets.length; i++) {\n      userState[i].underlyingAsset = assets[i];\n      (userState[i].stakedByUser, userState[i].totalStaked) = IAToken(assets[i])\n        .getScaledUserBalanceAndSupply(user);\n    }\n\n    uint256 accruedRewards = _claimRewards(user, userState);\n    if (accruedRewards != 0) {\n      unclaimedRewards = unclaimedRewards.add(accruedRewards);\n      emit RewardsAccrued(user, accruedRewards);\n    }\n\n    if (unclaimedRewards == 0) {\n      return 0;\n    }\n\n    uint256 amountToClaim = amount > unclaimedRewards ? unclaimedRewards : amount;\n    _usersUnclaimedRewards[user] = unclaimedRewards - amountToClaim; // Safe due to the previous line\n\n    if (stake) {\n      amountToClaim = amountToClaim.add(amountToClaim.mul(EXTRA_PSM_REWARD).div(100));\n      REWARD_TOKEN.transferFrom(REWARDS_VAULT, address(this), amountToClaim);\n      PSM.stake(to, amountToClaim);\n    } else {\n      REWARD_TOKEN.transferFrom(REWARDS_VAULT, to, amountToClaim);\n    }\n    emit RewardsClaimed(msg.sender, to, amountToClaim);\n\n    return amountToClaim;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Claims reward for an user, on all the assets of the lending pool, accumulating the pending rewards",
+            "   * @param amount Amount of rewards to claim",
+            "   * @param to Address that will be receiving the rewards",
+            "   * @param stake Boolean flag to determined if the claimed rewards should be staked in the Safety Module or not",
+            "   * @return Rewards claimed",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Claims reward for an user, on all the assets of the lending pool, accumulating the pending rewards\n   * @param amount Amount of rewards to claim\n   * @param to Address that will be receiving the rewards\n   * @param stake Boolean flag to determined if the claimed rewards should be staked in the Safety Module or not\n   * @return Rewards claimed\n   **/\n",
+        "@dev": "Claims reward for an user, on all the assets of the lending pool, accumulating the pending rewards",
+        "@param1": "amount Amount of rewards to claim",
+        "@param2": "to Address that will be receiving the rewards",
+        "@param3": "stake Boolean flag to determined if the claimed rewards should be staked in the Safety Module or not",
+        "@return1": "Rewards claimed",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getUserUnclaimedRewards",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "func": "function getUserUnclaimedRewards(address _user) external view returns (uint256) {\n    return _usersUnclaimedRewards[_user];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev returns the unclaimed rewards of the user",
+            "   * @param _user the address of the user",
+            "   * @return the unclaimed user rewards",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev returns the unclaimed rewards of the user\n   * @param _user the address of the user\n   * @return the unclaimed user rewards\n   */\n",
+        "@dev": "returns the unclaimed rewards of the user",
+        "@param1": "_user the address of the user",
+        "@return1": "the unclaimed user rewards",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "aaveGovernance",
+                "type": "ITransferHook"
+            },
+            {
+                "name": "name",
+                "type": "string calldata"
+            },
+            {
+                "name": "symbol",
+                "type": "string calldata"
+            },
+            {
+                "name": "decimals",
+                "type": "uint8"
+            }
+        ],
+        "func": "function initialize(ITransferHook aaveGovernance, string calldata name, string calldata symbol, uint8 decimals) external initializer {\n    _setName(name);\n    _setSymbol(symbol);\n    _setDecimals(decimals);\n    _setAaveGovernance(aaveGovernance);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Called by the proxy contract",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Called by the proxy contract\n   **/\n",
+        "@dev": "Called by the proxy contract",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stake",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "onBehalfOf",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stake(address onBehalfOf, uint256 amount) external override {\n    require(amount != 0, 'INVALID_ZERO_AMOUNT');\n    uint256 balanceOfUser = balanceOf(onBehalfOf);\n\n    uint256 accruedRewards = _updateUserAssetInternal(\n      onBehalfOf,\n      address(this),\n      balanceOfUser,\n      totalSupply()\n    );\n    if (accruedRewards != 0) {\n      emit RewardsAccrued(onBehalfOf, accruedRewards);\n      stakerRewardsToClaim[onBehalfOf] = stakerRewardsToClaim[onBehalfOf].add(accruedRewards);\n    }\n\n    stakersCooldowns[onBehalfOf] = getNextCooldownTimestamp(0, amount, onBehalfOf, balanceOfUser);\n\n    _mint(onBehalfOf, amount);\n    IERC20(STAKED_TOKEN).safeTransferFrom(msg.sender, address(this), amount);\n\n    emit Staked(msg.sender, onBehalfOf, amount);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeem",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function redeem(address to, uint256 amount) external override {\n    require(amount != 0, 'INVALID_ZERO_AMOUNT');\n    //solium-disable-next-line\n    uint256 cooldownStartTimestamp = stakersCooldowns[msg.sender];\n    require(\n      block.timestamp > cooldownStartTimestamp.add(COOLDOWN_SECONDS),\n      'INSUFFICIENT_COOLDOWN'\n    );\n    require(\n      block.timestamp.sub(cooldownStartTimestamp.add(COOLDOWN_SECONDS)) <= UNSTAKE_WINDOW,\n      'UNSTAKE_WINDOW_FINISHED'\n    );\n    uint256 balanceOfMessageSender = balanceOf(msg.sender);\n\n    uint256 amountToRedeem = (amount > balanceOfMessageSender) ? balanceOfMessageSender : amount;\n\n    _updateCurrentUnclaimedRewards(msg.sender, balanceOfMessageSender, true);\n\n    _burn(msg.sender, amountToRedeem);\n\n    if (balanceOfMessageSender.sub(amountToRedeem) == 0) {\n      stakersCooldowns[msg.sender] = 0;\n    }\n\n    IERC20(STAKED_TOKEN).safeTransfer(to, amountToRedeem);\n\n    emit Redeem(msg.sender, to, amountToRedeem);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Redeems staked tokens, and stop earning rewards",
+            "   * @param to Address to redeem to",
+            "   * @param amount Amount to redeem",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Redeems staked tokens, and stop earning rewards\n   * @param to Address to redeem to\n   * @param amount Amount to redeem\n   **/\n",
+        "@dev": "Redeems staked tokens, and stop earning rewards",
+        "@param1": "to Address to redeem to",
+        "@param2": "amount Amount to redeem",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cooldown",
+        "visibility": "external",
+        "args": [],
+        "func": "function cooldown() external override {\n    require(balanceOf(msg.sender) != 0, \"INVALID_BALANCE_ON_COOLDOWN\");\n    //solium-disable-next-line\n    stakersCooldowns[msg.sender] = block.timestamp;\n\n    emit Cooldown(msg.sender);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Activates the cooldown period to unstake",
+            "   * - It can't be called if the user is not staking",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Activates the cooldown period to unstake\n   * - It can't be called if the user is not staking\n   **/\n",
+        "@dev": "Activates the cooldown period to unstake * - It can't be called if the user is not staking",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimRewards",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claimRewards(address to, uint256 amount) external override {\n    uint256 newTotalRewards = _updateCurrentUnclaimedRewards(\n      msg.sender,\n      balanceOf(msg.sender),\n      false\n    );\n    uint256 amountToClaim = (amount == type(uint256).max) ? newTotalRewards : amount;\n\n    stakerRewardsToClaim[msg.sender] = newTotalRewards.sub(amountToClaim, \"INVALID_AMOUNT\");\n\n    REWARD_TOKEN.safeTransferFrom(REWARDS_VAULT, to, amountToClaim);\n\n    emit RewardsClaimed(msg.sender, to, amountToClaim);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Claims an `amount` of `REWARD_TOKEN` to the address `to`",
+            "   * @param to Address to stake for",
+            "   * @param amount Amount to stake",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Claims an `amount` of `REWARD_TOKEN` to the address `to`\n   * @param to Address to stake for\n   * @param amount Amount to stake\n   **/\n",
+        "@dev": "Claims an `amount` of `REWARD_TOKEN` to the address `to`",
+        "@param1": "to Address to stake for",
+        "@param2": "amount Amount to stake",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNextCooldownTimestamp",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "fromCooldownTimestamp",
+                "type": "uint256"
+            },
+            {
+                "name": "amountToReceive",
+                "type": "uint256"
+            },
+            {
+                "name": "toAddress",
+                "type": "address"
+            },
+            {
+                "name": "toBalance",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getNextCooldownTimestamp(\n    uint256 fromCooldownTimestamp,\n    uint256 amountToReceive,\n    address toAddress,\n    uint256 toBalance\n  ) public returns (uint256) {\n    uint256 toCooldownTimestamp = stakersCooldowns[toAddress];\n    if (toCooldownTimestamp == 0) {\n      return 0;\n    }\n\n    uint256 minimalValidCooldownTimestamp = block.timestamp.sub(COOLDOWN_SECONDS).sub(\n      UNSTAKE_WINDOW\n    );\n\n    if (minimalValidCooldownTimestamp > toCooldownTimestamp) {\n      toCooldownTimestamp = 0;\n    } else {\n      uint256 fromCooldownTimestamp = (minimalValidCooldownTimestamp > fromCooldownTimestamp)\n        ? block.timestamp\n        : fromCooldownTimestamp;\n\n      if (fromCooldownTimestamp < toCooldownTimestamp) {\n        return toCooldownTimestamp;\n      } else {\n        toCooldownTimestamp = (\n          amountToReceive.mul(fromCooldownTimestamp).add(toBalance.mul(toCooldownTimestamp))\n        )\n          .div(amountToReceive.add(toBalance));\n      }\n    }\n    stakersCooldowns[toAddress] = toCooldownTimestamp;\n\n    return toCooldownTimestamp;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Calculates the how is gonna be a new cooldown timestamp depending on the sender/receiver situation",
+            "   *  - If the timestamp of the sender is \"better\" or the timestamp of the recipient is 0, we take the one of the recipient",
+            "   *  - Weighted average of from/to cooldown timestamps if:",
+            "   *    # The sender doesn't have the cooldown activated (timestamp 0).",
+            "   *    # The sender timestamp is expired",
+            "   *    # The sender has a \"worse\" timestamp",
+            "   *  - If the receiver's cooldown timestamp expired (too old), the next is 0",
+            "   * @param fromCooldownTimestamp Cooldown timestamp of the sender",
+            "   * @param amountToReceive Amount",
+            "   * @param toAddress Address of the recipient",
+            "   * @param toBalance Current balance of the receiver",
+            "   * @return The new cooldown timestamp",
+            "   **/",
+            ""
+        ],
+        "comt": "/**\n   * @dev Calculates the how is gonna be a new cooldown timestamp depending on the sender/receiver situation\n   *  - If the timestamp of the sender is \"better\" or the timestamp of the recipient is 0, we take the one of the recipient\n   *  - Weighted average of from/to cooldown timestamps if:\n   *    # The sender doesn't have the cooldown activated (timestamp 0).\n   *    # The sender timestamp is expired\n   *    # The sender has a \"worse\" timestamp\n   *  - If the receiver's cooldown timestamp expired (too old), the next is 0\n   * @param fromCooldownTimestamp Cooldown timestamp of the sender\n   * @param amountToReceive Amount\n   * @param toAddress Address of the recipient\n   * @param toBalance Current balance of the receiver\n   * @return The new cooldown timestamp\n   **/\n",
+        "@dev": "Calculates the how is gonna be a new cooldown timestamp depending on the sender/receiver situation * - If the timestamp of the sender is \"better\" or the timestamp of the recipient is 0, we take the one of the recipient * - Weighted average of from/to cooldown timestamps if: * # The sender doesn't have the cooldown activated (timestamp 0). * # The sender timestamp is expired * # The sender has a \"worse\" timestamp * - If the receiver's cooldown timestamp expired (too old), the next is 0",
+        "@param1": "fromCooldownTimestamp Cooldown timestamp of the sender",
+        "@param2": "amountToReceive Amount",
+        "@param3": "toAddress Address of the recipient",
+        "@param4": "toBalance Current balance of the receiver",
+        "@return1": "The new cooldown timestamp",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTotalRewardsBalance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "staker",
+                "type": "address"
+            }
+        ],
+        "func": "function getTotalRewardsBalance(address staker) external view returns (uint256) {\n\n      DistributionTypes.UserStakeInput[] memory userStakeInputs\n     = new DistributionTypes.UserStakeInput[](1);\n    userStakeInputs[0] = DistributionTypes.UserStakeInput({\n      underlyingAsset: address(this),\n      stakedByUser: balanceOf(staker),\n      totalStaked: totalSupply()\n    });\n    return stakerRewardsToClaim[staker].add(_getUnclaimedRewards(staker, userStakeInputs));\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Return the total rewards pending to claim by an staker",
+            "   * @param staker The staker address",
+            "   * @return The rewards",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Return the total rewards pending to claim by an staker\n   * @param staker The staker address\n   * @return The rewards\n   */\n",
+        "@dev": "Return the total rewards pending to claim by an staker",
+        "@param1": "staker The staker address",
+        "@return1": "The rewards",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(uint256 value) public returns (bool) {\n        _mint(msg.sender, value);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Function to mint tokens",
+            "     * @param value The amount of tokens to mint.",
+            "     * @return A boolean that indicates if the operation was successful.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Function to mint tokens\n     * @param value The amount of tokens to mint.\n     * @return A boolean that indicates if the operation was successful.\n     */\n",
+        "@dev": "Function to mint tokens",
+        "@param1": "value The amount of tokens to mint.",
+        "@return1": "A boolean that indicates if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

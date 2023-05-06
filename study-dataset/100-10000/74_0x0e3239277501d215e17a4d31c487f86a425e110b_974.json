@@ -1,0 +1,2101 @@
+[
+    {
+        "transactions": 974,
+        "function_num": 74
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(\n            newOwner != address(0),\n            \"Ownable: new owner is the zero address\"\n        );\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setOutbox",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_outbox",
+                "type": "address"
+            }
+        ],
+        "func": "function setOutbox(address _outbox) external onlyOwner {\n        outbox = IOutbox(_outbox);\n        emit OutboxSet(_outbox);\n    }",
+        "comments": [
+            "",
+            "    // ============ External Functions ============",
+            "",
+            "    /**",
+            "     * @notice Sets the address of the local Outbox contract.",
+            "     * @param _outbox The address of the new local Outbox contract.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ External Functions ============\n\n    /**\n     * @notice Sets the address of the local Outbox contract.\n     * @param _outbox The address of the new local Outbox contract.\n     */\n    ",
+        "@notice": "Sets the address of the local Outbox contract.",
+        "@param1": "_outbox The address of the new local Outbox contract.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enrollInbox",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_domain",
+                "type": "uint32"
+            },
+            {
+                "name": "_inbox",
+                "type": "address"
+            }
+        ],
+        "func": "function enrollInbox(uint32 _domain, address _inbox) external onlyOwner {\n        require(!isInbox(_inbox), \"already inbox\");\n        // add inbox and domain to two-way mapping\n        inboxToDomain[_inbox] = _domain;\n        domainToInboxes[_domain].add(_inbox);\n        emit InboxEnrolled(_domain, _inbox);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allow Owner to enroll Inbox contract",
+            "     * @param _domain the remote domain of the Outbox contract for the Inbox",
+            "     * @param _inbox the address of the Inbox",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allow Owner to enroll Inbox contract\n     * @param _domain the remote domain of the Outbox contract for the Inbox\n     * @param _inbox the address of the Inbox\n     */\n",
+        "@notice": "Allow Owner to enroll Inbox contract",
+        "@param1": "_domain the remote domain of the Outbox contract for the Inbox",
+        "@param2": "_inbox the address of the Inbox",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unenrollInbox",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_inbox",
+                "type": "address"
+            }
+        ],
+        "func": "function unenrollInbox(address _inbox) external onlyOwner {\n        _unenrollInbox(_inbox);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allow Owner to un-enroll Inbox contract",
+            "     * @param _inbox the address of the Inbox",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allow Owner to un-enroll Inbox contract\n     * @param _inbox the address of the Inbox\n     */\n",
+        "@notice": "Allow Owner to un-enroll Inbox contract",
+        "@param1": "_inbox the address of the Inbox",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "localDomain",
+        "visibility": "external",
+        "args": [],
+        "func": "function localDomain() external view override returns (uint32) {\n        return outbox.localDomain();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Query local domain from Outbox",
+            "     * @return local domain",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Query local domain from Outbox\n     * @return local domain\n     */\n",
+        "@notice": "Query local domain from Outbox",
+        "@return1": "local domain",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getInboxes",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "remoteDomain",
+                "type": "uint32"
+            }
+        ],
+        "func": "function getInboxes(uint32 remoteDomain)\n        external\n        view\n        returns (address[] memory)\n    {\n        EnumerableSet.AddressSet storage _inboxes = domainToInboxes[\n            remoteDomain\n        ];\n        uint256 length = _inboxes.length();\n        address[] memory ret = new address[](length);\n        for (uint256 i = 0; i < length; i += 1) {\n            ret[i] = _inboxes.at(i);\n        }\n        return ret;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns the Inbox addresses for a given remote domain",
+            "     * @return inboxes An array of addresses of the Inboxes",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns the Inbox addresses for a given remote domain\n     * @return inboxes An array of addresses of the Inboxes\n     */\n",
+        "@notice": "Returns the Inbox addresses for a given remote domain",
+        "@return1": "inboxes An array of addresses of the Inboxes",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isInbox",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_inbox",
+                "type": "address"
+            }
+        ],
+        "func": "function isInbox(address _inbox) public view override returns (bool) {\n        return inboxToDomain[_inbox] != 0;\n    }",
+        "comments": [
+            "",
+            "    // ============ Public Functions ============",
+            "",
+            "    /**",
+            "     * @notice Check whether _inbox is enrolled",
+            "     * @param _inbox the inbox to check for enrollment",
+            "     * @return TRUE iff _inbox is enrolled",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ Public Functions ============\n\n    /**\n     * @notice Check whether _inbox is enrolled\n     * @param _inbox the inbox to check for enrollment\n     * @return TRUE iff _inbox is enrolled\n     */\n    ",
+        "@notice": "Check whether _inbox is enrolled",
+        "@param1": "_inbox the inbox to check for enrollment",
+        "@return1": "TRUE iff _inbox is enrolled",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [],
+        "func": "function initialize() initializer public {\n *         __ERC20_init(\"MyToken\", \"MTK\");\n *     }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initializeV2",
+        "visibility": "public",
+        "args": [],
+        "func": "function initializeV2() reinitializer(2) public {\n *         __ERC20Permit_init(\"MyToken\");\n *     }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(\n            newOwner != address(0),\n            \"Ownable: new owner is the zero address\"\n        );\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setValidatorManager",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_validatorManager",
+                "type": "address"
+            }
+        ],
+        "func": "function setValidatorManager(address _validatorManager) external onlyOwner {\n        _setValidatorManager(_validatorManager);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Set a new validator manager contract",
+            "     * @dev Mailbox(es) will initially be initialized using a trusted validator manager contract;",
+            "     * we will progressively decentralize by swapping the trusted contract with a new implementation",
+            "     * that implements Validator bonding & slashing, and rules for Validator selection & rotation",
+            "     * @param _validatorManager the new validator manager contract",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Set a new validator manager contract\n     * @dev Mailbox(es) will initially be initialized using a trusted validator manager contract;\n     * we will progressively decentralize by swapping the trusted contract with a new implementation\n     * that implements Validator bonding & slashing, and rules for Validator selection & rotation\n     * @param _validatorManager the new validator manager contract\n     */\n",
+        "@notice": "Set a new validator manager contract",
+        "@dev": "Mailbox(es) will initially be initialized using a trusted validator manager contract; * we will progressively decentralize by swapping the trusted contract with a new implementation * that implements Validator bonding & slashing, and rules for Validator selection & rotation",
+        "@param1": "_validatorManager the new validator manager contract",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_remoteDomain",
+                "type": "uint32"
+            },
+            {
+                "name": "_validatorManager",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(uint32 _remoteDomain, address _validatorManager)\n        public\n        initializer\n    {\n        __ReentrancyGuard_init();\n        __Mailbox_initialize(_validatorManager);\n        remoteDomain = _remoteDomain;\n    }",
+        "comments": [
+            "",
+            "    // ============ Initializer ============",
+            "",
+            "    "
+        ],
+        "comt": "\n    // ============ Initializer ============\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "process",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_root",
+                "type": "bytes32"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            },
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "_proof",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "_leafIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function process(\n        bytes32 _root,\n        uint256 _index,\n        bytes calldata _message,\n        bytes32[32] calldata _proof,\n        uint256 _leafIndex\n    ) external override nonReentrant onlyValidatorManager {\n        require(_index >= _leafIndex, \"!index\");\n        bytes32 _messageHash = _message.leaf(_leafIndex);\n        // ensure that message has not been processed\n        require(\n            messages[_messageHash] == MessageStatus.None,\n            \"!MessageStatus.None\"\n        );\n        // calculate the expected root based on the proof\n        bytes32 _calculatedRoot = MerkleLib.branchRoot(\n            _messageHash,\n            _proof,\n            _leafIndex\n        );\n        // verify the merkle proof\n        require(_calculatedRoot == _root, \"!proof\");\n        _process(_message, _messageHash);\n        emit Process(_messageHash);\n    }",
+        "comments": [
+            "",
+            "    // ============ External Functions ============",
+            "",
+            "    /**",
+            "     * @notice Attempts to process the provided formatted `message`. Performs",
+            "     * verification against root of the proof",
+            "     * @dev Called by the validator manager, which is responsible for verifying a",
+            "     * quorum of validator signatures on the checkpoint.",
+            "     * @dev Reverts if verification of the message fails.",
+            "     * @param _root The merkle root of the checkpoint used to prove message inclusion.",
+            "     * @param _index The index of the checkpoint used to prove message inclusion.",
+            "     * @param _message Formatted message (refer to Mailbox.sol Message library)",
+            "     * @param _proof Merkle proof of inclusion for message's leaf",
+            "     * @param _leafIndex Index of leaf in outbox's merkle tree",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ External Functions ============\n\n    /**\n     * @notice Attempts to process the provided formatted `message`. Performs\n     * verification against root of the proof\n     * @dev Called by the validator manager, which is responsible for verifying a\n     * quorum of validator signatures on the checkpoint.\n     * @dev Reverts if verification of the message fails.\n     * @param _root The merkle root of the checkpoint used to prove message inclusion.\n     * @param _index The index of the checkpoint used to prove message inclusion.\n     * @param _message Formatted message (refer to Mailbox.sol Message library)\n     * @param _proof Merkle proof of inclusion for message's leaf\n     * @param _leafIndex Index of leaf in outbox's merkle tree\n     */\n    ",
+        "@notice": "Attempts to process the provided formatted `message`. Performs * verification against root of the proof",
+        "@dev": "Called by the validator manager, which is responsible for verifying a * quorum of validator signatures on the checkpoint. * Reverts if verification of the message fails.",
+        "@param1": "_root The merkle root of the checkpoint used to prove message inclusion.",
+        "@param2": "_index The index of the checkpoint used to prove message inclusion.",
+        "@param3": "_message Formatted message (refer to Mailbox.sol Message library)",
+        "@param4": "_proof Merkle proof of inclusion for message's leaf",
+        "@param5": "_leafIndex Index of leaf in outbox's merkle tree",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [],
+        "func": "function initialize() public initializer {\n        __Ownable_init();\n    }",
+        "comments": [
+            "",
+            "    // ============ External Functions ============",
+            "",
+            "    "
+        ],
+        "comt": "\n    // ============ External Functions ============\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "payGasFor",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_outbox",
+                "type": "address"
+            },
+            {
+                "name": "_leafIndex",
+                "type": "uint256"
+            },
+            {
+                "name": "_destinationDomain",
+                "type": "uint32"
+            }
+        ],
+        "func": "function payGasFor(\n        address _outbox,\n        uint256 _leafIndex,\n        uint32 _destinationDomain\n    ) external payable override {\n        // Silence compiler warning. The NatSpec @param requires the parameter to be named.\n        // While not used at the moment, future versions of the paymaster may conditionally\n        // forward payments depending on the destination domain.\n        _destinationDomain;\n\n        emit GasPayment(_outbox, _leafIndex, msg.value);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Deposits msg.value as a payment for the relaying of a message",
+            "     * to its destination chain.",
+            "     * @param _outbox The address of the Outbox contract.",
+            "     * @param _leafIndex The index of the message in the Outbox merkle tree.",
+            "     * @param _destinationDomain The domain of the message's destination chain.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Deposits msg.value as a payment for the relaying of a message\n     * to its destination chain.\n     * @param _outbox The address of the Outbox contract.\n     * @param _leafIndex The index of the message in the Outbox merkle tree.\n     * @param _destinationDomain The domain of the message's destination chain.\n     */\n",
+        "@notice": "Deposits msg.value as a payment for the relaying of a message * to its destination chain.",
+        "@param1": "_outbox The address of the Outbox contract.",
+        "@param2": "_leafIndex The index of the message in the Outbox merkle tree.",
+        "@param3": "_destinationDomain The domain of the message's destination chain.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claim",
+        "visibility": "external",
+        "args": [],
+        "func": "function claim() external {\n        // Transfer the entire balance to owner.\n        (bool success, ) = owner().call{value: address(this).balance}(\"\");\n        require(success, \"!transfer\");\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Transfers the entire native token balance to the owner of the contract.",
+            "     * @dev The owner must be able to receive native tokens.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Transfers the entire native token balance to the owner of the contract.\n     * @dev The owner must be able to receive native tokens.\n     */\n",
+        "@notice": "Transfers the entire native token balance to the owner of the contract.",
+        "@dev": "The owner must be able to receive native tokens.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "root",
+        "visibility": "public",
+        "args": [],
+        "func": "function root() public view returns (bytes32) {\n        return tree.root();\n    }",
+        "comments": [
+            "",
+            "    // ============ Public Functions ============",
+            "",
+            "    /**",
+            "     * @notice Calculates and returns tree's current root",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ Public Functions ============\n\n    /**\n     * @notice Calculates and returns tree's current root\n     */\n    ",
+        "@notice": "Calculates and returns tree's current root",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_validatorManager",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address _validatorManager) public initializer {\n        __Mailbox_initialize(_validatorManager);\n        state = States.Active;\n    }",
+        "comments": [
+            "// solhint-disable-line no-empty-blocks",
+            "",
+            "    // ============ Initializer ============",
+            "",
+            "    "
+        ],
+        "comt": "// solhint-disable-line no-empty-blocks\n\n    // ============ Initializer ============\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "dispatch",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_destinationDomain",
+                "type": "uint32"
+            },
+            {
+                "name": "_recipientAddress",
+                "type": "bytes32"
+            },
+            {
+                "name": "_messageBody",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function dispatch(\n        uint32 _destinationDomain,\n        bytes32 _recipientAddress,\n        bytes calldata _messageBody\n    ) external override notFailed returns (uint256) {\n        require(_messageBody.length <= MAX_MESSAGE_BODY_BYTES, \"msg too long\");\n        // The leaf has not been inserted yet at this point1\n        uint256 _leafIndex = count();\n        // format the message into packed bytes\n        bytes memory _message = Message.formatMessage(\n            localDomain,\n            msg.sender.addressToBytes32(),\n            _destinationDomain,\n            _recipientAddress,\n            _messageBody\n        );\n        // insert the hashed message into the Merkle tree\n        bytes32 _messageHash = keccak256(\n            abi.encodePacked(_message, _leafIndex)\n        );\n        tree.insert(_messageHash);\n        emit Dispatch(_leafIndex, _message);\n        return _leafIndex;\n    }",
+        "comments": [
+            "",
+            "    // ============ External Functions  ============",
+            "",
+            "    /**",
+            "     * @notice Dispatch the message it to the destination domain & recipient",
+            "     * @dev Format the message, insert its hash into Merkle tree,",
+            "     * and emit `Dispatch` event with message information.",
+            "     * @param _destinationDomain Domain of destination chain",
+            "     * @param _recipientAddress Address of recipient on destination chain as bytes32",
+            "     * @param _messageBody Raw bytes content of message",
+            "     * @return The leaf index of the dispatched message's hash in the Merkle tree.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ External Functions  ============\n\n    /**\n     * @notice Dispatch the message it to the destination domain & recipient\n     * @dev Format the message, insert its hash into Merkle tree,\n     * and emit `Dispatch` event with message information.\n     * @param _destinationDomain Domain of destination chain\n     * @param _recipientAddress Address of recipient on destination chain as bytes32\n     * @param _messageBody Raw bytes content of message\n     * @return The leaf index of the dispatched message's hash in the Merkle tree.\n     */\n    ",
+        "@notice": "Dispatch the message it to the destination domain & recipient",
+        "@dev": "Format the message, insert its hash into Merkle tree, * and emit `Dispatch` event with message information.",
+        "@param1": "_destinationDomain Domain of destination chain",
+        "@param2": "_recipientAddress Address of recipient on destination chain as bytes32",
+        "@param3": "_messageBody Raw bytes content of message",
+        "@return1": "The leaf index of the dispatched message's hash in the Merkle tree.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cacheCheckpoint",
+        "visibility": "external",
+        "args": [],
+        "func": "function cacheCheckpoint() external override notFailed {\n        (bytes32 _root, uint256 _index) = latestCheckpoint();\n        require(_index > 0, \"!index\");\n        cachedCheckpoints[_root] = _index;\n        latestCachedRoot = _root;\n        emit CheckpointCached(_root, _index);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Caches the current merkle root and index.",
+            "     * @dev emits CheckpointCached event",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Caches the current merkle root and index.\n     * @dev emits CheckpointCached event\n     */\n",
+        "@notice": "Caches the current merkle root and index.",
+        "@dev": "emits CheckpointCached event",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fail",
+        "visibility": "external",
+        "args": [],
+        "func": "function fail() external override onlyValidatorManager {\n        // set contract to FAILED\n        state = States.Failed;\n        emit Fail();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Set contract state to FAILED.",
+            "     * @dev Called by the validator manager when fraud is proven.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Set contract state to FAILED.\n     * @dev Called by the validator manager when fraud is proven.\n     */\n",
+        "@notice": "Set contract state to FAILED.",
+        "@dev": "Called by the validator manager when fraud is proven.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "latestCachedCheckpoint",
+        "visibility": "external",
+        "args": [],
+        "func": "function latestCachedCheckpoint()\n        external\n        view\n        returns (bytes32 root, uint256 index)\n    {\n        root = latestCachedRoot;\n        index = cachedCheckpoints[root];\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns the latest entry in the checkpoint cache.",
+            "     * @return root Latest cached root",
+            "     * @return index Latest cached index",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns the latest entry in the checkpoint cache.\n     * @return root Latest cached root\n     * @return index Latest cached index\n     */\n",
+        "@notice": "Returns the latest entry in the checkpoint cache.",
+        "@return1": "root Latest cached root",
+        "@return2": "index Latest cached index",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "count",
+        "visibility": "public",
+        "args": [],
+        "func": "function count() public view returns (uint256) {\n        return tree.count;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns the number of inserted leaves in the tree",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns the number of inserted leaves in the tree\n     */\n",
+        "@notice": "Returns the number of inserted leaves in the tree",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "latestCheckpoint",
+        "visibility": "public",
+        "args": [],
+        "func": "function latestCheckpoint() public view returns (bytes32, uint256) {\n        return (root(), count() - 1);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns a checkpoint representing the current merkle tree.",
+            "     * @return root The root of the Outbox's merkle tree.",
+            "     * @return index The index of the last element in the tree.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns a checkpoint representing the current merkle tree.\n     * @return root The root of the Outbox's merkle tree.\n     * @return index The index of the last element in the tree.\n     */\n",
+        "@notice": "Returns a checkpoint representing the current merkle tree.",
+        "@return1": "root The root of the Outbox's merkle tree.",
+        "@return2": "index The index of the last element in the tree.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint32",
+                "type": "uint32"
+            },
+            {
+                "name": "bytes32",
+                "type": "bytes32"
+            },
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function handle(\n        uint32,\n        bytes32,\n        bytes calldata\n    ) external pure override {\n        assembly {\n            revert(0, 0)\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint32",
+                "type": "uint32"
+            },
+            {
+                "name": "bytes32",
+                "type": "bytes32"
+            },
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function handle(\n        uint32,\n        bytes32,\n        bytes calldata\n    ) external pure override {\n        assembly {\n            mstore(0, 0xabcdef)\n            revert(0, 32)\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint32",
+                "type": "uint32"
+            },
+            {
+                "name": "bytes32",
+                "type": "bytes32"
+            },
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function handle(\n        uint32,\n        bytes32,\n        bytes calldata\n    ) external pure override {\n        require(false, \"no can do\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint32",
+                "type": "uint32"
+            },
+            {
+                "name": "bytes32",
+                "type": "bytes32"
+            },
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function handle(\n        uint32,\n        bytes32,\n        bytes calldata\n    ) external pure override {\n        require(false); // solhint-disable-line reason-string\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setState",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_var",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setState(uint256 _var) external {\n        stateVar = _var;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getState",
+        "visibility": "external",
+        "args": [],
+        "func": "function getState() external view returns (uint256) {\n        return stateVar;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "doMath",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "a",
+                "type": "uint256"
+            },
+            {
+                "name": "b",
+                "type": "uint256"
+            }
+        ],
+        "func": "function doMath(uint256 a, uint256 b)\n        external\n        pure\n        override\n        returns (uint256 _result)\n    {\n        _result = a + b;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "doMath",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "a",
+                "type": "uint256"
+            },
+            {
+                "name": "b",
+                "type": "uint256"
+            }
+        ],
+        "func": "function doMath(uint256 a, uint256 b)\n        external\n        pure\n        override\n        returns (uint256 _result)\n    {\n        _result = a * b;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "testBranchRoot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "leaf",
+                "type": "bytes32"
+            },
+            {
+                "name": "proof",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function testBranchRoot(\n        bytes32 leaf,\n        bytes32[32] calldata proof,\n        uint256 index\n    ) external pure returns (bytes32) {\n        return MerkleLib.branchRoot(leaf, proof, index);\n    }",
+        "comments": [
+            "// solhint-disable-line no-empty-blocks",
+            "",
+            "    "
+        ],
+        "comt": "// solhint-disable-line no-empty-blocks\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "testProcess",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "leafIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function testProcess(bytes calldata _message, uint256 leafIndex) external {\n        bytes32 _messageHash = keccak256(abi.encodePacked(_message, leafIndex));\n        _process(_message, _messageHash);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMessageStatus",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_leaf",
+                "type": "bytes32"
+            },
+            {
+                "name": "status",
+                "type": "MessageStatus"
+            }
+        ],
+        "func": "function setMessageStatus(bytes32 _leaf, MessageStatus status) external {\n        messages[_leaf] = status;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_validatorManager",
+                "type": "address"
+            }
+        ],
+        "func": "function initialize(address _validatorManager) external initializer {\n        __Mailbox_initialize(_validatorManager);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "insert",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_node",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function insert(bytes32 _node) external {\n        tree.insert(_node);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "branchRoot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_leaf",
+                "type": "bytes32"
+            },
+            {
+                "name": "_proof",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function branchRoot(\n        bytes32 _leaf,\n        bytes32[32] calldata _proof,\n        uint256 _index\n    ) external pure returns (bytes32 _node) {\n        return MerkleLib.branchRoot(_leaf, _proof, _index);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "count",
+        "visibility": "public",
+        "args": [],
+        "func": "function count() public view returns (uint256) {\n        return tree.count;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns the number of inserted leaves in the tree",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns the number of inserted leaves in the tree\n     */\n",
+        "@notice": "Returns the number of inserted leaves in the tree",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "body",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function body(bytes calldata _message)\n        external\n        pure\n        returns (bytes calldata _body)\n    {\n        (, , , , _body) = _message.destructure();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "origin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function origin(bytes calldata _message)\n        external\n        pure\n        returns (uint32 _origin)\n    {\n        (_origin, , , , ) = _message.destructure();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "sender",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function sender(bytes calldata _message)\n        external\n        pure\n        returns (bytes32 _sender)\n    {\n        (, _sender, , , ) = _message.destructure();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "destination",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function destination(bytes calldata _message)\n        external\n        pure\n        returns (uint32 _destination)\n    {\n        (, , _destination, , ) = _message.destructure();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "recipient",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function recipient(bytes calldata _message)\n        external\n        pure\n        returns (bytes32 _recipient)\n    {\n        (, , , _recipient, ) = _message.destructure();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "recipientAddress",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function recipientAddress(bytes calldata _message)\n        external\n        pure\n        returns (address _recipient)\n    {\n        (, , , _recipient, ) = _message.destructureAddresses();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "leaf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "_leafIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function leaf(bytes calldata _message, uint256 _leafIndex)\n        external\n        pure\n        returns (bytes32)\n    {\n        return _message.leaf(_leafIndex);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enrollValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_validator",
+                "type": "address"
+            }
+        ],
+        "func": "function enrollValidator(address _validator) external onlyOwner {\n        _enrollValidator(_validator);\n    }",
+        "comments": [
+            "",
+            "    // ============ External Functions ============",
+            "",
+            "    /**",
+            "     * @notice Enrolls a validator into the validator set.",
+            "     * @dev Reverts if `_validator` is already in the validator set.",
+            "     * @param _validator The validator to add to the validator set.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ External Functions ============\n\n    /**\n     * @notice Enrolls a validator into the validator set.\n     * @dev Reverts if `_validator` is already in the validator set.\n     * @param _validator The validator to add to the validator set.\n     */\n    ",
+        "@notice": "Enrolls a validator into the validator set.",
+        "@dev": "Reverts if `_validator` is already in the validator set.",
+        "@param1": "_validator The validator to add to the validator set.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unenrollValidator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_validator",
+                "type": "address"
+            }
+        ],
+        "func": "function unenrollValidator(address _validator) external onlyOwner {\n        _unenrollValidator(_validator);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Unenrolls a validator from the validator set.",
+            "     * @dev Reverts if `_validator` is not in the validator set.",
+            "     * @param _validator The validator to remove from the validator set.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Unenrolls a validator from the validator set.\n     * @dev Reverts if `_validator` is not in the validator set.\n     * @param _validator The validator to remove from the validator set.\n     */\n",
+        "@notice": "Unenrolls a validator from the validator set.",
+        "@dev": "Reverts if `_validator` is not in the validator set.",
+        "@param1": "_validator The validator to remove from the validator set.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setThreshold",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_threshold",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setThreshold(uint256 _threshold) external onlyOwner {\n        _setThreshold(_threshold);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Sets the quorum threshold.",
+            "     * @param _threshold The new quorum threshold.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Sets the quorum threshold.\n     * @param _threshold The new quorum threshold.\n     */\n",
+        "@notice": "Sets the quorum threshold.",
+        "@param1": "_threshold The new quorum threshold.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "validators",
+        "visibility": "external",
+        "args": [],
+        "func": "function validators() external view returns (address[] memory) {\n        uint256 _numValidators = validatorSet.length();\n        address[] memory _validators = new address[](_numValidators);\n        for (uint256 i = 0; i < _numValidators; i++) {\n            _validators[i] = validatorSet.at(i);\n        }\n        return _validators;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Gets the addresses of the current validator set.",
+            "     * @dev There are no ordering guarantees due to the semantics of EnumerableSet.AddressSet.",
+            "     * @return The addresses of the validator set.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Gets the addresses of the current validator set.\n     * @dev There are no ordering guarantees due to the semantics of EnumerableSet.AddressSet.\n     * @return The addresses of the validator set.\n     */\n",
+        "@notice": "Gets the addresses of the current validator set.",
+        "@dev": "There are no ordering guarantees due to the semantics of EnumerableSet.AddressSet.",
+        "@return1": "The addresses of the validator set.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isQuorum",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_root",
+                "type": "bytes32"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            },
+            {
+                "name": "_signatures",
+                "type": "bytes[] calldata"
+            }
+        ],
+        "func": "function isQuorum(\n        bytes32 _root,\n        uint256 _index,\n        bytes[] calldata _signatures\n    ) public view returns (bool) {\n        uint256 _numSignatures = _signatures.length;\n        // If there are fewer signatures provided than the required quorum threshold,\n        // this is not a quorum.\n        if (_numSignatures < threshold) {\n            return false;\n        }\n        // To identify duplicates, the signers recovered from _signatures\n        // must be sorted in ascending order. previousSigner is used to\n        // enforce ordering.\n        address _previousSigner = address(0);\n        uint256 _validatorSignatureCount = 0;\n        for (uint256 i = 0; i < _numSignatures; i++) {\n            address _signer = _recoverCheckpointSigner(\n                _root,\n                _index,\n                _signatures[i]\n            );\n            // Revert if the signer violates the required sort order.\n            require(_previousSigner < _signer, \"!sorted signers\");\n            // If the signer is a validator, increment _validatorSignatureCount.\n            if (isValidator(_signer)) {\n                _validatorSignatureCount++;\n            }\n            _previousSigner = _signer;\n        }\n        return _validatorSignatureCount >= threshold;\n    }",
+        "comments": [
+            "",
+            "    // ============ Public Functions ============",
+            "",
+            "    /**",
+            "     * @notice Returns whether provided signatures over a checkpoint constitute",
+            "     * a quorum of validator signatures.",
+            "     * @dev Reverts if `_signatures` is not sorted in ascending order by the signer",
+            "     * address, which is required for duplicate detection.",
+            "     * @dev Does not revert if a signature's signer is not in the validator set.",
+            "     * @param _root The merkle root of the checkpoint.",
+            "     * @param _index The index of the checkpoint.",
+            "     * @param _signatures Signatures over the checkpoint to be checked for a validator",
+            "     * quorum. Must be sorted in ascending order by signer address.",
+            "     * @return TRUE iff `_signatures` constitute a quorum of validator signatures over",
+            "     * the checkpoint.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ Public Functions ============\n\n    /**\n     * @notice Returns whether provided signatures over a checkpoint constitute\n     * a quorum of validator signatures.\n     * @dev Reverts if `_signatures` is not sorted in ascending order by the signer\n     * address, which is required for duplicate detection.\n     * @dev Does not revert if a signature's signer is not in the validator set.\n     * @param _root The merkle root of the checkpoint.\n     * @param _index The index of the checkpoint.\n     * @param _signatures Signatures over the checkpoint to be checked for a validator\n     * quorum. Must be sorted in ascending order by signer address.\n     * @return TRUE iff `_signatures` constitute a quorum of validator signatures over\n     * the checkpoint.\n     */\n    ",
+        "@notice": "Returns whether provided signatures over a checkpoint constitute * a quorum of validator signatures.",
+        "@dev": "Reverts if `_signatures` is not sorted in ascending order by the signer * address, which is required for duplicate detection. * Does not revert if a signature's signer is not in the validator set.",
+        "@param1": "_root The merkle root of the checkpoint.",
+        "@param2": "_index The index of the checkpoint.",
+        "@param3": "_signatures Signatures over the checkpoint to be checked for a validator * quorum. Must be sorted in ascending order by signer address.",
+        "@return1": "TRUE iff `_signatures` constitute a quorum of validator signatures over * the checkpoint.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isValidator",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_validator",
+                "type": "address"
+            }
+        ],
+        "func": "function isValidator(address _validator) public view returns (bool) {\n        return validatorSet.contains(_validator);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns if `_validator` is enrolled in the validator set.",
+            "     * @param _validator The address of the validator.",
+            "     * @return TRUE iff `_validator` is enrolled in the validator set.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns if `_validator` is enrolled in the validator set.\n     * @param _validator The address of the validator.\n     * @return TRUE iff `_validator` is enrolled in the validator set.\n     */\n",
+        "@notice": "Returns if `_validator` is enrolled in the validator set.",
+        "@param1": "_validator The address of the validator.",
+        "@return1": "TRUE iff `_validator` is enrolled in the validator set.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "validatorCount",
+        "visibility": "public",
+        "args": [],
+        "func": "function validatorCount() public view returns (uint256) {\n        return validatorSet.length();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns the number of validators enrolled in the validator set.",
+            "     * @return The number of validators enrolled in the validator set.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns the number of validators enrolled in the validator set.\n     * @return The number of validators enrolled in the validator set.\n     */\n",
+        "@notice": "Returns the number of validators enrolled in the validator set.",
+        "@return1": "The number of validators enrolled in the validator set.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDomainHash",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_domain",
+                "type": "uint32"
+            }
+        ],
+        "func": "function getDomainHash(uint32 _domain) external pure returns (bytes32) {\n        return _domainHash(_domain);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Hash of domain concatenated with \"ABACUS\".",
+            "     * @dev This is a public getter of _domainHash to test with.",
+            "     * @param _domain The domain to hash.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Hash of domain concatenated with \"ABACUS\".\n     * @dev This is a public getter of _domainHash to test with.\n     * @param _domain The domain to hash.\n     */\n",
+        "@notice": "Hash of domain concatenated with \"ABACUS\".",
+        "@dev": "This is a public getter of _domainHash to test with.",
+        "@param1": "_domain The domain to hash.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "testSetValidatorManager",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_validatorManager",
+                "type": "address"
+            }
+        ],
+        "func": "function testSetValidatorManager(address _validatorManager) external {\n        validatorManager = _validatorManager;\n    }",
+        "comments": [
+            "// solhint-disable-line no-empty-blocks",
+            "",
+            "    /**",
+            "     * @notice Set the validator manager",
+            "     * @param _validatorManager Address of the validator manager",
+            "     */",
+            "    "
+        ],
+        "comt": "// solhint-disable-line no-empty-blocks\n\n    /**\n     * @notice Set the validator manager\n     * @param _validatorManager Address of the validator manager\n     */\n    ",
+        "@notice": "Set the validator manager",
+        "@param1": "_validatorManager Address of the validator manager",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "proof",
+        "visibility": "external",
+        "args": [],
+        "func": "function proof() external view returns (bytes32[32] memory) {\n        bytes32[32] memory _zeroes = MerkleLib.zeroHashes();\n        uint256 _index = tree.count - 1;\n        bytes32[32] memory _proof;\n\n        for (uint256 i = 0; i < 32; i++) {\n            uint256 _ithBit = (_index >> i) & 0x01;\n            if (_ithBit == 1) {\n                _proof[i] = tree.branch[i];\n            } else {\n                _proof[i] = _zeroes[i];\n            }\n        }\n        return _proof;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "branch",
+        "visibility": "external",
+        "args": [],
+        "func": "function branch() external view returns (bytes32[32] memory) {\n        return tree.branch;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "branchRoot",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_item",
+                "type": "bytes32"
+            },
+            {
+                "name": "_branch",
+                "type": "bytes32[32] memory"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function branchRoot(\n        bytes32 _item,\n        bytes32[32] memory _branch,\n        uint256 _index\n    ) external pure returns (bytes32) {\n        return MerkleLib.branchRoot(_item, _branch, _index);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint32",
+                "type": "uint32"
+            },
+            {
+                "name": "bytes32",
+                "type": "bytes32"
+            },
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function handle(\n        uint32,\n        bytes32,\n        bytes calldata\n    ) external pure override {}",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "receiveString",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_str",
+                "type": "string calldata"
+            }
+        ],
+        "func": "function receiveString(string calldata _str)\n        public\n        pure\n        returns (string memory)\n    {\n        return _str;\n    }",
+        "comments": [
+            "// solhint-disable-line no-empty-blocks",
+            "",
+            "    "
+        ],
+        "comt": "// solhint-disable-line no-empty-blocks\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "processCall",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "callProcessed",
+                "type": "bool"
+            }
+        ],
+        "func": "function processCall(bool callProcessed) public {\n        processed = callProcessed;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "message",
+        "visibility": "public",
+        "args": [],
+        "func": "function message() public pure returns (string memory) {\n        return \"message received\";\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "dispatchToSelf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_outbox",
+                "type": "IOutbox"
+            },
+            {
+                "name": "_paymaster",
+                "type": "IInterchainGasPaymaster"
+            },
+            {
+                "name": "_destinationDomain",
+                "type": "uint32"
+            },
+            {
+                "name": "_messageBody",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function dispatchToSelf(\n        IOutbox _outbox,\n        IInterchainGasPaymaster _paymaster,\n        uint32 _destinationDomain,\n        bytes calldata _messageBody\n    ) external payable {\n        uint256 _leafIndex = _outbox.dispatch(\n            _destinationDomain,\n            address(this).addressToBytes32(),\n            _messageBody\n        );\n        uint256 _blockHashNum = uint256(previousBlockHash());\n        uint256 _value = msg.value;\n        if (_blockHashNum % 5 == 0) {\n            // Pay in two separate calls, resulting in 2 distinct events\n            uint256 _half = _value / 2;\n            _paymaster.payGasFor{value: _half}(\n                address(_outbox),\n                _leafIndex,\n                _destinationDomain\n            );\n            _paymaster.payGasFor{value: _value - _half}(\n                address(_outbox),\n                _leafIndex,\n                _destinationDomain\n            );\n        } else {\n            // Pay the entire msg.value in one call\n            _paymaster.payGasFor{value: _value}(\n                address(_outbox),\n                _leafIndex,\n                _destinationDomain\n            );\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "handle",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "uint32",
+                "type": "uint32"
+            },
+            {
+                "name": "bytes32",
+                "type": "bytes32"
+            },
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function handle(\n        uint32,\n        bytes32,\n        bytes calldata\n    ) external override {\n        bytes32 blockHash = previousBlockHash();\n        bool isBlockHashEven = uint256(blockHash) % 2 == 0;\n        require(isBlockHashEven, \"block hash is odd\");\n        emit Handled(blockHash);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "process",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_inbox",
+                "type": "IInbox"
+            },
+            {
+                "name": "_root",
+                "type": "bytes32"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            },
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "_proof",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "_leafIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function process(\n        IInbox _inbox,\n        bytes32 _root,\n        uint256 _index,\n        bytes calldata _message,\n        bytes32[32] calldata _proof,\n        uint256 _leafIndex\n    ) external {\n        _inbox.process(_root, _index, _message, _proof, _leafIndex);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_beacon",
+                "type": "address"
+            },
+            {
+                "name": "_implementation",
+                "type": "address"
+            }
+        ],
+        "func": "function upgrade(address _beacon, address _implementation)\n        external\n        onlyOwner\n    {\n        // Require that the beacon is a contract\n        require(Address.isContract(_beacon), \"beacon !contract\");\n        // Call into beacon and supply address of new implementation to update it.\n        (bool _success, ) = _beacon.call(abi.encode(_implementation));\n        // Revert with message on failure (i.e. if the beacon is somehow incorrect).\n        if (!_success) {\n            assembly {\n                returndatacopy(0, 0, returndatasize())\n                revert(0, returndatasize())\n            }\n        }\n        emit BeaconUpgraded(_beacon, _implementation);\n    }",
+        "comments": [
+            "",
+            "    // ============ External Functions ============",
+            "",
+            "    /**",
+            "     * @notice Modify the implementation stored in the UpgradeBeacon,",
+            "     * which will upgrade the implementation used by all",
+            "     * Proxy contracts using that UpgradeBeacon",
+            "     * @param _beacon Address of the UpgradeBeacon which will be updated",
+            "     * @param _implementation Address of the Implementation contract to upgrade the Beacon to",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ External Functions ============\n\n    /**\n     * @notice Modify the implementation stored in the UpgradeBeacon,\n     * which will upgrade the implementation used by all\n     * Proxy contracts using that UpgradeBeacon\n     * @param _beacon Address of the UpgradeBeacon which will be updated\n     * @param _implementation Address of the Implementation contract to upgrade the Beacon to\n     */\n    ",
+        "@notice": "Modify the implementation stored in the UpgradeBeacon, * which will upgrade the implementation used by all * Proxy contracts using that UpgradeBeacon",
+        "@param1": "_beacon Address of the UpgradeBeacon which will be updated",
+        "@param2": "_implementation Address of the Implementation contract to upgrade the Beacon to",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "process",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_inbox",
+                "type": "IInbox"
+            },
+            {
+                "name": "_root",
+                "type": "bytes32"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            },
+            {
+                "name": "_signatures",
+                "type": "bytes[] calldata"
+            },
+            {
+                "name": "_message",
+                "type": "bytes calldata"
+            },
+            {
+                "name": "_proof",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "_leafIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function process(\n        IInbox _inbox,\n        bytes32 _root,\n        uint256 _index,\n        bytes[] calldata _signatures,\n        bytes calldata _message,\n        bytes32[32] calldata _proof,\n        uint256 _leafIndex\n    ) external {\n        require(isQuorum(_root, _index, _signatures), \"!quorum\");\n        _inbox.process(_root, _index, _message, _proof, _leafIndex);\n    }",
+        "comments": [
+            "",
+            "    // ============ External Functions ============",
+            "",
+            "    /**",
+            "     * @notice Verifies a signed checkpoint and submits a message for processing.",
+            "     * @dev Reverts if `_signatures` is not a quorum of validator signatures.",
+            "     * @dev Reverts if `_signatures` is not sorted in ascending order by the signer",
+            "     * address, which is required for duplicate detection.",
+            "     * @param _inbox The inbox to submit the message to.",
+            "     * @param _root The merkle root of the signed checkpoint.",
+            "     * @param _index The index of the signed checkpoint.",
+            "     * @param _signatures Signatures over the checkpoint to be checked for a validator",
+            "     * quorum. Must be sorted in ascending order by signer address.",
+            "     * @param _message The message to process.",
+            "     * @param _proof Merkle proof of inclusion for message's leaf",
+            "     * @param _leafIndex Index of leaf in outbox's merkle tree",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ External Functions ============\n\n    /**\n     * @notice Verifies a signed checkpoint and submits a message for processing.\n     * @dev Reverts if `_signatures` is not a quorum of validator signatures.\n     * @dev Reverts if `_signatures` is not sorted in ascending order by the signer\n     * address, which is required for duplicate detection.\n     * @param _inbox The inbox to submit the message to.\n     * @param _root The merkle root of the signed checkpoint.\n     * @param _index The index of the signed checkpoint.\n     * @param _signatures Signatures over the checkpoint to be checked for a validator\n     * quorum. Must be sorted in ascending order by signer address.\n     * @param _message The message to process.\n     * @param _proof Merkle proof of inclusion for message's leaf\n     * @param _leafIndex Index of leaf in outbox's merkle tree\n     */\n    ",
+        "@notice": "Verifies a signed checkpoint and submits a message for processing.",
+        "@dev": "Reverts if `_signatures` is not a quorum of validator signatures. * Reverts if `_signatures` is not sorted in ascending order by the signer * address, which is required for duplicate detection.",
+        "@param1": "_inbox The inbox to submit the message to.",
+        "@param2": "_root The merkle root of the signed checkpoint.",
+        "@param3": "_index The index of the signed checkpoint.",
+        "@param4": "_signatures Signatures over the checkpoint to be checked for a validator * quorum. Must be sorted in ascending order by signer address.",
+        "@param5": "_message The message to process.",
+        "@param6": "_proof Merkle proof of inclusion for message's leaf",
+        "@param7": "_leafIndex Index of leaf in outbox's merkle tree",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "prematureCheckpoint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_outbox",
+                "type": "IOutbox"
+            },
+            {
+                "name": "_signedRoot",
+                "type": "bytes32"
+            },
+            {
+                "name": "_signedIndex",
+                "type": "uint256"
+            },
+            {
+                "name": "_signatures",
+                "type": "bytes[] calldata"
+            }
+        ],
+        "func": "function prematureCheckpoint(\n        IOutbox _outbox,\n        bytes32 _signedRoot,\n        uint256 _signedIndex,\n        bytes[] calldata _signatures\n    ) external returns (bool) {\n        require(isQuorum(_signedRoot, _signedIndex, _signatures), \"!quorum\");\n        // Checkpoints are premature if the checkpoint commits to more messages\n        // than the Outbox has in its merkle tree.\n        uint256 count = _outbox.count();\n        require(_signedIndex >= count, \"!premature\");\n        _outbox.fail();\n        emit PrematureCheckpoint(\n            address(_outbox),\n            _signedRoot,\n            _signedIndex,\n            _signatures,\n            count\n        );\n        return true;\n    }",
+        "comments": [
+            "",
+            "    // ============ External Functions ============",
+            "",
+            "    /**",
+            "     * @notice Determines if a quorum of validators have signed a premature checkpoint,",
+            "     * failing the Outbox if so.",
+            "     * A checkpoint is premature if it commits to more messages than are present in the",
+            "     * Outbox's merkle tree.",
+            "     * @dev Premature checkpoints signed by individual validators are not handled to prevent",
+            "     * a single byzantine validator from failing the Outbox.",
+            "     * @param _outbox The outbox.",
+            "     * @param _signedRoot The root of the signed checkpoint.",
+            "     * @param _signedIndex The index of the signed checkpoint.",
+            "     * @param _signatures Signatures over the checkpoint to be checked for a validator",
+            "     * quorum. Must be sorted in ascending order by signer address.",
+            "     * @return True iff prematurity was proved.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // ============ External Functions ============\n\n    /**\n     * @notice Determines if a quorum of validators have signed a premature checkpoint,\n     * failing the Outbox if so.\n     * A checkpoint is premature if it commits to more messages than are present in the\n     * Outbox's merkle tree.\n     * @dev Premature checkpoints signed by individual validators are not handled to prevent\n     * a single byzantine validator from failing the Outbox.\n     * @param _outbox The outbox.\n     * @param _signedRoot The root of the signed checkpoint.\n     * @param _signedIndex The index of the signed checkpoint.\n     * @param _signatures Signatures over the checkpoint to be checked for a validator\n     * quorum. Must be sorted in ascending order by signer address.\n     * @return True iff prematurity was proved.\n     */\n    ",
+        "@notice": "Determines if a quorum of validators have signed a premature checkpoint, * failing the Outbox if so. * A checkpoint is premature if it commits to more messages than are present in the * Outbox's merkle tree.",
+        "@dev": "Premature checkpoints signed by individual validators are not handled to prevent * a single byzantine validator from failing the Outbox.",
+        "@param1": "_outbox The outbox.",
+        "@param2": "_signedRoot The root of the signed checkpoint.",
+        "@param3": "_signedIndex The index of the signed checkpoint.",
+        "@param4": "_signatures Signatures over the checkpoint to be checked for a validator * quorum. Must be sorted in ascending order by signer address.",
+        "@return1": "True iff prematurity was proved.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fraudulentCheckpoint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_outbox",
+                "type": "IOutbox"
+            },
+            {
+                "name": "_signedRoot",
+                "type": "bytes32"
+            },
+            {
+                "name": "_signedIndex",
+                "type": "uint256"
+            },
+            {
+                "name": "_signatures",
+                "type": "bytes[] calldata"
+            },
+            {
+                "name": "_fraudulentLeaf",
+                "type": "bytes32"
+            },
+            {
+                "name": "_fraudulentProof",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "_actualLeaf",
+                "type": "bytes32"
+            },
+            {
+                "name": "_actualProof",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "_leafIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function fraudulentCheckpoint(\n        IOutbox _outbox,\n        bytes32 _signedRoot,\n        uint256 _signedIndex,\n        bytes[] calldata _signatures,\n        bytes32 _fraudulentLeaf,\n        bytes32[32] calldata _fraudulentProof,\n        bytes32 _actualLeaf,\n        bytes32[32] calldata _actualProof,\n        uint256 _leafIndex\n    ) external returns (bool) {\n        // Check the signed checkpoint commits to _fraudulentLeaf at _leafIndex.\n        require(isQuorum(_signedRoot, _signedIndex, _signatures), \"!quorum\");\n        bytes32 _fraudulentRoot = MerkleLib.branchRoot(\n            _fraudulentLeaf,\n            _fraudulentProof,\n            _leafIndex\n        );\n        require(_fraudulentRoot == _signedRoot, \"!root\");\n        require(_signedIndex >= _leafIndex, \"!index\");\n\n        // Check the cached checkpoint commits to _actualLeaf at _leafIndex.\n        bytes32 _cachedRoot = MerkleLib.branchRoot(\n            _actualLeaf,\n            _actualProof,\n            _leafIndex\n        );\n        uint256 _cachedIndex = _outbox.cachedCheckpoints(_cachedRoot);\n        require(_cachedIndex > 0 && _cachedIndex >= _leafIndex, \"!cache\");\n\n        // Check that the two roots commit to at least one differing leaf\n        // with index <= _leafIndex.\n        require(\n            impliesDifferingLeaf(\n                _fraudulentLeaf,\n                _fraudulentProof,\n                _actualLeaf,\n                _actualProof,\n                _leafIndex\n            ),\n            \"!fraud\"\n        );\n\n        // Fail the Outbox.\n        _outbox.fail();\n        emit FraudulentCheckpoint(\n            address(_outbox),\n            _signedRoot,\n            _signedIndex,\n            _signatures,\n            _fraudulentLeaf,\n            _fraudulentProof,\n            _actualLeaf,\n            _actualProof,\n            _leafIndex\n        );\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Determines if a quorum of validators have signed a fraudulent checkpoint,",
+            "     * failing the Outbox if so.",
+            "     * A checkpoint is fraudulent if the leaf it commits to at index I differs",
+            "     * from the leaf the Outbox committed to at index I, where I is less than or equal",
+            "     * to the index of the checkpoint.",
+            "     * This difference can be proved by comparing two merkle proofs for leaf",
+            "     * index J >= I. One against the fraudulent checkpoint, and one against a",
+            "     * checkpoint cached on the Outbox.",
+            "     * @dev Fraudulent checkpoints signed by individual validators are not handled to prevent",
+            "     * a single byzantine validator from failing the Outbox.",
+            "     * @param _outbox The outbox.",
+            "     * @param _signedRoot The root of the signed checkpoint.",
+            "     * @param _signedIndex The index of the signed checkpoint.",
+            "     * @param _signatures Signatures over the checkpoint to be checked for a validator",
+            "     * quorum. Must be sorted in ascending order by signer address.",
+            "     * @param _fraudulentLeaf The leaf in the fraudulent tree.",
+            "     * @param _fraudulentProof Proof of inclusion of `_fraudulentLeaf`.",
+            "     * @param _actualLeaf The leaf in the Outbox's tree.",
+            "     * @param _actualProof Proof of inclusion of `_actualLeaf`.",
+            "     * @param _leafIndex The index of the leaves that are being proved.",
+            "     * @return True iff fraud was proved.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Determines if a quorum of validators have signed a fraudulent checkpoint,\n     * failing the Outbox if so.\n     * A checkpoint is fraudulent if the leaf it commits to at index I differs\n     * from the leaf the Outbox committed to at index I, where I is less than or equal\n     * to the index of the checkpoint.\n     * This difference can be proved by comparing two merkle proofs for leaf\n     * index J >= I. One against the fraudulent checkpoint, and one against a\n     * checkpoint cached on the Outbox.\n     * @dev Fraudulent checkpoints signed by individual validators are not handled to prevent\n     * a single byzantine validator from failing the Outbox.\n     * @param _outbox The outbox.\n     * @param _signedRoot The root of the signed checkpoint.\n     * @param _signedIndex The index of the signed checkpoint.\n     * @param _signatures Signatures over the checkpoint to be checked for a validator\n     * quorum. Must be sorted in ascending order by signer address.\n     * @param _fraudulentLeaf The leaf in the fraudulent tree.\n     * @param _fraudulentProof Proof of inclusion of `_fraudulentLeaf`.\n     * @param _actualLeaf The leaf in the Outbox's tree.\n     * @param _actualProof Proof of inclusion of `_actualLeaf`.\n     * @param _leafIndex The index of the leaves that are being proved.\n     * @return True iff fraud was proved.\n     */\n",
+        "@notice": "Determines if a quorum of validators have signed a fraudulent checkpoint, * failing the Outbox if so. * A checkpoint is fraudulent if the leaf it commits to at index I differs * from the leaf the Outbox committed to at index I, where I is less than or equal * to the index of the checkpoint. * This difference can be proved by comparing two merkle proofs for leaf * index J >= I. One against the fraudulent checkpoint, and one against a * checkpoint cached on the Outbox.",
+        "@dev": "Fraudulent checkpoints signed by individual validators are not handled to prevent * a single byzantine validator from failing the Outbox.",
+        "@param1": "_outbox The outbox.",
+        "@param2": "_signedRoot The root of the signed checkpoint.",
+        "@param3": "_signedIndex The index of the signed checkpoint.",
+        "@param4": "_signatures Signatures over the checkpoint to be checked for a validator * quorum. Must be sorted in ascending order by signer address.",
+        "@param5": "_fraudulentLeaf The leaf in the fraudulent tree.",
+        "@param6": "_fraudulentProof Proof of inclusion of `_fraudulentLeaf`.",
+        "@param7": "_actualLeaf The leaf in the Outbox's tree.",
+        "@param8": "_actualProof Proof of inclusion of `_actualLeaf`.",
+        "@param9": "_leafIndex The index of the leaves that are being proved.",
+        "@return1": "True iff fraud was proved.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    },
+    {
+        "name": "impliesDifferingLeaf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_leafA",
+                "type": "bytes32"
+            },
+            {
+                "name": "_proofA",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "_leafB",
+                "type": "bytes32"
+            },
+            {
+                "name": "_proofB",
+                "type": "bytes32[32] calldata"
+            },
+            {
+                "name": "_leafIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function impliesDifferingLeaf(\n        bytes32 _leafA,\n        bytes32[32] calldata _proofA,\n        bytes32 _leafB,\n        bytes32[32] calldata _proofB,\n        uint256 _leafIndex\n    ) public pure returns (bool) {\n        // The implied merkle roots commit to at least one differing leaf\n        // with index <= _leafIndex, if either:\n\n        // 1. If the provided leaves differ.\n        if (_leafA != _leafB) {\n            return true;\n        }\n\n        // 2. If the branches contain internal nodes whose subtrees are full\n        // (as implied by _leafIndex) that differ from one another.\n        for (uint8 i = 0; i < 32; i++) {\n            uint256 _ithBit = (_leafIndex >> i) & 0x01;\n            // If the i'th is 1, the i'th element in the proof is an internal\n            // node whose subtree is full.\n            // If these nodes differ, at least one leaf that they commit to\n            // must differ as well.\n            if (_ithBit == 1) {\n                if (_proofA[i] != _proofB[i]) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Returns true if the implied merkle roots commit to at least one",
+            "     * differing leaf with index <= `_leafIndex`.",
+            "     * Given a merkle proof for leaf index J, we can determine whether an",
+            "     * element in the proof is an internal node whose terminal children are leaves",
+            "     * with index <= J.",
+            "     * Given two merkle proofs for leaf index J, if such elements do not match,",
+            "     * these two proofs necessarily commit to at least one differing leaf with",
+            "     * index I <= J.",
+            "     * @param _leafA The leaf in tree A.",
+            "     * @param _proofA Proof of inclusion of `_leafA` in tree A.",
+            "     * @param _leafB The leaf in tree B.",
+            "     * @param _proofB Proof of inclusion of `_leafB` in tree B.",
+            "     * @param _leafIndex The index of `_leafA` and `_leafB`.",
+            "     * @return differ True if the implied trees differ, false if not.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Returns true if the implied merkle roots commit to at least one\n     * differing leaf with index <= `_leafIndex`.\n     * Given a merkle proof for leaf index J, we can determine whether an\n     * element in the proof is an internal node whose terminal children are leaves\n     * with index <= J.\n     * Given two merkle proofs for leaf index J, if such elements do not match,\n     * these two proofs necessarily commit to at least one differing leaf with\n     * index I <= J.\n     * @param _leafA The leaf in tree A.\n     * @param _proofA Proof of inclusion of `_leafA` in tree A.\n     * @param _leafB The leaf in tree B.\n     * @param _proofB Proof of inclusion of `_leafB` in tree B.\n     * @param _leafIndex The index of `_leafA` and `_leafB`.\n     * @return differ True if the implied trees differ, false if not.\n     */\n",
+        "@notice": "Returns true if the implied merkle roots commit to at least one * differing leaf with index <= `_leafIndex`. * Given a merkle proof for leaf index J, we can determine whether an * element in the proof is an internal node whose terminal children are leaves * with index <= J. * Given two merkle proofs for leaf index J, if such elements do not match, * these two proofs necessarily commit to at least one differing leaf with * index I <= J.",
+        "@param1": "_leafA The leaf in tree A.",
+        "@param2": "_proofA Proof of inclusion of `_leafA` in tree A.",
+        "@param3": "_leafB The leaf in tree B.",
+        "@param4": "_proofB Proof of inclusion of `_leafB` in tree B.",
+        "@param5": "_leafIndex The index of `_leafA` and `_leafB`.",
+        "@return1": "differ True if the implied trees differ, false if not.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    }
+]

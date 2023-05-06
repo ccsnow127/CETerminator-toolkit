@@ -1,0 +1,47 @@
+[
+    {
+        "transactions": 633898,
+        "function_num": 1
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint _value)\n public\n returns (bool)\n {\n uint allowance = allowed[_from][msg.sender];\n if (balances[_from] >= _value\n && allowance >= _value\n && balances[_to] + _value >= balances[_to]\n ) {\n balances[_to] += _value;\n balances[_from] -= _value;\n if (allowance < MAX_UINT) {\n allowed[_from][msg.sender] -= _value;\n }\n Transfer(_from, _to, _value);\n return true;\n } else {\n return false;\n }\n }",
+        "comments": [
+            " ",
+            " /// @dev ERC20 transferFrom, modified such that an allowance of MAX_UINT represents an unlimited amount.",
+            " /// @param _from Address to transfer from.",
+            " /// @param _to Address to transfer to.",
+            " /// @param _value Amount to transfer.",
+            " /// @return Success of transfer.",
+            " "
+        ],
+        "comt": " \n /// @dev ERC20 transferFrom, modified such that an allowance of MAX_UINT represents an unlimited amount.\n /// @param _from Address to transfer from.\n /// @param _to Address to transfer to.\n /// @param _value Amount to transfer.\n /// @return Success of transfer.\n ",
+        "@dev": "ERC20 transferFrom, modified such that an allowance of MAX_UINT represents an unlimited amount.",
+        "@param1": "_from Address to transfer from.",
+        "@param2": "_to Address to transfer to.",
+        "@param3": "_value Amount to transfer.",
+        "@return1": "Success of transfer.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

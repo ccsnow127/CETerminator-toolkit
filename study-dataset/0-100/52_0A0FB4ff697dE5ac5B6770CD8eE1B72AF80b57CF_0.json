@@ -1,0 +1,1495 @@
+[
+    {
+        "transactions": 0,
+        "function_num": 52
+    },
+    {
+        "name": "getMainToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function getMainToken() public view override returns (IERC20) {\n        return _mainToken;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Return the main token address as an IERC20.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Return the main token address as an IERC20.\n     */\n",
+        "@notice": "Return the main token address as an IERC20.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getWrappedToken",
+        "visibility": "public",
+        "args": [],
+        "func": "function getWrappedToken() public view override returns (IERC20) {\n        return _wrappedToken;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Return the wrapped token address as an IERC20.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Return the wrapped token address as an IERC20.\n     */\n",
+        "@notice": "Return the wrapped token address as an IERC20.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getBptIndex",
+        "visibility": "public",
+        "args": [],
+        "func": "function getBptIndex() public pure override returns (uint256) {\n        return _BPT_INDEX;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Return the index of the BPT token.",
+            "     * @dev Note that this is an index into the registered token list (with 3 tokens).",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Return the index of the BPT token.\n     * @dev Note that this is an index into the registered token list (with 3 tokens).\n     */\n",
+        "@notice": "Return the index of the BPT token.",
+        "@dev": "Note that this is an index into the registered token list (with 3 tokens).",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMainIndex",
+        "visibility": "external",
+        "args": [],
+        "func": "function getMainIndex() external view override returns (uint256) {\n        return _mainIndex;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Return the index of the main token.",
+            "     * @dev Note that this is an index into the registered token list, which includes the BPT token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Return the index of the main token.\n     * @dev Note that this is an index into the registered token list, which includes the BPT token.\n     */\n",
+        "@notice": "Return the index of the main token.",
+        "@dev": "Note that this is an index into the registered token list, which includes the BPT token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getWrappedIndex",
+        "visibility": "external",
+        "args": [],
+        "func": "function getWrappedIndex() external view override returns (uint256) {\n        return _wrappedIndex;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Return the index of the wrapped token.",
+            "     * @dev Note that this is an index into the registered token list, which includes the BPT token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Return the index of the wrapped token.\n     * @dev Note that this is an index into the registered token list, which includes the BPT token.\n     */\n",
+        "@notice": "Return the index of the wrapped token.",
+        "@dev": "Note that this is an index into the registered token list, which includes the BPT token.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "initialize",
+        "visibility": "external",
+        "args": [],
+        "func": "function initialize() external {\n        bytes32 poolId = getPoolId();\n        (IERC20[] memory tokens, , ) = getVault().getPoolTokens(poolId);\n\n        // Joins typically involve the Pool receiving tokens in exchange for newly-minted BPT. In this case however, the\n        // Pool will mint the entire BPT supply to itself, and join itself with it.\n        uint256[] memory maxAmountsIn = new uint256[](_TOTAL_TOKENS);\n        maxAmountsIn[_BPT_INDEX] = _INITIAL_BPT_SUPPLY;\n\n        // The first time this executes, it will call `_onInitializePool` (as the BPT supply will be zero). Future calls\n        // will be routed to `_onJoinPool`, which always reverts, meaning `initialize` will only execute once.\n        IVault.JoinPoolRequest memory request = IVault.JoinPoolRequest({\n            assets: _asIAsset(tokens),\n            maxAmountsIn: maxAmountsIn,\n            userData: \"\",\n            fromInternalBalance: false\n        });\n\n        getVault().joinPool(poolId, address(this), address(this), request);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Finishes initialization of the Linear Pool: it is unusable before calling this function as no BPT will",
+            "     * have been minted.",
+            "     *",
+            "     * Since Linear Pools have preminted BPT stored in the Vault, they require an initial join to deposit said BPT as",
+            "     * their balance. Unfortunately, this cannot be performed during construction, as a join involves calling the",
+            "     * `onJoinPool` function on the Pool, and the Pool will not have any code until construction finishes. Therefore,",
+            "     * this must happen in a separate call.",
+            "     *",
+            "     * It is highly recommended to create Linear pools using the LinearPoolFactory, which calls `initialize`",
+            "     * automatically.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Finishes initialization of the Linear Pool: it is unusable before calling this function as no BPT will\n     * have been minted.\n     *\n     * Since Linear Pools have preminted BPT stored in the Vault, they require an initial join to deposit said BPT as\n     * their balance. Unfortunately, this cannot be performed during construction, as a join involves calling the\n     * `onJoinPool` function on the Pool, and the Pool will not have any code until construction finishes. Therefore,\n     * this must happen in a separate call.\n     *\n     * It is highly recommended to create Linear pools using the LinearPoolFactory, which calls `initialize`\n     * automatically.\n     */\n",
+        "@dev": "Finishes initialization of the Linear Pool: it is unusable before calling this function as no BPT will * have been minted. * * Since Linear Pools have preminted BPT stored in the Vault, they require an initial join to deposit said BPT as * their balance. Unfortunately, this cannot be performed during construction, as a join involves calling the * `onJoinPool` function on the Pool, and the Pool will not have any code until construction finishes. Therefore, * this must happen in a separate call. * * It is highly recommended to create Linear pools using the LinearPoolFactory, which calls `initialize` * automatically.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getScalingFactors",
+        "visibility": "public",
+        "args": [],
+        "func": "function getScalingFactors() public view virtual override returns (uint256[] memory) {\n        uint256[] memory scalingFactors = new uint256[](_TOTAL_TOKENS);\n\n        // The wrapped token's scaling factor is not constant, but increases over time as the wrapped token increases in\n        // value.\n        scalingFactors[_mainIndex] = _scalingFactorMainToken;\n        scalingFactors[_wrappedIndex] = _scalingFactorWrappedToken.mulDown(_getWrappedTokenRate());\n        scalingFactors[_BPT_INDEX] = FixedPoint.ONE;\n\n        return scalingFactors;\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Return the scaling factors for all tokens, including the BPT.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Return the scaling factors for all tokens, including the BPT.\n     */\n",
+        "@notice": "Return the scaling factors for all tokens, including the BPT.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRate",
+        "visibility": "external",
+        "args": [],
+        "func": "function getRate() external view override returns (uint256) {\n        bytes32 poolId = getPoolId();\n        (, uint256[] memory balances, ) = getVault().getPoolTokens(poolId);\n        _upscaleArray(balances, getScalingFactors());\n\n        (uint256 lowerTarget, uint256 upperTarget) = getTargets();\n        LinearMath.Params memory params = LinearMath.Params({\n            fee: getSwapFeePercentage(),\n            lowerTarget: lowerTarget,\n            upperTarget: upperTarget\n        });\n\n        uint256 totalBalance = LinearMath._calcInvariant(\n            LinearMath._toNominal(balances[_mainIndex], params),\n            balances[_wrappedIndex]\n        );\n\n        // Note that we're dividing by the virtual supply, which may be zero (causing this call to revert). However, the\n        // only way for that to happen would be for all LPs to exit the Pool, and nothing prevents new LPs from\n        // joining it later on.\n        return totalBalance.divUp(_getVirtualSupply(balances[_BPT_INDEX]));\n    }",
+        "comments": [
+            "",
+            "    // Price rates",
+            "",
+            "    /**",
+            "     * @dev For a Linear Pool, the rate represents the appreciation of BPT with respect to the underlying tokens. This",
+            "     * rate increases slowly as the wrapped token appreciates in value.",
+            "     *",
+            "     * WARNING: since this function reads balances directly from the Vault, it is potentially subject to manipulation",
+            "     * via reentrancy. See https://forum.balancer.fi/t/reentrancy-vulnerability-scope-expanded/4345 for reference.",
+            "     *",
+            "     * To call this function safely, attempt to trigger the reentrancy guard in the Vault by calling a non-reentrant",
+            "     * function before calling `getRate`. That will make the transaction revert in an unsafe context.",
+            "     * (See `whenNotInVaultContext`).",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Price rates\n\n    /**\n     * @dev For a Linear Pool, the rate represents the appreciation of BPT with respect to the underlying tokens. This\n     * rate increases slowly as the wrapped token appreciates in value.\n     *\n     * WARNING: since this function reads balances directly from the Vault, it is potentially subject to manipulation\n     * via reentrancy. See https://forum.balancer.fi/t/reentrancy-vulnerability-scope-expanded/4345 for reference.\n     *\n     * To call this function safely, attempt to trigger the reentrancy guard in the Vault by calling a non-reentrant\n     * function before calling `getRate`. That will make the transaction revert in an unsafe context.\n     * (See `whenNotInVaultContext`).\n     */\n    ",
+        "@dev": "For a Linear Pool, the rate represents the appreciation of BPT with respect to the underlying tokens. This * rate increases slowly as the wrapped token appreciates in value. * * WARNING: since this function reads balances directly from the Vault, it is potentially subject to manipulation * via reentrancy. See https://forum.balancer.fi/t/reentrancy-vulnerability-scope-expanded/4345 for reference. * * To call this function safely, attempt to trigger the reentrancy guard in the Vault by calling a non-reentrant * function before calling `getRate`. That will make the transaction revert in an unsafe context. * (See `whenNotInVaultContext`).",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getWrappedTokenRate",
+        "visibility": "external",
+        "args": [],
+        "func": "function getWrappedTokenRate() external view returns (uint256) {\n        return _getWrappedTokenRate();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Return the conversion rate between the wrapped and main tokens.",
+            "     * @dev This is an 18-decimal fixed point value.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Return the conversion rate between the wrapped and main tokens.\n     * @dev This is an 18-decimal fixed point value.\n     */\n",
+        "@notice": "Return the conversion rate between the wrapped and main tokens.",
+        "@dev": "This is an 18-decimal fixed point value.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTargets",
+        "visibility": "public",
+        "args": [],
+        "func": "function getTargets() public view override returns (uint256 lowerTarget, uint256 upperTarget) {\n        bytes32 poolState = _poolState;\n\n        // Since targets are stored downscaled by _TARGET_SCALING, we undo that when reading them.\n        lowerTarget = poolState.decodeUint(_LOWER_TARGET_OFFSET, _TARGET_BITS) * _TARGET_SCALING;\n        upperTarget = poolState.decodeUint(_UPPER_TARGET_OFFSET, _TARGET_BITS) * _TARGET_SCALING;\n    }",
+        "comments": [
+            "",
+            "    // Targets",
+            "",
+            "    /**",
+            "     * @notice Return the lower and upper bounds of the zero-fee trading range for the main token balance.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Targets\n\n    /**\n     * @notice Return the lower and upper bounds of the zero-fee trading range for the main token balance.\n     */\n    ",
+        "@notice": "Return the lower and upper bounds of the zero-fee trading range for the main token balance.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTargets",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newLowerTarget",
+                "type": "uint256"
+            },
+            {
+                "name": "newUpperTarget",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setTargets(uint256 newLowerTarget, uint256 newUpperTarget)\n        external\n        override\n        authenticate\n        whenNotInVaultContext\n    {\n        (uint256 currentLowerTarget, uint256 currentUpperTarget) = getTargets();\n        _require(_isMainBalanceWithinTargets(currentLowerTarget, currentUpperTarget), Errors.OUT_OF_TARGET_RANGE);\n        _require(_isMainBalanceWithinTargets(newLowerTarget, newUpperTarget), Errors.OUT_OF_NEW_TARGET_RANGE);\n\n        _setTargets(_mainToken, newLowerTarget, newUpperTarget);\n    }",
+        "comments": [
+            "",
+            "    /// @inheritdoc ILinearPool",
+            "    "
+        ],
+        "comt": "\n    /// @inheritdoc ILinearPool\n    ",
+        "@inheritdoc": "ILinearPool",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getSwapFeePercentage",
+        "visibility": "public",
+        "args": [],
+        "func": "function getSwapFeePercentage() public view virtual override returns (uint256) {\n        return _poolState.decodeUint(_SWAP_FEE_PERCENTAGE_OFFSET, _SWAP_FEE_PERCENTAGE_BIT_LENGTH);\n    }",
+        "comments": [
+            "",
+            "    // Swap Fees",
+            "",
+            "    /**",
+            "     * @notice Return the current value of the swap fee percentage.",
+            "     * @dev This is stored in `_poolState`.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Swap Fees\n\n    /**\n     * @notice Return the current value of the swap fee percentage.\n     * @dev This is stored in `_poolState`.\n     */\n    ",
+        "@notice": "Return the current value of the swap fee percentage.",
+        "@dev": "This is stored in `_poolState`.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setSwapFeePercentage",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "swapFeePercentage",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setSwapFeePercentage(uint256 swapFeePercentage) external override authenticate whenNotInVaultContext {\n        // For the swap fee percentage to be changeable:\n        //  - the pool must currently be between the current targets (meaning no fees are currently pending)\n        //\n        // As the amount of accrued fees is not explicitly stored but rather derived from the main token balance and the\n        // current swap fee percentage, requiring for no fees to be pending prevents the fee setter from changing the\n        // amount of pending fees, which they could use to e.g. drain Pool funds in the form of inflated fees.\n\n        (uint256 lowerTarget, uint256 upperTarget) = getTargets();\n        _require(_isMainBalanceWithinTargets(lowerTarget, upperTarget), Errors.OUT_OF_TARGET_RANGE);\n\n        _setSwapFeePercentage(swapFeePercentage);\n    }",
+        "comments": [
+            "",
+            "    /// @inheritdoc ILinearPool",
+            "    "
+        ],
+        "comt": "\n    /// @inheritdoc ILinearPool\n    ",
+        "@inheritdoc": "ILinearPool",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVirtualSupply",
+        "visibility": "external",
+        "args": [],
+        "func": "function getVirtualSupply() external view returns (uint256) {\n        // For a 3 token General Pool, it is cheaper to query the balance for a single token than to read all balances,\n        // as getPoolTokenInfo will check for token existence, token balance and Asset Manager (3 reads), while\n        // getPoolTokens will read the number of tokens, their addresses and balances (7 reads).\n        (uint256 cash, uint256 managed, , ) = getVault().getPoolTokenInfo(getPoolId(), IERC20(this));\n\n        // Note that unlike all other balances, the Vault's BPT balance does not need scaling as its scaling factor is\n        // ONE. This addition cannot overflow due to the Vault's balance limits.\n        return _getVirtualSupply(cash + managed);\n    }",
+        "comments": [
+            "",
+            "    // Virtual Supply",
+            "",
+            "    /**",
+            "     * @notice Returns the number of tokens in circulation.",
+            "     *",
+            "     * @dev In other pools, this would be the same as `totalSupply`, but since this pool pre-mints BPT and holds it in",
+            "     * the Vault as a token, we need to subtract the Vault's balance to get the total \"circulating supply\". Both the",
+            "     * totalSupply and Vault balance can change. If users join or exit using swaps, some of the preminted BPT are",
+            "     * exchanged, so the Vault's balance increases after joins and decreases after exits. If users call the recovery",
+            "     * mode exit function, the totalSupply can change as BPT are burned.",
+            "     * ",
+            "     * WARNING: since this function reads balances directly from the Vault, it is potentially subject to manipulation",
+            "     * via reentrancy. See https://forum.balancer.fi/t/reentrancy-vulnerability-scope-expanded/4345 for reference.",
+            "     *",
+            "     * To call this function safely, attempt to trigger the reentrancy guard in the Vault by calling a non-reentrant",
+            "     * function before calling `getVirtualSupply`. That will make the transaction revert in an unsafe context.",
+            "     * (See `whenNotInVaultContext`).",
+            "",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Virtual Supply\n\n    /**\n     * @notice Returns the number of tokens in circulation.\n     *\n     * @dev In other pools, this would be the same as `totalSupply`, but since this pool pre-mints BPT and holds it in\n     * the Vault as a token, we need to subtract the Vault's balance to get the total \"circulating supply\". Both the\n     * totalSupply and Vault balance can change. If users join or exit using swaps, some of the preminted BPT are\n     * exchanged, so the Vault's balance increases after joins and decreases after exits. If users call the recovery\n     * mode exit function, the totalSupply can change as BPT are burned.\n     * \n     * WARNING: since this function reads balances directly from the Vault, it is potentially subject to manipulation\n     * via reentrancy. See https://forum.balancer.fi/t/reentrancy-vulnerability-scope-expanded/4345 for reference.\n     *\n     * To call this function safely, attempt to trigger the reentrancy guard in the Vault by calling a non-reentrant\n     * function before calling `getVirtualSupply`. That will make the transaction revert in an unsafe context.\n     * (See `whenNotInVaultContext`).\n\n     */\n    ",
+        "@notice": "Returns the number of tokens in circulation.",
+        "@dev": "In other pools, this would be the same as `totalSupply`, but since this pool pre-mints BPT and holds it in * the Vault as a token, we need to subtract the Vault's balance to get the total \"circulating supply\". Both the * totalSupply and Vault balance can change. If users join or exit using swaps, some of the preminted BPT are * exchanged, so the Vault's balance increases after joins and decreases after exits. If users call the recovery * mode exit function, the totalSupply can change as BPT are burned. * * WARNING: since this function reads balances directly from the Vault, it is potentially subject to manipulation * via reentrancy. See https://forum.balancer.fi/t/reentrancy-vulnerability-scope-expanded/4345 for reference. * * To call this function safely, attempt to trigger the reentrancy guard in the Vault by calling a non-reentrant * function before calling `getVirtualSupply`. That will make the transaction revert in an unsafe context. * (See `whenNotInVaultContext`).",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "inRecoveryMode",
+        "visibility": "public",
+        "args": [],
+        "func": "function inRecoveryMode() public view override returns (bool) {\n        return _poolState.decodeBool(_RECOVERY_MODE_BIT_OFFSET);\n    }",
+        "comments": [
+            "",
+            "    // Recovery Mode",
+            "",
+            "    /**",
+            "     * @notice Returns whether the pool is in Recovery Mode.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Recovery Mode\n\n    /**\n     * @notice Returns whether the pool is in Recovery Mode.\n     */\n    ",
+        "@notice": "Returns whether the pool is in Recovery Mode.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getVault",
+        "visibility": "public",
+        "args": [],
+        "func": "function getVault() public view returns (IVault) {\n        return _vault;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view override returns (uint256) {\n        if (spender == address(getVault())) {\n            return uint256(-1);\n        } else {\n            return super.allowance(owner, spender);\n        }\n    }",
+        "comments": [
+            "",
+            "    // Overrides",
+            "",
+            "    /**",
+            "     * @dev Override to grant the Vault infinite allowance, causing for Pool Tokens to not require approval.",
+            "     *",
+            "     * This is sound as the Vault already provides authorization mechanisms when initiation token transfers, which this",
+            "     * contract inherits.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Overrides\n\n    /**\n     * @dev Override to grant the Vault infinite allowance, causing for Pool Tokens to not require approval.\n     *\n     * This is sound as the Vault already provides authorization mechanisms when initiation token transfers, which this\n     * contract inherits.\n     */\n    ",
+        "@dev": "Override to grant the Vault infinite allowance, causing for Pool Tokens to not require approval. * * This is sound as the Vault already provides authorization mechanisms when initiation token transfers, which this * contract inherits.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public override returns (bool) {\n        uint256 currentAllowance = allowance(sender, msg.sender);\n        _require(msg.sender == sender || currentAllowance >= amount, Errors.ERC20_TRANSFER_EXCEEDS_ALLOWANCE);\n\n        _transfer(sender, recipient, amount);\n\n        if (msg.sender != sender && currentAllowance != uint256(-1)) {\n            // Because of the previous require, we know that if msg.sender != sender then currentAllowance >= amount\n            _approve(sender, msg.sender, currentAllowance - amount);\n        }\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Override to allow for 'infinite allowance' and let the token owner use `transferFrom` with no self-allowance",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Override to allow for 'infinite allowance' and let the token owner use `transferFrom` with no self-allowance\n     */\n",
+        "@dev": "Override to allow for 'infinite allowance' and let the token owner use `transferFrom` with no self-allowance",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 amount) public override returns (bool) {\n        uint256 currentAllowance = allowance(msg.sender, spender);\n\n        if (amount >= currentAllowance) {\n            _approve(msg.sender, spender, 0);\n        } else {\n            // No risk of underflow due to if condition\n            _approve(msg.sender, spender, currentAllowance - amount);\n        }\n\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Override to allow decreasing allowance by more than the current amount (setting it to zero)",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Override to allow decreasing allowance by more than the current amount (setting it to zero)\n     */\n",
+        "@dev": "Override to allow decreasing allowance by more than the current amount (setting it to zero)",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOwner",
+        "visibility": "public",
+        "args": [],
+        "func": "function getOwner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getAuthorizer",
+        "visibility": "external",
+        "args": [],
+        "func": "function getAuthorizer() external view returns (IAuthorizer) {\n        return _getAuthorizer();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPoolId",
+        "visibility": "public",
+        "args": [],
+        "func": "function getPoolId() public view override returns (bytes32) {\n        return _poolId;\n    }",
+        "comments": [
+            "",
+            "    // Getters",
+            "",
+            "    /**",
+            "     * @notice Return the pool id.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Getters\n\n    /**\n     * @notice Return the pool id.\n     */\n    ",
+        "@notice": "Return the pool id.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getProtocolFeesCollector",
+        "visibility": "public",
+        "args": [],
+        "func": "function getProtocolFeesCollector() public view returns (IProtocolFeesCollector) {\n        return _protocolFeesCollector;\n    }",
+        "comments": [
+            "",
+            "    // Protocol Fees",
+            "",
+            "    /**",
+            "     * @notice Return the ProtocolFeesCollector contract.",
+            "     * @dev This is immutable, and retrieved from the Vault on construction. (It is also immutable in the Vault.)",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Protocol Fees\n\n    /**\n     * @notice Return the ProtocolFeesCollector contract.\n     * @dev This is immutable, and retrieved from the Vault on construction. (It is also immutable in the Vault.)\n     */\n    ",
+        "@notice": "Return the ProtocolFeesCollector contract.",
+        "@dev": "This is immutable, and retrieved from the Vault on construction. (It is also immutable in the Vault.)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pause",
+        "visibility": "external",
+        "args": [],
+        "func": "function pause() external authenticate {\n        _setPaused(true);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Pause the pool: an emergency action which disables all pool functions.",
+            "     * @dev This is a permissioned function that will only work during the Pause Window set during pool factory",
+            "     * deployment (see `TemporarilyPausable`).",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Pause the pool: an emergency action which disables all pool functions.\n     * @dev This is a permissioned function that will only work during the Pause Window set during pool factory\n     * deployment (see `TemporarilyPausable`).\n     */\n",
+        "@notice": "Pause the pool: an emergency action which disables all pool functions.",
+        "@dev": "This is a permissioned function that will only work during the Pause Window set during pool factory * deployment (see `TemporarilyPausable`).",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unpause",
+        "visibility": "external",
+        "args": [],
+        "func": "function unpause() external authenticate {\n        _setPaused(false);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Reverse a `pause` operation, and restore a pool to normal functionality.",
+            "     * @dev This is a permissioned function that will only work on a paused pool within the Buffer Period set during",
+            "     * pool factory deployment (see `TemporarilyPausable`). Note that any paused pools will automatically unpause",
+            "     * after the Buffer Period expires.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Reverse a `pause` operation, and restore a pool to normal functionality.\n     * @dev This is a permissioned function that will only work on a paused pool within the Buffer Period set during\n     * pool factory deployment (see `TemporarilyPausable`). Note that any paused pools will automatically unpause\n     * after the Buffer Period expires.\n     */\n",
+        "@notice": "Reverse a `pause` operation, and restore a pool to normal functionality.",
+        "@dev": "This is a permissioned function that will only work on a paused pool within the Buffer Period set during * pool factory deployment (see `TemporarilyPausable`). Note that any paused pools will automatically unpause * after the Buffer Period expires.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onSwap",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "request",
+                "type": "SwapRequest memory"
+            },
+            {
+                "name": "balanceTokenIn",
+                "type": "uint256"
+            },
+            {
+                "name": "balanceTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onSwap(\n        SwapRequest memory request,\n        uint256 balanceTokenIn,\n        uint256 balanceTokenOut\n    ) external override onlyVault(request.poolId) returns (uint256) {\n        _ensureNotPaused();\n\n        return _onSwapMinimal(request, balanceTokenIn, balanceTokenOut);\n    }",
+        "comments": [
+            "",
+            "    // Swap / Join / Exit Hooks",
+            "",
+            "    "
+        ],
+        "comt": "\n    // Swap / Join / Exit Hooks\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onSwap",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "request",
+                "type": "SwapRequest memory"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "indexIn",
+                "type": "uint256"
+            },
+            {
+                "name": "indexOut",
+                "type": "uint256"
+            }
+        ],
+        "func": "function onSwap(\n        SwapRequest memory request,\n        uint256[] memory balances,\n        uint256 indexIn,\n        uint256 indexOut\n    ) external override onlyVault(request.poolId) returns (uint256) {\n        _ensureNotPaused();\n\n        return _onSwapGeneral(request, balances, indexIn, indexOut);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onJoinPool",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function onJoinPool(\n        bytes32 poolId,\n        address sender,\n        address recipient,\n        uint256[] memory balances,\n        uint256,\n        uint256,\n        bytes memory userData\n    ) external override onlyVault(poolId) returns (uint256[] memory amountsIn, uint256[] memory dueProtocolFees) {\n        uint256 bptAmountOut;\n\n        _ensureNotPaused();\n        if (totalSupply() == 0) {\n            (bptAmountOut, amountsIn) = _onInitializePool(sender, recipient, userData);\n\n            // On initialization, we lock _getMinimumBpt() by minting it for the zero address. This BPT acts as a\n            // minimum as it will never be burned, which reduces potential issues with rounding, and also prevents the\n            // Pool from ever being fully drained.\n            // Some pool types do not require this mechanism, and the minimum BPT might be zero.\n            _require(bptAmountOut >= _getMinimumBpt(), Errors.MINIMUM_BPT);\n            _mintPoolTokens(address(0), _getMinimumBpt());\n\n            _mintPoolTokens(recipient, bptAmountOut - _getMinimumBpt());\n        } else {\n            (bptAmountOut, amountsIn) = _onJoinPool(sender, balances, userData);\n\n            // Note we no longer use `balances` after calling `_onJoinPool`, which may mutate it.\n\n            _mintPoolTokens(recipient, bptAmountOut);\n        }\n\n        // This Pool ignores the `dueProtocolFees` return value, so we simply return a zeroed-out array.\n        dueProtocolFees = new uint256[](amountsIn.length);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Vault hook for adding liquidity to a pool (including the first time, \"initializing\" the pool).",
+            "     * @dev This function can only be called from the Vault, from `joinPool`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Vault hook for adding liquidity to a pool (including the first time, \"initializing\" the pool).\n     * @dev This function can only be called from the Vault, from `joinPool`.\n     */\n",
+        "@notice": "Vault hook for adding liquidity to a pool (including the first time, \"initializing\" the pool).",
+        "@dev": "This function can only be called from the Vault, from `joinPool`.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onExitPool",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function onExitPool(\n        bytes32 poolId,\n        address sender,\n        address,\n        uint256[] memory balances,\n        uint256,\n        uint256,\n        bytes memory userData\n    ) external override onlyVault(poolId) returns (uint256[] memory amountsOut, uint256[] memory dueProtocolFees) {\n        uint256 bptAmountIn;\n\n        // When a user calls `exitPool`, this is the first point of entry from the Vault.\n        // We first check whether this is a Recovery Mode exit - if so, we proceed using this special lightweight exit\n        // mechanism which avoids computing any complex values, interacting with external contracts, etc., and generally\n        // should always work, even if the Pool's mathematics or a dependency break down.\n        if (userData.isRecoveryModeExitKind()) {\n            // This exit kind is only available in Recovery Mode.\n            _ensureInRecoveryMode();\n\n            // Note that we don't upscale balances nor downscale amountsOut - we don't care about scaling factors during\n            // a recovery mode exit.\n            (bptAmountIn, amountsOut) = _doRecoveryModeExit(balances, totalSupply(), userData);\n        } else {\n            // Note that we only call this if we're not in a recovery mode exit.\n            _ensureNotPaused();\n\n            (bptAmountIn, amountsOut) = _onExitPool(sender, balances, userData);\n        }\n\n        // Note we no longer use `balances` after calling `_onExitPool`, which may mutate it.\n\n        _burnPoolTokens(sender, bptAmountIn);\n\n        // This Pool ignores the `dueProtocolFees` return value, so we simply return a zeroed-out array.\n        dueProtocolFees = new uint256[](amountsOut.length);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Vault hook for removing liquidity from a pool.",
+            "     * @dev This function can only be called from the Vault, from `exitPool`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Vault hook for removing liquidity from a pool.\n     * @dev This function can only be called from the Vault, from `exitPool`.\n     */\n",
+        "@notice": "Vault hook for removing liquidity from a pool.",
+        "@dev": "This function can only be called from the Vault, from `exitPool`.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "queryJoin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "bytes32",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function queryJoin(\n        bytes32,\n        address sender,\n        address,\n        uint256[] memory balances,\n        uint256,\n        uint256,\n        bytes memory userData\n    ) external override returns (uint256 bptOut, uint256[] memory amountsIn) {\n        _queryAction(sender, balances, userData, _onJoinPool);\n\n        // The `return` opcode is executed directly inside `_queryAction`, so execution never reaches this statement,\n        // and we don't need to return anything here - it just silences compiler warnings.\n        return (bptOut, amountsIn);\n    }",
+        "comments": [
+            "",
+            "    // Query functions",
+            "",
+            "    /**",
+            "     * @notice \"Dry run\" `onJoinPool`.",
+            "     * @dev Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the",
+            "     * Vault with the same arguments, along with the number of tokens `sender` would have to supply.",
+            "     *",
+            "     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault",
+            "     * data, such as the protocol swap fee percentage and Pool balances.",
+            "     *",
+            "     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must",
+            "     * explicitly use eth_call instead of eth_sendTransaction.",
+            "     */",
+            "    "
+        ],
+        "comt": "\n    // Query functions\n\n    /**\n     * @notice \"Dry run\" `onJoinPool`.\n     * @dev Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the\n     * Vault with the same arguments, along with the number of tokens `sender` would have to supply.\n     *\n     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault\n     * data, such as the protocol swap fee percentage and Pool balances.\n     *\n     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must\n     * explicitly use eth_call instead of eth_sendTransaction.\n     */\n    ",
+        "@notice": "\"Dry run\" `onJoinPool`.",
+        "@dev": "Returns the amount of BPT that would be granted to `recipient` if the `onJoinPool` hook were called by the * Vault with the same arguments, along with the number of tokens `sender` would have to supply. * * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault * data, such as the protocol swap fee percentage and Pool balances. * * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must * explicitly use eth_call instead of eth_sendTransaction.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "queryExit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "bytes32",
+                "type": "bytes32"
+            },
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "balances",
+                "type": "uint256[] memory"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "userData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function queryExit(\n        bytes32,\n        address sender,\n        address,\n        uint256[] memory balances,\n        uint256,\n        uint256,\n        bytes memory userData\n    ) external override returns (uint256 bptIn, uint256[] memory amountsOut) {\n        _queryAction(sender, balances, userData, _onExitPool);\n\n        // The `return` opcode is executed directly inside `_queryAction`, so execution never reaches this statement,\n        // and we don't need to return anything here - it just silences compiler warnings.\n        return (bptIn, amountsOut);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice \"Dry run\" `onExitPool`.",
+            "     * @dev Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the",
+            "     * Vault with the same arguments, along with the number of tokens `recipient` would receive.",
+            "     *",
+            "     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault",
+            "     * data, such as the protocol swap fee percentage and Pool balances.",
+            "     *",
+            "     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must",
+            "     * explicitly use eth_call instead of eth_sendTransaction.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice \"Dry run\" `onExitPool`.\n     * @dev Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the\n     * Vault with the same arguments, along with the number of tokens `recipient` would receive.\n     *\n     * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault\n     * data, such as the protocol swap fee percentage and Pool balances.\n     *\n     * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must\n     * explicitly use eth_call instead of eth_sendTransaction.\n     */\n",
+        "@notice": "\"Dry run\" `onExitPool`.",
+        "@dev": "Returns the amount of BPT that would be burned from `sender` if the `onExitPool` hook were called by the * Vault with the same arguments, along with the number of tokens `recipient` would receive. * * This function is not meant to be called directly, but rather from a helper contract that fetches current Vault * data, such as the protocol swap fee percentage and Pool balances. * * Like `IVault.queryBatchSwap`, this function is not view due to internal implementation details: the caller must * explicitly use eth_call instead of eth_sendTransaction.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "enableRecoveryMode",
+        "visibility": "external",
+        "args": [],
+        "func": "function enableRecoveryMode() external override authenticate {\n        // Unlike when recovery mode is disabled, derived contracts should *not* do anything when it is enabled.\n        // We do not want to make any calls that could fail and prevent the pool from entering recovery mode.\n        // Accordingly, this should have no effect, but for consistency with `disableRecoveryMode`, revert if\n        // recovery mode was already enabled.\n        _ensureNotInRecoveryMode();\n\n        _setRecoveryMode(true);\n\n        emit RecoveryModeStateChanged(true);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Enable recovery mode, which enables a special safe exit path for LPs.",
+            "     * @dev Does not otherwise affect pool operations (beyond deferring payment of protocol fees), though some pools may",
+            "     * perform certain operations in a \"safer\" manner that is less likely to fail, in an attempt to keep the pool",
+            "     * running, even in a pathological state. Unlike the Pause operation, which is only available during a short window",
+            "     * after factory deployment, Recovery Mode can always be enabled.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Enable recovery mode, which enables a special safe exit path for LPs.\n     * @dev Does not otherwise affect pool operations (beyond deferring payment of protocol fees), though some pools may\n     * perform certain operations in a \"safer\" manner that is less likely to fail, in an attempt to keep the pool\n     * running, even in a pathological state. Unlike the Pause operation, which is only available during a short window\n     * after factory deployment, Recovery Mode can always be enabled.\n     */\n",
+        "@notice": "Enable recovery mode, which enables a special safe exit path for LPs.",
+        "@dev": "Does not otherwise affect pool operations (beyond deferring payment of protocol fees), though some pools may * perform certain operations in a \"safer\" manner that is less likely to fail, in an attempt to keep the pool * running, even in a pathological state. Unlike the Pause operation, which is only available during a short window * after factory deployment, Recovery Mode can always be enabled.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "disableRecoveryMode",
+        "visibility": "external",
+        "args": [],
+        "func": "function disableRecoveryMode() external override authenticate {\n        // Some derived contracts respond to disabling recovery mode with state changes (e.g., related to protocol fees,\n        // or otherwise ensuring that enabling and disabling recovery mode has no ill effects on LPs). When called\n        // outside of recovery mode, these state changes might lead to unexpected behavior.\n        _ensureInRecoveryMode();\n\n        _setRecoveryMode(false);\n\n        emit RecoveryModeStateChanged(false);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Disable recovery mode, which disables the special safe exit path for LPs.",
+            "     * @dev Protocol fees are not paid while in Recovery Mode, so it should only remain active for as long as strictly",
+            "     * necessary.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Disable recovery mode, which disables the special safe exit path for LPs.\n     * @dev Protocol fees are not paid while in Recovery Mode, so it should only remain active for as long as strictly\n     * necessary.\n     */\n",
+        "@notice": "Disable recovery mode, which disables the special safe exit path for LPs.",
+        "@dev": "Protocol fees are not paid while in Recovery Mode, so it should only remain active for as long as strictly * necessary.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "version",
+        "visibility": "external",
+        "args": [],
+        "func": "function version() external view override returns (string memory) {\n        return _version;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getActionId",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "selector",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function getActionId(bytes4 selector) public view override returns (bytes32) {\n        // Each external function is dynamically assigned an action identifier as the hash of the disambiguator and the\n        // function selector. Disambiguation is necessary to avoid potential collisions in the function selectors of\n        // multiple contracts.\n        return keccak256(abi.encodePacked(_actionIdDisambiguator, selector));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getDomainSeparator",
+        "visibility": "public",
+        "args": [],
+        "func": "function getDomainSeparator() public view override returns (bytes32) {\n        return _domainSeparatorV4();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getNextNonce",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function getNextNonce(address account) public view override returns (uint256) {\n        return _nextNonce[account];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPausedState",
+        "visibility": "external",
+        "args": [],
+        "func": "function getPausedState()\n        external\n        view\n        override\n        returns (\n            bool paused,\n            uint256 pauseWindowEndTime,\n            uint256 bufferPeriodEndTime\n        )\n    {\n        paused = !_isNotPaused();\n        pauseWindowEndTime = _getPauseWindowEndTime();\n        bufferPeriodEndTime = _getBufferPeriodEndTime();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current contract pause status, as well as the end times of the Pause Window and Buffer",
+            "     * Period.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current contract pause status, as well as the end times of the Pause Window and Buffer\n     * Period.\n     */\n",
+        "@dev": "Returns the current contract pause status, as well as the end times of the Pause Window and Buffer * Period.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the name of the token.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the name of the token.\n     */\n",
+        "@dev": "Returns the name of the token.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the symbol of the token, usually a shorter version of the",
+            "     * name.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the symbol of the token, usually a shorter version of the\n     * name.\n     */\n",
+        "@dev": "Returns the symbol of the token, usually a shorter version of the * name.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public view returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the number of decimals used to get its user representation.",
+            "     * For example, if `decimals` equals `2`, a balance of `505` tokens should",
+            "     * be displayed to a user as `5,05` (`505 / 10 ** 2`).",
+            "     *",
+            "     * Tokens usually opt for a value of 18, imitating the relationship between",
+            "     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is",
+            "     * called.",
+            "     *",
+            "     * NOTE: This information is only used for _display_ purposes: it in",
+            "     * no way affects any of the arithmetic of the contract, including",
+            "     * {IERC20-balanceOf} and {IERC20-transfer}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the number of decimals used to get its user representation.\n     * For example, if `decimals` equals `2`, a balance of `505` tokens should\n     * be displayed to a user as `5,05` (`505 / 10 ** 2`).\n     *\n     * Tokens usually opt for a value of 18, imitating the relationship between\n     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is\n     * called.\n     *\n     * NOTE: This information is only used for _display_ purposes: it in\n     * no way affects any of the arithmetic of the contract, including\n     * {IERC20-balanceOf} and {IERC20-transfer}.\n     */\n",
+        "@dev": "Returns the number of decimals used to get its user representation. * For example, if `decimals` equals `2`, a balance of `505` tokens should * be displayed to a user as `5,05` (`505 / 10 ** 2`). * * Tokens usually opt for a value of 18, imitating the relationship between * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is * called. * * NOTE: This information is only used for _display_ purposes: it in * no way affects any of the arithmetic of the contract, including * {IERC20-balanceOf} and {IERC20-transfer}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual override returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-totalSupply}. The total supply should only be read using this function",
+            "     *",
+            "     * Can be overridden by derived contracts to store the total supply in a different way (e.g. packed with other",
+            "     * storage values).",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-totalSupply}. The total supply should only be read using this function\n     *\n     * Can be overridden by derived contracts to store the total supply in a different way (e.g. packed with other\n     * storage values).\n     */\n",
+        "@dev": "See {IERC20-totalSupply}. The total supply should only be read using this function * * Can be overridden by derived contracts to store the total supply in a different way (e.g. packed with other * storage values).",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n        return _balances[account];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-balanceOf}.\n     */\n",
+        "@dev": "See {IERC20-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {\n        _transfer(msg.sender, recipient, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transfer}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `recipient` cannot be the zero address.",
+            "     * - the caller must have a balance of at least `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transfer}.\n     *\n     * Requirements:\n     *\n     * - `recipient` cannot be the zero address.\n     * - the caller must have a balance of at least `amount`.\n     */\n",
+        "@dev": "See {IERC20-transfer}. * * Requirements: * * - `recipient` cannot be the zero address. * - the caller must have a balance of at least `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view virtual override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-allowance}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-allowance}.\n     */\n",
+        "@dev": "See {IERC20-allowance}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual override returns (bool) {\n        _approve(msg.sender, spender, amount);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-approve}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-approve}.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "See {IERC20-approve}. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) public virtual override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(\n            sender,\n            msg.sender,\n            _allowances[sender][msg.sender].sub(amount, Errors.ERC20_TRANSFER_EXCEEDS_ALLOWANCE)\n        );\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20-transferFrom}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance. This is not",
+            "     * required by the EIP. See the note at the beginning of {ERC20}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `sender` and `recipient` cannot be the zero address.",
+            "     * - `sender` must have a balance of at least `amount`.",
+            "     * - the caller must have allowance for ``sender``'s tokens of at least",
+            "     * `amount`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20-transferFrom}.\n     *\n     * Emits an {Approval} event indicating the updated allowance. This is not\n     * required by the EIP. See the note at the beginning of {ERC20}.\n     *\n     * Requirements:\n     *\n     * - `sender` and `recipient` cannot be the zero address.\n     * - `sender` must have a balance of at least `amount`.\n     * - the caller must have allowance for ``sender``'s tokens of at least\n     * `amount`.\n     */\n",
+        "@dev": "See {IERC20-transferFrom}. * * Emits an {Approval} event indicating the updated allowance. This is not * required by the EIP. See the note at the beginning of {ERC20}. * * Requirements: * * - `sender` and `recipient` cannot be the zero address. * - `sender` must have a balance of at least `amount`. * - the caller must have allowance for ``sender``'s tokens of at least * `amount`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {\n        _approve(msg.sender, spender, _allowances[msg.sender][spender].add(addedValue));\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically increases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically increases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     */\n",
+        "@dev": "Atomically increases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {\n        _approve(\n            msg.sender,\n            spender,\n            _allowances[msg.sender][spender].sub(subtractedValue, Errors.ERC20_DECREASED_ALLOWANCE_BELOW_ZERO)\n        );\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Atomically decreases the allowance granted to `spender` by the caller.",
+            "     *",
+            "     * This is an alternative to {approve} that can be used as a mitigation for",
+            "     * problems described in {IERC20-approve}.",
+            "     *",
+            "     * Emits an {Approval} event indicating the updated allowance.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - `spender` cannot be the zero address.",
+            "     * - `spender` must have allowance for the caller of at least",
+            "     * `subtractedValue`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Atomically decreases the allowance granted to `spender` by the caller.\n     *\n     * This is an alternative to {approve} that can be used as a mitigation for\n     * problems described in {IERC20-approve}.\n     *\n     * Emits an {Approval} event indicating the updated allowance.\n     *\n     * Requirements:\n     *\n     * - `spender` cannot be the zero address.\n     * - `spender` must have allowance for the caller of at least\n     * `subtractedValue`.\n     */\n",
+        "@dev": "Atomically decreases the allowance granted to `spender` by the caller. * * This is an alternative to {approve} that can be used as a mitigation for * problems described in {IERC20-approve}. * * Emits an {Approval} event indicating the updated allowance. * * Requirements: * * - `spender` cannot be the zero address. * - `spender` must have allowance for the caller of at least * `subtractedValue`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "permit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function permit(\n        address owner,\n        address spender,\n        uint256 value,\n        uint256 deadline,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) public virtual override {\n        bytes32 structHash = keccak256(\n            abi.encode(_PERMIT_TYPEHASH, owner, spender, value, getNextNonce(owner), deadline)\n        );\n\n        _ensureValidSignature(owner, structHash, _toArraySignature(v, r, s), deadline, Errors.INVALID_SIGNATURE);\n\n        _approve(owner, spender, value);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20Permit-permit}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20Permit-permit}.\n     */\n",
+        "@dev": "See {IERC20Permit-permit}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "nonces",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function nonces(address owner) public view override returns (uint256) {\n        return getNextNonce(owner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC20Permit-nonces}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC20Permit-nonces}.\n     */\n",
+        "@dev": "See {IERC20Permit-nonces}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "DOMAIN_SEPARATOR",
+        "visibility": "external",
+        "args": [],
+        "func": "function DOMAIN_SEPARATOR() external view override returns (bytes32) {\n        return getDomainSeparator();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

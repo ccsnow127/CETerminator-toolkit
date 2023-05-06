@@ -1,0 +1,573 @@
+[
+    {
+        "transactions": 1,
+        "function_num": 24
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public virtual returns (bool) {\n        allowance[msg.sender][spender] = amount;\n\n        emit Approval(msg.sender, spender, amount);\n\n        return true;\n    }",
+        "comments": [
+            "/*/",
+            ""
+        ],
+        "comt": "/*/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address to, uint256 amount) public virtual returns (bool) {\n        balanceOf[msg.sender] -= amount;\n\n        // Cannot overflow because the sum of all user\n        // balances can't exceed the max uint256 value.\n        unchecked {\n            balanceOf[to] += amount;\n        }\n\n        emit Transfer(msg.sender, to, amount);\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 amount\n    ) public virtual returns (bool) {\n        uint256 allowed = allowance[from][msg.sender]; // Saves gas for limited approvals.\n\n        if (allowed != type(uint256).max) allowance[from][msg.sender] = allowed - amount;\n\n        balanceOf[from] -= amount;\n\n        // Cannot overflow because the sum of all user\n        // balances can't exceed the max uint256 value.\n        unchecked {\n            balanceOf[to] += amount;\n        }\n\n        emit Transfer(from, to, amount);\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "permit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function permit(\n        address owner,\n        address spender,\n        uint256 value,\n        uint256 deadline,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) public virtual {\n        require(deadline >= block.timestamp, \"PERMIT_DEADLINE_EXPIRED\");\n\n        // Unchecked because the only math done is incrementing\n        // the owner's nonce which cannot realistically overflow.\n        unchecked {\n            address recoveredAddress = ecrecover(\n                keccak256(\n                    abi.encodePacked(\n                        \"\\x19\\x01\",\n                        DOMAIN_SEPARATOR(),\n                        keccak256(\n                            abi.encode(\n                                keccak256(\n                                    \"Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)\"\n                                ),\n                                owner,\n                                spender,\n                                value,\n                                nonces[owner]++,\n                                deadline\n                            )\n                        )\n                    )\n                ),\n                v,\n                r,\n                s\n            );\n\n            require(recoveredAddress != address(0) && recoveredAddress == owner, \"INVALID_SIGNER\");\n\n            allowance[recoveredAddress][spender] = value;\n        }\n\n        emit Approval(owner, spender, value);\n    }",
+        "comments": [
+            "/*/",
+            ""
+        ],
+        "comt": "/*/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "DOMAIN_SEPARATOR",
+        "visibility": "public",
+        "args": [],
+        "func": "function DOMAIN_SEPARATOR() public view virtual returns (bytes32) {\n        return block.chainid == INITIAL_CHAIN_ID ? INITIAL_DOMAIN_SEPARATOR : computeDomainSeparator();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deposit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "assets",
+                "type": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            }
+        ],
+        "func": "function deposit(uint256 assets, address receiver) public virtual returns (uint256 shares) {\n        // Check for rounding error since we round down in previewDeposit.\n        require((shares = previewDeposit(assets)) != 0, \"ZERO_SHARES\");\n\n        // Need to transfer before minting or ERC777s could reenter.\n        asset.safeTransferFrom(msg.sender, address(this), assets);\n\n        _mint(receiver, shares);\n\n        emit Deposit(msg.sender, receiver, assets, shares);\n\n        afterDeposit(assets, shares);\n    }",
+        "comments": [
+            "/*/",
+            ""
+        ],
+        "comt": "/*/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "shares",
+                "type": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            }
+        ],
+        "func": "function mint(uint256 shares, address receiver) public virtual returns (uint256 assets) {\n        assets = previewMint(shares); // No need to check for rounding error, previewMint rounds up.\n\n        // Need to transfer before minting or ERC777s could reenter.\n        asset.safeTransferFrom(msg.sender, address(this), assets);\n\n        _mint(receiver, shares);\n\n        emit Deposit(msg.sender, receiver, assets, shares);\n\n        afterDeposit(assets, shares);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "assets",
+                "type": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function withdraw(\n        uint256 assets,\n        address receiver,\n        address owner\n    ) public virtual returns (uint256 shares) {\n        shares = previewWithdraw(assets); // No need to check for rounding error, previewWithdraw rounds up.\n\n        if (msg.sender != owner) {\n            uint256 allowed = allowance[owner][msg.sender]; // Saves gas for limited approvals.\n\n            if (allowed != type(uint256).max) allowance[owner][msg.sender] = allowed - shares;\n        }\n\n        beforeWithdraw(assets, shares);\n\n        _burn(owner, shares);\n\n        emit Withdraw(msg.sender, receiver, owner, assets, shares);\n\n        asset.safeTransfer(receiver, assets);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "redeem",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "shares",
+                "type": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function redeem(\n        uint256 shares,\n        address receiver,\n        address owner\n    ) public virtual returns (uint256 assets) {\n        if (msg.sender != owner) {\n            uint256 allowed = allowance[owner][msg.sender]; // Saves gas for limited approvals.\n\n            if (allowed != type(uint256).max) allowance[owner][msg.sender] = allowed - shares;\n        }\n\n        // Check for rounding error since we round down in previewRedeem.\n        require((assets = previewRedeem(shares)) != 0, \"ZERO_ASSETS\");\n\n        beforeWithdraw(assets, shares);\n\n        _burn(owner, shares);\n\n        emit Withdraw(msg.sender, receiver, owner, assets, shares);\n\n        asset.safeTransfer(receiver, assets);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "convertToShares",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "assets",
+                "type": "uint256"
+            }
+        ],
+        "func": "function convertToShares(uint256 assets) public view virtual returns (uint256) {\n        uint256 supply = totalSupply; // Saves an extra SLOAD if totalSupply is non-zero.\n\n        return supply == 0 ? assets : assets.mulDivDown(supply, totalAssets());\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "convertToAssets",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "shares",
+                "type": "uint256"
+            }
+        ],
+        "func": "function convertToAssets(uint256 shares) public view virtual returns (uint256) {\n        uint256 supply = totalSupply; // Saves an extra SLOAD if totalSupply is non-zero.\n\n        return supply == 0 ? shares : shares.mulDivDown(totalAssets(), supply);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "previewDeposit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "assets",
+                "type": "uint256"
+            }
+        ],
+        "func": "function previewDeposit(uint256 assets) public view virtual returns (uint256) {\n        return convertToShares(assets);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "previewMint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "shares",
+                "type": "uint256"
+            }
+        ],
+        "func": "function previewMint(uint256 shares) public view virtual returns (uint256) {\n        uint256 supply = totalSupply; // Saves an extra SLOAD if totalSupply is non-zero.\n\n        return supply == 0 ? shares : shares.mulDivUp(totalAssets(), supply);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "previewWithdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "assets",
+                "type": "uint256"
+            }
+        ],
+        "func": "function previewWithdraw(uint256 assets) public view virtual returns (uint256) {\n        uint256 supply = totalSupply; // Saves an extra SLOAD if totalSupply is non-zero.\n\n        return supply == 0 ? assets : assets.mulDivUp(supply, totalAssets());\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "previewRedeem",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "shares",
+                "type": "uint256"
+            }
+        ],
+        "func": "function previewRedeem(uint256 shares) public view virtual returns (uint256) {\n        return convertToAssets(shares);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxDeposit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function maxDeposit(address) public view virtual returns (uint256) {\n        return type(uint256).max;\n    }",
+        "comments": [
+            "/*/",
+            ""
+        ],
+        "comt": "/*/\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxMint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function maxMint(address) public view virtual returns (uint256) {\n        return type(uint256).max;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxWithdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function maxWithdraw(address owner) public view virtual returns (uint256) {\n        return convertToAssets(balanceOf[owner]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxRedeem",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function maxRedeem(address owner) public view virtual returns (uint256) {\n        return balanceOf[owner];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalAssets",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalAssets() public view override returns (uint256) {\n        // Use libfuse to determine an accurate view exchange rate.\n        // this use Fuse cToken functions that do not exist in Compound implementations:\n        // - cToken.totalAdminFees()\n        // - cToken.totalFuseFees()\n        // - cToken.adminFeeMantissa()\n        return cToken.viewUnderlyingBalanceOf(address(this));\n    }",
+        "comments": [
+            "",
+            "    /// @notice Total amount of the underlying asset that",
+            "    /// is \"managed\" by Vault.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Total amount of the underlying asset that\n    /// is \"managed\" by Vault.\n    ",
+        "@notice": "Total amount of the underlying asset that /// is \"managed\" by Vault.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxDeposit",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function maxDeposit(address) public view override returns (uint256) {\n        address cTokenAddress = address(cToken);\n\n        if (unitroller.mintGuardianPaused(cTokenAddress)) return 0;\n\n        uint256 supplyCap = unitroller.supplyCaps(cTokenAddress);\n        if (supplyCap == 0) return type(uint256).max;\n\n        uint256 assetsDeposited = cToken.totalSupply().mulWadDown(\n            cToken.viewExchangeRate()\n        );\n        return supplyCap - assetsDeposited;\n    }",
+        "comments": [
+            "",
+            "    /// @notice maximum amount of assets that can be deposited.",
+            "    /// This is capped by the amount of assets the cToken can be",
+            "    /// supplied with.",
+            "    /// This is 0 if minting is paused on the cToken.",
+            "    "
+        ],
+        "comt": "\n    /// @notice maximum amount of assets that can be deposited.\n    /// This is capped by the amount of assets the cToken can be\n    /// supplied with.\n    /// This is 0 if minting is paused on the cToken.\n    ",
+        "@notice": "maximum amount of assets that can be deposited. /// This is capped by the amount of assets the cToken can be /// supplied with. /// This is 0 if minting is paused on the cToken.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxMint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function maxMint(address) public view override returns (uint256) {\n        address cTokenAddress = address(cToken);\n\n        if (unitroller.mintGuardianPaused(cTokenAddress)) return 0;\n\n        uint256 supplyCap = unitroller.supplyCaps(cTokenAddress);\n        if (supplyCap == 0) return type(uint256).max;\n\n        uint256 assetsDeposited = cToken.totalSupply().mulWadDown(\n            cToken.viewExchangeRate()\n        );\n        return convertToShares(supplyCap - assetsDeposited);\n    }",
+        "comments": [
+            "",
+            "    /// @notice maximum amount of shares that can be minted.",
+            "    /// This is capped by the amount of assets the cToken can be",
+            "    /// supplied with.",
+            "    /// This is 0 if minting is paused on the cToken.",
+            "    "
+        ],
+        "comt": "\n    /// @notice maximum amount of shares that can be minted.\n    /// This is capped by the amount of assets the cToken can be\n    /// supplied with.\n    /// This is 0 if minting is paused on the cToken.\n    ",
+        "@notice": "maximum amount of shares that can be minted. /// This is capped by the amount of assets the cToken can be /// supplied with. /// This is 0 if minting is paused on the cToken.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxWithdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function maxWithdraw(address owner) public view override returns (uint256) {\n        uint256 cash = cToken.getCash();\n        uint256 assetsBalance = convertToAssets(balanceOf[owner]);\n        return cash < assetsBalance ? cash : assetsBalance;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Maximum amount of assets that can be withdrawn.",
+            "    /// This is capped by the amount of cash available on the cToken,",
+            "    /// if all assets are borrowed, a user can't withdraw from the vault.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Maximum amount of assets that can be withdrawn.\n    /// This is capped by the amount of cash available on the cToken,\n    /// if all assets are borrowed, a user can't withdraw from the vault.\n    ",
+        "@notice": "Maximum amount of assets that can be withdrawn. /// This is capped by the amount of cash available on the cToken, /// if all assets are borrowed, a user can't withdraw from the vault.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxRedeem",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function maxRedeem(address owner) public view override returns (uint256) {\n        uint256 cash = cToken.getCash();\n        uint256 cashInShares = convertToShares(cash);\n        uint256 shareBalance = balanceOf[owner];\n        return cashInShares < shareBalance ? cashInShares : shareBalance;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Maximum amount of shares that can be redeemed.",
+            "    /// This is capped by the amount of cash available on the cToken,",
+            "    /// if all assets are borrowed, a user can't redeem from the vault.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Maximum amount of shares that can be redeemed.\n    /// This is capped by the amount of cash available on the cToken,\n    /// if all assets are borrowed, a user can't redeem from the vault.\n    ",
+        "@notice": "Maximum amount of shares that can be redeemed. /// This is capped by the amount of cash available on the cToken, /// if all assets are borrowed, a user can't redeem from the vault.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

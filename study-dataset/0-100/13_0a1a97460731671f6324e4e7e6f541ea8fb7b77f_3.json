@@ -1,0 +1,271 @@
+[
+    {
+        "transactions": 3,
+        "function_num": 13
+    },
+    {
+        "name": "batchStake",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_calldata",
+                "type": "uint256[] memory"
+            }
+        ],
+        "func": "function batchStake(\n        uint256[] memory _calldata\n    ) external nonReentrant callerIsUser {\n        for (uint256 i = 0; i < _calldata.length; ++i) {\n            stake(_calldata[i]);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "batchUnstake",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_calldata",
+                "type": "uint256[] memory"
+            }
+        ],
+        "func": "function batchUnstake(\n        uint256[] memory _calldata\n    ) external nonReentrant callerIsUser {\n        for (uint256 i = 0; i < _calldata.length; ++i) {\n            unstake(_calldata[i]);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "userEmergencyWithdraw",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function userEmergencyWithdraw(\n        uint256 tokenId\n    ) external nonReentrant callerIsUser {\n        require(\n            stakers[tokenId].staker == msg.sender,\n            \"Not being staked by you\"\n        );\n        delete stakers[tokenId];\n        NFTcontract.safeTransferFrom(address(this), msg.sender, tokenId);\n        emit UserEmergencyWithdraw(tokenId, block.timestamp, msg.sender);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleLock",
+        "visibility": "external",
+        "args": [],
+        "func": "function toggleLock() external onlyOwner {\n        locked = !locked;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "emergencyWithdrawCoin",
+        "visibility": "external",
+        "args": [],
+        "func": "function emergencyWithdrawCoin() external onlyOwner {\n        SafeERC20.safeTransfer(\n            coinAddress,\n            msg.sender,\n            coinAddress.balanceOf(address(this))\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "emergencyWithdrawNFTs",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokens",
+                "type": "uint256[] memory"
+            }
+        ],
+        "func": "function emergencyWithdrawNFTs(uint256[] memory tokens) external onlyOwner {\n        for (uint256 i = 0; i < tokens.length; ++i) {\n            delete stakers[tokens[i]];\n            NFTcontract.safeTransferFrom(address(this), msg.sender, tokens[i]);\n            emit UserEmergencyWithdraw(tokens[i], block.timestamp, msg.sender);\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMinimumStakeTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "minTime",
+                "type": "uint64"
+            }
+        ],
+        "func": "function setMinimumStakeTime(uint64 minTime) external onlyOwner {\n        minimumStakeTimeS = minTime;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setCoinPerS",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_coinPerS",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setCoinPerS(uint256 _coinPerS) external onlyOwner {\n        coinPerS = _coinPerS;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "onERC721Received",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            },
+            {
+                "name": "uint256",
+                "type": "uint256"
+            },
+            {
+                "name": "calldata",
+                "type": "bytes"
+            }
+        ],
+        "func": "function onERC721Received(\n        address,\n        address,\n        uint256,\n        bytes calldata\n    ) public pure override returns (bytes4) {\n        return IERC721Receiver.onERC721Received.selector;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stakeInfo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function stakeInfo(\n        uint256 tokenId\n    ) external view returns (address, uint256) {\n        return (stakers[tokenId].staker, stakers[tokenId].stakedAt);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

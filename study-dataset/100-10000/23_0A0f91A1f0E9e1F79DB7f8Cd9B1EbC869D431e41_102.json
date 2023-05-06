@@ -1,0 +1,436 @@
+[
+    {
+        "transactions": 102,
+        "function_num": 23
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public pure returns (uint8) {\n        return _decimals;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public pure override returns (uint256) {\n        return _tTotal;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address account) public view override returns (uint256) {\n        return tokenFromReflection(_rOwned[account]);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address recipient, uint256 amount) public override returns (bool) {\n        _transfer(msg.sender, recipient, amount);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view override returns (uint256) {\n        return _allowances[owner][spender];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 amount) public override returns (bool) {\n        _approve(msg.sender, spender, amount);\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {\n        _transfer(sender, recipient, amount);\n        _approve(sender, msg.sender, _allowances[sender][msg.sender].sub(amount, \"ERC20: transfer amount exceeds allowance\"));\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setCooldownEnabled",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "onoff",
+                "type": "bool"
+            }
+        ],
+        "func": "function setCooldownEnabled(bool onoff) external onlyOwner() {\n        cooldownEnabled = onoff;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "openTradingAndLockLiquidity",
+        "visibility": "external",
+        "args": [],
+        "func": "function openTradingAndLockLiquidity() external onlyOwner {\n        require(!tradingOpen,\"trading is already open\");\n        uint256 contractBalanceEth = address(this).balance;\n        // TODO dynamically fetch the amount of fees and adjust liquidity provisioning accordingly\n        // IUniswapV2Locker.FeeStruct memory fees = getFees();\n        // uint256 ethFee = fees.ethFee;\n        uint256 ethFee = lockFees;\n        // Check that the balance is higher than the lock fees\n        require(contractBalanceEth > ethFee, \"not enough ETH to pay lock fees\");\n        uint256 liquidityEthAmount = contractBalanceEth.sub(ethFee);\n\n        // Get Uniswap router contract\n        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(UNISWAP_ROUTER_ADDRESS);\n        uniswapV2Router = _uniswapV2Router;\n        // Allow the router to spend contract tokens\n        _approve(address(this), address(uniswapV2Router), _tTotal);\n        // Create the pair using the Uniswap router\n        uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory()).createPair(address(this), _uniswapV2Router.WETH());\n        // Add the ETH liquidity (contract balance minus the fees required to lock the LP tokens)\n        uniswapV2Router.addLiquidityETH{value: liquidityEthAmount}(address(this),balanceOf(address(this)),0,0,owner(),block.timestamp);\n        // Allow the router to transfer LP tokens\n        IERC20(uniswapV2Pair).approve(address(uniswapV2Router), type(uint).max);\n\n        // Get UniswapV2Locker contract\n        uniswapV2Locker = IUniswapV2Locker(UNISWAP_LOCKER_ADDRESS);\n        // Allow the locker to transfer LP tokens\n        IERC20(uniswapV2Pair).approve(UNISWAP_LOCKER_ADDRESS, type(uint).max);\n        // Get the number of LP tokens\n        uint256 lpAmount = IERC20(uniswapV2Pair).balanceOf(owner());\n        // Unlock date is set to now + the lock period\n        uint256 unlockDate = block.timestamp.add(LOCK_PERIOD);\n        address payable referral = payable(LOCK_REFERRAL_ADDRESS);\n        // Set the withdrawer to the owner address\n        address payable withdrawer = payable(owner());\n        // Lock LP tokens\n        uniswapV2Locker.lockLPToken{value:ethFee}(uniswapV2Pair, lpAmount, unlockDate, referral, true, withdrawer);\n\n        // Open trading with the right parameters\n        swapEnabled = true;\n        cooldownEnabled = true;\n        setMaxTxPercent(15);\n        tradingOpen = true;\n\n        // And finally renounce the ownership of the contract\n        renounceOwnership();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "openTrading",
+        "visibility": "external",
+        "args": [],
+        "func": "function openTrading() external onlyOwner {\n        require(!tradingOpen,\"trading is already open\");\n        uint256 contractBalanceEth = address(this).balance;\n        // Get Uniswap router contract\n        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(UNISWAP_ROUTER_ADDRESS);\n        uniswapV2Router = _uniswapV2Router;\n        // Allow the router to spend contract tokens\n        _approve(address(this), address(uniswapV2Router), _tTotal);\n        // Create the pair using the Uniswap router\n        uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory()).createPair(address(this), _uniswapV2Router.WETH());\n        // Add the ETH liquidity (contract balance minus the fees required to lock the LP tokens)\n        uniswapV2Router.addLiquidityETH{value: contractBalanceEth}(address(this),balanceOf(address(this)),0,0,owner(),block.timestamp);\n        // Allow the router to transfer LP tokens\n        IERC20(uniswapV2Pair).approve(address(uniswapV2Router), type(uint).max);\n\n        // Open trading with the right parameters\n        swapEnabled = true;\n        cooldownEnabled = true;\n        setMaxTxPercent(15);\n        tradingOpen = true;\n        renounceOwnership();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getFees",
+        "visibility": "public",
+        "args": [],
+        "func": "function getFees() public view returns(IUniswapV2Locker.FeeStruct memory){\n        return IUniswapV2Locker(UNISWAP_LOCKER_ADDRESS).gFees();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBots",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "bots_",
+                "type": "address[] memory"
+            }
+        ],
+        "func": "function setBots(address[] memory bots_) public onlyOwner {\n        for (uint i = 0; i < bots_.length; i++) {\n            bots[bots_[i]] = true;\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delBot",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "notbot",
+                "type": "address"
+            }
+        ],
+        "func": "function delBot(address notbot) public onlyOwner {\n        bots[notbot] = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "manualswap",
+        "visibility": "external",
+        "args": [],
+        "func": "function manualswap() external {\n        require(msg.sender == _FeeAddress);\n        uint256 contractBalance = balanceOf(address(this));\n        swapTokensForEth(contractBalance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "manualsend",
+        "visibility": "external",
+        "args": [],
+        "func": "function manualsend() external {\n        require(msg.sender == _FeeAddress);\n        uint256 contractETHBalance = address(this).balance;\n        sendETHToFee(contractETHBalance);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMaxTxPercent",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "maxTxPercent",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setMaxTxPercent(uint256 maxTxPercent) public onlyOwner() {\n        require(maxTxPercent > 0, \"Amount must be greater than 0\");\n        _maxTxAmount = _tTotal.mul(maxTxPercent).div(10**2);\n        emit MaxTxAmountUpdated(_maxTxAmount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdraw()\n        public\n        nonReentrant\n        onlyOwner{\n        uint256 contractBalance = address(this).balance;\n        address payable ownerWallet = payable(owner());\n        bool success = ownerWallet.send(contractBalance);\n        require(success, \"withdraw failed.\");\n    }",
+        "comments": [
+            "/**",
+            "    * @notice Withdraw the specified amount if possible.",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @notice Withdraw the specified amount if possible.\n    */\n",
+        "@notice": "Withdraw the specified amount if possible.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setLockFees",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newLockFees",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setLockFees(uint256 newLockFees) external onlyOwner{\n        lockFees = newLockFees;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _setOwner(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _setOwner(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

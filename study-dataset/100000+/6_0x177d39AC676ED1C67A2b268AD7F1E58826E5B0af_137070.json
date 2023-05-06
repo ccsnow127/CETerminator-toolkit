@@ -1,0 +1,221 @@
+[
+    {
+        "transactions": 137070,
+        "function_num": 6
+    },
+    {
+        "name": "transferableTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "time",
+                "type": "uint64"
+            }
+        ],
+        "func": "function transferableTokens(address holder, uint64 time) constant public returns (uint256) {\n *       return min256(unlockedTokens, super.transferableTokens(holder, time));\n *     }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferableTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "time",
+                "type": "uint64"
+            }
+        ],
+        "func": "function transferableTokens(address holder, uint64 time) constant public returns (uint256) {\n    return balanceOf(holder);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Default transferable tokens function returns all tokens for a holder (no limit).",
+            "   * @dev Overwriting transferableTokens(address holder, uint64 time) is the way to provide the ",
+            "   * specific logic for limiting token transferability for a holder over time.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Default transferable tokens function returns all tokens for a holder (no limit).\n   * @dev Overwriting transferableTokens(address holder, uint64 time) is the way to provide the \n   * specific logic for limiting token transferability for a holder over time.\n   */\n",
+        "@dev": "Default transferable tokens function returns all tokens for a holder (no limit). * Overwriting transferableTokens(address holder, uint64 time) is the way to provide the * specific logic for limiting token transferability for a holder over time.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "grantVestedTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            },
+            {
+                "name": "_start",
+                "type": "uint64"
+            },
+            {
+                "name": "_cliff",
+                "type": "uint64"
+            },
+            {
+                "name": "_vesting",
+                "type": "uint64"
+            },
+            {
+                "name": "_revokable",
+                "type": "bool"
+            },
+            {
+                "name": "_burnsOnRevoke",
+                "type": "bool"
+            }
+        ],
+        "func": "function grantVestedTokens(\n    address _to,\n    uint256 _value,\n    uint64 _start,\n    uint64 _cliff,\n    uint64 _vesting,\n    bool _revokable,\n    bool _burnsOnRevoke\n  ) public {\n\n    // Check for date inconsistencies that may cause unexpected behavior\n    if (_cliff < _start || _vesting < _cliff) {\n      throw;\n    }\n\n    if (tokenGrantsCount(_to) > MAX_GRANTS_PER_ADDRESS) throw;   // To prevent a user being spammed and have his balance locked (out of gas attack when calculating vesting).\n\n    uint count = grants[_to].push(\n                TokenGrant(\n                  _revokable ? msg.sender : 0, // avoid storing an extra 20 bytes when it is non-revokable\n                  _value,\n                  _cliff,\n                  _vesting,\n                  _start,\n                  _revokable,\n                  _burnsOnRevoke\n                )\n              );\n\n    transfer(_to, _value);\n\n    NewTokenGrant(msg.sender, _to, _value, count - 1);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Grant tokens to a specified address",
+            "   * @param _to address The address which the tokens will be granted to.",
+            "   * @param _value uint256 The amount of tokens to be granted.",
+            "   * @param _start uint64 Time of the beginning of the grant.",
+            "   * @param _cliff uint64 Time of the cliff period.",
+            "   * @param _vesting uint64 The vesting period.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Grant tokens to a specified address\n   * @param _to address The address which the tokens will be granted to.\n   * @param _value uint256 The amount of tokens to be granted.\n   * @param _start uint64 Time of the beginning of the grant.\n   * @param _cliff uint64 Time of the cliff period.\n   * @param _vesting uint64 The vesting period.\n   */\n",
+        "@dev": "Grant tokens to a specified address",
+        "@param1": "_to address The address which the tokens will be granted to.",
+        "@param2": "_value uint256 The amount of tokens to be granted.",
+        "@param3": "_start uint64 Time of the beginning of the grant.",
+        "@param4": "_cliff uint64 Time of the cliff period.",
+        "@param5": "_vesting uint64 The vesting period.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revokeTokenGrant",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_holder",
+                "type": "address"
+            },
+            {
+                "name": "_grantId",
+                "type": "uint"
+            }
+        ],
+        "func": "function revokeTokenGrant(address _holder, uint _grantId) public {\n    TokenGrant grant = grants[_holder][_grantId];\n\n    if (!grant.revokable) { // Check if grant was revokable\n      throw;\n    }\n\n    if (grant.granter != msg.sender) { // Only granter can revoke it\n      throw;\n    }\n\n    address receiver = grant.burnsOnRevoke ? 0xdead : msg.sender;\n\n    uint256 nonVested = nonVestedTokens(grant, uint64(now));\n\n    // remove grant from array\n    delete grants[_holder][_grantId];\n    grants[_holder][_grantId] = grants[_holder][grants[_holder].length.sub(1)];\n    grants[_holder].length -= 1;\n\n    balances[receiver] = balances[receiver].add(nonVested);\n    balances[_holder] = balances[_holder].sub(nonVested);\n\n    Transfer(_holder, receiver, nonVested);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Revoke the grant of tokens of a specifed address.",
+            "   * @param _holder The address which will have its tokens revoked.",
+            "   * @param _grantId The id of the token grant.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Revoke the grant of tokens of a specifed address.\n   * @param _holder The address which will have its tokens revoked.\n   * @param _grantId The id of the token grant.\n   */\n",
+        "@dev": "Revoke the grant of tokens of a specifed address.",
+        "@param1": "_holder The address which will have its tokens revoked.",
+        "@param2": "_grantId The id of the token grant.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferableTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            },
+            {
+                "name": "time",
+                "type": "uint64"
+            }
+        ],
+        "func": "function transferableTokens(address holder, uint64 time) constant public returns (uint256) {\n    uint256 grantIndex = tokenGrantsCount(holder);\n\n    if (grantIndex == 0) return balanceOf(holder); // shortcut for holder without grants\n\n    // Iterate through all the grants the holder has, and add all non-vested tokens\n    uint256 nonVested = 0;\n    for (uint256 i = 0; i < grantIndex; i++) {\n      nonVested = SafeMath.add(nonVested, nonVestedTokens(grants[holder][i], time));\n    }\n\n    // Balance - totalNonVested is the amount of tokens a holder can transfer at any given time\n    uint256 vestedTransferable = SafeMath.sub(balanceOf(holder), nonVested);\n\n    // Return the minimum of how many vested can transfer and other value\n    // in case there are other limiting transferability factors (default is balanceOf)\n    return SafeMath.min256(vestedTransferable, super.transferableTokens(holder, time));\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Calculate the total amount of transferable tokens of a holder at a given time",
+            "   * @param holder address The address of the holder",
+            "   * @param time uint64 The specific time.",
+            "   * @return An uint representing a holder's total amount of transferable tokens.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Calculate the total amount of transferable tokens of a holder at a given time\n   * @param holder address The address of the holder\n   * @param time uint64 The specific time.\n   * @return An uint representing a holder's total amount of transferable tokens.\n   */\n",
+        "@dev": "Calculate the total amount of transferable tokens of a holder at a given time",
+        "@param1": "holder address The address of the holder",
+        "@param2": "time uint64 The specific time.",
+        "@return1": "An uint representing a holder's total amount of transferable tokens.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lastTokenIsTransferableDate",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "func": "function lastTokenIsTransferableDate(address holder) constant public returns (uint64 date) {\n    date = uint64(now);\n    uint256 grantIndex = grants[holder].length;\n    for (uint256 i = 0; i < grantIndex; i++) {\n      date = SafeMath.max64(grants[holder][i].vesting, date);\n    }\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Calculate the date when the holder can trasfer all its tokens",
+            "   * @param holder address The address of the holder",
+            "   * @return An uint representing the date of the last transferable tokens.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Calculate the date when the holder can trasfer all its tokens\n   * @param holder address The address of the holder\n   * @return An uint representing the date of the last transferable tokens.\n   */\n",
+        "@dev": "Calculate the date when the holder can trasfer all its tokens",
+        "@param1": "holder address The address of the holder",
+        "@return1": "An uint representing the date of the last transferable tokens.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

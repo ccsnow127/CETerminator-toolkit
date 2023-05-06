@@ -1,0 +1,113 @@
+[
+    {
+        "transactions": 443597,
+        "function_num": 5
+    },
+    {
+        "name": "revoke",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_operation",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function revoke(bytes32 _operation) external {\n    uint index = ownerIndex[msg.sender];\n    // make sure they're an owner\n    if (index == 0) return;\n    uint ownerIndexBit = 2**index;\n    var pending = pendings[_operation];\n    if (pending.ownersDone & ownerIndexBit > 0) {\n      pending.yetNeeded++;\n      pending.ownersDone -= ownerIndexBit;\n      Revoke(msg.sender, _operation);\n    }\n  }",
+        "comments": [
+            "",
+            "  // METHODS",
+            "",
+            "  // Revokes a prior confirmation of the given operation",
+            "  "
+        ],
+        "comt": "\n  // METHODS\n\n  // Revokes a prior confirmation of the given operation\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "ownerIndex",
+                "type": "uint"
+            }
+        ],
+        "func": "function getOwner(uint ownerIndex) external constant returns (address) {\n    return address(owners[ownerIndex + 1]);\n  }",
+        "comments": [
+            "",
+            "  // Gets an owner by 0-indexed position (using numOwners as the count)",
+            "  "
+        ],
+        "comt": "\n  // Gets an owner by 0-indexed position (using numOwners as the count)\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "emergencyStop",
+        "visibility": "external",
+        "args": [],
+        "func": "function emergencyStop() external onlyOwner {\n    assert(stoppable);\n    stopped = true;\n  }",
+        "comments": [
+            "",
+            "  // called by the owner on emergency, triggers stopped state",
+            "  "
+        ],
+        "comt": "\n  // called by the owner on emergency, triggers stopped state\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "release",
+        "visibility": "external",
+        "args": [],
+        "func": "function release() external onlyManyOwners(sha3(msg.data)) {\n    assert(stoppable);\n    stopped = false;\n  }",
+        "comments": [
+            "",
+            "  // called by the owners on end of emergency, returns to normal state",
+            "  "
+        ],
+        "comt": "\n  // called by the owners on end of emergency, returns to normal state\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "disableStopping",
+        "visibility": "external",
+        "args": [],
+        "func": "function disableStopping() external onlyManyOwners(sha3(msg.data)) {\n    stoppable = false;\n  }",
+        "comments": [
+            "",
+            "  // called by the owners to disable ability to begin or end an emergency stop",
+            "  "
+        ],
+        "comt": "\n  // called by the owners to disable ability to begin or end an emergency stop\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

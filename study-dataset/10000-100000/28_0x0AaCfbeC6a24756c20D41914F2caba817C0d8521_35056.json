@@ -1,0 +1,841 @@
+[
+    {
+        "transactions": 35056,
+        "function_num": 28
+    },
+    {
+        "name": "_setImplementation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "implementation_",
+                "type": "address"
+            },
+            {
+                "name": "allowResign",
+                "type": "bool"
+            },
+            {
+                "name": "becomeImplementationData",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function _setImplementation(address implementation_, bool allowResign, bytes memory becomeImplementationData) public {\n        require(msg.sender == gov, \"YAMDelegator::_setImplementation: Caller must be gov\");\n\n        if (allowResign) {\n            delegateToImplementation(abi.encodeWithSignature(\"_resignImplementation()\"));\n        }\n\n        address oldImplementation = implementation;\n        implementation = implementation_;\n\n        delegateToImplementation(abi.encodeWithSignature(\"_becomeImplementation(bytes)\", becomeImplementationData));\n\n        emit NewImplementation(oldImplementation, implementation);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Called by the gov to update the implementation of the delegator",
+            "     * @param implementation_ The address of the new implementation for delegation",
+            "     * @param allowResign Flag to indicate whether to call _resignImplementation on the old implementation",
+            "     * @param becomeImplementationData The encoded bytes data to be passed to _becomeImplementation",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Called by the gov to update the implementation of the delegator\n     * @param implementation_ The address of the new implementation for delegation\n     * @param allowResign Flag to indicate whether to call _resignImplementation on the old implementation\n     * @param becomeImplementationData The encoded bytes data to be passed to _becomeImplementation\n     */\n",
+        "@notice": "Called by the gov to update the implementation of the delegator",
+        "@param1": "implementation_ The address of the new implementation for delegation",
+        "@param2": "allowResign Flag to indicate whether to call _resignImplementation on the old implementation",
+        "@param3": "becomeImplementationData The encoded bytes data to be passed to _becomeImplementation",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "mintAmount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address to, uint256 mintAmount)\n        external\n        returns (bool)\n    {\n        to; mintAmount; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Sender supplies assets into the market and receives cTokens in exchange",
+            "     * @dev Accrues interest whether or not the operation succeeds, unless reverted",
+            "     * @param mintAmount The amount of the underlying asset to supply",
+            "     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Sender supplies assets into the market and receives cTokens in exchange\n     * @dev Accrues interest whether or not the operation succeeds, unless reverted\n     * @param mintAmount The amount of the underlying asset to supply\n     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n     */\n",
+        "@notice": "Sender supplies assets into the market and receives cTokens in exchange",
+        "@dev": "Accrues interest whether or not the operation succeeds, unless reverted",
+        "@param1": "mintAmount The amount of the underlying asset to supply",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address dst, uint256 amount)\n        external\n        returns (bool)\n    {\n        dst; amount; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Transfer `amount` tokens from `msg.sender` to `dst`",
+            "     * @param dst The address of the destination account",
+            "     * @param amount The number of tokens to transfer",
+            "     * @return Whether or not the transfer succeeded",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Transfer `amount` tokens from `msg.sender` to `dst`\n     * @param dst The address of the destination account\n     * @param amount The number of tokens to transfer\n     * @return Whether or not the transfer succeeded\n     */\n",
+        "@notice": "Transfer `amount` tokens from `msg.sender` to `dst`",
+        "@param1": "dst The address of the destination account",
+        "@param2": "amount The number of tokens to transfer",
+        "@return1": "Whether or not the transfer succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address src,\n        address dst,\n        uint256 amount\n    )\n        external\n        returns (bool)\n    {\n        src; dst; amount; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Transfer `amount` tokens from `src` to `dst`",
+            "     * @param src The address of the source account",
+            "     * @param dst The address of the destination account",
+            "     * @param amount The number of tokens to transfer",
+            "     * @return Whether or not the transfer succeeded",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Transfer `amount` tokens from `src` to `dst`\n     * @param src The address of the source account\n     * @param dst The address of the destination account\n     * @param amount The number of tokens to transfer\n     * @return Whether or not the transfer succeeded\n     */\n",
+        "@notice": "Transfer `amount` tokens from `src` to `dst`",
+        "@param1": "src The address of the source account",
+        "@param2": "dst The address of the destination account",
+        "@param3": "amount The number of tokens to transfer",
+        "@return1": "Whether or not the transfer succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(\n        address spender,\n        uint256 amount\n    )\n        external\n        returns (bool)\n    {\n        spender; amount; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Approve `spender` to transfer up to `amount` from `src`",
+            "     * @dev This will overwrite the approval amount for `spender`",
+            "     *  and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)",
+            "     * @param spender The address of the account which may transfer tokens",
+            "     * @param amount The number of tokens that are approved (-1 means infinite)",
+            "     * @return Whether or not the approval succeeded",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Approve `spender` to transfer up to `amount` from `src`\n     * @dev This will overwrite the approval amount for `spender`\n     *  and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)\n     * @param spender The address of the account which may transfer tokens\n     * @param amount The number of tokens that are approved (-1 means infinite)\n     * @return Whether or not the approval succeeded\n     */\n",
+        "@notice": "Approve `spender` to transfer up to `amount` from `src`",
+        "@dev": "This will overwrite the approval amount for `spender` * and is subject to issues noted [here](https://eips.ethereum.org/EIPS/eip-20#approve)",
+        "@param1": "spender The address of the account which may transfer tokens",
+        "@param2": "amount The number of tokens that are approved (-1 means infinite)",
+        "@return1": "Whether or not the approval succeeded",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(\n        address spender,\n        uint256 addedValue\n    )\n        external\n        returns (bool)\n    {\n        spender; addedValue; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Increase the amount of tokens that an owner has allowed to a spender.",
+            "     * This method should be used instead of approve() to avoid the double approval vulnerability",
+            "     * described above.",
+            "     * @param spender The address which will spend the funds.",
+            "     * @param addedValue The amount of tokens to increase the allowance by.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Increase the amount of tokens that an owner has allowed to a spender.\n     * This method should be used instead of approve() to avoid the double approval vulnerability\n     * described above.\n     * @param spender The address which will spend the funds.\n     * @param addedValue The amount of tokens to increase the allowance by.\n     */\n",
+        "@dev": "Increase the amount of tokens that an owner has allowed to a spender. * This method should be used instead of approve() to avoid the double approval vulnerability * described above.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "addedValue The amount of tokens to increase the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "maxScalingFactor",
+        "visibility": "external",
+        "args": [],
+        "func": "function maxScalingFactor()\n        external\n        view\n        returns (uint256)\n    {\n        delegateToViewAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rebase",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "epoch",
+                "type": "uint256"
+            },
+            {
+                "name": "indexDelta",
+                "type": "uint256"
+            },
+            {
+                "name": "positive",
+                "type": "bool"
+            }
+        ],
+        "func": "function rebase(\n        uint256 epoch,\n        uint256 indexDelta,\n        bool positive\n    )\n        external\n        returns (uint256)\n    {\n        epoch; indexDelta; positive;\n        delegateAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(\n        address spender,\n        uint256 subtractedValue\n    )\n        external\n        returns (bool)\n    {\n        spender; subtractedValue; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Decrease the amount of tokens that an owner has allowed to a spender.",
+            "     *",
+            "     * @param spender The address which will spend the funds.",
+            "     * @param subtractedValue The amount of tokens to decrease the allowance by.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Decrease the amount of tokens that an owner has allowed to a spender.\n     *\n     * @param spender The address which will spend the funds.\n     * @param subtractedValue The amount of tokens to decrease the allowance by.\n     */\n",
+        "@dev": "Decrease the amount of tokens that an owner has allowed to a spender.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "subtractedValue The amount of tokens to decrease the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "permit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function permit(\n        address owner,\n        address spender,\n        uint256 value,\n        uint256 deadline,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    )\n        external\n    {\n        owner; spender; value; deadline; v; r; s; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "",
+            "",
+            "    // --- Approve by signature ---",
+            "    "
+        ],
+        "comt": "\n\n    // --- Approve by signature ---\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(\n        address owner,\n        address spender\n    )\n        external\n        view\n        returns (uint256)\n    {\n        owner; spender; // Shh\n        delegateToViewAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the current allowance from `owner` for `spender`",
+            "     * @param owner The address of the account which owns the tokens to be spent",
+            "     * @param spender The address of the account which may transfer tokens",
+            "     * @return The number of tokens allowed to be spent (-1 means infinite)",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the current allowance from `owner` for `spender`\n     * @param owner The address of the account which owns the tokens to be spent\n     * @param spender The address of the account which may transfer tokens\n     * @return The number of tokens allowed to be spent (-1 means infinite)\n     */\n",
+        "@notice": "Get the current allowance from `owner` for `spender`",
+        "@param1": "owner The address of the account which owns the tokens to be spent",
+        "@param2": "spender The address of the account which may transfer tokens",
+        "@return1": "The number of tokens allowed to be spent (-1 means infinite)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rescueTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function rescueTokens(\n        address token,\n        address to,\n        uint256 amount\n    )\n        external\n        returns (bool)\n    {\n        token; to; amount; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Rescues tokens and sends them to the `to` address",
+            "     * @param token The address of the token",
+            "     * @param to The address for which the tokens should be send",
+            "     * @return Success",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Rescues tokens and sends them to the `to` address\n     * @param token The address of the token\n     * @param to The address for which the tokens should be send\n     * @return Success\n     */\n",
+        "@notice": "Rescues tokens and sends them to the `to` address",
+        "@param1": "token The address of the token",
+        "@param2": "to The address for which the tokens should be send",
+        "@return1": "Success",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegates",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegator",
+                "type": "address"
+            }
+        ],
+        "func": "function delegates(\n        address delegator\n    )\n        external\n        view\n        returns (address)\n    {\n        delegator; // Shh\n        delegateToViewAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the current allowance from `owner` for `spender`",
+            "     * @param delegator The address of the account which has designated a delegate",
+            "     * @return Address of delegatee",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the current allowance from `owner` for `spender`\n     * @param delegator The address of the account which has designated a delegate\n     * @return Address of delegatee\n     */\n",
+        "@notice": "Get the current allowance from `owner` for `spender`",
+        "@param1": "delegator The address of the account which has designated a delegate",
+        "@return1": "Address of delegatee",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner)\n        external\n        view\n        returns (uint256)\n    {\n        owner; // Shh\n        delegateToViewAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Get the token balance of the `owner`",
+            "     * @param owner The address of the account to query",
+            "     * @return The number of tokens owned by `owner`",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Get the token balance of the `owner`\n     * @param owner The address of the account to query\n     * @return The number of tokens owned by `owner`\n     */\n",
+        "@notice": "Get the token balance of the `owner`",
+        "@param1": "owner The address of the account to query",
+        "@return1": "The number of tokens owned by `owner`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfUnderlying",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOfUnderlying(address owner)\n        external\n        view\n        returns (uint256)\n    {\n        owner; // Shh\n        delegateToViewAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Currently unused. For future compatability",
+            "     * @param owner The address of the account to query",
+            "     * @return The number of underlying tokens owned by `owner`",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Currently unused. For future compatability\n     * @param owner The address of the account to query\n     * @return The number of underlying tokens owned by `owner`\n     */\n",
+        "@notice": "Currently unused. For future compatability",
+        "@param1": "owner The address of the account to query",
+        "@return1": "The number of underlying tokens owned by `owner`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "_setPendingGov",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newPendingGov",
+                "type": "address"
+            }
+        ],
+        "func": "function _setPendingGov(address newPendingGov)\n        external\n    {\n        newPendingGov; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "      * @notice Begins transfer of gov rights. The newPendingGov must call `_acceptGov` to finalize the transfer.",
+            "      * @dev Gov function to begin change of gov. The newPendingGov must call `_acceptGov` to finalize the transfer.",
+            "      * @param newPendingGov New pending gov.",
+            "      */",
+            ""
+        ],
+        "comt": "/**\n      * @notice Begins transfer of gov rights. The newPendingGov must call `_acceptGov` to finalize the transfer.\n      * @dev Gov function to begin change of gov. The newPendingGov must call `_acceptGov` to finalize the transfer.\n      * @param newPendingGov New pending gov.\n      */\n",
+        "@notice": "Begins transfer of gov rights. The newPendingGov must call `_acceptGov` to finalize the transfer.",
+        "@dev": "Gov function to begin change of gov. The newPendingGov must call `_acceptGov` to finalize the transfer.",
+        "@param1": "newPendingGov New pending gov.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setRebaser",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "rebaser_",
+                "type": "address"
+            }
+        ],
+        "func": "function _setRebaser(address rebaser_)\n        external\n    {\n        rebaser_; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setIncentivizer",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "incentivizer_",
+                "type": "address"
+            }
+        ],
+        "func": "function _setIncentivizer(address incentivizer_)\n        external\n    {\n        incentivizer_; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_setMigrator",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "migrator_",
+                "type": "address"
+            }
+        ],
+        "func": "function _setMigrator(address migrator_)\n        external\n    {\n        migrator_; // Shh\n        delegateAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_acceptGov",
+        "visibility": "external",
+        "args": [],
+        "func": "function _acceptGov()\n        external\n    {\n        delegateAndReturn();\n    }",
+        "comments": [
+            "/**",
+            "      * @notice Accepts transfer of gov rights. msg.sender must be pendingGov",
+            "      * @dev Gov function for pending gov to accept role and update gov",
+            "      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+            "      */",
+            ""
+        ],
+        "comt": "/**\n      * @notice Accepts transfer of gov rights. msg.sender must be pendingGov\n      * @dev Gov function for pending gov to accept role and update gov\n      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n      */\n",
+        "@notice": "Accepts transfer of gov rights. msg.sender must be pendingGov",
+        "@dev": "Gov function for pending gov to accept role and update gov",
+        "@return1": "uint 0=success, otherwise a failure (see ErrorReporter.sol for details)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPriorVotes",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "name": "blockNumber",
+                "type": "uint"
+            }
+        ],
+        "func": "function getPriorVotes(address account, uint blockNumber)\n        external\n        view\n        returns (uint256)\n    {\n        account; blockNumber;\n        delegateToViewAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateBySig",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            },
+            {
+                "name": "nonce",
+                "type": "uint"
+            },
+            {
+                "name": "expiry",
+                "type": "uint"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function delegateBySig(\n        address delegatee,\n        uint nonce,\n        uint expiry,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    )\n        external\n    {\n        delegatee; nonce; expiry; v; r; s;\n        delegateAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegate",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "delegatee",
+                "type": "address"
+            }
+        ],
+        "func": "function delegate(address delegatee)\n        external\n    {\n        delegatee;\n        delegateAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCurrentVotes",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "func": "function getCurrentVotes(address account)\n        external\n        view\n        returns (uint256)\n    {\n        account;\n        delegateToViewAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "yamToFragment",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "yam",
+                "type": "uint256"
+            }
+        ],
+        "func": "function yamToFragment(uint256 yam)\n        external\n        view\n        returns (uint256)\n    {\n        yam;\n        delegateToViewAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "fragmentToYam",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function fragmentToYam(uint256 value)\n        external\n        view\n        returns (uint256)\n    {\n        value;\n        delegateToViewAndReturn();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateToImplementation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function delegateToImplementation(bytes memory data) public returns (bytes memory) {\n        return delegateTo(implementation, data);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Delegates execution to the implementation contract",
+            "     * @dev It returns to the external caller whatever the implementation returns or forwards reverts",
+            "     * @param data The raw data to delegatecall",
+            "     * @return The returned bytes from the delegatecall",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Delegates execution to the implementation contract\n     * @dev It returns to the external caller whatever the implementation returns or forwards reverts\n     * @param data The raw data to delegatecall\n     * @return The returned bytes from the delegatecall\n     */\n",
+        "@notice": "Delegates execution to the implementation contract",
+        "@dev": "It returns to the external caller whatever the implementation returns or forwards reverts",
+        "@param1": "data The raw data to delegatecall",
+        "@return1": "The returned bytes from the delegatecall",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "delegateToViewImplementation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function delegateToViewImplementation(bytes memory data) public view returns (bytes memory) {\n        (bool success, bytes memory returnData) = address(this).staticcall(abi.encodeWithSignature(\"delegateToImplementation(bytes)\", data));\n        assembly {\n            if eq(success, 0) {\n                revert(add(returnData, 0x20), returndatasize)\n            }\n        }\n        return abi.decode(returnData, (bytes));\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Delegates execution to an implementation contract",
+            "     * @dev It returns to the external caller whatever the implementation returns or forwards reverts",
+            "     *  There are an additional 2 prefix uints from the wrapper returndata, which we ignore since we make an extra hop.",
+            "     * @param data The raw data to delegatecall",
+            "     * @return The returned bytes from the delegatecall",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Delegates execution to an implementation contract\n     * @dev It returns to the external caller whatever the implementation returns or forwards reverts\n     *  There are an additional 2 prefix uints from the wrapper returndata, which we ignore since we make an extra hop.\n     * @param data The raw data to delegatecall\n     * @return The returned bytes from the delegatecall\n     */\n",
+        "@notice": "Delegates execution to an implementation contract",
+        "@dev": "It returns to the external caller whatever the implementation returns or forwards reverts * There are an additional 2 prefix uints from the wrapper returndata, which we ignore since we make an extra hop.",
+        "@param1": "data The raw data to delegatecall",
+        "@return1": "The returned bytes from the delegatecall",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

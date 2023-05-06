@@ -1,0 +1,1333 @@
+[
+    {
+        "transactions": 887,
+        "function_num": 56
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n * }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n        return interfaceId == type(IERC165).interfaceId;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {\n        return\n            interfaceId == type(IERC721).interfaceId ||\n            interfaceId == type(IERC721Metadata).interfaceId ||\n            super.supportsInterface(interfaceId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view virtual override returns (uint256) {\n        require(owner != address(0), \"ERC721: balance query for the zero address\");\n        return _balances[owner];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-balanceOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-balanceOf}.\n     */\n",
+        "@dev": "See {IERC721-balanceOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view virtual override returns (address) {\n        address owner = _owners[tokenId];\n        require(owner != address(0), \"ERC721: owner query for nonexistent token\");\n        return owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-ownerOf}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-ownerOf}.\n     */\n",
+        "@dev": "See {IERC721-ownerOf}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view virtual override returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-name}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-name}.\n     */\n",
+        "@dev": "See {IERC721Metadata-name}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view virtual override returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-symbol}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-symbol}.\n     */\n",
+        "@dev": "See {IERC721Metadata-symbol}.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        require(_exists(tokenId), \"ERC721Metadata: URI query for nonexistent token\");\n\n        string memory baseURI = _baseURI();\n        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : \"\";\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721Metadata-tokenURI}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721Metadata-tokenURI}.\n     */\n",
+        "@dev": "See {IERC721Metadata-tokenURI}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public virtual override {\n        address owner = ERC721.ownerOf(tokenId);\n        require(to != owner, \"ERC721: approval to current owner\");\n\n        require(\n            _msgSender() == owner || isApprovedForAll(owner, _msgSender()),\n            \"ERC721: approve caller is not owner nor approved for all\"\n        );\n\n        _approve(to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-approve}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-approve}.\n     */\n",
+        "@dev": "See {IERC721-approve}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view virtual override returns (address) {\n        require(_exists(tokenId), \"ERC721: approved query for nonexistent token\");\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-getApproved}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-getApproved}.\n     */\n",
+        "@dev": "See {IERC721-getApproved}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address operator, bool approved) public virtual override {\n        _setApprovalForAll(_msgSender(), operator, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-setApprovalForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-setApprovalForAll}.\n     */\n",
+        "@dev": "See {IERC721-setApprovalForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-isApprovedForAll}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-isApprovedForAll}.\n     */\n",
+        "@dev": "See {IERC721-isApprovedForAll}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n\n        _transfer(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-transferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-transferFrom}.\n     */\n",
+        "@dev": "See {IERC721-transferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) public virtual override {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId,\n        bytes memory _data\n    ) public virtual override {\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n        _safeTransfer(from, to, tokenId, _data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC721-safeTransferFrom}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC721-safeTransferFrom}.\n     */\n",
+        "@dev": "See {IERC721-safeTransferFrom}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateFundsTo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newFundsTo",
+                "type": "address payable"
+            }
+        ],
+        "func": "function updateFundsTo(address payable newFundsTo) public onlyOwner {\n        fundsTo = newFundsTo;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateFundsToDev",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newFundsToDev",
+                "type": "address payable"
+            }
+        ],
+        "func": "function updateFundsToDev(address payable newFundsToDev) public onlyOwner {\n        fundsToDev = newFundsToDev;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimBalance",
+        "visibility": "public",
+        "args": [],
+        "func": "function claimBalance() public onlyOwner {\n        uint256 contractBalance = address(this).balance;\n        (bool success2, ) = fundsToDev.call{value: (contractBalance/ 1000) * 150}(\"\");\n        (bool success, ) = fundsTo.call{value: (contractBalance/ 1000) * 850}(\"\");\n        require(success, \"transfer failed\");require(success2, \"transfer failed\");\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMaxWallet",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_newMaxWallet",
+                "type": "uint"
+            }
+        ],
+        "func": "function setMaxWallet(uint _newMaxWallet) external onlyOwner {\n        maxWallet = _newMaxWallet;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMaxWhiteListLimit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_newMaxWhiteListLimit",
+                "type": "uint"
+            }
+        ],
+        "func": "function setMaxWhiteListLimit(uint _newMaxWhiteListLimit) external onlyOwner {\n        maxWhiteListLimit = _newMaxWhiteListLimit;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFirePriceWhiteList",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "FirePriceWhiteList_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setFirePriceWhiteList(uint256 FirePriceWhiteList_) external onlyOwner {\n        FirePriceWhiteList = FirePriceWhiteList_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setGoldPriceWhiteList",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "GoldPriceWhiteList_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setGoldPriceWhiteList(uint256 GoldPriceWhiteList_) external onlyOwner {\n        GoldPriceWhiteList = GoldPriceWhiteList_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setGoldPrice",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "GoldPrice_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setGoldPrice(uint256 GoldPrice_) external onlyOwner {\n        GoldPrice = GoldPrice_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setFirePrice",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "FirePrice_",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setFirePrice(uint256 FirePrice_) external onlyOwner {\n        FirePrice = FirePrice_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "flipVipSaleState",
+        "visibility": "public",
+        "args": [],
+        "func": "function flipVipSaleState() public onlyOwner {\n        vipSale = !vipSale;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "flipSaleState",
+        "visibility": "public",
+        "args": [],
+        "func": "function flipSaleState() public onlyOwner {\n        sale = !sale;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "flipWhiteListSaleState",
+        "visibility": "public",
+        "args": [],
+        "func": "function flipWhiteListSaleState() public onlyOwner {\n        whiteListSale = !whiteListSale;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isVipWallet",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "team",
+                "type": "Teams"
+            },
+            {
+                "name": "tier",
+                "type": "uint256"
+            }
+        ],
+        "func": "function isVipWallet(address wallet,Teams team,uint256 tier) public view returns (uint256) {\n        return whiteListsVip[team][tier][wallet];\n    }",
+        "comments": [
+            "    ",
+            "    // wallet functions",
+            "",
+            "    "
+        ],
+        "comt": "    \n    // wallet functions\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isVipWalletGold",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function isVipWalletGold(address wallet) public view returns (uint256) {\n        return whiteListsVipGold[wallet];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "whitelistVipAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallets",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "quantities",
+                "type": "uint256[] calldata"
+            },
+            {
+                "name": "team",
+                "type": "Teams[] calldata"
+            },
+            {
+                "name": "tiers",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function whitelistVipAddresses(address[] calldata wallets,uint256[] calldata quantities,Teams[] calldata team,uint256[] calldata tiers) public onlyOwner\n    {\n        for (uint256 i; i < wallets.length; i++) {\n            whiteListsVip[team[i]][tiers[i]][wallets[i]] = quantities[i];\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "whitelistVipGoldAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallets",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "quantities",
+                "type": "uint256[] calldata"
+            }
+        ],
+        "func": "function whitelistVipGoldAddresses(address[] calldata wallets,uint256[] calldata quantities) public onlyOwner\n    {\n        for (uint256 i; i < wallets.length; i++) {\n            whiteListsVipGold[wallets[i]] = quantities[i];\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "whitelistAddresses",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallets",
+                "type": "address[] calldata"
+            },
+            {
+                "name": "enableDisables",
+                "type": "bool[] calldata"
+            }
+        ],
+        "func": "function whitelistAddresses(address[] calldata wallets,bool[] calldata enableDisables) public onlyOwner\n    {\n        for (uint256 i; i < wallets.length; i++) {\n            whiteLists[wallets[i]] = enableDisables[i];\n        }\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTeamTierMintCount",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "team",
+                "type": "Teams"
+            },
+            {
+                "name": "tier",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getTeamTierMintCount(Teams team,uint256 tier) public view returns (uint256) {\n        return teamTierMintCounts[team][tier];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTeamTierSupply",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "team",
+                "type": "Teams"
+            },
+            {
+                "name": "tier",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getTeamTierSupply(Teams team,uint256 tier) public view returns (uint256) {\n\n        return teamTierLimits[team][tier];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkTeamTierAvailableSupply",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "team",
+                "type": "Teams"
+            },
+            {
+                "name": "tier",
+                "type": "uint256"
+            }
+        ],
+        "func": "function checkTeamTierAvailableSupply(Teams team, uint256 tier) public view returns(uint256) {\n        return getTeamTierSupply(team,tier) - getTeamTierMintCount(team,tier);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setBaseURI",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "__baseURI",
+                "type": "string memory"
+            }
+        ],
+        "func": "function setBaseURI(string memory __baseURI) external onlyOwner {\n        baseURI = __baseURI;\n    }",
+        "comments": [
+            " ",
+            "",
+            "    // contract functions",
+            "    ",
+            "    "
+        ],
+        "comt": " \n\n    // contract functions\n    \n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {\n        require(_exists(tokenId), \"ERC721Metadata: Nonexistent token\");\n\n        string memory _tokenURI = _teamTierTokenURIs[tokenId];\n        string memory base = _baseURI();\n\n        // If there is no base URI, return the token URI.\n        if (bytes(base).length == 0) {\n            return _tokenURI;\n        }\n        // If both are set, concatenate the baseURI and tokenURI (via abi.encodePacked).\n        if (bytes(_tokenURI).length > 0) {\n            return string(abi.encodePacked(base, _tokenURI));\n        }\n\n        return super.tokenURI(tokenId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "_isWhitelistAddress ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "func": "function _isWhitelistAddress (address wallet) public view returns (bool) {\n        return whiteLists[wallet];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupplyMinted",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupplyMinted() public view  returns (uint256) { \n        return _tokenIdCounter.current(); \n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintVipFire",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "team",
+                "type": "Teams"
+            }
+        ],
+        "func": "function mintVipFire(address wallet, uint256 quantity,Teams team) payable public {\n        require(vipSale, \"VIP Sale disabled\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(quantity * FirePriceWhiteList <= msg.value, \"Not enough ether sent\");\n        require(isVipWallet(wallet,team,FireTier)>=quantity,\"Wallet Not WhiteListed Or No Mint Quantity Available\");\n        require(getTeamTierMintCount(team,FireTier)+quantity<=teamTierLimits[team][FireTier],\"Low Mint Supply for Whitelist\");        \n        reduceLimit(wallet,quantity, team, FireTier);\n        _safeMintLoop(wallet, team, FireTier, quantity,0);\n\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintVipFireOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "team",
+                "type": "Teams"
+            },
+            {
+                "name": "_paymentId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintVipFireOwner(address wallet, uint256 quantity,Teams team,uint256 _paymentId) external onlyOwner {\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(!_paymentIds[_paymentId], \"Mint Already Sent\");\n        require(isVipWallet(wallet,team,FireTier)>=quantity,\"Wallet Not WhiteListed Or No Mint Quantity Available\");\n        require(getTeamTierMintCount(team,FireTier)+quantity<=teamTierLimits[team][FireTier],\"Low Mint Supply for Whitelist\");        \n        reduceLimit(wallet,quantity, team, FireTier);\n        _paymentIds[_paymentId] = true;\n        _safeMintLoop(wallet, team, FireTier, quantity,_paymentId);\n\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintWhitelistFire",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "team",
+                "type": "Teams"
+            }
+        ],
+        "func": "function mintWhitelistFire(address wallet, uint256 quantity,Teams team) payable public {\n        require(whiteListSale, \"Whitelist Sale disabled\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(quantity * FirePriceWhiteList <= msg.value, \"Not enough ether sent\");\n        require(_isWhitelistAddress(wallet),\"Wallet Not WhiteListed Or No Mint Quantity Available\");\n        require(getTeamTierMintCount(team,FireTier)+quantity<=teamTierLimits[team][FireTier],\"Low Mint Supply for Whitelist\");\n        require(minted[wallet]+quantity<=maxWhiteListLimit,\"Wallet Mint limit rached\");\n        _safeMintLoop(wallet, team, FireTier, quantity,0);\n\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintWhitelistFireOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "team",
+                "type": "Teams"
+            },
+            {
+                "name": "_paymentId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintWhitelistFireOwner(address wallet, uint256 quantity,Teams team,uint256 _paymentId) external onlyOwner {\n        require(whiteListSale, \"Whitelist Sale disabled\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(_isWhitelistAddress(wallet),\"Wallet Not WhiteListed Or No Mint Quantity Available\");\n        require(getTeamTierMintCount(team,FireTier)+quantity<=teamTierLimits[team][FireTier],\"Low Mint Supply for Whitelist\");\n        require(minted[wallet]+quantity<=maxWhiteListLimit,\"Wallet Mint limit rached\");\n        require(!_paymentIds[_paymentId], \"Mint Already Sent\");\n        _paymentIds[_paymentId] = true;\n        _safeMintLoop(wallet, team, FireTier, quantity,_paymentId);\n\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintFireNormal",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "team",
+                "type": "Teams"
+            }
+        ],
+        "func": "function mintFireNormal(address wallet, uint256 quantity,Teams team) payable public {\n        require(sale, \"Sale disabled\");\n        require(!Address.isContract(msg.sender), \"Contracts are not allowed to mint\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(quantity * FirePrice <= msg.value, \"Not enough ether sent\");\n        require(getTeamTierMintCount(team,FireTier)+quantity<=teamTierLimits[team][FireTier],\"Low Mint Supply for Whitelist\");\n        require(minted[wallet]+quantity<=maxWallet,\"Wallet Mint limit rached\");\n        minted[wallet] += quantity;\n        _safeMintLoop(wallet, team, FireTier, quantity,0);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintFireNormalOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "team",
+                "type": "Teams"
+            },
+            {
+                "name": "_paymentId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintFireNormalOwner(address wallet, uint256 quantity,Teams team,uint256 _paymentId) external onlyOwner{\n        require(sale, \"Sale disabled\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(getTeamTierMintCount(team,FireTier)+quantity<=teamTierLimits[team][FireTier],\"Low Mint Supply for Whitelist\");\n        require(minted[wallet]+quantity<=maxWallet,\"Wallet Mint limit rached\");\n        require(!_paymentIds[_paymentId], \"Mint Already Sent\");\n        _paymentIds[_paymentId] = true;\n        minted[wallet] += quantity;\n        _safeMintLoop(wallet, team, FireTier, quantity,_paymentId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintVipGold",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintVipGold(address wallet, uint256 quantity) payable public {\n        require(vipSale, \"VIP Sale disabled\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(quantity * GoldPriceWhiteList <= msg.value, \"Not enough ether sent\");\n        require(isVipWalletGold(wallet)>=quantity,\"Wallet Not WhiteListed Or No Mint Quantity Available\");\n        require(goldTierMintCounts+quantity<=goldTierLimit,\"Low Mint Supply for Whitelist\");        \n        reduceLimitGold(wallet,quantity);\n        goldTierMintCounts += quantity;\n        _safeMintLoopGold(wallet,  GoldTier, quantity,0);\n\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintVipGoldOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "_paymentId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintVipGoldOwner(address wallet, uint256 quantity,uint256 _paymentId) external onlyOwner {\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(isVipWalletGold(wallet)>=quantity,\"Wallet Not WhiteListed Or No Mint Quantity Available\");\n        require(goldTierMintCounts+quantity<=goldTierLimit,\"Low Mint Supply for Whitelist\"); \n        require(!_paymentIds[_paymentId], \"Mint Already Sent\");\n        _paymentIds[_paymentId] = true;          \n        reduceLimitGold(wallet,quantity);\n        goldTierMintCounts += quantity;\n        _safeMintLoopGold(wallet,  GoldTier, quantity,_paymentId);\n\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintWhitelistGold",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintWhitelistGold(address wallet, uint256 quantity) payable public {\n        require(whiteListSale, \"Whitelist Sale disabled\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(quantity * GoldPriceWhiteList <= msg.value, \"Not enough ether sent\");\n        require(_isWhitelistAddress(wallet),\"Wallet Not WhiteListed Or No Mint Quantity Available\");\n        require(goldTierMintCounts+quantity<=goldTierLimit,\"Low Mint Supply for Whitelist\");\n        require(minted[wallet]+quantity<=maxWhiteListLimit,\"Wallet Mint limit rached\");\n        goldTierMintCounts += quantity;\n        _safeMintLoopGold(wallet,  GoldTier, quantity,0);\n\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintWhitelistGoldOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "_paymentId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintWhitelistGoldOwner(address wallet, uint256 quantity,uint256 _paymentId) external onlyOwner {\n        require(whiteListSale, \"Whitelist Sale disabled\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(_isWhitelistAddress(wallet),\"Wallet Not WhiteListed Or No Mint Quantity Available\");\n        require(goldTierMintCounts+quantity<=goldTierLimit,\"Low Mint Supply for Whitelist\");\n        require(minted[wallet]+quantity<=maxWhiteListLimit,\"Wallet Mint limit rached\");\n        require(!_paymentIds[_paymentId], \"Mint Already Sent\");\n        goldTierMintCounts += quantity;\n        _paymentIds[_paymentId] = true;\n        _safeMintLoopGold(wallet,  GoldTier, quantity,_paymentId);\n\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintGoldNormal",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintGoldNormal(address wallet, uint256 quantity) payable public {\n        require(sale, \"Sale disabled\");\n        require(!Address.isContract(msg.sender), \"Contracts are not allowed to mint\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(quantity * GoldPrice <= msg.value, \"Not enough ether sent\");\n        require(goldTierMintCounts+quantity<=goldTierLimit,\"Low Mint Supply for Whitelist\");\n        require(minted[wallet]+quantity<=maxWallet,\"Wallet Mint limit rached\");\n        goldTierMintCounts += quantity;\n        minted[wallet] += quantity;\n        _safeMintLoopGold(wallet,  GoldTier, quantity,0);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintGoldNormalOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "_paymentId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mintGoldNormalOwner(address wallet, uint256 quantity,uint256 _paymentId) external onlyOwner{\n        require(sale, \"Sale disabled\");\n        require(quantity != 0, \"Requested quantity cannot be zero\");\n        require(goldTierMintCounts+quantity<=goldTierLimit,\"Low Mint Supply for Whitelist\");\n        require(minted[wallet]+quantity<=maxWallet,\"Wallet Mint limit rached\");\n        require(!_paymentIds[_paymentId], \"Mint Already Sent\");\n        _paymentIds[_paymentId] = true;\n        goldTierMintCounts += quantity;\n        minted[wallet] += quantity;\n        _safeMintLoopGold(wallet,  GoldTier, quantity,_paymentId);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkTokenExists",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function checkTokenExists(uint256 tokenId) public view returns(bool) \n    {\n        require(_exists(tokenId), \"ERC721Metadata: URI query for nonexistent token\");\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view virtual  returns (uint256) {\n        return _tokenIdCounter.current();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,434 @@
+[
+    {
+        "transactions": 28498,
+        "function_num": 15
+    },
+    {
+        "name": "admin",
+        "visibility": "external",
+        "args": [],
+        "func": "function admin() external ifAdmin returns (address admin_) {\n        admin_ = _getAdmin();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current admin.",
+            "     *",
+            "     * NOTE: Only the admin can call this function. See {ProxyAdmin-getProxyAdmin}.",
+            "     *",
+            "     * TIP: To get this value clients can read directly from the storage slot shown below (specified by EIP1967) using the",
+            "     * https://eth.wiki/json-rpc/API#eth_getstorageat[`eth_getStorageAt`] RPC call.",
+            "     * `0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103`",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current admin.\n     *\n     * NOTE: Only the admin can call this function. See {ProxyAdmin-getProxyAdmin}.\n     *\n     * TIP: To get this value clients can read directly from the storage slot shown below (specified by EIP1967) using the\n     * https://eth.wiki/json-rpc/API#eth_getstorageat[`eth_getStorageAt`] RPC call.\n     * `0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103`\n     */\n",
+        "@dev": "Returns the current admin. * * NOTE: Only the admin can call this function. See {ProxyAdmin-getProxyAdmin}. * * TIP: To get this value clients can read directly from the storage slot shown below (specified by EIP1967) using the * https://eth.wiki/json-rpc/API#eth_getstorageat[`eth_getStorageAt`] RPC call. * `0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103`",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "implementation",
+        "visibility": "external",
+        "args": [],
+        "func": "function implementation() external ifAdmin returns (address implementation_) {\n        implementation_ = _implementation();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current implementation.",
+            "     *",
+            "     * NOTE: Only the admin can call this function. See {ProxyAdmin-getProxyImplementation}.",
+            "     *",
+            "     * TIP: To get this value clients can read directly from the storage slot shown below (specified by EIP1967) using the",
+            "     * https://eth.wiki/json-rpc/API#eth_getstorageat[`eth_getStorageAt`] RPC call.",
+            "     * `0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc`",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current implementation.\n     *\n     * NOTE: Only the admin can call this function. See {ProxyAdmin-getProxyImplementation}.\n     *\n     * TIP: To get this value clients can read directly from the storage slot shown below (specified by EIP1967) using the\n     * https://eth.wiki/json-rpc/API#eth_getstorageat[`eth_getStorageAt`] RPC call.\n     * `0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc`\n     */\n",
+        "@dev": "Returns the current implementation. * * NOTE: Only the admin can call this function. See {ProxyAdmin-getProxyImplementation}. * * TIP: To get this value clients can read directly from the storage slot shown below (specified by EIP1967) using the * https://eth.wiki/json-rpc/API#eth_getstorageat[`eth_getStorageAt`] RPC call. * `0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc`",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newAdmin",
+                "type": "address"
+            }
+        ],
+        "func": "function changeAdmin(address newAdmin) external virtual ifAdmin {\n        _changeAdmin(newAdmin);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Changes the admin of the proxy.",
+            "     *",
+            "     * Emits an {AdminChanged} event.",
+            "     *",
+            "     * NOTE: Only the admin can call this function. See {ProxyAdmin-changeProxyAdmin}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Changes the admin of the proxy.\n     *\n     * Emits an {AdminChanged} event.\n     *\n     * NOTE: Only the admin can call this function. See {ProxyAdmin-changeProxyAdmin}.\n     */\n",
+        "@dev": "Changes the admin of the proxy. * * Emits an {AdminChanged} event. * * NOTE: Only the admin can call this function. See {ProxyAdmin-changeProxyAdmin}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeTo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            }
+        ],
+        "func": "function upgradeTo(address newImplementation) external ifAdmin {\n        _upgradeToAndCall(newImplementation, bytes(\"\"), false);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Upgrade the implementation of the proxy.",
+            "     *",
+            "     * NOTE: Only the admin can call this function. See {ProxyAdmin-upgrade}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Upgrade the implementation of the proxy.\n     *\n     * NOTE: Only the admin can call this function. See {ProxyAdmin-upgrade}.\n     */\n",
+        "@dev": "Upgrade the implementation of the proxy. * * NOTE: Only the admin can call this function. See {ProxyAdmin-upgrade}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeToAndCall",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "name": "data",
+                "type": "bytes calldata"
+            }
+        ],
+        "func": "function upgradeToAndCall(address newImplementation, bytes calldata data) external payable ifAdmin {\n        _upgradeToAndCall(newImplementation, data, true);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Upgrade the implementation of the proxy, and then call a function from the new implementation as specified",
+            "     * by `data`, which should be an encoded function call. This is useful to initialize new storage variables in the",
+            "     * proxied contract.",
+            "     *",
+            "     * NOTE: Only the admin can call this function. See {ProxyAdmin-upgradeAndCall}.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Upgrade the implementation of the proxy, and then call a function from the new implementation as specified\n     * by `data`, which should be an encoded function call. This is useful to initialize new storage variables in the\n     * proxied contract.\n     *\n     * NOTE: Only the admin can call this function. See {ProxyAdmin-upgradeAndCall}.\n     */\n",
+        "@dev": "Upgrade the implementation of the proxy, and then call a function from the new implementation as specified * by `data`, which should be an encoded function call. This is useful to initialize new storage variables in the * proxied contract. * * NOTE: Only the admin can call this function. See {ProxyAdmin-upgradeAndCall}.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getProxyImplementation",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "proxy",
+                "type": "TransparentUpgradeableProxy"
+            }
+        ],
+        "func": "function getProxyImplementation(TransparentUpgradeableProxy proxy) public view virtual returns (address) {\n        // We need to manually run the static call since the getter cannot be flagged as view\n        // bytes4(keccak256(\"implementation()\")) == 0x5c60da1b\n        (bool success, bytes memory returndata) = address(proxy).staticcall(hex\"5c60da1b\");\n        require(success);\n        return abi.decode(returndata, (address));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current implementation of `proxy`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - This contract must be the admin of `proxy`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current implementation of `proxy`.\n     *\n     * Requirements:\n     *\n     * - This contract must be the admin of `proxy`.\n     */\n",
+        "@dev": "Returns the current implementation of `proxy`. * * Requirements: * * - This contract must be the admin of `proxy`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getProxyAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "proxy",
+                "type": "TransparentUpgradeableProxy"
+            }
+        ],
+        "func": "function getProxyAdmin(TransparentUpgradeableProxy proxy) public view virtual returns (address) {\n        // We need to manually run the static call since the getter cannot be flagged as view\n        // bytes4(keccak256(\"admin()\")) == 0xf851a440\n        (bool success, bytes memory returndata) = address(proxy).staticcall(hex\"f851a440\");\n        require(success);\n        return abi.decode(returndata, (address));\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the current admin of `proxy`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - This contract must be the admin of `proxy`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the current admin of `proxy`.\n     *\n     * Requirements:\n     *\n     * - This contract must be the admin of `proxy`.\n     */\n",
+        "@dev": "Returns the current admin of `proxy`. * * Requirements: * * - This contract must be the admin of `proxy`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeProxyAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "proxy",
+                "type": "TransparentUpgradeableProxy"
+            },
+            {
+                "name": "newAdmin",
+                "type": "address"
+            }
+        ],
+        "func": "function changeProxyAdmin(TransparentUpgradeableProxy proxy, address newAdmin) public virtual onlyOwner {\n        proxy.changeAdmin(newAdmin);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Changes the admin of `proxy` to `newAdmin`.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - This contract must be the current admin of `proxy`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Changes the admin of `proxy` to `newAdmin`.\n     *\n     * Requirements:\n     *\n     * - This contract must be the current admin of `proxy`.\n     */\n",
+        "@dev": "Changes the admin of `proxy` to `newAdmin`. * * Requirements: * * - This contract must be the current admin of `proxy`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgrade",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "proxy",
+                "type": "TransparentUpgradeableProxy"
+            },
+            {
+                "name": "implementation",
+                "type": "address"
+            }
+        ],
+        "func": "function upgrade(TransparentUpgradeableProxy proxy, address implementation) public virtual onlyOwner {\n        proxy.upgradeTo(implementation);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Upgrades `proxy` to `implementation`. See {TransparentUpgradeableProxy-upgradeTo}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - This contract must be the admin of `proxy`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Upgrades `proxy` to `implementation`. See {TransparentUpgradeableProxy-upgradeTo}.\n     *\n     * Requirements:\n     *\n     * - This contract must be the admin of `proxy`.\n     */\n",
+        "@dev": "Upgrades `proxy` to `implementation`. See {TransparentUpgradeableProxy-upgradeTo}. * * Requirements: * * - This contract must be the admin of `proxy`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeAndCall",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "proxy",
+                "type": "TransparentUpgradeableProxy"
+            },
+            {
+                "name": "implementation",
+                "type": "address"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function upgradeAndCall(TransparentUpgradeableProxy proxy, address implementation, bytes memory data) public payable virtual onlyOwner {\n        proxy.upgradeToAndCall{value: msg.value}(implementation, data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Upgrades `proxy` to `implementation` and calls a function on the new implementation. See",
+            "     * {TransparentUpgradeableProxy-upgradeToAndCall}.",
+            "     *",
+            "     * Requirements:",
+            "     *",
+            "     * - This contract must be the admin of `proxy`.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Upgrades `proxy` to `implementation` and calls a function on the new implementation. See\n     * {TransparentUpgradeableProxy-upgradeToAndCall}.\n     *\n     * Requirements:\n     *\n     * - This contract must be the admin of `proxy`.\n     */\n",
+        "@dev": "Upgrades `proxy` to `implementation` and calls a function on the new implementation. See * {TransparentUpgradeableProxy-upgradeToAndCall}. * * Requirements: * * - This contract must be the admin of `proxy`.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view virtual returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeTo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            }
+        ],
+        "func": "function upgradeTo(address newImplementation) external virtual {\n        _authorizeUpgrade(newImplementation);\n        _upgradeToAndCallSecure(newImplementation, bytes(\"\"), false);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeToAndCall",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "name": "data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function upgradeToAndCall(address newImplementation, bytes memory data) external payable virtual {\n        _authorizeUpgrade(newImplementation);\n        _upgradeToAndCallSecure(newImplementation, data, true);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

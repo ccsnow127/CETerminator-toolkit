@@ -1,0 +1,26 @@
+[
+    {
+        "transactions": 18,
+        "function_num": 1
+    },
+    {
+        "name": "hasEnded",
+        "visibility": "public",
+        "args": [],
+        "func": "function hasEnded() public constant returns (bool) {\n    return block.number > endBlock;\n  }",
+        "comments": [
+            "",
+            "  // @return true if crowdsale event has ended",
+            "  "
+        ],
+        "comt": "\n  // @return true if crowdsale event has ended\n  ",
+        "@return1": "true if crowdsale event has ended",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

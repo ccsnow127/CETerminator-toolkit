@@ -1,0 +1,497 @@
+[
+    {
+        "transactions": 169196,
+        "function_num": 20
+    },
+    {
+        "name": "Ownable",
+        "visibility": "public",
+        "args": [],
+        "func": "function Ownable() public { owner = msg.sender; }",
+        "comments": [
+            "/**",
+            "   * @dev The Ownable constructor sets the original `owner` of the contract to the sender",
+            "   * account.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev The Ownable constructor sets the original `owner` of the contract to the sender\n   * account.\n   */\n",
+        "@dev": "The Ownable constructor sets the original `owner` of the contract to the sender * account.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) onlyOwner public {\n    require(newOwner != address(0));\n    OwnershipTransferred(owner, newOwner);\n    owner = newOwner;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            "   * @param newOwner The address to transfer ownership to.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Allows the current owner to transfer control of the contract to a newOwner.\n   * @param newOwner The address to transfer ownership to.\n   */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner.",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) public returns (bool) {\n    require(_to != address(0));\n    require(_value <= balances[msg.sender]);\n\n    // SafeMath.sub will throw if there is not enough balance.\n    balances[msg.sender] = balances[msg.sender].sub(_value);\n    balances[_to] = balances[_to].add(_value);\n    Transfer(msg.sender, _to, _value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "  * @dev transfer token for a specified address",
+            "  * @param _to The address to transfer to.",
+            "  * @param _value The amount to be transferred.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev transfer token for a specified address\n  * @param _to The address to transfer to.\n  * @param _value The amount to be transferred.\n  */\n",
+        "@dev": "transfer token for a specified address",
+        "@param1": "_to The address to transfer to.",
+        "@param2": "_value The amount to be transferred.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public constant returns (uint256 balance) {\n    return balances[_owner];\n  }",
+        "comments": [
+            "/**",
+            "  * @dev Gets the balance of the specified address.",
+            "  * @param _owner The address to query the the balance of.",
+            "  * @return An uint256 representing the amount owned by the passed address.",
+            "  */",
+            ""
+        ],
+        "comt": "/**\n  * @dev Gets the balance of the specified address.\n  * @param _owner The address to query the the balance of.\n  * @return An uint256 representing the amount owned by the passed address.\n  */\n",
+        "@dev": "Gets the balance of the specified address.",
+        "@param1": "_owner The address to query the the balance of.",
+        "@return1": "An uint256 representing the amount owned by the passed address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {\n    require(_to != address(0));\n    require(_value <= balances[_from]);\n    require(_value <= allowed[_from][msg.sender]);\n\n    balances[_from] = balances[_from].sub(_value);\n    balances[_to] = balances[_to].add(_value);\n    allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);\n    Transfer(_from, _to, _value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Transfer tokens from one address to another",
+            "   * @param _from address The address which you want to send tokens from",
+            "   * @param _to address The address which you want to transfer to",
+            "   * @param _value uint256 the amount of tokens to be transferred",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Transfer tokens from one address to another\n   * @param _from address The address which you want to send tokens from\n   * @param _to address The address which you want to transfer to\n   * @param _value uint256 the amount of tokens to be transferred\n   */\n",
+        "@dev": "Transfer tokens from one address to another",
+        "@param1": "_from address The address which you want to send tokens from",
+        "@param2": "_to address The address which you want to transfer to",
+        "@param3": "_value uint256 the amount of tokens to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _value) public returns (bool) {\n    // mitigating the race condition\n    assert(allowed[msg.sender][_spender] == 0 || _value == 0);\n    \n    allowed[msg.sender][_spender] = _value;\n    Approval(msg.sender, _spender, _value);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+            "   *",
+            "   * Beware that changing an allowance with this method brings the risk that someone may use both the old",
+            "   * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this",
+            "   * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:",
+            "   * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+            "   * @param _spender The address which will spend the funds.",
+            "   * @param _value The amount of tokens to be spent.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\n   *\n   * Beware that changing an allowance with this method brings the risk that someone may use both the old\n   * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this\n   * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:\n   * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n   * @param _spender The address which will spend the funds.\n   * @param _value The amount of tokens to be spent.\n   */\n",
+        "@dev": "Approve the passed address to spend the specified amount of tokens on behalf of msg.sender. * * Beware that changing an allowance with this method brings the risk that someone may use both the old * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards: * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_value The amount of tokens to be spent.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {\n    return allowed[_owner][_spender];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Function to check the amount of tokens that an owner allowed to a spender.",
+            "   * @param _owner address The address which owns the funds.",
+            "   * @param _spender address The address which will spend the funds.",
+            "   * @return A uint256 specifying the amount of tokens still available for the spender.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Function to check the amount of tokens that an owner allowed to a spender.\n   * @param _owner address The address which owns the funds.\n   * @param _spender address The address which will spend the funds.\n   * @return A uint256 specifying the amount of tokens still available for the spender.\n   */\n",
+        "@dev": "Function to check the amount of tokens that an owner allowed to a spender.",
+        "@param1": "_owner address The address which owns the funds.",
+        "@param2": "_spender address The address which will spend the funds.",
+        "@return1": "A uint256 specifying the amount of tokens still available for the spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function increaseApproval (address _spender, uint _addedValue) public returns (bool success) {\n    allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);\n    Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval ",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function decreaseApproval (address _spender, uint _subtractedValue) public returns (bool success) {\n    uint oldValue = allowed[msg.sender][_spender];\n    if (_subtractedValue > oldValue) {\n      allowed[msg.sender][_spender] = 0;\n      } else {\n        allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);\n      }\n      Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n      return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address _to, uint256 _amount) onlyOwner canMint public returns (bool) {\n    totalSupply = totalSupply.add(_amount);\n    balances[_to] = balances[_to].add(_amount);\n    Mint(_to, _amount);\n    Transfer(0x0, _to, _amount);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finishMinting",
+        "visibility": "public",
+        "args": [],
+        "func": "function finishMinting() onlyOwner public returns (bool) {\n    mintingFinished = true;\n    MintFinished();\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "TracToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_wallet",
+                "type": "address"
+            },
+            {
+                "name": "_teamAndFoundersWallet",
+                "type": "address"
+            },
+            {
+                "name": "_advisorsAndPreICO",
+                "type": "address"
+            }
+        ],
+        "func": "function TracToken(address _wallet,address _teamAndFoundersWallet,address _advisorsAndPreICO) public {\n    require(_wallet!=0x0);\n    require(_teamAndFoundersWallet!=0x0);\n    require(_advisorsAndPreICO!=0x0);\n    wallet = _wallet;\n    teamAndFoundersWallet = _teamAndFoundersWallet;\n    advisorsAndPreICO = _advisorsAndPreICO;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint256 value) canTransfer public returns (bool) {\n    return super.transferFrom(from, to, value);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address to, uint256 value) canTransfer public returns (bool) {\n    return super.transfer(to, value);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contributor",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address contributor, uint256 amount) onlyOwner public returns (bool) {\n    return super.mint(contributor, amount);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mintMany",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contributors",
+                "type": "address[]"
+            },
+            {
+                "name": "amounts",
+                "type": "uint256[]"
+            }
+        ],
+        "func": "function mintMany(address[] contributors, uint256[] amounts) onlyOwner public returns (bool) {\n     address contributor;\n     uint256 amount;\n     require(contributors.length == amounts.length);\n\n     for (uint i = 0; i < contributors.length; i++) {\n      contributor = contributors[i];\n      amount = amounts[i];\n      require(mint(contributor, amount));\n    }\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "endMinting",
+        "visibility": "public",
+        "args": [],
+        "func": "function endMinting() onlyOwner public returns (bool) {\n    require(!mintingFinished);\n    TransferAllowed(true);\n    return super.finishMinting();\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawTokenToFounders",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdrawTokenToFounders() public {\n  \n    if (now > startTime + 720 days && founderAmounts[7]>0){\n      this.transfer(teamAndFoundersWallet, founderAmounts[7]);\n      founderAmounts[7] = 0;\n    }\n\n    if (now > startTime + 630 days && founderAmounts[6]>0){\n      this.transfer(teamAndFoundersWallet, founderAmounts[6]);\n      founderAmounts[6] = 0;\n    }\n    if (now > startTime + 540 days && founderAmounts[5]>0){\n      this.transfer(teamAndFoundersWallet, founderAmounts[5]);\n      founderAmounts[5] = 0;\n    }\n    if (now > startTime + 450 days && founderAmounts[4]>0){\n      this.transfer(teamAndFoundersWallet, founderAmounts[4]);\n      founderAmounts[4] = 0;\n    }\n    if (now > startTime + 360 days&& founderAmounts[3]>0){\n      this.transfer(teamAndFoundersWallet, founderAmounts[3]);\n      founderAmounts[3] = 0;\n    }\n    if (now > startTime + 270 days && founderAmounts[2]>0){\n      this.transfer(teamAndFoundersWallet, founderAmounts[2]);\n      founderAmounts[2] = 0;\n    }\n    if (now > startTime + 180 days && founderAmounts[1]>0){\n      this.transfer(teamAndFoundersWallet, founderAmounts[1]);\n      founderAmounts[1] = 0;\n    }\n    if (now > startTime + 90 days && founderAmounts[0]>0){\n      this.transfer(teamAndFoundersWallet, founderAmounts[0]);\n      founderAmounts[0] = 0;\n    }\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawTokensToAdvisors",
+        "visibility": "public",
+        "args": [],
+        "func": "function withdrawTokensToAdvisors() public {\n    if (now > startTime + 180 days && preicoAndAdvisorsAmounts[1]>0){\n      this.transfer(advisorsAndPreICO, preicoAndAdvisorsAmounts[1]);\n      preicoAndAdvisorsAmounts[1] = 0;\n    }\n\n    if (now > startTime + 90 days && preicoAndAdvisorsAmounts[0]>0){\n      this.transfer(advisorsAndPreICO, preicoAndAdvisorsAmounts[0]);\n      preicoAndAdvisorsAmounts[0] = 0;\n    }\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allocateRestOfTokens",
+        "visibility": "public",
+        "args": [],
+        "func": "function allocateRestOfTokens() onlyOwner public{\n    require(totalSupply > TOTAL_NUM_TOKENS.div(2));\n    require(totalSupply < TOTAL_NUM_TOKENS);\n    require(!mintingFinished);\n    mint(wallet, bountyReward);\n    mint(advisorsAndPreICO,  preicoAndAdvisors.div(5));\n    mint(wallet, liquidityPool);\n    mint(wallet, futureDevelopment);\n    mint(this, teamAndFounders.sub(CORRECTION));\n    mint(this, preicoAndAdvisors.mul(4).div(5));\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

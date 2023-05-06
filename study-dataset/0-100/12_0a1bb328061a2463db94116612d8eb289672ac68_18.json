@@ -1,0 +1,293 @@
+[
+    {
+        "transactions": 18,
+        "function_num": 12
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Returns the address of the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Returns the address of the current owner.\n     */\n",
+        "@dev": "Returns the address of the current owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public virtual onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Leaves the contract without owner. It will not be possible to call",
+            "     * `onlyOwner` functions anymore. Can only be called by the current owner.",
+            "     *",
+            "     * NOTE: Renouncing ownership will leave the contract without an owner,",
+            "     * thereby removing any functionality that is only available to the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby removing any functionality that is only available to the owner.\n     */\n",
+        "@dev": "Leaves the contract without owner. It will not be possible to call * `onlyOwner` functions anymore. Can only be called by the current owner. * * NOTE: Renouncing ownership will leave the contract without an owner, * thereby removing any functionality that is only available to the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public virtual onlyOwner {\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\n        emit OwnershipTransferred(_owner, newOwner);\n        _owner = newOwner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers ownership of the contract to a new account (`newOwner`).",
+            "     * Can only be called by the current owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n",
+        "@dev": "Transfers ownership of the contract to a new account (`newOwner`). * Can only be called by the current owner.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "beneficiary",
+        "visibility": "public",
+        "args": [],
+        "func": "function beneficiary() public view returns (address) {\n        return _beneficiary;\n    }",
+        "comments": [
+            "/**",
+            "     * @return the beneficiary of the tokens.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return the beneficiary of the tokens.\n     */\n",
+        "@return1": "the beneficiary of the tokens.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "cliff",
+        "visibility": "public",
+        "args": [],
+        "func": "function cliff() public view returns (uint256) {\n        return _cliff;\n    }",
+        "comments": [
+            "/**",
+            "     * @return the cliff time of the token vesting.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return the cliff time of the token vesting.\n     */\n",
+        "@return1": "the cliff time of the token vesting.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "start",
+        "visibility": "public",
+        "args": [],
+        "func": "function start() public view returns (uint256) {\n        return _start;\n    }",
+        "comments": [
+            "/**",
+            "     * @return the start time of the token vesting.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return the start time of the token vesting.\n     */\n",
+        "@return1": "the start time of the token vesting.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "duration",
+        "visibility": "public",
+        "args": [],
+        "func": "function duration() public view returns (uint256) {\n        return _duration;\n    }",
+        "comments": [
+            "/**",
+            "     * @return the duration of the token vesting.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return the duration of the token vesting.\n     */\n",
+        "@return1": "the duration of the token vesting.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revocable",
+        "visibility": "public",
+        "args": [],
+        "func": "function revocable() public view returns (bool) {\n        return _revocable;\n    }",
+        "comments": [
+            "/**",
+            "     * @return true if the vesting is revocable.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return true if the vesting is revocable.\n     */\n",
+        "@return1": "true if the vesting is revocable.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "released",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "func": "function released(address token) public view returns (uint256) {\n        return _released[token];\n    }",
+        "comments": [
+            "/**",
+            "     * @return the amount of the token released.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return the amount of the token released.\n     */\n",
+        "@return1": "the amount of the token released.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revoked",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "func": "function revoked(address token) public view returns (bool) {\n        return _revoked[token];\n    }",
+        "comments": [
+            "/**",
+            "     * @return true if the token is revoked.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return true if the token is revoked.\n     */\n",
+        "@return1": "true if the token is revoked.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "release",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            }
+        ],
+        "func": "function release(IERC20 token) public {\n        uint256 unreleased = _releasableAmount(token);\n\n        require(unreleased > 0, \"TokenVesting: no tokens are due\");\n\n        _released[address(token)] = _released[address(token)].add(unreleased);\n\n        token.safeTransfer(_beneficiary, unreleased);\n\n        emit TokensReleased(address(token), unreleased);\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Transfers vested tokens to beneficiary.",
+            "     * @param token ERC20 token which is being vested",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Transfers vested tokens to beneficiary.\n     * @param token ERC20 token which is being vested\n     */\n",
+        "@notice": "Transfers vested tokens to beneficiary.",
+        "@param1": "token ERC20 token which is being vested",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "revoke",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "token",
+                "type": "IERC20"
+            }
+        ],
+        "func": "function revoke(IERC20 token) public onlyOwner {\n        require(_revocable, \"TokenVesting: cannot revoke\");\n        require(!_revoked[address(token)], \"TokenVesting: token already revoked\");\n\n        uint256 balance = token.balanceOf(address(this));\n\n        uint256 unreleased = _releasableAmount(token);\n        uint256 refund = balance.sub(unreleased);\n\n        _revoked[address(token)] = true;\n\n        token.safeTransfer(owner(), refund);\n\n        emit TokenVestingRevoked(address(token));\n    }",
+        "comments": [
+            "/**",
+            "     * @notice Allows the owner to revoke the vesting. Tokens already vested",
+            "     * remain in the contract, the rest are returned to the owner.",
+            "     * @param token ERC20 token which is being vested",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @notice Allows the owner to revoke the vesting. Tokens already vested\n     * remain in the contract, the rest are returned to the owner.\n     * @param token ERC20 token which is being vested\n     */\n",
+        "@notice": "Allows the owner to revoke the vesting. Tokens already vested * remain in the contract, the rest are returned to the owner.",
+        "@param1": "token ERC20 token which is being vested",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 1,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,153 @@
+[
+    {
+        "transactions": 1232814,
+        "function_num": 6
+    },
+    {
+        "name": "implementation",
+        "visibility": "public",
+        "args": [],
+        "func": "function implementation() public view returns (address impl) {\n bytes32 position = implementationPosition;\n assembly {\n impl := sload(position)\n }\n }",
+        "comments": [
+            "/**",
+            " * @dev Tells the address of the current implementation",
+            " * @return address of the current implementation",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Tells the address of the current implementation\n * @return address of the current implementation\n */\n",
+        "@dev": "Tells the address of the current implementation",
+        "@return1": "address of the current implementation",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "proxyOwner",
+        "visibility": "public",
+        "args": [],
+        "func": "function proxyOwner() public view returns (address owner) {\n bytes32 position = proxyOwnerPosition;\n assembly {\n owner := sload(position)\n }\n }",
+        "comments": [
+            "/**",
+            " * @dev Tells the address of the owner",
+            " * @return the address of the owner",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Tells the address of the owner\n * @return the address of the owner\n */\n",
+        "@dev": "Tells the address of the owner",
+        "@return1": "the address of the owner",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pendingProxyOwner",
+        "visibility": "public",
+        "args": [],
+        "func": "function pendingProxyOwner() public view returns (address pendingOwner) {\n bytes32 position = pendingProxyOwnerPosition;\n assembly {\n pendingOwner := sload(position)\n }\n }",
+        "comments": [
+            "/**",
+            " * @dev Tells the address of the owner",
+            " * @return the address of the owner",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Tells the address of the owner\n * @return the address of the owner\n */\n",
+        "@dev": "Tells the address of the owner",
+        "@return1": "the address of the owner",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferProxyOwnership",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferProxyOwnership(address newOwner) external onlyProxyOwner {\n require(newOwner != address(0));\n _setPendingUpgradeabilityOwner(newOwner);\n emit NewPendingOwner(proxyOwner(), newOwner);\n }",
+        "comments": [
+            "/**",
+            " * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            " *changes the pending owner to newOwner. But doesn't actually transfer",
+            " * @param newOwner The address to transfer ownership to.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Allows the current owner to transfer control of the contract to a newOwner.\n *changes the pending owner to newOwner. But doesn't actually transfer\n * @param newOwner The address to transfer ownership to.\n */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner. *changes the pending owner to newOwner. But doesn't actually transfer",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimProxyOwnership",
+        "visibility": "external",
+        "args": [],
+        "func": "function claimProxyOwnership() external onlyPendingProxyOwner {\n emit ProxyOwnershipTransferred(proxyOwner(), pendingProxyOwner());\n _setUpgradeabilityOwner(pendingProxyOwner());\n _setPendingUpgradeabilityOwner(address(0));\n }",
+        "comments": [
+            "/**",
+            " * @dev Allows the pendingOwner to claim ownership of the proxy",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Allows the pendingOwner to claim ownership of the proxy\n */\n",
+        "@dev": "Allows the pendingOwner to claim ownership of the proxy",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "upgradeTo",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "implementation",
+                "type": "address"
+            }
+        ],
+        "func": "function upgradeTo(address implementation) external onlyProxyOwner {\n _upgradeTo(implementation);\n }",
+        "comments": [
+            "/**",
+            " * @dev Allows the proxy owner to upgrade the current version of the proxy.",
+            " * @param implementation representing the address of the new implementation to be set.",
+            " */",
+            ""
+        ],
+        "comt": "/**\n * @dev Allows the proxy owner to upgrade the current version of the proxy.\n * @param implementation representing the address of the new implementation to be set.\n */\n",
+        "@dev": "Allows the proxy owner to upgrade the current version of the proxy.",
+        "@param1": "implementation representing the address of the new implementation to be set.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

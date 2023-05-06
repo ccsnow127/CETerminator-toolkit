@@ -1,0 +1,1325 @@
+[
+    {
+        "transactions": 4097,
+        "function_num": 53
+    },
+    {
+        "name": "mint",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_by",
+                "type": "address"
+            }
+        ],
+        "func": "function mint(\n        address _to,\n        uint256 _projectId,\n        address _by\n    ) external returns (uint256 _tokenId) {\n        require(\n            isMintWhitelisted[msg.sender],\n            \"Must mint from whitelisted minter contract.\"\n        );\n        require(\n            projects[_projectId].invocations.add(1) <=\n                projects[_projectId].maxInvocations,\n            \"Must not exceed max invocations\"\n        );\n        require(\n            projects[_projectId].active ||\n                _by == projectIdToArtistAddress[_projectId],\n            \"Project must exist and be active\"\n        );\n        require(\n            !projects[_projectId].paused ||\n                _by == projectIdToArtistAddress[_projectId],\n            \"Purchases are paused.\"\n        );\n\n        uint256 tokenId = _mintToken(_to, _projectId);\n\n        return tokenId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateAdmin",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_adminAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function updateAdmin(address _adminAddress) public onlyAdmin {\n        admin = _adminAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateRenderProviderAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_renderProviderAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function updateRenderProviderAddress(address _renderProviderAddress)\n        public\n        onlyAdmin\n    {\n        renderProviderAddress = _renderProviderAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateRenderProviderPercentage",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_renderProviderPercentage",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateRenderProviderPercentage(uint256 _renderProviderPercentage)\n        public\n        onlyAdmin\n    {\n        require(_renderProviderPercentage <= 25, \"Max of 25%\");\n        renderProviderPercentage = _renderProviderPercentage;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addWhitelisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function addWhitelisted(address _address) public onlyAdmin {\n        isWhitelisted[_address] = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeWhitelisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function removeWhitelisted(address _address) public onlyAdmin {\n        isWhitelisted[_address] = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addMintWhitelisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function addMintWhitelisted(address _address) public onlyAdmin {\n        isMintWhitelisted[_address] = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeMintWhitelisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "func": "function removeMintWhitelisted(address _address) public onlyAdmin {\n        isMintWhitelisted[_address] = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateRandomizerAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_randomizerAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function updateRandomizerAddress(address _randomizerAddress)\n        public\n        onlyWhitelisted\n    {\n        randomizerContract = IRandomizer(_randomizerAddress);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectIsLocked",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectIsLocked(uint256 _projectId)\n        public\n        onlyWhitelisted\n        onlyUnlocked(_projectId)\n    {\n        projects[_projectId].locked = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectIsActive",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectIsActive(uint256 _projectId) public onlyWhitelisted {\n        projects[_projectId].active = !projects[_projectId].active;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectArtistAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_artistAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function updateProjectArtistAddress(\n        uint256 _projectId,\n        address _artistAddress\n    ) public onlyArtistOrWhitelisted(_projectId) {\n        projectIdToArtistAddress[_projectId] = _artistAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "toggleProjectIsPaused",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function toggleProjectIsPaused(uint256 _projectId)\n        public\n        onlyArtist(_projectId)\n    {\n        projects[_projectId].paused = !projects[_projectId].paused;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addProject",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectName",
+                "type": "string memory"
+            },
+            {
+                "name": "_artistAddress",
+                "type": "address"
+            },
+            {
+                "name": "_pricePerTokenInWei",
+                "type": "uint256"
+            }
+        ],
+        "func": "function addProject(\n        string memory _projectName,\n        address _artistAddress,\n        uint256 _pricePerTokenInWei\n    ) public onlyWhitelisted {\n        uint256 projectId = nextProjectId;\n        projectIdToArtistAddress[projectId] = _artistAddress;\n        projects[projectId].name = _projectName;\n        projectIdToCurrencySymbol[projectId] = \"ETH\";\n        projectIdToPricePerTokenInWei[projectId] = _pricePerTokenInWei;\n        projects[projectId].paused = true;\n        projects[projectId].maxInvocations = ONE_MILLION;\n        nextProjectId = nextProjectId.add(1);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectCurrencyInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_currencySymbol",
+                "type": "string memory"
+            },
+            {
+                "name": "_currencyAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function updateProjectCurrencyInfo(\n        uint256 _projectId,\n        string memory _currencySymbol,\n        address _currencyAddress\n    ) public onlyArtist(_projectId) {\n        projectIdToCurrencySymbol[_projectId] = _currencySymbol;\n        projectIdToCurrencyAddress[_projectId] = _currencyAddress;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectPricePerTokenInWei",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_pricePerTokenInWei",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateProjectPricePerTokenInWei(\n        uint256 _projectId,\n        uint256 _pricePerTokenInWei\n    ) public onlyArtist(_projectId) {\n        projectIdToPricePerTokenInWei[_projectId] = _pricePerTokenInWei;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectName",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectName",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectName(uint256 _projectId, string memory _projectName)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrWhitelisted(_projectId)\n    {\n        projects[_projectId].name = _projectName;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectArtistName",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectArtistName",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectArtistName(\n        uint256 _projectId,\n        string memory _projectArtistName\n    ) public onlyUnlocked(_projectId) onlyArtistOrWhitelisted(_projectId) {\n        projects[_projectId].artist = _projectArtistName;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectAdditionalPayeeInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_additionalPayee",
+                "type": "address"
+            },
+            {
+                "name": "_additionalPayeePercentage",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateProjectAdditionalPayeeInfo(\n        uint256 _projectId,\n        address _additionalPayee,\n        uint256 _additionalPayeePercentage\n    ) public onlyArtist(_projectId) {\n        require(_additionalPayeePercentage <= 100, \"Max of 100%\");\n        projectIdToAdditionalPayee[_projectId] = _additionalPayee;\n        projectIdToAdditionalPayeePercentage[\n            _projectId\n        ] = _additionalPayeePercentage;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectSecondaryMarketRoyaltyPercentage",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_secondMarketRoyalty",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateProjectSecondaryMarketRoyaltyPercentage(\n        uint256 _projectId,\n        uint256 _secondMarketRoyalty\n    ) public onlyArtist(_projectId) {\n        require(_secondMarketRoyalty <= 100, \"Max of 100%\");\n        projectIdToSecondaryMarketRoyaltyPercentage[\n            _projectId\n        ] = _secondMarketRoyalty;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectDescription",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectDescription",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectDescription(\n        uint256 _projectId,\n        string memory _projectDescription\n    ) public onlyArtist(_projectId) {\n        projects[_projectId].description = _projectDescription;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectWebsite",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectWebsite",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectWebsite(\n        uint256 _projectId,\n        string memory _projectWebsite\n    ) public onlyArtist(_projectId) {\n        projects[_projectId].website = _projectWebsite;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectLicense",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectLicense",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectLicense(\n        uint256 _projectId,\n        string memory _projectLicense\n    ) public onlyUnlocked(_projectId) onlyArtistOrWhitelisted(_projectId) {\n        projects[_projectId].license = _projectLicense;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectMaxInvocations",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_maxInvocations",
+                "type": "uint256"
+            }
+        ],
+        "func": "function updateProjectMaxInvocations(\n        uint256 _projectId,\n        uint256 _maxInvocations\n    ) public onlyArtist(_projectId) {\n        require(\n            (!projects[_projectId].locked ||\n                _maxInvocations < projects[_projectId].maxInvocations),\n            \"Only if unlocked\"\n        );\n        require(\n            _maxInvocations > projects[_projectId].invocations,\n            \"You must set max invocations greater than current invocations\"\n        );\n        require(_maxInvocations <= ONE_MILLION, \"Cannot exceed 1000000\");\n        projects[_projectId].maxInvocations = _maxInvocations;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addProjectScript",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_script",
+                "type": "string memory"
+            }
+        ],
+        "func": "function addProjectScript(uint256 _projectId, string memory _script)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrWhitelisted(_projectId)\n    {\n        projects[_projectId].scripts[\n            projects[_projectId].scriptCount\n        ] = _script;\n        projects[_projectId].scriptCount = projects[_projectId].scriptCount.add(\n            1\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectScript",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_scriptId",
+                "type": "uint256"
+            },
+            {
+                "name": "_script",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectScript(\n        uint256 _projectId,\n        uint256 _scriptId,\n        string memory _script\n    ) public onlyUnlocked(_projectId) onlyArtistOrWhitelisted(_projectId) {\n        require(\n            _scriptId < projects[_projectId].scriptCount,\n            \"scriptId out of range\"\n        );\n        projects[_projectId].scripts[_scriptId] = _script;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeProjectLastScript",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function removeProjectLastScript(uint256 _projectId)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrWhitelisted(_projectId)\n    {\n        require(\n            projects[_projectId].scriptCount > 0,\n            \"there are no scripts to remove\"\n        );\n        delete projects[_projectId].scripts[\n            projects[_projectId].scriptCount - 1\n        ];\n        projects[_projectId].scriptCount = projects[_projectId].scriptCount.sub(\n            1\n        );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectScriptJSON",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_projectScriptJSON",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectScriptJSON(\n        uint256 _projectId,\n        string memory _projectScriptJSON\n    ) public onlyUnlocked(_projectId) onlyArtistOrWhitelisted(_projectId) {\n        projects[_projectId].scriptJSON = _projectScriptJSON;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectIpfsHash",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_ipfsHash",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectIpfsHash(uint256 _projectId, string memory _ipfsHash)\n        public\n        onlyUnlocked(_projectId)\n        onlyArtistOrWhitelisted(_projectId)\n    {\n        projects[_projectId].ipfsHash = _ipfsHash;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateProjectBaseURI",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_newBaseURI",
+                "type": "string memory"
+            }
+        ],
+        "func": "function updateProjectBaseURI(uint256 _projectId, string memory _newBaseURI)\n        public\n        onlyArtist(_projectId)\n    {\n        projects[_projectId].projectBaseURI = _newBaseURI;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectDetails",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectDetails(uint256 _projectId)\n        public\n        view\n        returns (\n            string memory projectName,\n            string memory artist,\n            string memory description,\n            string memory website,\n            string memory license\n        )\n    {\n        projectName = projects[_projectId].name;\n        artist = projects[_projectId].artist;\n        description = projects[_projectId].description;\n        website = projects[_projectId].website;\n        license = projects[_projectId].license;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectTokenInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectTokenInfo(uint256 _projectId)\n        public\n        view\n        returns (\n            address artistAddress,\n            uint256 pricePerTokenInWei,\n            uint256 invocations,\n            uint256 maxInvocations,\n            bool active,\n            address additionalPayee,\n            uint256 additionalPayeePercentage,\n            string memory currency,\n            address currencyAddress\n        )\n    {\n        artistAddress = projectIdToArtistAddress[_projectId];\n        pricePerTokenInWei = projectIdToPricePerTokenInWei[_projectId];\n        invocations = projects[_projectId].invocations;\n        maxInvocations = projects[_projectId].maxInvocations;\n        active = projects[_projectId].active;\n        additionalPayee = projectIdToAdditionalPayee[_projectId];\n        additionalPayeePercentage = projectIdToAdditionalPayeePercentage[\n            _projectId\n        ];\n        currency = projectIdToCurrencySymbol[_projectId];\n        currencyAddress = projectIdToCurrencyAddress[_projectId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectScriptInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectScriptInfo(uint256 _projectId)\n        public\n        view\n        returns (\n            string memory scriptJSON,\n            uint256 scriptCount,\n            string memory ipfsHash,\n            bool locked,\n            bool paused\n        )\n    {\n        scriptJSON = projects[_projectId].scriptJSON;\n        scriptCount = projects[_projectId].scriptCount;\n        ipfsHash = projects[_projectId].ipfsHash;\n        locked = projects[_projectId].locked;\n        paused = projects[_projectId].paused;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectScriptByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectScriptByIndex(uint256 _projectId, uint256 _index)\n        public\n        view\n        returns (string memory)\n    {\n        return projects[_projectId].scripts[_index];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "projectURIInfo",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_projectId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function projectURIInfo(uint256 _projectId)\n        public\n        view\n        returns (string memory projectBaseURI)\n    {\n        projectBaseURI = projects[_projectId].projectBaseURI;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokensOfOwner",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function tokensOfOwner(address owner)\n        external\n        view\n        returns (uint256[] memory)\n    {\n        return _tokensOfOwner(owner);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getRoyaltyData",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getRoyaltyData(uint256 _tokenId)\n        public\n        view\n        returns (\n            address artistAddress,\n            address additionalPayee,\n            uint256 additionalPayeePercentage,\n            uint256 royaltyFeeByID\n        )\n    {\n        artistAddress = projectIdToArtistAddress[tokenIdToProjectId[_tokenId]];\n        additionalPayee = projectIdToAdditionalPayee[\n            tokenIdToProjectId[_tokenId]\n        ];\n        additionalPayeePercentage = projectIdToAdditionalPayeePercentage[\n            tokenIdToProjectId[_tokenId]\n        ];\n        royaltyFeeByID = projectIdToSecondaryMarketRoyaltyPercentage[\n            tokenIdToProjectId[_tokenId]\n        ];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenURI",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenURI(uint256 _tokenId)\n        external\n        view\n        onlyValidTokenId(_tokenId)\n        returns (string memory)\n    {\n        return\n            Strings.strConcat(\n                projects[tokenIdToProjectId[_tokenId]].projectBaseURI,\n                Strings.uint2str(_tokenId)\n            );\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "external",
+        "args": [],
+        "func": "function name() external view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the token name",
+            "     * @return string representing the token name",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the token name\n     * @return string representing the token name\n     */\n",
+        "@dev": "Gets the token name",
+        "@return1": "string representing the token name",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "external",
+        "args": [],
+        "func": "function symbol() external view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the token symbol",
+            "     * @return string representing the token symbol",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the token symbol\n     * @return string representing the token symbol\n     */\n",
+        "@dev": "Gets the token symbol",
+        "@return1": "string representing the token symbol",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "supportsInterface",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "func": "function supportsInterface(bytes4 interfaceId) external view returns (bool) {\n        return _supportedInterfaces[interfaceId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev See {IERC165-supportsInterface}.",
+            "     *",
+            "     * Time complexity O(1), guaranteed to always use less than 30 000 gas.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev See {IERC165-supportsInterface}.\n     *\n     * Time complexity O(1), guaranteed to always use less than 30 000 gas.\n     */\n",
+        "@dev": "See {IERC165-supportsInterface}. * * Time complexity O(1), guaranteed to always use less than 30 000 gas.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view returns (uint256) {\n        require(owner != address(0), \"ERC721: balance query for the zero address\");\n\n        return _ownedTokensCount[owner].current();\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the balance of the specified address.",
+            "     * @param owner address to query the balance of",
+            "     * @return uint256 representing the amount owned by the passed address",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the balance of the specified address.\n     * @param owner address to query the balance of\n     * @return uint256 representing the amount owned by the passed address\n     */\n",
+        "@dev": "Gets the balance of the specified address.",
+        "@param1": "owner address to query the balance of",
+        "@return1": "uint256 representing the amount owned by the passed address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "ownerOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function ownerOf(uint256 tokenId) public view returns (address) {\n        address owner = _tokenOwner[tokenId];\n        require(owner != address(0), \"ERC721: owner query for nonexistent token\");\n\n        return owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the owner of the specified token ID.",
+            "     * @param tokenId uint256 ID of the token to query the owner of",
+            "     * @return address currently marked as the owner of the given token ID",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the owner of the specified token ID.\n     * @param tokenId uint256 ID of the token to query the owner of\n     * @return address currently marked as the owner of the given token ID\n     */\n",
+        "@dev": "Gets the owner of the specified token ID.",
+        "@param1": "tokenId uint256 ID of the token to query the owner of",
+        "@return1": "address currently marked as the owner of the given token ID",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address to, uint256 tokenId) public {\n        address owner = ownerOf(tokenId);\n        require(to != owner, \"ERC721: approval to current owner\");\n\n        require(_msgSender() == owner || isApprovedForAll(owner, _msgSender()),\n            \"ERC721: approve caller is not owner nor approved for all\"\n        );\n\n        _tokenApprovals[tokenId] = to;\n        emit Approval(owner, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Approves another address to transfer the given token ID",
+            "     * The zero address indicates there is no approved address.",
+            "     * There can only be one approved address per token at a given time.",
+            "     * Can only be called by the token owner or an approved operator.",
+            "     * @param to address to be approved for the given token ID",
+            "     * @param tokenId uint256 ID of the token to be approved",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Approves another address to transfer the given token ID\n     * The zero address indicates there is no approved address.\n     * There can only be one approved address per token at a given time.\n     * Can only be called by the token owner or an approved operator.\n     * @param to address to be approved for the given token ID\n     * @param tokenId uint256 ID of the token to be approved\n     */\n",
+        "@dev": "Approves another address to transfer the given token ID * The zero address indicates there is no approved address. * There can only be one approved address per token at a given time. * Can only be called by the token owner or an approved operator.",
+        "@param1": "to address to be approved for the given token ID",
+        "@param2": "tokenId uint256 ID of the token to be approved",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getApproved",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function getApproved(uint256 tokenId) public view returns (address) {\n        require(_exists(tokenId), \"ERC721: approved query for nonexistent token\");\n\n        return _tokenApprovals[tokenId];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the approved address for a token ID, or zero if no address set",
+            "     * Reverts if the token ID does not exist.",
+            "     * @param tokenId uint256 ID of the token to query the approval of",
+            "     * @return address currently approved for the given token ID",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the approved address for a token ID, or zero if no address set\n     * Reverts if the token ID does not exist.\n     * @param tokenId uint256 ID of the token to query the approval of\n     * @return address currently approved for the given token ID\n     */\n",
+        "@dev": "Gets the approved address for a token ID, or zero if no address set * Reverts if the token ID does not exist.",
+        "@param1": "tokenId uint256 ID of the token to query the approval of",
+        "@return1": "address currently approved for the given token ID",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setApprovalForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "func": "function setApprovalForAll(address to, bool approved) public {\n        require(to != _msgSender(), \"ERC721: approve to caller\");\n\n        _operatorApprovals[_msgSender()][to] = approved;\n        emit ApprovalForAll(_msgSender(), to, approved);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Sets or unsets the approval of a given operator",
+            "     * An operator is allowed to transfer all tokens of the sender on their behalf.",
+            "     * @param to operator address to set the approval",
+            "     * @param approved representing the status of the approval to be set",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Sets or unsets the approval of a given operator\n     * An operator is allowed to transfer all tokens of the sender on their behalf.\n     * @param to operator address to set the approval\n     * @param approved representing the status of the approval to be set\n     */\n",
+        "@dev": "Sets or unsets the approval of a given operator * An operator is allowed to transfer all tokens of the sender on their behalf.",
+        "@param1": "to operator address to set the approval",
+        "@param2": "approved representing the status of the approval to be set",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isApprovedForAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "func": "function isApprovedForAll(address owner, address operator) public view returns (bool) {\n        return _operatorApprovals[owner][operator];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Tells whether an operator is approved by a given owner.",
+            "     * @param owner owner address which you want to query the approval of",
+            "     * @param operator operator address which you want to query the approval of",
+            "     * @return bool whether the given operator is approved by the given owner",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Tells whether an operator is approved by a given owner.\n     * @param owner owner address which you want to query the approval of\n     * @param operator operator address which you want to query the approval of\n     * @return bool whether the given operator is approved by the given owner\n     */\n",
+        "@dev": "Tells whether an operator is approved by a given owner.",
+        "@param1": "owner owner address which you want to query the approval of",
+        "@param2": "operator operator address which you want to query the approval of",
+        "@return1": "bool whether the given operator is approved by the given owner",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint256 tokenId) public {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n\n        _transferFrom(from, to, tokenId);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfers the ownership of a given token ID to another address.",
+            "     * Usage of this method is discouraged, use {safeTransferFrom} whenever possible.",
+            "     * Requires the msg.sender to be the owner, approved, or operator.",
+            "     * @param from current owner of the token",
+            "     * @param to address to receive the ownership of the given token ID",
+            "     * @param tokenId uint256 ID of the token to be transferred",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfers the ownership of a given token ID to another address.\n     * Usage of this method is discouraged, use {safeTransferFrom} whenever possible.\n     * Requires the msg.sender to be the owner, approved, or operator.\n     * @param from current owner of the token\n     * @param to address to receive the ownership of the given token ID\n     * @param tokenId uint256 ID of the token to be transferred\n     */\n",
+        "@dev": "Transfers the ownership of a given token ID to another address. * Usage of this method is discouraged, use {safeTransferFrom} whenever possible. * Requires the msg.sender to be the owner, approved, or operator.",
+        "@param1": "from current owner of the token",
+        "@param2": "to address to receive the ownership of the given token ID",
+        "@param3": "tokenId uint256 ID of the token to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "func": "function safeTransferFrom(address from, address to, uint256 tokenId) public {\n        safeTransferFrom(from, to, tokenId, \"\");\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Safely transfers the ownership of a given token ID to another address",
+            "     * If the target address is a contract, it must implement {IERC721Receiver-onERC721Received},",
+            "     * which is called upon a safe transfer, and return the magic value",
+            "     * `bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`; otherwise,",
+            "     * the transfer is reverted.",
+            "     * Requires the msg.sender to be the owner, approved, or operator",
+            "     * @param from current owner of the token",
+            "     * @param to address to receive the ownership of the given token ID",
+            "     * @param tokenId uint256 ID of the token to be transferred",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Safely transfers the ownership of a given token ID to another address\n     * If the target address is a contract, it must implement {IERC721Receiver-onERC721Received},\n     * which is called upon a safe transfer, and return the magic value\n     * `bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`; otherwise,\n     * the transfer is reverted.\n     * Requires the msg.sender to be the owner, approved, or operator\n     * @param from current owner of the token\n     * @param to address to receive the ownership of the given token ID\n     * @param tokenId uint256 ID of the token to be transferred\n     */\n",
+        "@dev": "Safely transfers the ownership of a given token ID to another address * If the target address is a contract, it must implement {IERC721Receiver-onERC721Received}, * which is called upon a safe transfer, and return the magic value * `bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`; otherwise, * the transfer is reverted. * Requires the msg.sender to be the owner, approved, or operator",
+        "@param1": "from current owner of the token",
+        "@param2": "to address to receive the ownership of the given token ID",
+        "@param3": "tokenId uint256 ID of the token to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "safeTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes memory"
+            }
+        ],
+        "func": "function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public {\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721: transfer caller is not owner nor approved\");\n        _safeTransferFrom(from, to, tokenId, _data);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Safely transfers the ownership of a given token ID to another address",
+            "     * If the target address is a contract, it must implement {IERC721Receiver-onERC721Received},",
+            "     * which is called upon a safe transfer, and return the magic value",
+            "     * `bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`; otherwise,",
+            "     * the transfer is reverted.",
+            "     * Requires the _msgSender() to be the owner, approved, or operator",
+            "     * @param from current owner of the token",
+            "     * @param to address to receive the ownership of the given token ID",
+            "     * @param tokenId uint256 ID of the token to be transferred",
+            "     * @param _data bytes data to send along with a safe transfer check",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Safely transfers the ownership of a given token ID to another address\n     * If the target address is a contract, it must implement {IERC721Receiver-onERC721Received},\n     * which is called upon a safe transfer, and return the magic value\n     * `bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`; otherwise,\n     * the transfer is reverted.\n     * Requires the _msgSender() to be the owner, approved, or operator\n     * @param from current owner of the token\n     * @param to address to receive the ownership of the given token ID\n     * @param tokenId uint256 ID of the token to be transferred\n     * @param _data bytes data to send along with a safe transfer check\n     */\n",
+        "@dev": "Safely transfers the ownership of a given token ID to another address * If the target address is a contract, it must implement {IERC721Receiver-onERC721Received}, * which is called upon a safe transfer, and return the magic value * `bytes4(keccak256(\"onERC721Received(address,address,uint256,bytes)\"))`; otherwise, * the transfer is reverted. * Requires the _msgSender() to be the owner, approved, or operator",
+        "@param1": "from current owner of the token",
+        "@param2": "to address to receive the ownership of the given token ID",
+        "@param3": "tokenId uint256 ID of the token to be transferred",
+        "@param4": "_data bytes data to send along with a safe transfer check",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenOfOwnerByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256) {\n        require(index < balanceOf(owner), \"ERC721Enumerable: owner index out of bounds\");\n        return _ownedTokens[owner][index];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the token ID at a given index of the tokens list of the requested owner.",
+            "     * @param owner address owning the tokens list to be accessed",
+            "     * @param index uint256 representing the index to be accessed of the requested tokens list",
+            "     * @return uint256 token ID at the given index of the tokens list owned by the requested address",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the token ID at a given index of the tokens list of the requested owner.\n     * @param owner address owning the tokens list to be accessed\n     * @param index uint256 representing the index to be accessed of the requested tokens list\n     * @return uint256 token ID at the given index of the tokens list owned by the requested address\n     */\n",
+        "@dev": "Gets the token ID at a given index of the tokens list of the requested owner.",
+        "@param1": "owner address owning the tokens list to be accessed",
+        "@param2": "index uint256 representing the index to be accessed of the requested tokens list",
+        "@return1": "uint256 token ID at the given index of the tokens list owned by the requested address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _allTokens.length;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the total amount of tokens stored by the contract.",
+            "     * @return uint256 representing the total amount of tokens",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the total amount of tokens stored by the contract.\n     * @return uint256 representing the total amount of tokens\n     */\n",
+        "@dev": "Gets the total amount of tokens stored by the contract.",
+        "@return1": "uint256 representing the total amount of tokens",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tokenByIndex",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "func": "function tokenByIndex(uint256 index) public view returns (uint256) {\n        require(index < totalSupply(), \"ERC721Enumerable: global index out of bounds\");\n        return _allTokens[index];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Gets the token ID at a given index of all the tokens in this contract",
+            "     * Reverts if the index is greater or equal to the total number of tokens.",
+            "     * @param index uint256 representing the index to be accessed of the tokens list",
+            "     * @return uint256 token ID at the given index of the tokens list",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Gets the token ID at a given index of all the tokens in this contract\n     * Reverts if the index is greater or equal to the total number of tokens.\n     * @param index uint256 representing the index to be accessed of the tokens list\n     * @return uint256 token ID at the given index of the tokens list\n     */\n",
+        "@dev": "Gets the token ID at a given index of all the tokens in this contract * Reverts if the index is greater or equal to the total number of tokens.",
+        "@param1": "index uint256 representing the index to be accessed of the tokens list",
+        "@return1": "uint256 token ID at the given index of the tokens list",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

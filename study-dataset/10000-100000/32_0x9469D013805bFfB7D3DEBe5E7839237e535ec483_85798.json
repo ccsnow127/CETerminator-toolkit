@@ -1,0 +1,774 @@
+[
+    {
+        "transactions": 85798,
+        "function_num": 32
+    },
+    {
+        "name": "setOwner",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner_",
+                "type": "address"
+            }
+        ],
+        "func": "function setOwner(address owner_)\n        public\n        auth\n    {\n        owner = owner_;\n        emit LogSetOwner(owner);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setAuthority",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "authority_",
+                "type": "DSAuthority"
+            }
+        ],
+        "func": "function setAuthority(DSAuthority authority_)\n        public\n        auth\n    {\n        authority = authority_;\n        emit LogSetAuthority(authority);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "stop",
+        "visibility": "public",
+        "args": [],
+        "func": "function stop() public auth note {\n        stopped = true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "start",
+        "visibility": "public",
+        "args": [],
+        "func": "function start() public auth note {\n        stopped = false;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint) {\n        return _supply;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address src) public view returns (uint) {\n        return _balances[src];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "guy",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address src, address guy) public view returns (uint) {\n        return _approvals[src][guy];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address dst, uint wad) public returns (bool) {\n        return transferFrom(msg.sender, dst, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address src, address dst, uint wad)\n        public\n        returns (bool)\n    {\n        if (src != msg.sender) {\n            _approvals[src][msg.sender] = sub(_approvals[src][msg.sender], wad);\n        }\n\n        _balances[src] = sub(_balances[src], wad);\n        _balances[dst] = add(_balances[dst], wad);\n\n        emit Transfer(src, dst, wad);\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "guy",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function approve(address guy, uint wad) public returns (bool) {\n        _approvals[msg.sender][guy] = wad;\n\n        emit Approval(msg.sender, guy, wad);\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "guy",
+                "type": "address"
+            }
+        ],
+        "func": "function approve(address guy) public stoppable returns (bool) {\n        return super.approve(guy, uint(-1));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "guy",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function approve(address guy, uint wad) public stoppable returns (bool) {\n        return super.approve(guy, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address src, address dst, uint wad)\n        public\n        stoppable\n        returns (bool)\n    {\n        if (src != msg.sender && _approvals[src][msg.sender] != uint(-1)) {\n            _approvals[src][msg.sender] = sub(_approvals[src][msg.sender], wad);\n        }\n\n        _balances[src] = sub(_balances[src], wad);\n        _balances[dst] = add(_balances[dst], wad);\n\n        emit Transfer(src, dst, wad);\n\n        return true;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "push",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function push(address dst, uint wad) public {\n        transferFrom(msg.sender, dst, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pull",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function pull(address src, uint wad) public {\n        transferFrom(src, msg.sender, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "move",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "src",
+                "type": "address"
+            },
+            {
+                "name": "dst",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function move(address src, address dst, uint wad) public {\n        transferFrom(src, dst, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(uint wad) public {\n        mint(msg.sender, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function burn(uint wad) public {\n        burn(msg.sender, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "guy",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function mint(address guy, uint wad) public auth stoppable {\n        _balances[guy] = add(_balances[guy], wad);\n        _supply = add(_supply, wad);\n        emit Mint(guy, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "burn",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "guy",
+                "type": "address"
+            },
+            {
+                "name": "wad",
+                "type": "uint"
+            }
+        ],
+        "func": "function burn(address guy, uint wad) public auth stoppable {\n        if (guy != msg.sender && _approvals[guy][msg.sender] != uint(-1)) {\n            _approvals[guy][msg.sender] = sub(_approvals[guy][msg.sender], wad);\n        }\n\n        _balances[guy] = sub(_balances[guy], wad);\n        _supply = sub(_supply, wad);\n        emit Burn(guy, wad);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setName",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "name_",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function setName(bytes32 name_) public auth {\n        name = name_;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address _newOwner) public auth {\n        require(_newOwner != owner);\n        newOwner = _newOwner;\n    }",
+        "comments": [
+            "",
+            "//////////",
+            "// IOwned Methods",
+            "//////////",
+            "",
+            "    /**",
+            "        @dev allows transferring the contract ownership",
+            "        the new owner still needs to accept the transfer",
+            "        can only be called by the contract owner",
+            "        @param _newOwner    new contract owner",
+            "    */",
+            "    "
+        ],
+        "comt": "\n//////////\n// IOwned Methods\n//////////\n\n    /**\n        @dev allows transferring the contract ownership\n        the new owner still needs to accept the transfer\n        can only be called by the contract owner\n        @param _newOwner    new contract owner\n    */\n    ",
+        "@dev": "allows transferring the contract ownership the new owner still needs to accept the transfer can only be called by the contract owner",
+        "@param1": "_newOwner new contract owner",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "acceptOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function acceptOwnership() public {\n        require(msg.sender == newOwner);\n        owner = newOwner;\n        newOwner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "        @dev used by a new owner to accept an ownership transfer",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n        @dev used by a new owner to accept an ownership transfer\n    */\n",
+        "@dev": "used by a new owner to accept an ownership transfer",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "disableTransfers",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_disable",
+                "type": "bool"
+            }
+        ],
+        "func": "function disableTransfers(bool _disable) public auth {\n        transfersEnabled = !_disable;\n    }",
+        "comments": [
+            "",
+            "//////////",
+            "// SmartToken Methods",
+            "//////////",
+            "    /**",
+            "        @dev disables/enables transfers",
+            "        can only be called by the contract owner",
+            "        @param _disable    true to disable transfers, false to enable them",
+            "    */",
+            "    "
+        ],
+        "comt": "\n//////////\n// SmartToken Methods\n//////////\n    /**\n        @dev disables/enables transfers\n        can only be called by the contract owner\n        @param _disable    true to disable transfers, false to enable them\n    */\n    ",
+        "@dev": "disables/enables transfers can only be called by the contract owner",
+        "@param1": "_disable true to disable transfers, false to enable them",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "issue",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function issue(address _to, uint256 _amount) public auth stoppable {\n        mint(_to, _amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "destroy",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function destroy(address _from, uint256 _amount) public auth stoppable {\n        // do not require allowance\n\n        _balances[_from] = sub(_balances[_from], _amount);\n        _supply = sub(_supply, _amount);\n        emit Burn(_from, _amount);\n        emit Transfer(_from, 0, _amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeCap",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_newCap",
+                "type": "uint256"
+            }
+        ],
+        "func": "function changeCap(uint256 _newCap) public auth {\n        require(_newCap >= _supply);\n\n        cap = _newCap;\n    }",
+        "comments": [
+            "",
+            "//////////",
+            "// Cap Methods",
+            "//////////",
+            "    "
+        ],
+        "comt": "\n//////////\n// Cap Methods\n//////////\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _amount\n    ) public transfersAllowed returns (bool success) {\n        // Alerts the token controller of the transfer\n        if (isContract(controller)) {\n            if (!TokenController(controller).onTransfer(_from, _to, _amount))\n               revert();\n        }\n\n        success = super.transferFrom(_from, _to, _amount);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Send `_amount` tokens to `_to` from `_from` on the condition it",
+            "    ///  is approved by `_from`",
+            "    /// @param _from The address holding the tokens being transferred",
+            "    /// @param _to The address of the recipient",
+            "    /// @param _amount The amount of tokens to be transferred",
+            "    /// @return True if the transfer was successful",
+            "    "
+        ],
+        "comt": "\n    /// @notice Send `_amount` tokens to `_to` from `_from` on the condition it\n    ///  is approved by `_from`\n    /// @param _from The address holding the tokens being transferred\n    /// @param _to The address of the recipient\n    /// @param _amount The amount of tokens to be transferred\n    /// @return True if the transfer was successful\n    ",
+        "@notice": "Send `_amount` tokens to `_to` from `_from` on the condition it /// is approved by `_from`",
+        "@param1": "_from The address holding the tokens being transferred",
+        "@param2": "_to The address of the recipient",
+        "@param3": "_amount The amount of tokens to be transferred",
+        "@return1": "True if the transfer was successful",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _amount, bytes _data)\n        public transfersAllowed\n        returns (bool success)\n    {\n        // Alerts the token controller of the transfer\n        if (isContract(controller)) {\n            if (!TokenController(controller).onTransfer(_from, _to, _amount))\n               revert();\n        }\n\n        require(super.transferFrom(_from, _to, _amount));\n\n        if (isContract(_to)) {\n            ERC223ReceivingContract receiver = ERC223ReceivingContract(_to);\n            receiver.tokenFallback(_from, _amount, _data);\n        }\n\n        emit ERC223Transfer(_from, _to, _amount, _data);\n\n        return true;\n    }",
+        "comments": [
+            "/*",
+            "     * ERC 223",
+            "     * Added support for the ERC 223 \"tokenFallback\" method in a \"transfer\" function with a payload.",
+            "     */",
+            ""
+        ],
+        "comt": "/*\n     * ERC 223\n     * Added support for the ERC 223 \"tokenFallback\" method in a \"transfer\" function with a payload.\n     */\n",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "func": "function transfer(\n        address _to,\n        uint256 _amount,\n        bytes _data)\n        public\n        returns (bool success)\n    {\n        return transferFrom(msg.sender, _to, _amount, _data);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function claimTokens(address _token) public auth {\n        if (_token == 0x0) {\n            address(msg.sender).transfer(address(this).balance);\n            return;\n        }\n\n        ERC20 token = ERC20(_token);\n        uint balance = token.balanceOf(this);\n        token.transfer(address(msg.sender), balance);\n\n        emit ClaimedTokens(_token, address(msg.sender), balance);\n    }",
+        "comments": [
+            "",
+            "//////////",
+            "// Safety Methods",
+            "//////////",
+            "",
+            "    /// @notice This method can be used by the owner to extract mistakenly",
+            "    ///  sent tokens to this contract.",
+            "    /// @param _token The address of the token contract that you want to recover",
+            "    ///  set to 0 in case you want to extract ether.",
+            "    "
+        ],
+        "comt": "\n//////////\n// Safety Methods\n//////////\n\n    /// @notice This method can be used by the owner to extract mistakenly\n    ///  sent tokens to this contract.\n    /// @param _token The address of the token contract that you want to recover\n    ///  set to 0 in case you want to extract ether.\n    ",
+        "@notice": "This method can be used by the owner to extract mistakenly /// sent tokens to this contract.",
+        "@param1": "_token The address of the token contract that you want to recover /// set to 0 in case you want to extract ether.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdrawTokens",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "ERC20"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function withdrawTokens(ERC20 _token, address _to, uint256 _amount) public auth\n    {\n        assert(_token.transfer(_to, _amount));\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

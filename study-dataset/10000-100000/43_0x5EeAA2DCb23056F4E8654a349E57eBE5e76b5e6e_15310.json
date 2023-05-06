@@ -1,0 +1,1071 @@
+[
+    {
+        "transactions": 15310,
+        "function_num": 43
+    },
+    {
+        "name": "Ownable",
+        "visibility": "public",
+        "args": [],
+        "func": "function Ownable() public {\n    owner = msg.sender;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev The Ownable constructor sets the original `owner` of the contract to the sender",
+            "   * account.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev The Ownable constructor sets the original `owner` of the contract to the sender\n   * account.\n   */\n",
+        "@dev": "The Ownable constructor sets the original `owner` of the contract to the sender * account.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public onlyOwner {\n    require(newOwner != address(0));\n    OwnershipTransferred(owner, newOwner);\n    owner = newOwner;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            "   * @param newOwner The address to transfer ownership to.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Allows the current owner to transfer control of the contract to a newOwner.\n   * @param newOwner The address to transfer ownership to.\n   */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner.",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "DisbursementHandler",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "func": "function DisbursementHandler(address _token) public {\n        token = ERC20(_token);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setupDisbursement",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "vestor",
+                "type": "address"
+            },
+            {
+                "name": "tokens",
+                "type": "uint256"
+            },
+            {
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setupDisbursement(\n        address vestor,\n        uint256 tokens,\n        uint256 timestamp\n    )\n        external\n        onlyOwner\n    {\n        require(block.timestamp < timestamp);\n        disbursements[vestor].push(Disbursement(timestamp, tokens));\n        totalAmount = totalAmount.add(tokens);\n        LogSetup(vestor, timestamp, tokens);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Called by the sale contract to create a disbursement.",
+            "    /// @param vestor The address of the beneficiary.",
+            "    /// @param tokens Amount of tokens to be locked.",
+            "    /// @param timestamp Funds will be locked until this timestamp.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Called by the sale contract to create a disbursement.\n    /// @param vestor The address of the beneficiary.\n    /// @param tokens Amount of tokens to be locked.\n    /// @param timestamp Funds will be locked until this timestamp.\n    ",
+        "@dev": "Called by the sale contract to create a disbursement.",
+        "@param1": "vestor The address of the beneficiary.",
+        "@param2": "tokens Amount of tokens to be locked.",
+        "@param3": "timestamp Funds will be locked until this timestamp.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "withdraw",
+        "visibility": "external",
+        "args": [],
+        "func": "function withdraw()\n        external\n    {\n        uint256 withdrawAmount = calcMaxWithdraw(msg.sender);\n        require(withdrawAmount != 0);\n        withdrawnTokens[msg.sender] = withdrawnTokens[msg.sender].add(withdrawAmount);\n        require(token.transfer(msg.sender, withdrawAmount));\n        LogWithdraw(msg.sender, withdrawAmount);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Transfers tokens to the withdrawer",
+            "    "
+        ],
+        "comt": "\n    /// @dev Transfers tokens to the withdrawer\n    ",
+        "@dev": "Transfers tokens to the withdrawer",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "calcMaxWithdraw",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "beneficiary",
+                "type": "address"
+            }
+        ],
+        "func": "function calcMaxWithdraw(address beneficiary)\n        public\n        view\n        returns (uint256)\n    {\n        uint256 maxTokens = 0;\n\n        // Go over all the disbursements and calculate how many tokens can be withdrawn\n        Disbursement[] storage temp = disbursements[beneficiary];\n        uint256 tempLength = temp.length;\n        for (uint256 i = 0; i < tempLength; i++) {\n            if (block.timestamp > temp[i].timestamp) {\n                maxTokens = maxTokens.add(temp[i].tokens);\n            }\n        }\n\n        // Return the computed amount minus the tokens already withdrawn\n        return maxTokens.sub(withdrawnTokens[beneficiary]);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Calculates the maximum amount of vested tokens",
+            "    /// @return Number of vested tokens that can be withdrawn",
+            "    "
+        ],
+        "comt": "\n    /// @dev Calculates the maximum amount of vested tokens\n    /// @return Number of vested tokens that can be withdrawn\n    ",
+        "@dev": "Calculates the maximum amount of vested tokens",
+        "@return1": "Number of vested tokens that can be withdrawn",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "Vault",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "name": "_initialAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "_disbursementAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "_closingDuration",
+                "type": "uint256"
+            }
+        ],
+        "func": "function Vault(\n        address wallet,\n        uint256 _initialAmount,\n        uint256 _disbursementAmount,\n        uint256 _closingDuration\n    ) \n        public \n    {\n        require(wallet != address(0));\n        require(_disbursementAmount != 0);\n        require(_closingDuration != 0);\n        trustedWallet = wallet;\n        initialAmount = _initialAmount;\n        disbursementAmount = _disbursementAmount;\n        closingDuration = _closingDuration;\n        state = State.Active;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "deposit",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "contributor",
+                "type": "address"
+            }
+        ],
+        "func": "function deposit(address contributor) onlyOwner external payable {\n        require(state == State.Active || state == State.Success);\n        totalDeposited = totalDeposited.add(msg.value);\n        refundable = refundable.add(msg.value);\n        deposited[contributor] = deposited[contributor].add(msg.value);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Called by the sale contract to deposit ether for a contributor.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Called by the sale contract to deposit ether for a contributor.\n    ",
+        "@dev": "Called by the sale contract to deposit ether for a contributor.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "saleSuccessful",
+        "visibility": "external",
+        "args": [],
+        "func": "function saleSuccessful() onlyOwner external atState(State.Active){\n        state = State.Success;\n        refundable = refundable.sub(initialAmount);\n        if (initialAmount != 0) {\n          trustedWallet.transfer(initialAmount);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @dev Sends initial funds to the wallet.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Sends initial funds to the wallet.\n    ",
+        "@dev": "Sends initial funds to the wallet.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enableRefunds",
+        "visibility": "external",
+        "args": [],
+        "func": "function enableRefunds() onlyOwner external {\n        state = State.Refunding;\n        LogRefundsEnabled();\n    }",
+        "comments": [
+            "",
+            "    /// @dev Called by the owner if the project didn't deliver the testnet contracts or if we need to stop disbursements for any reasone.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Called by the owner if the project didn't deliver the testnet contracts or if we need to stop disbursements for any reasone.\n    ",
+        "@dev": "Called by the owner if the project didn't deliver the testnet contracts or if we need to stop disbursements for any reasone.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "refund",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "contributor",
+                "type": "address"
+            }
+        ],
+        "func": "function refund(address contributor) external atState(State.Refunding) {\n        uint256 refundAmount = deposited[contributor].mul(refundable).div(totalDeposited);\n        deposited[contributor] = 0;\n        contributor.transfer(refundAmount);\n        LogRefunded(contributor, refundAmount);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Refunds ether to the contributors if in the Refunding state.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Refunds ether to the contributors if in the Refunding state.\n    ",
+        "@dev": "Refunds ether to the contributors if in the Refunding state.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "beginClosingPeriod",
+        "visibility": "external",
+        "args": [],
+        "func": "function beginClosingPeriod() external onlyOwner atState(State.Success) {\n        require(closingDeadline == 0);\n        closingDeadline = now.add(closingDuration);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Sets the closingDeadline variable",
+            "    "
+        ],
+        "comt": "\n    /// @dev Sets the closingDeadline variable\n    ",
+        "@dev": "Sets the closingDeadline variable",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "close",
+        "visibility": "external",
+        "args": [],
+        "func": "function close() external atState(State.Success) {\n        require(closingDeadline != 0 && closingDeadline <= now);\n        state = State.Closed;\n        LogClosed();\n    }",
+        "comments": [
+            "",
+            "    /// @dev Called by anyone if the sale was successful and the project delivered.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Called by anyone if the sale was successful and the project delivered.\n    ",
+        "@dev": "Called by anyone if the sale was successful and the project delivered.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "sendFundsToWallet",
+        "visibility": "external",
+        "args": [],
+        "func": "function sendFundsToWallet() external atState(State.Closed) {\n        require(lastDisbursement.add(DISBURSEMENT_DURATION) <= now);\n\n        lastDisbursement = now;\n        uint256 amountToSend = Math.min256(address(this).balance, disbursementAmount);\n        refundable = amountToSend > refundable ? 0 : refundable.sub(amountToSend);\n        trustedWallet.transfer(amountToSend);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Sends the disbursement amount to the wallet after the disbursement period has passed. Can be called by anyone.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Sends the disbursement amount to the wallet after the disbursement period has passed. Can be called by anyone.\n    ",
+        "@dev": "Sends the disbursement amount to the wallet after the disbursement period has passed. Can be called by anyone.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "Whitelistable",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_admin",
+                "type": "address"
+            }
+        ],
+        "func": "function Whitelistable(address _admin) public validAdmin(_admin) {\n        whitelistAdmin = _admin;        \n    }",
+        "comments": [
+            "",
+            "    /// @dev Constructor for Whitelistable contract",
+            "    /// @param _admin the address of the admin that will generate the signatures",
+            "    "
+        ],
+        "comt": "\n    /// @dev Constructor for Whitelistable contract\n    /// @param _admin the address of the admin that will generate the signatures\n    ",
+        "@dev": "Constructor for Whitelistable contract",
+        "@param1": "_admin the address of the admin that will generate the signatures",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_admin",
+                "type": "address"
+            }
+        ],
+        "func": "function changeAdmin(address _admin)\n        external\n        onlyOwner\n        validAdmin(_admin)\n    {\n        LogAdminUpdated(_admin);\n        whitelistAdmin = _admin;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Updates whitelistAdmin address ",
+            "    /// @dev Can only be called by the current owner",
+            "    /// @param _admin the new admin address",
+            "    "
+        ],
+        "comt": "\n    /// @dev Updates whitelistAdmin address \n    /// @dev Can only be called by the current owner\n    /// @param _admin the new admin address\n    ",
+        "@dev": "Updates whitelistAdmin address * Can only be called by the current owner",
+        "@param1": "_admin the new admin address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addToBlacklist",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_contributor",
+                "type": "address"
+            }
+        ],
+        "func": "function addToBlacklist(address _contributor)\n        external\n        onlyAdmin\n    {\n        blacklist[_contributor] = true;\n    }",
+        "comments": [
+            "",
+            "    // @dev blacklists the given address to ban them from contributing",
+            "    // @param _contributor Address of the contributor to blacklist ",
+            "    "
+        ],
+        "comt": "\n    // @dev blacklists the given address to ban them from contributing\n    // @param _contributor Address of the contributor to blacklist \n    ",
+        "@dev": "blacklists the given address to ban them from contributing",
+        "@param1": "_contributor Address of the contributor to blacklist",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeFromBlacklist",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_contributor",
+                "type": "address"
+            }
+        ],
+        "func": "function removeFromBlacklist(address _contributor)\n        external\n        onlyAdmin\n    {\n        blacklist[_contributor] = false;\n    }",
+        "comments": [
+            "",
+            "    // @dev removes a previously blacklisted contributor from the blacklist",
+            "    // @param _contributor Address of the contributor remove ",
+            "    "
+        ],
+        "comt": "\n    // @dev removes a previously blacklisted contributor from the blacklist\n    // @param _contributor Address of the contributor remove \n    ",
+        "@dev": "removes a previously blacklisted contributor from the blacklist",
+        "@param1": "_contributor Address of the contributor remove",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "checkWhitelisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "contributor",
+                "type": "address"
+            },
+            {
+                "name": "contributionLimit",
+                "type": "uint256"
+            },
+            {
+                "name": "currentSaleCap",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function checkWhitelisted(\n        address contributor,\n        uint256 contributionLimit,\n        uint256 currentSaleCap,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) public view returns(bool) {\n        bytes32 prefixed = keccak256(PREFIX, keccak256(contributor, contributionLimit, currentSaleCap));\n        return !(blacklist[contributor]) && (whitelistAdmin == ecrecover(prefixed, v, r, s));\n    }",
+        "comments": [
+            "",
+            "    /// @dev Checks if contributor is whitelisted (main Whitelistable function)",
+            "    /// @param contributor Address of who was whitelisted",
+            "    /// @param contributionLimit Limit for the user contribution",
+            "    /// @param currentSaleCap Cap of contributions to the sale at the current point in time",
+            "    /// @param v Recovery id",
+            "    /// @param r Component of the ECDSA signature",
+            "    /// @param s Component of the ECDSA signature",
+            "    /// @return Is the signature correct?",
+            "    "
+        ],
+        "comt": "\n    /// @dev Checks if contributor is whitelisted (main Whitelistable function)\n    /// @param contributor Address of who was whitelisted\n    /// @param contributionLimit Limit for the user contribution\n    /// @param currentSaleCap Cap of contributions to the sale at the current point in time\n    /// @param v Recovery id\n    /// @param r Component of the ECDSA signature\n    /// @param s Component of the ECDSA signature\n    /// @return Is the signature correct?\n    ",
+        "@dev": "Checks if contributor is whitelisted (main Whitelistable function)",
+        "@param1": "contributor Address of who was whitelisted",
+        "@param2": "contributionLimit Limit for the user contribution",
+        "@param3": "currentSaleCap Cap of contributions to the sale at the current point in time",
+        "@param4": "v Recovery id",
+        "@param5": "r Component of the ECDSA signature",
+        "@param6": "s Component of the ECDSA signature",
+        "@return1": "Is the signature correct?",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "conditionalTransitions",
+        "visibility": "public",
+        "args": [],
+        "func": "function conditionalTransitions() public {\n\n        bytes32 next = states[currentStateId].nextStateId;\n        bool stateChanged;\n\n        while (next != 0) {\n            // If one of the next state's conditions is met, go to this state and continue\n            stateChanged = false;\n            for (uint256 i = 0; i < states[next].startConditions.length; i++) {\n                if (states[next].startConditions[i](next)) {\n                    goToNextState();\n                    next = states[next].nextStateId;\n                    stateChanged = true;\n                    break;\n                }\n            }\n            // If none of the next state's conditions are met, then we are in the right current state\n            if (!stateChanged) break;\n        }\n    }",
+        "comments": [
+            "",
+            "    ///@dev transitions the state machine into the state it should currently be in",
+            "    ///@dev by taking into account the current conditions and how many further transitions can occur ",
+            "    "
+        ],
+        "comt": "\n    ///@dev transitions the state machine into the state it should currently be in\n    ///@dev by taking into account the current conditions and how many further transitions can occur \n    ",
+        "@dev": "transitions the state machine into the state it should currently be in * by taking into account the current conditions and how many further transitions can occur",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCurrentStateId",
+        "visibility": "public",
+        "args": [],
+        "func": "function getCurrentStateId() view public returns(bytes32) {\n        return currentStateId;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getStateStartTime",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_stateId",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function getStateStartTime(bytes32 _stateId) public view returns(uint256) {\n        return startTime[_stateId];\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n    return totalSupply_;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) public returns (bool) {\n    require(_to != address(0));\n    require(_value <= balances[msg.sender]);\n\n    // SafeMath.sub will throw if there is not enough balance.\n    balances[msg.sender] = balances[msg.sender].sub(_value);\n    balances[_to] = balances[_to].add(_value);\n    Transfer(msg.sender, _to, _value);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public view returns (uint256 balance) {\n    return balances[_owner];\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {\n    require(_to != address(0));\n    require(_value <= balances[_from]);\n    require(_value <= allowed[_from][msg.sender]);\n\n    balances[_from] = balances[_from].sub(_value);\n    balances[_to] = balances[_to].add(_value);\n    allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);\n    Transfer(_from, _to, _value);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _value) public returns (bool) {\n    allowed[msg.sender][_spender] = _value;\n    Approval(msg.sender, _spender, _value);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint256) {\n    return allowed[_owner][_spender];\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function increaseApproval(address _spender, uint _addedValue) public returns (bool) {\n    allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);\n    Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint"
+            }
+        ],
+        "func": "function decreaseApproval(address _spender, uint _subtractedValue) public returns (bool) {\n    uint oldValue = allowed[msg.sender][_spender];\n    if (_subtractedValue > oldValue) {\n      allowed[msg.sender][_spender] = 0;\n    } else {\n      allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);\n    }\n    Approval(msg.sender, _spender, allowed[msg.sender][_spender]);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setController",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_controller",
+                "type": "TokenControllerI"
+            }
+        ],
+        "func": "function setController(TokenControllerI _controller) onlyOwner public {\n        require(_controller != address(0));\n        controller = _controller;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) isAllowed(msg.sender, _to) public returns (bool) {        \n        return super.transfer(_to, _value);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) isAllowed(_from, _to) public returns (bool) {\n        return super.transferFrom(_from, _to, _value);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "DetailedERC20",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "name": "_decimals",
+                "type": "uint8"
+            }
+        ],
+        "func": "function DetailedERC20(string _name, string _symbol, uint8 _decimals) public {\n    name = _name;\n    symbol = _symbol;\n    decimals = _decimals;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "Token",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_supply",
+                "type": "uint256"
+            },
+            {
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "name": "_decimals",
+                "type": "uint8"
+            }
+        ],
+        "func": "function Token(\n        uint256 _supply,\n        string _name,\n        string _symbol,\n        uint8 _decimals\n    ) DetailedERC20(_name, _symbol, _decimals) public {\n        require(_supply != 0);\n        totalSupply_ = _supply;\n        balances[msg.sender] = _supply;\n        Transfer(address(0), msg.sender, _supply);  //event\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "Sale",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_totalSaleCap",
+                "type": "uint256"
+            },
+            {
+                "name": "_minContribution",
+                "type": "uint256"
+            },
+            {
+                "name": "_minThreshold",
+                "type": "uint256"
+            },
+            {
+                "name": "_maxTokens",
+                "type": "uint256"
+            },
+            {
+                "name": "_whitelistAdmin",
+                "type": "address"
+            },
+            {
+                "name": "_wallet",
+                "type": "address"
+            },
+            {
+                "name": "_closingDuration",
+                "type": "uint256"
+            },
+            {
+                "name": "_vaultInitialAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "_vaultDisbursementAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "_startTime",
+                "type": "uint256"
+            },
+            {
+                "name": "_tokenName",
+                "type": "string"
+            },
+            {
+                "name": "_tokenSymbol",
+                "type": "string"
+            },
+            {
+                "name": "_tokenDecimals",
+                "type": "uint8"
+            }
+        ],
+        "func": "function Sale(\n        uint256 _totalSaleCap,\n        uint256 _minContribution,\n        uint256 _minThreshold,\n        uint256 _maxTokens,\n        address _whitelistAdmin,\n        address _wallet,\n        uint256 _closingDuration,\n        uint256 _vaultInitialAmount,\n        uint256 _vaultDisbursementAmount,\n        uint256 _startTime,\n        string _tokenName,\n        string _tokenSymbol,\n        uint8 _tokenDecimals\n    ) \n        Whitelistable(_whitelistAdmin)\n        public \n    {\n        require(_totalSaleCap != 0);\n        require(_maxTokens != 0);\n        require(_wallet != 0);\n        require(_minThreshold <= _totalSaleCap);\n        require(_vaultInitialAmount <= _minThreshold);\n        require(now < _startTime);\n\n        totalSaleCap = _totalSaleCap;\n        minContribution = _minContribution;\n        minThreshold = _minThreshold;\n\n        // Setup the necessary contracts\n        trustedToken = new Token(_maxTokens, _tokenName, _tokenSymbol, _tokenDecimals);\n        disbursementHandler = new DisbursementHandler(trustedToken);\n\n        trustedToken.setController(this);\n\n        trustedVault = new Vault(\n            _wallet,\n            _vaultInitialAmount,\n            _vaultDisbursementAmount, // disbursement amount\n            _closingDuration\n        );\n\n        // Set the states\n        setStates(states);\n\n        allowFunction(SETUP, this.setup.selector);\n        allowFunction(FREEZE, this.setEndTime.selector);\n        allowFunction(SALE_IN_PROGRESS, this.setEndTime.selector);\n        allowFunction(SALE_IN_PROGRESS, this.contribute.selector);\n        allowFunction(SALE_IN_PROGRESS, this.endSale.selector);\n        allowFunction(SALE_ENDED, this.allocateTokens.selector);\n\n        // End the sale when the cap is reached\n        addStartCondition(SALE_ENDED, wasCapReached);\n\n        // Set the onSaleEnded callback (will be called when the sale ends)\n        addCallback(SALE_ENDED, onSaleEnded);\n\n        // Set the start and end times for the sale\n        setStateStartTime(SALE_IN_PROGRESS, _startTime);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setup",
+        "visibility": "public",
+        "args": [],
+        "func": "function setup() public onlyOwner checkAllowed {\n        require(trustedToken.transfer(disbursementHandler, disbursementHandler.totalAmount()));\n        tokensForSale = trustedToken.balanceOf(this);       \n        require(tokensForSale >= totalSaleCap);\n\n        // Go to freeze state\n        goToNextState();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "contribute",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "contributionLimit",
+                "type": "uint256"
+            },
+            {
+                "name": "currentSaleCap",
+                "type": "uint256"
+            },
+            {
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "func": "function contribute(uint256 contributionLimit, uint256 currentSaleCap, uint8 v, bytes32 r, bytes32 s) \n        external \n        payable\n        checkAllowed \n    {\n        // Check that the signature is valid\n        require(currentSaleCap <= totalSaleCap);\n        require(weiContributed < currentSaleCap);\n        require(checkWhitelisted(msg.sender, contributionLimit, currentSaleCap, v, r, s));\n\n        uint256 current = contributions[msg.sender];\n        require(current < contributionLimit);\n\n        // Get the max amount that the user can contribute\n        uint256 remaining = Math.min256(contributionLimit.sub(current), currentSaleCap.sub(weiContributed));\n\n        // Check if it goes over the contribution limit of the user or the eth cap. \n        uint256 contribution = Math.min256(msg.value, remaining);\n\n        // Get the total contribution for the contributor after the previous checks\n        uint256 totalContribution = current.add(contribution);\n        require(totalContribution >= minContribution);\n\n        contributions[msg.sender] = totalContribution;\n        hasContributed[msg.sender] = true;\n\n        weiContributed = weiContributed.add(contribution);\n\n        trustedVault.deposit.value(contribution)(msg.sender);\n\n        if (weiContributed >= minThreshold && trustedVault.state() != Vault.State.Success) trustedVault.saleSuccessful();\n\n        // If there is an excess, return it to the user\n        uint256 excess = msg.value.sub(contribution);\n        if (excess > 0) msg.sender.transfer(excess);\n\n        LogContribution(msg.sender, contribution, excess);\n\n        assert(totalContribution <= contributionLimit);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setEndTime",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_endTime",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setEndTime(uint256 _endTime) external onlyOwner checkAllowed {\n        require(now < _endTime);\n        require(getStateStartTime(SALE_ENDED) == 0);\n        setStateStartTime(SALE_ENDED, _endTime);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allocateTokens",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_contributor",
+                "type": "address"
+            }
+        ],
+        "func": "function allocateTokens(address _contributor) external checkAllowed {\n        require(contributions[_contributor] != 0);\n\n        // Transfer the respective tokens to the contributor\n        uint256 amount = contributions[_contributor].mul(tokensPerWei);\n\n        // Set contributions to 0\n        contributions[_contributor] = 0;\n\n        require(trustedToken.transfer(_contributor, amount));\n\n        LogTokensAllocated(_contributor, amount);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "endSale",
+        "visibility": "external",
+        "args": [],
+        "func": "function endSale() external onlyOwner checkAllowed {\n        goToNextState();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferAllowed",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "address",
+                "type": "address"
+            }
+        ],
+        "func": "function transferAllowed(address _from, address) external view returns (bool) {\n        return _from == address(this) || _from == address(disbursementHandler);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "VirtuePokerSale",
+        "visibility": "public",
+        "args": [],
+        "func": "function VirtuePokerSale() \n        Sale(\n            25000 ether, // Total sale cap\n            1 ether, // Min contribution\n            12000 ether, // Min threshold\n            500000000 * (10 ** 18), // Max tokens\n            0x13ebf15f2e32d05ea944927ef5e6a3cad8187440, // Whitelist Admin\n            0xaa0aE3459F9f3472d1237015CaFC1aAfc6F03C63, // Wallet\n            28 days, // Closing duration\n            12000 ether, // Vault initial amount\n            25000 ether, // Vault disbursement amount\n            1524218400, // Start time\n            \"Virtue Player Points\", // Token name\n            \"VPP\", // Token symbol\n            18 // Token decimals\n        )\n        public \n    {\n        // Team Wallet (50,000,000 VPP, 25% per year)\n        setupDisbursement(0x2e286dA6Ee6E8e0Afb2c1CfADb1B74669a3cD642, 12500000 * (10 ** 18), 1 years);\n        setupDisbursement(0x2e286dA6Ee6E8e0Afb2c1CfADb1B74669a3cD642, 12500000 * (10 ** 18), 2 years);\n        setupDisbursement(0x2e286dA6Ee6E8e0Afb2c1CfADb1B74669a3cD642, 12500000 * (10 ** 18), 3 years);\n        setupDisbursement(0x2e286dA6Ee6E8e0Afb2c1CfADb1B74669a3cD642, 12500000 * (10 ** 18), 4 years);\n\n        // Company Wallet (250,000,000 VPP, no lock-up)\n        setupDisbursement(0xaa0aE3459F9f3472d1237015CaFC1aAfc6F03C63, 250000000 * (10 ** 18), 1 days);\n\n        // Founder Allocations (total 100,000,000, 12.5% per 6 months)\n        setupDisbursement(0x5ca71f050865092468CF8184D09e087F3DC58e31, 8000000 * (10 ** 18), 0.5 years);\n        setupDisbursement(0x5ca71f050865092468CF8184D09e087F3DC58e31, 8000000 * (10 ** 18), 1 years);\n        setupDisbursement(0x5ca71f050865092468CF8184D09e087F3DC58e31, 8000000 * (10 ** 18), 1.5 years);\n        setupDisbursement(0x5ca71f050865092468CF8184D09e087F3DC58e31, 8000000 * (10 ** 18), 2 years);\n        setupDisbursement(0x5ca71f050865092468CF8184D09e087F3DC58e31, 8000000 * (10 ** 18), 2.5 years);\n        setupDisbursement(0x5ca71f050865092468CF8184D09e087F3DC58e31, 8000000 * (10 ** 18), 3 years);\n        setupDisbursement(0x5ca71f050865092468CF8184D09e087F3DC58e31, 8000000 * (10 ** 18), 3.5 years);\n        setupDisbursement(0x5ca71f050865092468CF8184D09e087F3DC58e31, 8000000 * (10 ** 18), 4 years);\n\n        setupDisbursement(0x35fc8cA81E1b5992a0727c6Aa87DbeB8cca42094, 2250000 * (10 ** 18), 0.5 years);\n        setupDisbursement(0x35fc8cA81E1b5992a0727c6Aa87DbeB8cca42094, 2250000 * (10 ** 18), 1 years);\n        setupDisbursement(0x35fc8cA81E1b5992a0727c6Aa87DbeB8cca42094, 2250000 * (10 ** 18), 1.5 years);\n        setupDisbursement(0x35fc8cA81E1b5992a0727c6Aa87DbeB8cca42094, 2250000 * (10 ** 18), 2 years);\n        setupDisbursement(0x35fc8cA81E1b5992a0727c6Aa87DbeB8cca42094, 2250000 * (10 ** 18), 2.5 years);\n        setupDisbursement(0x35fc8cA81E1b5992a0727c6Aa87DbeB8cca42094, 2250000 * (10 ** 18), 3 years);\n        setupDisbursement(0x35fc8cA81E1b5992a0727c6Aa87DbeB8cca42094, 2250000 * (10 ** 18), 3.5 years);\n        setupDisbursement(0x35fc8cA81E1b5992a0727c6Aa87DbeB8cca42094, 2250000 * (10 ** 18), 4 years);\n\n        setupDisbursement(0xce3EFA6763e23DF21aF74DA46C6489736F96d4B6, 2250000 * (10 ** 18), 0.5 years);\n        setupDisbursement(0xce3EFA6763e23DF21aF74DA46C6489736F96d4B6, 2250000 * (10 ** 18), 1 years);\n        setupDisbursement(0xce3EFA6763e23DF21aF74DA46C6489736F96d4B6, 2250000 * (10 ** 18), 1.5 years);\n        setupDisbursement(0xce3EFA6763e23DF21aF74DA46C6489736F96d4B6, 2250000 * (10 ** 18), 2 years);\n        setupDisbursement(0xce3EFA6763e23DF21aF74DA46C6489736F96d4B6, 2250000 * (10 ** 18), 2.5 years);\n        setupDisbursement(0xce3EFA6763e23DF21aF74DA46C6489736F96d4B6, 2250000 * (10 ** 18), 3 years);\n        setupDisbursement(0xce3EFA6763e23DF21aF74DA46C6489736F96d4B6, 2250000 * (10 ** 18), 3.5 years);\n        setupDisbursement(0xce3EFA6763e23DF21aF74DA46C6489736F96d4B6, 2250000 * (10 ** 18), 4 years);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

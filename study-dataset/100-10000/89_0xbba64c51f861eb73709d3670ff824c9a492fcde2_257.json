@@ -1,0 +1,2667 @@
+[
+    {
+        "transactions": 257,
+        "function_num": 89
+    },
+    {
+        "name": "owner",
+        "visibility": "public",
+        "args": [],
+        "func": "function owner() public view returns (address) {\n        return _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @return the address of the owner.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return the address of the owner.\n     */\n",
+        "@return1": "the address of the owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isOwner",
+        "visibility": "public",
+        "args": [],
+        "func": "function isOwner() public view returns (bool) {\n        return msg.sender == _owner;\n    }",
+        "comments": [
+            "/**",
+            "     * @return true if `msg.sender` is the owner of the contract.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @return true if `msg.sender` is the owner of the contract.\n     */\n",
+        "@return1": "true if `msg.sender` is the owner of the contract.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "renounceOwnership",
+        "visibility": "public",
+        "args": [],
+        "func": "function renounceOwnership() public onlyOwner {\n        emit OwnershipTransferred(_owner, address(0));\n        _owner = address(0);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows the current owner to relinquish control of the contract.",
+            "     * @notice Renouncing to ownership will leave the contract without an owner.",
+            "     * It will not be possible to call the functions with the `onlyOwner`",
+            "     * modifier anymore.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows the current owner to relinquish control of the contract.\n     * @notice Renouncing to ownership will leave the contract without an owner.\n     * It will not be possible to call the functions with the `onlyOwner`\n     * modifier anymore.\n     */\n",
+        "@dev": "Allows the current owner to relinquish control of the contract.",
+        "@notice": "Renouncing to ownership will leave the contract without an owner. * It will not be possible to call the functions with the `onlyOwner` * modifier anymore.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public onlyOwner {\n        _transferOwnership(newOwner);\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            "     * @param newOwner The address to transfer ownership to.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Allows the current owner to transfer control of the contract to a newOwner.\n     * @param newOwner The address to transfer ownership to.\n     */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner.",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return _totalSupply;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Total number of tokens in existence",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Total number of tokens in existence\n    */\n",
+        "@dev": "Total number of tokens in existence",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner) public view returns (uint256) {\n        return _balances[owner];\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Gets the balance of the specified address.",
+            "    * @param owner The address to query the balance of.",
+            "    * @return An uint256 representing the amount owned by the passed address.",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Gets the balance of the specified address.\n    * @param owner The address to query the balance of.\n    * @return An uint256 representing the amount owned by the passed address.\n    */\n",
+        "@dev": "Gets the balance of the specified address.",
+        "@param1": "owner The address to query the balance of.",
+        "@return1": "An uint256 representing the amount owned by the passed address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner, address spender) public view returns (uint256) {\n        return _allowed[owner][spender];\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Function to check the amount of tokens that an owner allowed to a spender.",
+            "     * @param owner address The address which owns the funds.",
+            "     * @param spender address The address which will spend the funds.",
+            "     * @return A uint256 specifying the amount of tokens still available for the spender.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Function to check the amount of tokens that an owner allowed to a spender.\n     * @param owner address The address which owns the funds.\n     * @param spender address The address which will spend the funds.\n     * @return A uint256 specifying the amount of tokens still available for the spender.\n     */\n",
+        "@dev": "Function to check the amount of tokens that an owner allowed to a spender.",
+        "@param1": "owner address The address which owns the funds.",
+        "@param2": "spender address The address which will spend the funds.",
+        "@return1": "A uint256 specifying the amount of tokens still available for the spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address to, uint256 value) public returns (bool) {\n        _transfer(msg.sender, to, value);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "    * @dev Transfer token for a specified address",
+            "    * @param to The address to transfer to.",
+            "    * @param value The amount to be transferred.",
+            "    */",
+            ""
+        ],
+        "comt": "/**\n    * @dev Transfer token for a specified address\n    * @param to The address to transfer to.\n    * @param value The amount to be transferred.\n    */\n",
+        "@dev": "Transfer token for a specified address",
+        "@param1": "to The address to transfer to.",
+        "@param2": "value The amount to be transferred.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address spender, uint256 value) public returns (bool) {\n        require(spender != address(0));\n\n        _allowed[msg.sender][spender] = value;\n        emit Approval(msg.sender, spender, value);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+            "     * Beware that changing an allowance with this method brings the risk that someone may use both the old",
+            "     * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this",
+            "     * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:",
+            "     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+            "     * @param spender The address which will spend the funds.",
+            "     * @param value The amount of tokens to be spent.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\n     * Beware that changing an allowance with this method brings the risk that someone may use both the old\n     * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this\n     * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards:\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n     * @param spender The address which will spend the funds.\n     * @param value The amount of tokens to be spent.\n     */\n",
+        "@dev": "Approve the passed address to spend the specified amount of tokens on behalf of msg.sender. * Beware that changing an allowance with this method brings the risk that someone may use both the old * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this * race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards: * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "value The amount of tokens to be spent.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address from, address to, uint256 value) public returns (bool) {\n        _allowed[from][msg.sender] = _allowed[from][msg.sender].sub(value);\n        _transfer(from, to, value);\n        emit Approval(from, msg.sender, _allowed[from][msg.sender]);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Transfer tokens from one address to another.",
+            "     * Note that while this function emits an Approval event, this is not required as per the specification,",
+            "     * and other compliant implementations may not emit the event.",
+            "     * @param from address The address which you want to send tokens from",
+            "     * @param to address The address which you want to transfer to",
+            "     * @param value uint256 the amount of tokens to be transferred",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Transfer tokens from one address to another.\n     * Note that while this function emits an Approval event, this is not required as per the specification,\n     * and other compliant implementations may not emit the event.\n     * @param from address The address which you want to send tokens from\n     * @param to address The address which you want to transfer to\n     * @param value uint256 the amount of tokens to be transferred\n     */\n",
+        "@dev": "Transfer tokens from one address to another. * Note that while this function emits an Approval event, this is not required as per the specification, * and other compliant implementations may not emit the event.",
+        "@param1": "from address The address which you want to send tokens from",
+        "@param2": "to address The address which you want to transfer to",
+        "@param3": "value uint256 the amount of tokens to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {\n        require(spender != address(0));\n\n        _allowed[msg.sender][spender] = _allowed[msg.sender][spender].add(addedValue);\n        emit Approval(msg.sender, spender, _allowed[msg.sender][spender]);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Increase the amount of tokens that an owner allowed to a spender.",
+            "     * approve should be called when allowed_[_spender] == 0. To increment",
+            "     * allowed value is better to use this function to avoid 2 calls (and wait until",
+            "     * the first transaction is mined)",
+            "     * From MonolithDAO Token.sol",
+            "     * Emits an Approval event.",
+            "     * @param spender The address which will spend the funds.",
+            "     * @param addedValue The amount of tokens to increase the allowance by.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Increase the amount of tokens that an owner allowed to a spender.\n     * approve should be called when allowed_[_spender] == 0. To increment\n     * allowed value is better to use this function to avoid 2 calls (and wait until\n     * the first transaction is mined)\n     * From MonolithDAO Token.sol\n     * Emits an Approval event.\n     * @param spender The address which will spend the funds.\n     * @param addedValue The amount of tokens to increase the allowance by.\n     */\n",
+        "@dev": "Increase the amount of tokens that an owner allowed to a spender. * approve should be called when allowed_[_spender] == 0. To increment * allowed value is better to use this function to avoid 2 calls (and wait until * the first transaction is mined) * From MonolithDAO Token.sol * Emits an Approval event.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "addedValue The amount of tokens to increase the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {\n        require(spender != address(0));\n\n        _allowed[msg.sender][spender] = _allowed[msg.sender][spender].sub(subtractedValue);\n        emit Approval(msg.sender, spender, _allowed[msg.sender][spender]);\n        return true;\n    }",
+        "comments": [
+            "/**",
+            "     * @dev Decrease the amount of tokens that an owner allowed to a spender.",
+            "     * approve should be called when allowed_[_spender] == 0. To decrement",
+            "     * allowed value is better to use this function to avoid 2 calls (and wait until",
+            "     * the first transaction is mined)",
+            "     * From MonolithDAO Token.sol",
+            "     * Emits an Approval event.",
+            "     * @param spender The address which will spend the funds.",
+            "     * @param subtractedValue The amount of tokens to decrease the allowance by.",
+            "     */",
+            ""
+        ],
+        "comt": "/**\n     * @dev Decrease the amount of tokens that an owner allowed to a spender.\n     * approve should be called when allowed_[_spender] == 0. To decrement\n     * allowed value is better to use this function to avoid 2 calls (and wait until\n     * the first transaction is mined)\n     * From MonolithDAO Token.sol\n     * Emits an Approval event.\n     * @param spender The address which will spend the funds.\n     * @param subtractedValue The amount of tokens to decrease the allowance by.\n     */\n",
+        "@dev": "Decrease the amount of tokens that an owner allowed to a spender. * approve should be called when allowed_[_spender] == 0. To decrement * allowed value is better to use this function to avoid 2 calls (and wait until * the first transaction is mined) * From MonolithDAO Token.sol * Emits an Approval event.",
+        "@param1": "spender The address which will spend the funds.",
+        "@param2": "subtractedValue The amount of tokens to decrease the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "doTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "/*_availability*/",
+                "type": "Availability storage"
+            },
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function doTransfer(Supply storage _self, Availability storage /*_availability*/, address _from, address _to, uint256 _amount) public {\n        // Do not allow transfer to 0x0 or the token contract itself\n        require(_to != address(0), \"addr0\");\n        require(_to != address(this), \"target self\");\n\n        // If the amount being transfered is more than the balance of the\n        //  account the transfer throws\n        uint256 previousBalanceFrom = balanceOfNow(_self, _from);\n        require(previousBalanceFrom >= _amount, \"not enough\");\n\n        // First update the balance array with the new value for the address\n        //  sending the tokens\n        updateValueAtNow(_self, _self.balances[_from], previousBalanceFrom.sub(_amount));\n\n        // Then update the balance array with the new value for the address\n        //  receiving the tokens\n        uint256 previousBalanceTo = balanceOfNow(_self, _to);\n        \n        updateValueAtNow(_self, _self.balances[_to], previousBalanceTo.add(_amount));\n\n        //info: don't move this line inside updateValueAtNow (because transfer is 2 actions)\n        increaseTokenActionIndex(_self);\n\n        // An event to make the transfer easy to find on the blockchain\n        emit Transfer(_from, _to, _amount);\n    }",
+        "comments": [
+            "",
+            "///////////////////",
+            "// Functions",
+            "///////////////////",
+            "",
+            "    /// @dev This is the actual transfer function in the token contract, it can",
+            "    ///  only be called by other functions in this contract. Check for availability must be done before.",
+            "    /// @param _from The address holding the tokens being transferred",
+            "    /// @param _to The address of the recipient",
+            "    /// @param _amount The amount of tokens to be transferred",
+            "    /// @return True if the transfer was successful",
+            "    "
+        ],
+        "comt": "\n///////////////////\n// Functions\n///////////////////\n\n    /// @dev This is the actual transfer function in the token contract, it can\n    ///  only be called by other functions in this contract. Check for availability must be done before.\n    /// @param _from The address holding the tokens being transferred\n    /// @param _to The address of the recipient\n    /// @param _amount The amount of tokens to be transferred\n    /// @return True if the transfer was successful\n    ",
+        "@dev": "This is the actual transfer function in the token contract, it can /// only be called by other functions in this contract. Check for availability must be done before.",
+        "@param1": "_from The address holding the tokens being transferred",
+        "@param2": "_to The address of the recipient",
+        "@param3": "_amount The amount of tokens to be transferred",
+        "@return1": "True if the transfer was successful",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(Supply storage _self, address _spender, uint256 _amount) public returns (bool success) {\n        // To change the approve amount you first have to reduce the addresses`\n        //  allowance to zero by calling `approve(_spender,0)` if it is not\n        //  already 0 to mitigate the race condition described here:\n        //  https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n        require((_amount == 0) || (_self.allowed[msg.sender][_spender] == 0), \"amount\");\n\n        _self.allowed[msg.sender][_spender] = _amount;\n        emit Approval(msg.sender, _spender, _amount);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice `msg.sender` approves `_spender` to spend `_amount` of his tokens",
+            "    /// @param _spender The address of the account able to transfer the tokens",
+            "    /// @param _amount The amount of tokens to be approved for transfer",
+            "    /// @return True if the approval was successful",
+            "    "
+        ],
+        "comt": "\n    /// @notice `msg.sender` approves `_spender` to spend `_amount` of his tokens\n    /// @param _spender The address of the account able to transfer the tokens\n    /// @param _amount The amount of tokens to be approved for transfer\n    /// @return True if the approval was successful\n    ",
+        "@notice": "`msg.sender` approves `_spender` to spend `_amount` of his tokens",
+        "@param1": "_spender The address of the account able to transfer the tokens",
+        "@param2": "_amount The amount of tokens to be approved for transfer",
+        "@return1": "True if the approval was successful",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseApproval(Supply storage _self, address _spender, uint256 _addedValue) public returns (bool) {\n        _self.allowed[msg.sender][_spender] = _self.allowed[msg.sender][_spender].add(_addedValue);\n        emit Approval(msg.sender, _spender, _self.allowed[msg.sender][_spender]);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Increase the amount of tokens that an owner allowed to a spender.",
+            "    /// @dev approve should be called when allowed[_spender] == 0. To increment",
+            "    ///  allowed value is better to use this function to avoid 2 calls (and wait until",
+            "    ///  the first transaction is mined)",
+            "    ///  From MonolithDAO Token.sol",
+            "    /// @param _spender The address which will spend the funds.",
+            "    /// @param _addedValue The amount of tokens to increase the allowance by.",
+            "    /// @return True if the approval was successful",
+            "    "
+        ],
+        "comt": "\n    /// @notice Increase the amount of tokens that an owner allowed to a spender.\n    /// @dev approve should be called when allowed[_spender] == 0. To increment\n    ///  allowed value is better to use this function to avoid 2 calls (and wait until\n    ///  the first transaction is mined)\n    ///  From MonolithDAO Token.sol\n    /// @param _spender The address which will spend the funds.\n    /// @param _addedValue The amount of tokens to increase the allowance by.\n    /// @return True if the approval was successful\n    ",
+        "@notice": "Increase the amount of tokens that an owner allowed to a spender.",
+        "@dev": "approve should be called when allowed[_spender] == 0. To increment /// allowed value is better to use this function to avoid 2 calls (and wait until /// the first transaction is mined) /// From MonolithDAO Token.sol",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_addedValue The amount of tokens to increase the allowance by.",
+        "@return1": "True if the approval was successful",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseApproval(Supply storage _self, address _spender, uint256 _subtractedValue) public returns (bool) {\n        uint256 oldValue = _self.allowed[msg.sender][_spender];\n        if (_subtractedValue > oldValue) {\n            _self.allowed[msg.sender][_spender] = 0;\n        } else {\n            _self.allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue);\n        }\n        emit Approval(msg.sender, _spender, _self.allowed[msg.sender][_spender]);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Decrease the amount of tokens that an owner allowed to a spender.",
+            "    /// @dev approve should be called when allowed[_spender] == 0. To decrement",
+            "    ///  allowed value is better to use this function to avoid 2 calls (and wait until",
+            "    ///  the first transaction is mined)",
+            "    ///  From MonolithDAO Token.sol",
+            "    /// @param _spender The address which will spend the funds.",
+            "    /// @param _subtractedValue The amount of tokens to decrease the allowance by.",
+            "    /// @return True if the approval was successful",
+            "    "
+        ],
+        "comt": "\n    /// @notice Decrease the amount of tokens that an owner allowed to a spender.\n    /// @dev approve should be called when allowed[_spender] == 0. To decrement\n    ///  allowed value is better to use this function to avoid 2 calls (and wait until\n    ///  the first transaction is mined)\n    ///  From MonolithDAO Token.sol\n    /// @param _spender The address which will spend the funds.\n    /// @param _subtractedValue The amount of tokens to decrease the allowance by.\n    /// @return True if the approval was successful\n    ",
+        "@notice": "Decrease the amount of tokens that an owner allowed to a spender.",
+        "@dev": "approve should be called when allowed[_spender] == 0. To decrement /// allowed value is better to use this function to avoid 2 calls (and wait until /// the first transaction is mined) /// From MonolithDAO Token.sol",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_subtractedValue The amount of tokens to decrease the allowance by.",
+        "@return1": "True if the approval was successful",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_supply",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_availability",
+                "type": "Availability storage"
+            },
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(Supply storage _supply, Availability storage _availability, address _from, address _to, uint256 _amount) \n    public \n    returns (bool success) \n    {\n        // The standard ERC 20 transferFrom functionality\n        require(_supply.allowed[_from][msg.sender] >= _amount, \"allowance\");\n        _supply.allowed[_from][msg.sender] = _supply.allowed[_from][msg.sender].sub(_amount);\n\n        doTransfer(_supply, _availability, _from, _to, _amount);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Send `_amount` tokens to `_to` from `_from` if it is approved by `_from`",
+            "    /// @param _from The address holding the tokens being transferred",
+            "    /// @param _to The address of the recipient",
+            "    /// @param _amount The amount of tokens to be transferred",
+            "    /// @return True if the transfer was successful",
+            "    "
+        ],
+        "comt": "\n    /// @notice Send `_amount` tokens to `_to` from `_from` if it is approved by `_from`\n    /// @param _from The address holding the tokens being transferred\n    /// @param _to The address of the recipient\n    /// @param _amount The amount of tokens to be transferred\n    /// @return True if the transfer was successful\n    ",
+        "@notice": "Send `_amount` tokens to `_to` from `_from` if it is approved by `_from`",
+        "@param1": "_from The address holding the tokens being transferred",
+        "@param2": "_to The address of the recipient",
+        "@param3": "_amount The amount of tokens to be transferred",
+        "@return1": "True if the transfer was successful",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enforcedTransferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_availability",
+                "type": "Availability storage"
+            },
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_fullAmountRequired",
+                "type": "bool"
+            }
+        ],
+        "func": "function enforcedTransferFrom(\n        Supply storage _self, \n        Availability storage _availability, \n        address _from, \n        address _to, \n        uint256 _amount, \n        bool _fullAmountRequired) \n    public \n    returns (bool success) \n    {\n        if(_fullAmountRequired && _amount != balanceOfNow(_self, _from))\n        {\n            revert(\"Only full amount in case of lost wallet is allowed\");\n        }\n\n        doTransfer(_self, _availability, _from, _to, _amount);\n\n        emit SelfApprovedTransfer(msg.sender, _from, _to, _amount);\n\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Send `_amount` tokens to `_to` from `_from` WITHOUT approval. UseCase: notar transfers from lost wallet",
+            "    /// @param _from The address holding the tokens being transferred",
+            "    /// @param _to The address of the recipient",
+            "    /// @param _amount The amount of tokens to be transferred",
+            "    /// @param _fullAmountRequired Full amount required (causes revert if not).",
+            "    /// @return True if the transfer was successful",
+            "    "
+        ],
+        "comt": "\n    /// @notice Send `_amount` tokens to `_to` from `_from` WITHOUT approval. UseCase: notar transfers from lost wallet\n    /// @param _from The address holding the tokens being transferred\n    /// @param _to The address of the recipient\n    /// @param _amount The amount of tokens to be transferred\n    /// @param _fullAmountRequired Full amount required (causes revert if not).\n    /// @return True if the transfer was successful\n    ",
+        "@notice": "Send `_amount` tokens to `_to` from `_from` WITHOUT approval. UseCase: notar transfers from lost wallet",
+        "@param1": "_from The address holding the tokens being transferred",
+        "@param2": "_to The address of the recipient",
+        "@param3": "_amount The amount of tokens to be transferred",
+        "@param4": "_fullAmountRequired Full amount required (causes revert if not).",
+        "@return1": "True if the transfer was successful",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(Supply storage _self, address _to, uint256 _amount) public returns (bool) {\n        uint256 curTotalSupply = totalSupplyNow(_self);\n        uint256 previousBalanceTo = balanceOfNow(_self, _to);\n\n        // Check cap\n        require(curTotalSupply.add(_amount) <= _self.cap, \"cap\"); //leave inside library to never go over cap\n\n        // Check timeframe\n        require(_self.startTime <= now, \"too soon\");\n        require(_self.endTime >= now, \"too late\");\n\n        updateValueAtNow(_self, _self.totalSupplyHistory, curTotalSupply.add(_amount));\n        updateValueAtNow(_self, _self.balances[_to], previousBalanceTo.add(_amount));\n\n        //info: don't move this line inside updateValueAtNow (because transfer is 2 actions)\n        increaseTokenActionIndex(_self);\n\n        emit MintDetailed(msg.sender, _to, _amount);\n        emit Transfer(address(0), _to, _amount);\n\n        return true;\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Miniting ",
+            "////////////////",
+            "",
+            "    /// @notice Function to mint tokens",
+            "    /// @param _to The address that will receive the minted tokens.",
+            "    /// @param _amount The amount of tokens to mint.",
+            "    /// @return A boolean that indicates if the operation was successful.",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Miniting \n////////////////\n\n    /// @notice Function to mint tokens\n    /// @param _to The address that will receive the minted tokens.\n    /// @param _amount The amount of tokens to mint.\n    /// @return A boolean that indicates if the operation was successful.\n    ",
+        "@notice": "Function to mint tokens",
+        "@param1": "_to The address that will receive the minted tokens.",
+        "@param2": "_amount The amount of tokens to mint.",
+        "@return1": "A boolean that indicates if the operation was successful.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfAt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_specificTransfersAndMintsIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function balanceOfAt(Supply storage _self, address _owner, uint256 _specificTransfersAndMintsIndex) public view returns (uint256) {\n        return getValueAt(_self.balances[_owner], _specificTransfersAndMintsIndex);\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Query balance and totalSupply in History",
+            "////////////////",
+            "",
+            "    /// @dev Queries the balance of `_owner` at `_specificTransfersAndMintsIndex`",
+            "    /// @param _owner The address from which the balance will be retrieved",
+            "    /// @param _specificTransfersAndMintsIndex The balance at index",
+            "    /// @return The balance at `_specificTransfersAndMintsIndex`",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Query balance and totalSupply in History\n////////////////\n\n    /// @dev Queries the balance of `_owner` at `_specificTransfersAndMintsIndex`\n    /// @param _owner The address from which the balance will be retrieved\n    /// @param _specificTransfersAndMintsIndex The balance at index\n    /// @return The balance at `_specificTransfersAndMintsIndex`\n    ",
+        "@dev": "Queries the balance of `_owner` at `_specificTransfersAndMintsIndex`",
+        "@param1": "_owner The address from which the balance will be retrieved",
+        "@param2": "_specificTransfersAndMintsIndex The balance at index",
+        "@return1": "The balance at `_specificTransfersAndMintsIndex`",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfNow",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOfNow(Supply storage _self, address _owner) public view returns (uint256) {\n        return getValueAt(_self.balances[_owner], _self.tokenActionIndex);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupplyAt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_specificTransfersAndMintsIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function totalSupplyAt(Supply storage _self, uint256 _specificTransfersAndMintsIndex) public view returns(uint256) {\n        return getValueAt(_self.totalSupplyHistory, _specificTransfersAndMintsIndex);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Total amount of tokens at `_specificTransfersAndMintsIndex`.",
+            "    /// @param _specificTransfersAndMintsIndex The totalSupply at index",
+            "    /// @return The total amount of tokens at `_specificTransfersAndMintsIndex`",
+            "    "
+        ],
+        "comt": "\n    /// @dev Total amount of tokens at `_specificTransfersAndMintsIndex`.\n    /// @param _specificTransfersAndMintsIndex The totalSupply at index\n    /// @return The total amount of tokens at `_specificTransfersAndMintsIndex`\n    ",
+        "@dev": "Total amount of tokens at `_specificTransfersAndMintsIndex`.",
+        "@param1": "_specificTransfersAndMintsIndex The totalSupply at index",
+        "@return1": "The total amount of tokens at `_specificTransfersAndMintsIndex`",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupplyNow",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            }
+        ],
+        "func": "function totalSupplyNow(Supply storage _self) public view returns(uint256) {\n        return getValueAt(_self.totalSupplyHistory, _self.tokenActionIndex);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finishMinting",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Availability storage"
+            }
+        ],
+        "func": "function finishMinting(Availability storage _self) public returns (bool) {\n        if(_self.mintingPhaseFinished) {\n            return false;\n        }\n\n        _self.mintingPhaseFinished = true;\n        emit MintFinished(msg.sender);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @dev Function to stop minting new tokens.",
+            "    /// @return True if the operation was successful.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Function to stop minting new tokens.\n    /// @return True if the operation was successful.\n    ",
+        "@dev": "Function to stop minting new tokens.",
+        "@return1": "True if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reopenCrowdsale",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Availability storage"
+            }
+        ],
+        "func": "function reopenCrowdsale(Availability storage _self) public returns (bool) {\n        if(_self.mintingPhaseFinished == false) {\n            return false;\n        }\n\n        _self.mintingPhaseFinished = false;\n        emit Reopened(msg.sender);\n        return true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Reopening crowdsale means minting is again possible. UseCase: notary approves and does that.",
+            "    /// @return True if the operation was successful.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Reopening crowdsale means minting is again possible. UseCase: notary approves and does that.\n    /// @return True if the operation was successful.\n    ",
+        "@notice": "Reopening crowdsale means minting is again possible. UseCase: notary approves and does that.",
+        "@return1": "True if the operation was successful.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRoles",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Roles storage"
+            },
+            {
+                "name": "_pauseControl",
+                "type": "address"
+            },
+            {
+                "name": "_tokenRescueControl",
+                "type": "address"
+            }
+        ],
+        "func": "function setRoles(Roles storage _self, address _pauseControl, address _tokenRescueControl) public {\n        require(_pauseControl != address(0), \"addr0\");\n        require(_tokenRescueControl != address(0), \"addr0\");\n        \n        _self.pauseControl = _pauseControl;\n        _self.tokenRescueControl = _tokenRescueControl;\n\n        emit RolesChanged(msg.sender, _pauseControl, _tokenRescueControl);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set roles/operators.",
+            "    /// @param _pauseControl pause control.",
+            "    /// @param _tokenRescueControl token rescue control (accidentally assigned tokens).",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set roles/operators.\n    /// @param _pauseControl pause control.\n    /// @param _tokenRescueControl token rescue control (accidentally assigned tokens).\n    ",
+        "@notice": "Set roles/operators.",
+        "@param1": "_pauseControl pause control.",
+        "@param2": "_tokenRescueControl token rescue control (accidentally assigned tokens).",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMintControl",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Roles storage"
+            },
+            {
+                "name": "_mintControl",
+                "type": "address"
+            }
+        ],
+        "func": "function setMintControl(Roles storage _self, address _mintControl) public {\n        require(_mintControl != address(0), \"addr0\");\n\n        _self.mintControl = _mintControl;\n\n        emit MintControlChanged(msg.sender, _mintControl);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set mint control.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set mint control.\n    ",
+        "@notice": "Set mint control.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTokenAlive",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Availability storage"
+            }
+        ],
+        "func": "function setTokenAlive(Availability storage _self) public {\n        _self.tokenAlive = true;\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set token alive which can be seen as not in draft state anymore.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set token alive which can be seen as not in draft state anymore.\n    ",
+        "@notice": "Set token alive which can be seen as not in draft state anymore.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pauseTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Availability storage"
+            },
+            {
+                "name": "_transfersEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function pauseTransfer(Availability storage _self, bool _transfersEnabled) public\n    {\n        _self.transfersEnabled = _transfersEnabled;\n\n        if(_transfersEnabled) {\n            emit TransferResumed(msg.sender);\n        } else {\n            emit TransferPaused(msg.sender);\n        }\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Pausing token for unforeseen reasons",
+            "////////////////",
+            "",
+            "    /// @notice pause transfer.",
+            "    /// @param _transfersEnabled True if transfers are allowed.",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Pausing token for unforeseen reasons\n////////////////\n\n    /// @notice pause transfer.\n    /// @param _transfersEnabled True if transfers are allowed.\n    ",
+        "@notice": "pause transfer.",
+        "@param1": "_transfersEnabled True if transfers are allowed.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pauseCapitalIncreaseOrDecrease",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Availability storage"
+            },
+            {
+                "name": "_mintingEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function pauseCapitalIncreaseOrDecrease(Availability storage _self, bool _mintingEnabled) public\n    {\n        _self.mintingPaused = (_mintingEnabled == false);\n\n        if(_mintingEnabled) {\n            emit MintingResumed(msg.sender);\n        } else {\n            emit MintingPaused(msg.sender);\n        }\n    }",
+        "comments": [
+            "",
+            "    /// @notice calling this can enable/disable capital increase/decrease flag",
+            "    /// @param _mintingEnabled True if minting is allowed",
+            "    "
+        ],
+        "comt": "\n    /// @notice calling this can enable/disable capital increase/decrease flag\n    /// @param _mintingEnabled True if minting is allowed\n    ",
+        "@notice": "calling this can enable/disable capital increase/decrease flag",
+        "@param1": "_mintingEnabled True if minting is allowed",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositDividend",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "msgValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function depositDividend(Supply storage _self, uint256 msgValue)\n    public \n    {\n        require(msgValue > 0, \"amount0\");\n\n        // gets the current number of total token distributed\n        uint256 currentSupply = totalSupplyNow(_self);\n\n        // a deposit without investment would end up in unclaimable deposit for token holders\n        require(currentSupply > 0, \"0investors\");\n\n        // creates a new index for the dividends\n        uint256 dividendIndex = _self.dividends.length;\n\n        // Stores the current meta data for the dividend payout\n        _self.dividends.push(\n            Dividend(\n                _self.tokenActionIndex, // current index used for claiming\n                block.timestamp, // Timestamp of the distribution\n                DividendType.Ether, // Type of dividends\n                address(0),\n                msgValue, // Total amount that has been distributed\n                0, // amount that has been claimed\n                currentSupply, // Total supply now\n                false // Already recylced\n            )\n        );\n        emit DividendDeposited(msg.sender, _self.tokenActionIndex, msgValue, currentSupply, dividendIndex);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Receives ether to be distriubted to all token owners",
+            "    "
+        ],
+        "comt": "\n    /// @notice Receives ether to be distriubted to all token owners\n    ",
+        "@notice": "Receives ether to be distriubted to all token owners",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositERC20Dividend",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_dividendToken",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "baseCurrency",
+                "type": "address"
+            }
+        ],
+        "func": "function depositERC20Dividend(Supply storage _self, address _dividendToken, uint256 _amount, address baseCurrency)\n    public\n    {\n        require(_amount > 0, \"amount0\");\n        require(_dividendToken == baseCurrency, \"not baseCurrency\");\n\n        // gets the current number of total token distributed\n        uint256 currentSupply = totalSupplyNow(_self);\n\n        // a deposit without investment would end up in unclaimable deposit for token holders\n        require(currentSupply > 0, \"0investors\");\n\n        // creates a new index for the dividends\n        uint256 dividendIndex = _self.dividends.length;\n\n        // Stores the current meta data for the dividend payout\n        _self.dividends.push(\n            Dividend(\n                _self.tokenActionIndex, // index that counts up on transfers and mints\n                block.timestamp, // Timestamp of the distribution\n                DividendType.ERC20, \n                _dividendToken, \n                _amount, // Total amount that has been distributed\n                0, // amount that has been claimed\n                currentSupply, // Total supply now\n                false // Already recylced\n            )\n        );\n\n        // it shouldn't return anything but according to ERC20 standard it could if badly implemented\n        // IMPORTANT: potentially a call with reentrance -> do at the end\n        require(ERC20(_dividendToken).transferFrom(msg.sender, address(this), _amount), \"transferFrom\");\n\n        emit DividendDeposited(msg.sender, _self.tokenActionIndex, _amount, currentSupply, dividendIndex);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Receives ERC20 to be distriubted to all token owners",
+            "    "
+        ],
+        "comt": "\n    /// @notice Receives ERC20 to be distriubted to all token owners\n    ",
+        "@notice": "Receives ERC20 to be distriubted to all token owners",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimDividend",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_dividendIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claimDividend(Supply storage _self, uint256 _dividendIndex) public {\n        // Loads the details for the specific Dividend payment\n        Dividend storage dividend = _self.dividends[_dividendIndex];\n\n        // Devidends should not have been claimed already\n        require(dividend.claimed[msg.sender] == false, \"claimed\");\n\n         // Devidends should not have been recycled already\n        require(dividend.recycled == false, \"recycled\");\n\n        // get the token balance at the time of the dividend distribution\n        uint256 balance = balanceOfAt(_self, msg.sender, dividend.currentTokenActionIndex.sub(1));\n\n        // calculates the amount of dividends that can be claimed\n        uint256 claim = balance.mul(dividend.amount).div(dividend.totalSupply);\n\n        // flag that dividends have been claimed\n        dividend.claimed[msg.sender] = true;\n        dividend.claimedAmount = SafeMath.add(dividend.claimedAmount, claim);\n\n        claimThis(dividend.dividendType, _dividendIndex, msg.sender, claim, dividend.dividendToken);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Function to claim dividends for msg.sender",
+            "    /// @dev dividendsClaimed should not be handled here.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Function to claim dividends for msg.sender\n    /// @dev dividendsClaimed should not be handled here.\n    ",
+        "@notice": "Function to claim dividends for msg.sender",
+        "@dev": "dividendsClaimed should not be handled here.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimDividendAll",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            }
+        ],
+        "func": "function claimDividendAll(Supply storage _self) public {\n        claimLoopInternal(_self, _self.dividendsClaimed[msg.sender], (_self.dividends.length-1));\n    }",
+        "comments": [
+            "",
+            "    /// @notice Claim all dividends.",
+            "    /// @dev dividendsClaimed counter should only increase when claimed in hole-free way.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Claim all dividends.\n    /// @dev dividendsClaimed counter should only increase when claimed in hole-free way.\n    ",
+        "@notice": "Claim all dividends.",
+        "@dev": "dividendsClaimed counter should only increase when claimed in hole-free way.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimInBatches",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_startIndex",
+                "type": "uint256"
+            },
+            {
+                "name": "_endIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claimInBatches(Supply storage _self, uint256 _startIndex, uint256 _endIndex) public {\n        claimLoopInternal(_self, _startIndex, _endIndex);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Claim dividends in batches. In case claimDividendAll runs out of gas.",
+            "    /// @dev dividendsClaimed counter should only increase when claimed in hole-free way.",
+            "    /// @param _startIndex start index (inclusive number).",
+            "    /// @param _endIndex end index (inclusive number).",
+            "    "
+        ],
+        "comt": "\n    /// @notice Claim dividends in batches. In case claimDividendAll runs out of gas.\n    /// @dev dividendsClaimed counter should only increase when claimed in hole-free way.\n    /// @param _startIndex start index (inclusive number).\n    /// @param _endIndex end index (inclusive number).\n    ",
+        "@notice": "Claim dividends in batches. In case claimDividendAll runs out of gas.",
+        "@dev": "dividendsClaimed counter should only increase when claimed in hole-free way.",
+        "@param1": "_startIndex start index (inclusive number).",
+        "@param2": "_endIndex end index (inclusive number).",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "recycleDividend",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Supply storage"
+            },
+            {
+                "name": "_dividendIndex",
+                "type": "uint256"
+            },
+            {
+                "name": "_recycleLockedTimespan",
+                "type": "uint256"
+            },
+            {
+                "name": "_currentSupply",
+                "type": "uint256"
+            }
+        ],
+        "func": "function recycleDividend(Supply storage _self, uint256 _dividendIndex, uint256 _recycleLockedTimespan, uint256 _currentSupply) public {\n        // Get the dividend distribution\n        Dividend storage dividend = _self.dividends[_dividendIndex];\n\n        // should not have been recycled already\n        require(dividend.recycled == false, \"recycled\");\n\n        // The recycle time has to be over\n        require(dividend.timestamp < SafeMath.sub(block.timestamp, _recycleLockedTimespan), \"timeUp\");\n\n        // Devidends should not have been claimed already\n        require(dividend.claimed[msg.sender] == false, \"claimed\");\n\n        //\n        //refund\n        //\n\n        // The amount, which has not been claimed is distributed to token owner\n        _self.dividends[_dividendIndex].recycled = true;\n\n        // calculates the amount of dividends that can be claimed\n        uint256 claim = SafeMath.sub(dividend.amount, dividend.claimedAmount);\n\n        // flag that dividends have been claimed\n        dividend.claimed[msg.sender] = true;\n        dividend.claimedAmount = SafeMath.add(dividend.claimedAmount, claim);\n\n        claimThis(dividend.dividendType, _dividendIndex, msg.sender, claim, dividend.dividendToken);\n\n        emit DividendRecycled(msg.sender, _self.tokenActionIndex, claim, _currentSupply, _dividendIndex);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Dividends which have not been claimed can be claimed by owner after timelock (to avoid loss)",
+            "    /// @param _dividendIndex index of dividend to recycle.",
+            "    /// @param _recycleLockedTimespan timespan required until possible.",
+            "    /// @param _currentSupply current supply.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Dividends which have not been claimed can be claimed by owner after timelock (to avoid loss)\n    /// @param _dividendIndex index of dividend to recycle.\n    /// @param _recycleLockedTimespan timespan required until possible.\n    /// @param _currentSupply current supply.\n    ",
+        "@notice": "Dividends which have not been claimed can be claimed by owner after timelock (to avoid loss)",
+        "@param1": "_dividendIndex index of dividend to recycle.",
+        "@param2": "_recycleLockedTimespan timespan required until possible.",
+        "@param3": "_currentSupply current supply.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rescueToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_self",
+                "type": "Availability storage"
+            },
+            {
+                "name": "_foreignTokenAddress",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            }
+        ],
+        "func": "function rescueToken(Availability storage _self, address _foreignTokenAddress, address _to) public\n    {\n        require(_self.mintingPhaseFinished, \"unfinished\");\n        ERC20(_foreignTokenAddress).transfer(_to, ERC20(_foreignTokenAddress).balanceOf(address(this)));\n    }",
+        "comments": [
+            "",
+            "    /// @notice If this contract gets a balance in some other ERC20 contract - or even iself - then we can rescue it.",
+            "    /// @param _foreignTokenAddress token where contract has balance.",
+            "    /// @param _to the beneficiary.",
+            "    "
+        ],
+        "comt": "\n    /// @notice If this contract gets a balance in some other ERC20 contract - or even iself - then we can rescue it.\n    /// @param _foreignTokenAddress token where contract has balance.\n    /// @param _to the beneficiary.\n    ",
+        "@notice": "If this contract gets a balance in some other ERC20 contract - or even iself - then we can rescue it.",
+        "@param1": "_foreignTokenAddress token where contract has balance.",
+        "@param2": "_to the beneficiary.",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "name",
+        "visibility": "public",
+        "args": [],
+        "func": "function name() public view returns (string memory) {\n        return _name;\n    }",
+        "comments": [
+            "",
+            "    // The token's name",
+            "    "
+        ],
+        "comt": "\n    // The token's name\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public pure returns (uint8) {\n        return 0;\n    }",
+        "comments": [
+            "",
+            "    // Fixed number of 0 decimals like real world equity",
+            "    "
+        ],
+        "comt": "\n    // Fixed number of 0 decimals like real world equity\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "symbol",
+        "visibility": "public",
+        "args": [],
+        "func": "function symbol() public view returns (string memory) {\n        return _symbol;\n    }",
+        "comments": [
+            "",
+            "    // An identifier",
+            "    "
+        ],
+        "comt": "\n    // An identifier\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isMintingPaused",
+        "visibility": "public",
+        "args": [],
+        "func": "function isMintingPaused() public view returns (bool) {\n        return availability.mintingPaused;\n    }",
+        "comments": [
+            "",
+            "///////////////////",
+            "// Simple state getters",
+            "///////////////////",
+            "",
+            "    "
+        ],
+        "comt": "\n///////////////////\n// Simple state getters\n///////////////////\n\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isMintingPhaseFinished",
+        "visibility": "public",
+        "args": [],
+        "func": "function isMintingPhaseFinished() public view returns (bool) {\n        return availability.mintingPhaseFinished;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getPauseControl",
+        "visibility": "public",
+        "args": [],
+        "func": "function getPauseControl() public view returns (address) {\n        return roles.pauseControl;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getTokenRescueControl",
+        "visibility": "public",
+        "args": [],
+        "func": "function getTokenRescueControl() public view returns (address) {\n        return roles.tokenRescueControl;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getMintControl",
+        "visibility": "public",
+        "args": [],
+        "func": "function getMintControl() public view returns (address) {\n        return roles.mintControl;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isTransfersPaused",
+        "visibility": "public",
+        "args": [],
+        "func": "function isTransfersPaused() public view returns (bool) {\n        return !availability.transfersEnabled;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isTokenAlive",
+        "visibility": "public",
+        "args": [],
+        "func": "function isTokenAlive() public view returns (bool) {\n        return availability.tokenAlive;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCap",
+        "visibility": "public",
+        "args": [],
+        "func": "function getCap() public view returns (uint256) {\n        return supply.cap;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getGoal",
+        "visibility": "public",
+        "args": [],
+        "func": "function getGoal() public view returns (uint256) {\n        return supply.goal;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getStart",
+        "visibility": "public",
+        "args": [],
+        "func": "function getStart() public view returns (uint256) {\n        return supply.startTime;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getEnd",
+        "visibility": "public",
+        "args": [],
+        "func": "function getEnd() public view returns (uint256) {\n        return supply.endTime;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getLimits",
+        "visibility": "public",
+        "args": [],
+        "func": "function getLimits() public view returns (uint256, uint256, uint256, uint256) {\n        return (supply.cap, supply.goal, supply.startTime, supply.endTime);\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getCurrentHistoryIndex",
+        "visibility": "public",
+        "args": [],
+        "func": "function getCurrentHistoryIndex() public view returns (uint256) {\n        return supply.tokenActionIndex;\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMetaData",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_nameParam",
+                "type": "string calldata"
+            },
+            {
+                "name": "_symbolParam",
+                "type": "string calldata"
+            },
+            {
+                "name": "_tokenBaseCurrency",
+                "type": "address"
+            },
+            {
+                "name": "_cap",
+                "type": "uint256"
+            },
+            {
+                "name": "_goal",
+                "type": "uint256"
+            },
+            {
+                "name": "_startTime",
+                "type": "uint256"
+            },
+            {
+                "name": "_endTime",
+                "type": "uint256"
+            }
+        ],
+        "func": "function setMetaData(\n        string calldata _nameParam, \n        string calldata _symbolParam, \n        address _tokenBaseCurrency, \n        uint256 _cap, \n        uint256 _goal, \n        uint256 _startTime, \n        uint256 _endTime) \n        external \n    canSetMetadata \n    {\n        require(_cap >= _goal, \"cap higher goal\");\n\n        _name = _nameParam;\n        _symbol = _symbolParam;\n\n        baseCurrency = _tokenBaseCurrency;\n        supply.cap = _cap;\n        supply.goal = _goal;\n        supply.startTime = _startTime;\n        supply.endTime = _endTime;\n\n        emit MetaDataChanged(msg.sender, _nameParam, _symbolParam, _tokenBaseCurrency, _cap, _goal, _startTime, _endTime);\n    }",
+        "comments": [
+            "",
+            "///////////////////",
+            "// Set / Get Metadata",
+            "///////////////////",
+            "",
+            "    /// @notice Change the token's metadata.",
+            "    /// @dev Time is via block.timestamp (check crowdsale contract)",
+            "    /// @param _nameParam The name of the token.",
+            "    /// @param _symbolParam The symbol of the token.",
+            "    /// @param _tokenBaseCurrency The base currency.",
+            "    /// @param _cap The max amount of tokens that can be minted.",
+            "    /// @param _goal The goal of tokens that should be sold.",
+            "    /// @param _startTime Time when crowdsale should start.",
+            "    /// @param _endTime Time when crowdsale should end.",
+            "    "
+        ],
+        "comt": "\n///////////////////\n// Set / Get Metadata\n///////////////////\n\n    /// @notice Change the token's metadata.\n    /// @dev Time is via block.timestamp (check crowdsale contract)\n    /// @param _nameParam The name of the token.\n    /// @param _symbolParam The symbol of the token.\n    /// @param _tokenBaseCurrency The base currency.\n    /// @param _cap The max amount of tokens that can be minted.\n    /// @param _goal The goal of tokens that should be sold.\n    /// @param _startTime Time when crowdsale should start.\n    /// @param _endTime Time when crowdsale should end.\n    ",
+        "@notice": "Change the token's metadata.",
+        "@dev": "Time is via block.timestamp (check crowdsale contract)",
+        "@param1": "_nameParam The name of the token.",
+        "@param2": "_symbolParam The symbol of the token.",
+        "@param3": "_tokenBaseCurrency The base currency.",
+        "@param4": "_cap The max amount of tokens that can be minted.",
+        "@param5": "_goal The goal of tokens that should be sold.",
+        "@param6": "_startTime Time when crowdsale should start.",
+        "@param7": "_endTime Time when crowdsale should end.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setMintControl",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_mintControl",
+                "type": "address"
+            }
+        ],
+        "func": "function setMintControl(address _mintControl) public canSetMetadata {\n        roles.setMintControl(_mintControl);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set mint control role. Usually this is CONDA's controller.",
+            "    /// @param _mintControl Contract address or wallet that should be allowed to mint.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set mint control role. Usually this is CONDA's controller.\n    /// @param _mintControl Contract address or wallet that should be allowed to mint.\n    ",
+        "@notice": "Set mint control role. Usually this is CONDA's controller.",
+        "@param1": "_mintControl Contract address or wallet that should be allowed to mint.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setRoles",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_pauseControl",
+                "type": "address"
+            },
+            {
+                "name": "_tokenRescueControl",
+                "type": "address"
+            }
+        ],
+        "func": "function setRoles(address _pauseControl, address _tokenRescueControl) public \n    canSetMetadata\n    {\n        roles.setRoles(_pauseControl, _tokenRescueControl);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Set roles.",
+            "    /// @param _pauseControl address that is allowed to pause.",
+            "    /// @param _tokenRescueControl address that is allowed rescue tokens.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Set roles.\n    /// @param _pauseControl address that is allowed to pause.\n    /// @param _tokenRescueControl address that is allowed rescue tokens.\n    ",
+        "@notice": "Set roles.",
+        "@param1": "_pauseControl address that is allowed to pause.",
+        "@param2": "_tokenRescueControl address that is allowed rescue tokens.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setTokenAlive",
+        "visibility": "public",
+        "args": [],
+        "func": "function setTokenAlive() public \n    onlyOwnerOrOverruled\n    {\n        availability.setTokenAlive();\n\n        emit TokenAlive(msg.sender); //not in library for compatibility reasons\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _amount) public canTransfer returns (bool success) {\n        supply.doTransfer(availability, msg.sender, _to, _amount);\n        return true;\n    }",
+        "comments": [
+            "",
+            "///////////////////",
+            "// ERC20 Methods",
+            "///////////////////",
+            "",
+            "    /// @notice Send `_amount` tokens to `_to` from `msg.sender`",
+            "    /// @param _to The address of the recipient",
+            "    /// @param _amount The amount of tokens to be transferred",
+            "    /// @return Whether the transfer was successful or not",
+            "    "
+        ],
+        "comt": "\n///////////////////\n// ERC20 Methods\n///////////////////\n\n    /// @notice Send `_amount` tokens to `_to` from `msg.sender`\n    /// @param _to The address of the recipient\n    /// @param _amount The amount of tokens to be transferred\n    /// @return Whether the transfer was successful or not\n    ",
+        "@notice": "Send `_amount` tokens to `_to` from `msg.sender`",
+        "@param1": "_to The address of the recipient",
+        "@param2": "_amount The amount of tokens to be transferred",
+        "@return1": "Whether the transfer was successful or not",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _amount) public returns (bool success) {\n        return transferFromInternal(_from, _to, _amount);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Send `_amount` tokens to `_to` from `_from` on the condition (requires allowance/approval)",
+            "    /// @param _from The address holding the tokens being transferred",
+            "    /// @param _to The address of the recipient",
+            "    /// @param _amount The amount of tokens to be transferred",
+            "    /// @return True if the transfer was successful",
+            "    "
+        ],
+        "comt": "\n    /// @notice Send `_amount` tokens to `_to` from `_from` on the condition (requires allowance/approval)\n    /// @param _from The address holding the tokens being transferred\n    /// @param _to The address of the recipient\n    /// @param _amount The amount of tokens to be transferred\n    /// @return True if the transfer was successful\n    ",
+        "@notice": "Send `_amount` tokens to `_to` from `_from` on the condition (requires allowance/approval)",
+        "@param1": "_from The address holding the tokens being transferred",
+        "@param2": "_to The address of the recipient",
+        "@param3": "_amount The amount of tokens to be transferred",
+        "@return1": "True if the transfer was successful",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address _owner) public view returns (uint256 balance) {\n        return supply.balanceOfNow(_owner);\n    }",
+        "comments": [
+            "",
+            "    /// @notice balance of `_owner` for this token",
+            "    /// @param _owner The address that's balance is being requested",
+            "    /// @return The balance of `_owner` now (at the current index)",
+            "    "
+        ],
+        "comt": "\n    /// @notice balance of `_owner` for this token\n    /// @param _owner The address that's balance is being requested\n    /// @return The balance of `_owner` now (at the current index)\n    ",
+        "@notice": "balance of `_owner` for this token",
+        "@param1": "_owner The address that's balance is being requested",
+        "@return1": "The balance of `_owner` now (at the current index)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _amount) public returns (bool success) {\n        return supply.approve(_spender, _amount);\n    }",
+        "comments": [
+            "",
+            "    /// @notice `msg.sender` approves `_spender` to spend `_amount` of his tokens",
+            "    /// @dev This is a modified version of the ERC20 approve function to be a bit safer",
+            "    /// @param _spender The address of the account able to transfer the tokens",
+            "    /// @param _amount The amount of tokens to be approved for transfer",
+            "    /// @return True if the approval was successful",
+            "    "
+        ],
+        "comt": "\n    /// @notice `msg.sender` approves `_spender` to spend `_amount` of his tokens\n    /// @dev This is a modified version of the ERC20 approve function to be a bit safer\n    /// @param _spender The address of the account able to transfer the tokens\n    /// @param _amount The amount of tokens to be approved for transfer\n    /// @return True if the approval was successful\n    ",
+        "@notice": "`msg.sender` approves `_spender` to spend `_amount` of his tokens",
+        "@dev": "This is a modified version of the ERC20 approve function to be a bit safer",
+        "@param1": "_spender The address of the account able to transfer the tokens",
+        "@param2": "_amount The amount of tokens to be approved for transfer",
+        "@return1": "True if the approval was successful",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint256 remaining) {\n        return supply.allowed[_owner][_spender];\n    }",
+        "comments": [
+            "",
+            "    /// @notice This method can check how much is approved by `_owner` for `_spender`",
+            "    /// @dev This function makes it easy to read the `allowed[]` map",
+            "    /// @param _owner The address of the account that owns the token",
+            "    /// @param _spender The address of the account able to transfer the tokens",
+            "    /// @return Amount of remaining tokens of _owner that _spender is allowed to spend",
+            "    "
+        ],
+        "comt": "\n    /// @notice This method can check how much is approved by `_owner` for `_spender`\n    /// @dev This function makes it easy to read the `allowed[]` map\n    /// @param _owner The address of the account that owns the token\n    /// @param _spender The address of the account able to transfer the tokens\n    /// @return Amount of remaining tokens of _owner that _spender is allowed to spend\n    ",
+        "@notice": "This method can check how much is approved by `_owner` for `_spender`",
+        "@dev": "This function makes it easy to read the `allowed[]` map",
+        "@param1": "_owner The address of the account that owns the token",
+        "@param2": "_spender The address of the account able to transfer the tokens",
+        "@return1": "Amount of remaining tokens of _owner that _spender is allowed to spend",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupply",
+        "visibility": "public",
+        "args": [],
+        "func": "function totalSupply() public view returns (uint256) {\n        return supply.totalSupplyNow();\n    }",
+        "comments": [
+            "",
+            "    /// @notice This function makes it easy to get the total number of tokens",
+            "    /// @return The total number of tokens now (at current index)",
+            "    "
+        ],
+        "comt": "\n    /// @notice This function makes it easy to get the total number of tokens\n    /// @return The total number of tokens now (at current index)\n    ",
+        "@notice": "This function makes it easy to get the total number of tokens",
+        "@return1": "The total number of tokens now (at current index)",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_addedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseApproval(address _spender, uint256 _addedValue) public returns (bool) {\n        return supply.increaseApproval(_spender, _addedValue);\n    }",
+        "comments": [
+            "",
+            "",
+            "    /// @notice Increase the amount of tokens that an owner allowed to a spender.",
+            "    /// @dev approve should be called when allowed[_spender] == 0. To increment",
+            "    /// allowed value is better to use this function to avoid 2 calls (and wait until",
+            "    /// the first transaction is mined)",
+            "    /// From MonolithDAO Token.sol",
+            "    /// @param _spender The address which will spend the funds.",
+            "    /// @param _addedValue The amount of tokens to increase the allowance by.",
+            "    "
+        ],
+        "comt": "\n\n    /// @notice Increase the amount of tokens that an owner allowed to a spender.\n    /// @dev approve should be called when allowed[_spender] == 0. To increment\n    /// allowed value is better to use this function to avoid 2 calls (and wait until\n    /// the first transaction is mined)\n    /// From MonolithDAO Token.sol\n    /// @param _spender The address which will spend the funds.\n    /// @param _addedValue The amount of tokens to increase the allowance by.\n    ",
+        "@notice": "Increase the amount of tokens that an owner allowed to a spender.",
+        "@dev": "approve should be called when allowed[_spender] == 0. To increment /// allowed value is better to use this function to avoid 2 calls (and wait until /// the first transaction is mined) /// From MonolithDAO Token.sol",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_addedValue The amount of tokens to increase the allowance by.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseApproval",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseApproval(address _spender, uint256 _subtractedValue) public returns (bool) {\n        return supply.decreaseApproval(_spender, _subtractedValue);\n    }",
+        "comments": [
+            "",
+            "    /// @dev Decrease the amount of tokens that an owner allowed to a spender.",
+            "    /// approve should be called when allowed[_spender] == 0. To decrement",
+            "    /// allowed value is better to use this function to avoid 2 calls (and wait until",
+            "    /// the first transaction is mined)",
+            "    /// From MonolithDAO Token.sol",
+            "    /// @param _spender The address which will spend the funds.",
+            "    /// @param _subtractedValue The amount of tokens to decrease the allowance by.",
+            "    "
+        ],
+        "comt": "\n    /// @dev Decrease the amount of tokens that an owner allowed to a spender.\n    /// approve should be called when allowed[_spender] == 0. To decrement\n    /// allowed value is better to use this function to avoid 2 calls (and wait until\n    /// the first transaction is mined)\n    /// From MonolithDAO Token.sol\n    /// @param _spender The address which will spend the funds.\n    /// @param _subtractedValue The amount of tokens to decrease the allowance by.\n    ",
+        "@dev": "Decrease the amount of tokens that an owner allowed to a spender. /// approve should be called when allowed[_spender] == 0. To decrement /// allowed value is better to use this function to avoid 2 calls (and wait until /// the first transaction is mined) /// From MonolithDAO Token.sol",
+        "@param1": "_spender The address which will spend the funds.",
+        "@param2": "_subtractedValue The amount of tokens to decrease the allowance by.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address _to, uint256 _amount) public canMint returns (bool) {\n        return supply.mint(_to, _amount);\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Miniting ",
+            "////////////////",
+            "",
+            "    /// @dev Can rescue tokens accidentally assigned to this contract",
+            "    /// @param _to The beneficiary who receives increased balance.",
+            "    /// @param _amount The amount of balance increase.",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Miniting \n////////////////\n\n    /// @dev Can rescue tokens accidentally assigned to this contract\n    /// @param _to The beneficiary who receives increased balance.\n    /// @param _amount The amount of balance increase.\n    ",
+        "@dev": "Can rescue tokens accidentally assigned to this contract",
+        "@param1": "_to The beneficiary who receives increased balance.",
+        "@param2": "_amount The amount of balance increase.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "finishMinting",
+        "visibility": "public",
+        "args": [],
+        "func": "function finishMinting() public onlyOwnerOrOverruled returns (bool) {\n        return availability.finishMinting();\n    }",
+        "comments": [
+            "",
+            "    /// @notice Function to stop minting new tokens",
+            "    /// @return True if the operation was successful.",
+            "    "
+        ],
+        "comt": "\n    /// @notice Function to stop minting new tokens\n    /// @return True if the operation was successful.\n    ",
+        "@notice": "Function to stop minting new tokens",
+        "@return1": "True if the operation was successful.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "rescueToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_foreignTokenAddress",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            }
+        ],
+        "func": "function rescueToken(address _foreignTokenAddress, address _to)\n    public\n    onlyTokenRescueControl\n    {\n        availability.rescueToken(_foreignTokenAddress, _to);\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Rescue Tokens ",
+            "////////////////",
+            "",
+            "    /// @dev Can rescue tokens accidentally assigned to this contract",
+            "    /// @param _foreignTokenAddress The address from which the balance will be retrieved",
+            "    /// @param _to beneficiary",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Rescue Tokens \n////////////////\n\n    /// @dev Can rescue tokens accidentally assigned to this contract\n    /// @param _foreignTokenAddress The address from which the balance will be retrieved\n    /// @param _to beneficiary\n    ",
+        "@dev": "Can rescue tokens accidentally assigned to this contract",
+        "@param1": "_foreignTokenAddress The address from which the balance will be retrieved",
+        "@param2": "_to beneficiary",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOfAt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_specificTransfersAndMintsIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function balanceOfAt(address _owner, uint256 _specificTransfersAndMintsIndex) public view returns (uint256) {\n        return supply.balanceOfAt(_owner, _specificTransfersAndMintsIndex);\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Query balance and totalSupply in History",
+            "////////////////",
+            "",
+            "    /// @notice Someone's token balance of this token",
+            "    /// @dev Queries the balance of `_owner` at `_specificTransfersAndMintsIndex`",
+            "    /// @param _owner The address from which the balance will be retrieved",
+            "    /// @param _specificTransfersAndMintsIndex The balance at index",
+            "    /// @return The balance at `_specificTransfersAndMintsIndex`",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Query balance and totalSupply in History\n////////////////\n\n    /// @notice Someone's token balance of this token\n    /// @dev Queries the balance of `_owner` at `_specificTransfersAndMintsIndex`\n    /// @param _owner The address from which the balance will be retrieved\n    /// @param _specificTransfersAndMintsIndex The balance at index\n    /// @return The balance at `_specificTransfersAndMintsIndex`\n    ",
+        "@notice": "Someone's token balance of this token",
+        "@dev": "Queries the balance of `_owner` at `_specificTransfersAndMintsIndex`",
+        "@param1": "_owner The address from which the balance will be retrieved",
+        "@param2": "_specificTransfersAndMintsIndex The balance at index",
+        "@return1": "The balance at `_specificTransfersAndMintsIndex`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "totalSupplyAt",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_specificTransfersAndMintsIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function totalSupplyAt(uint256 _specificTransfersAndMintsIndex) public view returns(uint256) {\n        return supply.totalSupplyAt(_specificTransfersAndMintsIndex);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Total amount of tokens at `_specificTransfersAndMintsIndex`.",
+            "    /// @param _specificTransfersAndMintsIndex The totalSupply at index",
+            "    /// @return The total amount of tokens at `_specificTransfersAndMintsIndex`",
+            "    "
+        ],
+        "comt": "\n    /// @notice Total amount of tokens at `_specificTransfersAndMintsIndex`.\n    /// @param _specificTransfersAndMintsIndex The totalSupply at index\n    /// @return The total amount of tokens at `_specificTransfersAndMintsIndex`\n    ",
+        "@notice": "Total amount of tokens at `_specificTransfersAndMintsIndex`.",
+        "@param1": "_specificTransfersAndMintsIndex The totalSupply at index",
+        "@return1": "The total amount of tokens at `_specificTransfersAndMintsIndex`",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 1
+    },
+    {
+        "name": "enableTransfers",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_transfersEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function enableTransfers(bool _transfersEnabled) public \n    onlyOwnerOrOverruled \n    {\n        enableTransferInternal(_transfersEnabled);\n    }",
+        "comments": [
+            "",
+            "    /// @notice Enables token holders to transfer their tokens freely if true",
+            "    /// @param _transfersEnabled True if transfers are allowed",
+            "    "
+        ],
+        "comt": "\n    /// @notice Enables token holders to transfer their tokens freely if true\n    /// @param _transfersEnabled True if transfers are allowed\n    ",
+        "@notice": "Enables token holders to transfer their tokens freely if true",
+        "@param1": "_transfersEnabled True if transfers are allowed",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pauseTransfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_transfersEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function pauseTransfer(bool _transfersEnabled) public\n    onlyPauseControl\n    {\n        enableTransferInternal(_transfersEnabled);\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Pausing token for unforeseen reasons",
+            "////////////////",
+            "",
+            "    /// @dev `pauseTransfer` is an alias for `enableTransfers` using the pauseControl modifier",
+            "    /// @param _transfersEnabled False if transfers are allowed",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Pausing token for unforeseen reasons\n////////////////\n\n    /// @dev `pauseTransfer` is an alias for `enableTransfers` using the pauseControl modifier\n    /// @param _transfersEnabled False if transfers are allowed\n    ",
+        "@dev": "`pauseTransfer` is an alias for `enableTransfers` using the pauseControl modifier",
+        "@param1": "_transfersEnabled False if transfers are allowed",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "pauseCapitalIncreaseOrDecrease",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_mintingEnabled",
+                "type": "bool"
+            }
+        ],
+        "func": "function pauseCapitalIncreaseOrDecrease(bool _mintingEnabled) public\n    onlyPauseControl\n    {\n        availability.pauseCapitalIncreaseOrDecrease(_mintingEnabled);\n    }",
+        "comments": [
+            "",
+            "    /// @dev `pauseCapitalIncreaseOrDecrease` can pause mint",
+            "    /// @param _mintingEnabled False if minting is allowed",
+            "    "
+        ],
+        "comt": "\n    /// @dev `pauseCapitalIncreaseOrDecrease` can pause mint\n    /// @param _mintingEnabled False if minting is allowed\n    ",
+        "@dev": "`pauseCapitalIncreaseOrDecrease` can pause mint",
+        "@param1": "_mintingEnabled False if minting is allowed",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "getControllerAddress",
+        "visibility": "public",
+        "args": [],
+        "func": "function getControllerAddress() public view returns (address) {\n        return globalIndex.getControllerAddress();\n    }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _amount) public returns (bool success) {\n        ICRWDControllerTransfer(getControllerAddress()).transferParticipantsVerification(baseCurrency, msg.sender, _to, _amount);\n        return super.transfer(_to, _amount);\n    }",
+        "comments": [
+            "/** @dev ERC20 transfer function overlay to transfer tokens and call controller.",
+            "      * @param _to The recipient address.",
+            "      * @param _amount The amount.",
+            "      * @return A boolean that indicates if the operation was successful.",
+            "      */",
+            ""
+        ],
+        "comt": "/** @dev ERC20 transfer function overlay to transfer tokens and call controller.\n      * @param _to The recipient address.\n      * @param _amount The amount.\n      * @return A boolean that indicates if the operation was successful.\n      */\n",
+        "@dev": "ERC20 transfer function overlay to transfer tokens and call controller.",
+        "@param1": "_to The recipient address.",
+        "@param2": "_amount The amount.",
+        "@return1": "A boolean that indicates if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _amount) public returns (bool success) {\n        ICRWDControllerTransfer(getControllerAddress()).transferParticipantsVerification(baseCurrency, _from, _to, _amount);\n        return super.transferFrom(_from, _to, _amount);\n    }",
+        "comments": [
+            "/** @dev ERC20 transferFrom function overlay to transfer tokens and call controller.",
+            "      * @param _from The sender address (requires approval).",
+            "      * @param _to The recipient address.",
+            "      * @param _amount The amount.",
+            "      * @return A boolean that indicates if the operation was successful.",
+            "      */",
+            ""
+        ],
+        "comt": "/** @dev ERC20 transferFrom function overlay to transfer tokens and call controller.\n      * @param _from The sender address (requires approval).\n      * @param _to The recipient address.\n      * @param _amount The amount.\n      * @return A boolean that indicates if the operation was successful.\n      */\n",
+        "@dev": "ERC20 transferFrom function overlay to transfer tokens and call controller.",
+        "@param1": "_from The sender address (requires approval).",
+        "@param2": "_to The recipient address.",
+        "@param3": "_amount The amount.",
+        "@return1": "A boolean that indicates if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address _to, uint256 _amount) public canMint returns (bool) {\n        return super.mint(_to,_amount);\n    }",
+        "comments": [
+            "/** @dev Mint function overlay to mint/create tokens.",
+            "      * @param _to The address that will receive the minted tokens.",
+            "      * @param _amount The amount of tokens to mint.",
+            "      * @return A boolean that indicates if the operation was successful.",
+            "      */",
+            ""
+        ],
+        "comt": "/** @dev Mint function overlay to mint/create tokens.\n      * @param _to The address that will receive the minted tokens.\n      * @param _amount The amount of tokens to mint.\n      * @return A boolean that indicates if the operation was successful.\n      */\n",
+        "@dev": "Mint function overlay to mint/create tokens.",
+        "@param1": "_to The address that will receive the minted tokens.",
+        "@param2": "_amount The amount of tokens to mint.",
+        "@return1": "A boolean that indicates if the operation was successful.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setGlobalIndexAddress",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_globalIndexAddress",
+                "type": "address"
+            }
+        ],
+        "func": "function setGlobalIndexAddress(address _globalIndexAddress) public onlyOwner {\n        globalIndex = IGlobalIndexControllerLocation(_globalIndexAddress);\n    }",
+        "comments": [
+            "/** @dev Set address of GlobalIndex.",
+            "      * @param _globalIndexAddress Address to be used for current destination e.g. controller lookup.",
+            "      */",
+            ""
+        ],
+        "comt": "/** @dev Set address of GlobalIndex.\n      * @param _globalIndexAddress Address to be used for current destination e.g. controller lookup.\n      */\n",
+        "@dev": "Set address of GlobalIndex.",
+        "@param1": "_globalIndexAddress Address to be used for current destination e.g. controller lookup.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositDividend",
+        "visibility": "public",
+        "args": [],
+        "func": "function depositDividend() public payable onlyOwner onlyTokenAlive {\n        supply.depositDividend(msg.value);\n    }",
+        "comments": [
+            "",
+            "///////////////////",
+            "// Dividend Payment for Ether",
+            "///////////////////",
+            "",
+            "    /** @dev Receives ether to be distriubted to all token owners*/",
+            "    "
+        ],
+        "comt": "\n///////////////////\n// Dividend Payment for Ether\n///////////////////\n\n    /** @dev Receives ether to be distriubted to all token owners*/\n    ",
+        "@dev": "Receives ether to be distriubted to all token owners",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "depositERC20Dividend",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dividendToken",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "func": "function depositERC20Dividend(address _dividendToken, uint256 _amount) public onlyOwner onlyTokenAlive {\n        supply.depositERC20Dividend(_dividendToken, _amount, baseCurrency);\n    }",
+        "comments": [
+            "",
+            "///////////////////",
+            "// Dividend Payment for ERC20 Dividend",
+            "///////////////////",
+            "",
+            "    /** @dev Receives ether to be distriubted to all token owners",
+            "      * @param _dividendToken Token address",
+            "      * @param _amount The amount of tokens for deposit",
+            "      */",
+            "    "
+        ],
+        "comt": "\n///////////////////\n// Dividend Payment for ERC20 Dividend\n///////////////////\n\n    /** @dev Receives ether to be distriubted to all token owners\n      * @param _dividendToken Token address\n      * @param _amount The amount of tokens for deposit\n      */\n    ",
+        "@dev": "Receives ether to be distriubted to all token owners",
+        "@param1": "_dividendToken Token address",
+        "@param2": "_amount The amount of tokens for deposit",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimDividend",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dividendIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claimDividend(uint256 _dividendIndex) public {\n        supply.claimDividend(_dividendIndex);\n    }",
+        "comments": [
+            "",
+            "///////////////////",
+            "// Claim dividends",
+            "///////////////////",
+            "",
+            "    /** @dev Token holder can claim the payout of dividends for a specific dividend payout",
+            "      * @param _dividendIndex the index of the specific dividend distribution",
+            "      */",
+            "    "
+        ],
+        "comt": "\n///////////////////\n// Claim dividends\n///////////////////\n\n    /** @dev Token holder can claim the payout of dividends for a specific dividend payout\n      * @param _dividendIndex the index of the specific dividend distribution\n      */\n    ",
+        "@dev": "Token holder can claim the payout of dividends for a specific dividend payout",
+        "@param1": "_dividendIndex the index of the specific dividend distribution",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimDividendAll",
+        "visibility": "public",
+        "args": [],
+        "func": "function claimDividendAll() public {\n        supply.claimDividendAll();\n    }",
+        "comments": [
+            "/** @dev Claim all dividiends",
+            "      * @notice In case function call runs out of gas run single address calls against claimDividend function",
+            "      */",
+            ""
+        ],
+        "comt": "/** @dev Claim all dividiends\n      * @notice In case function call runs out of gas run single address calls against claimDividend function\n      */\n",
+        "@dev": "Claim all dividiends",
+        "@notice": "In case function call runs out of gas run single address calls against claimDividend function",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "claimInBatches",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "startIndex",
+                "type": "uint256"
+            },
+            {
+                "name": "endIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function claimInBatches(uint256 startIndex, uint256 endIndex) public {\n        supply.claimInBatches(startIndex, endIndex); \n    }",
+        "comments": [
+            "/** @dev Claim dividends in batches",
+            "      * @notice In case claimDividendAll runs out of gas",
+            "      */",
+            ""
+        ],
+        "comt": "/** @dev Claim dividends in batches\n      * @notice In case claimDividendAll runs out of gas\n      */\n",
+        "@dev": "Claim dividends in batches",
+        "@notice": "In case claimDividendAll runs out of gas",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "recycleDividend",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_dividendIndex",
+                "type": "uint256"
+            }
+        ],
+        "func": "function recycleDividend(uint256 _dividendIndex) public onlyOwner {\n        uint256 currentSupply = supply.totalSupplyNow();\n\n        supply.recycleDividend(_dividendIndex, recycleLockedTimespan, currentSupply);\n    }",
+        "comments": [
+            "/** @dev Dividends which have not been claimed",
+            "      * @param _dividendIndex The index to be recycled",
+            "      */",
+            ""
+        ],
+        "comt": "/** @dev Dividends which have not been claimed\n      * @param _dividendIndex The index to be recycled\n      */\n",
+        "@dev": "Dividends which have not been claimed",
+        "@param1": "_dividendIndex The index to be recycled",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "setCapitalControl",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_capitalControl",
+                "type": "address"
+            }
+        ],
+        "func": "function setCapitalControl(address _capitalControl) public {\n        require(checkCanSetMetadata(), \"forbidden\");\n\n        capitalControl = _capitalControl;\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Functions",
+            "////////////////",
+            "",
+            "    /// @notice set capitalControl",
+            "    /// @dev this looks unprotected but has a checkCanSetMetadata check.",
+            "    ///  depending on inheritance this can be done ",
+            "    ///  before alive and any time by capitalControl",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Functions\n////////////////\n\n    /// @notice set capitalControl\n    /// @dev this looks unprotected but has a checkCanSetMetadata check.\n    ///  depending on inheritance this can be done \n    ///  before alive and any time by capitalControl\n    ",
+        "@notice": "set capitalControl",
+        "@dev": "this looks unprotected but has a checkCanSetMetadata check. /// depending on inheritance this can be done /// before alive and any time by capitalControl",
+        "notice_missing": 0,
+        "param_missing": 1,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "updateCapitalControl",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_capitalControl",
+                "type": "address"
+            }
+        ],
+        "func": "function updateCapitalControl(address _capitalControl) public onlyCapitalControl {\n        capitalControl = _capitalControl;\n    }",
+        "comments": [
+            "",
+            "    /// @notice as capital control I can pass my ownership to a new address (e.g. private key leaked).",
+            "    /// @param _capitalControl new capitalControl address",
+            "    "
+        ],
+        "comt": "\n    /// @notice as capital control I can pass my ownership to a new address (e.g. private key leaked).\n    /// @param _capitalControl new capitalControl address\n    ",
+        "@notice": "as capital control I can pass my ownership to a new address (e.g. private key leaked).",
+        "@param1": "_capitalControl new capitalControl address",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "reopenCrowdsale",
+        "visibility": "public",
+        "args": [],
+        "func": "function reopenCrowdsale() public onlyCapitalControl returns (bool) {        \n        return reopenCrowdsaleInternal();\n    }",
+        "comments": [
+            "",
+            "////////////////",
+            "// Reopen crowdsale (by capitalControl e.g. notary)",
+            "////////////////",
+            "",
+            "    /// @notice capitalControl can reopen the crowdsale.",
+            "    "
+        ],
+        "comt": "\n////////////////\n// Reopen crowdsale (by capitalControl e.g. notary)\n////////////////\n\n    /// @notice capitalControl can reopen the crowdsale.\n    ",
+        "@notice": "capitalControl can reopen the crowdsale.",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool)\n    {\n        if (msg.sender == capitalControl) {\n            return enforcedTransferFromInternal(_from, _to, _value, true);\n        } else {\n            return transferFromInternal(_from, _to, _value);\n        }\n    }",
+        "comments": [
+            "",
+            "",
+            "///////////////////",
+            "// Overrides",
+            "///////////////////",
+            "",
+            "    //override: transferFrom that has special self-approve behaviour when executed as capitalControl",
+            "    "
+        ],
+        "comt": "\n\n///////////////////\n// Overrides\n///////////////////\n\n    //override: transferFrom that has special self-approve behaviour when executed as capitalControl\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decimals",
+        "visibility": "public",
+        "args": [],
+        "func": "function decimals() public pure returns (uint8) {\n        return 0;\n    }",
+        "comments": [
+            "    // Fixed number of 0 decimals like real world equity",
+            "    "
+        ],
+        "comt": "    // Fixed number of 0 decimals like real world equity\n    ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

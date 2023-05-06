@@ -1,0 +1,311 @@
+[
+    {
+        "transactions": 1204997,
+        "function_num": 14
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function approve(address _spender, uint256 _value) public returns (bool) {\n    _approve(msg.sender, _spender, _value);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender) public view returns (uint256) {\n    return _allowance[_owner][_spender];\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "increaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function increaseAllowance(address _spender, uint256 _value) public returns (bool) {\n    _approve(msg.sender, _spender, _allowance[msg.sender][_spender].add(_value));\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "decreaseAllowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function decreaseAllowance(address _spender, uint256 _value) public returns (bool) {\n    _approve(msg.sender, _spender, _allowance[msg.sender][_spender].sub(_value));\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transfer(address _to, uint256 _value) public returns (bool _success) {\n    _transfer(msg.sender, _to, _value);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(address _from, address _to, uint256 _value) public returns (bool _success) {\n    _transfer(_from, _to, _value);\n    _approve(_from, msg.sender, _allowance[_from][msg.sender].sub(_value));\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address _owner, address _spender)\n    public\n    view\n    returns (uint256 _value)\n  {\n    if (_spender == mainchainGateway) return uint256(-1);\n\n    return _allowance[_owner][_spender];\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function transferFrom(\n    address _from,\n    address _to,\n    uint256 _value\n  )\n    public\n    returns (bool _success)\n  {\n    if (allowance(_from, msg.sender) != uint256(-1)) {\n      super._approve(_from, msg.sender, _allowance[_from][msg.sender].sub(_value));\n    }\n\n    _transfer(_from, _to, _value);\n    return true;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeAdmin",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "_newAdmin",
+                "type": "address"
+            }
+        ],
+        "func": "function changeAdmin(address _newAdmin) external onlyAdmin {\n    require(_newAdmin != address(0), \"HasAdmin: new admin is the zero address\");\n    emit AdminChanged(admin, _newAdmin);\n    admin = _newAdmin;\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeAdmin",
+        "visibility": "external",
+        "args": [],
+        "func": "function removeAdmin() external onlyAdmin {\n    emit AdminRemoved(admin);\n    admin = address(0);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "addMinters",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_addedMinters",
+                "type": "address[] memory"
+            }
+        ],
+        "func": "function addMinters(address[] memory _addedMinters) public onlyAdmin {\n    address _minter;\n\n    for (uint256 i = 0; i < _addedMinters.length; i++) {\n      _minter = _addedMinters[i];\n\n      if (!minter[_minter]) {\n        minters.push(_minter);\n        minter[_minter] = true;\n        emit MinterAdded(_minter);\n      }\n    }\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "removeMinters",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_removedMinters",
+                "type": "address[] memory"
+            }
+        ],
+        "func": "function removeMinters(address[] memory _removedMinters) public onlyAdmin {\n    address _minter;\n\n    for (uint256 i = 0; i < _removedMinters.length; i++) {\n      _minter = _removedMinters[i];\n\n      if (minter[_minter]) {\n        minter[_minter] = false;\n        emit MinterRemoved(_minter);\n      }\n    }\n\n    uint256 i = 0;\n\n    while (i < minters.length) {\n      _minter = minters[i];\n\n      if (!minter[_minter]) {\n        minters[i] = minters[minters.length - 1];\n        delete minters[minters.length - 1];\n        minters.length--;\n      } else {\n        i++;\n      }\n    }\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "isMinter",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_addr",
+                "type": "address"
+            }
+        ],
+        "func": "function isMinter(address _addr) public view returns (bool) {\n    return minter[_addr];\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "mint",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "func": "function mint(address _to, uint256 _value) public onlyMinter returns (bool _success) {\n    return _mint(_to, _value);\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]

@@ -1,0 +1,723 @@
+[
+    {
+        "transactions": 1159,
+        "function_num": 25
+    },
+    {
+        "name": "Ownable",
+        "visibility": "public",
+        "args": [],
+        "func": "function Ownable() public {\n    owner = msg.sender;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev The Ownable constructor sets the original `owner` of the contract to the sender",
+            "   * account.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev The Ownable constructor sets the original `owner` of the contract to the sender\n   * account.\n   */\n",
+        "@dev": "The Ownable constructor sets the original `owner` of the contract to the sender * account.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferOwnership",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "func": "function transferOwnership(address newOwner) public onlyOwner {\n    require(newOwner != address(0));\n    OwnershipTransferred(owner, newOwner);\n    owner = newOwner;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Allows the current owner to transfer control of the contract to a newOwner.",
+            "   * @param newOwner The address to transfer ownership to.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Allows the current owner to transfer control of the contract to a newOwner.\n   * @param newOwner The address to transfer ownership to.\n   */\n",
+        "@dev": "Allows the current owner to transfer control of the contract to a newOwner.",
+        "@param1": "newOwner The address to transfer ownership to.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "lock",
+        "visibility": "public",
+        "args": [],
+        "func": "function lock() onlyOwner whenNotLocked public {\n    locked = true;\n    Lock();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev called by the owner to locke, triggers locked state",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev called by the owner to locke, triggers locked state\n   */\n",
+        "@dev": "called by the owner to locke, triggers locked state",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "unlock",
+        "visibility": "public",
+        "args": [],
+        "func": "function unlock() onlyOwner whenLocked public {\n    locked = false;\n    Unlock();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev called by the owner",
+            "   *      to unlock, returns to unlocked state",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev called by the owner\n   *      to unlock, returns to unlocked state\n   */\n",
+        "@dev": "called by the owner * to unlock, returns to unlocked state",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "balanceOf",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner_",
+                "type": "address"
+            }
+        ],
+        "func": "function balanceOf(address owner_) public view returns (uint balance) {\n    return balances[owner_];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Gets the balance of the specified address.",
+            "   * @param owner_ The address to query the the balance of.",
+            "   * @return An uint representing the amount owned by the passed address.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Gets the balance of the specified address.\n   * @param owner_ The address to query the the balance of.\n   * @return An uint representing the amount owned by the passed address.\n   */\n",
+        "@dev": "Gets the balance of the specified address.",
+        "@param1": "owner_ The address to query the the balance of.",
+        "@return1": "An uint representing the amount owned by the passed address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transfer",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "value_",
+                "type": "uint"
+            }
+        ],
+        "func": "function transfer(address to_, uint value_) whenNotLocked public returns (bool) {\n    require(to_ != address(0) && value_ <= balances[msg.sender]);\n    // SafeMath.sub will throw if there is not enough balance.\n    balances[msg.sender] = balances[msg.sender].sub(value_);\n    balances[to_] = balances[to_].add(value_);\n    Transfer(msg.sender, to_, value_);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Transfer token for a specified address",
+            "   * @param to_ The address to transfer to.",
+            "   * @param value_ The amount to be transferred.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Transfer token for a specified address\n   * @param to_ The address to transfer to.\n   * @param value_ The amount to be transferred.\n   */\n",
+        "@dev": "Transfer token for a specified address",
+        "@param1": "to_ The address to transfer to.",
+        "@param2": "value_ The amount to be transferred.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "transferFrom",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "from_",
+                "type": "address"
+            },
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "value_",
+                "type": "uint"
+            }
+        ],
+        "func": "function transferFrom(address from_, address to_, uint value_) whenNotLocked public returns (bool) {\n    require(to_ != address(0) && value_ <= balances[from_] && value_ <= allowed[from_][msg.sender]);\n    balances[from_] = balances[from_].sub(value_);\n    balances[to_] = balances[to_].add(value_);\n    allowed[from_][msg.sender] = allowed[from_][msg.sender].sub(value_);\n    Transfer(from_, to_, value_);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Transfer tokens from one address to another",
+            "   * @param from_ address The address which you want to send tokens from",
+            "   * @param to_ address The address which you want to transfer to",
+            "   * @param value_ uint the amount of tokens to be transferred",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Transfer tokens from one address to another\n   * @param from_ address The address which you want to send tokens from\n   * @param to_ address The address which you want to transfer to\n   * @param value_ uint the amount of tokens to be transferred\n   */\n",
+        "@dev": "Transfer tokens from one address to another",
+        "@param1": "from_ address The address which you want to send tokens from",
+        "@param2": "to_ address The address which you want to transfer to",
+        "@param3": "value_ uint the amount of tokens to be transferred",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "approve",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "spender_",
+                "type": "address"
+            },
+            {
+                "name": "value_",
+                "type": "uint"
+            }
+        ],
+        "func": "function approve(address spender_, uint value_) whenNotLocked public returns (bool) {\n    if (value_ != 0 && allowed[msg.sender][spender_] != 0) {\n      revert();\n    }\n    allowed[msg.sender][spender_] = value_;\n    Approval(msg.sender, spender_, value_);\n    return true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.",
+            "   *",
+            "   * Beware that changing an allowance with this method brings the risk that someone may use both the old",
+            "   * and the new allowance by unfortunate transaction ordering.",
+            "   *",
+            "   * To change the approve amount you first have to reduce the addresses",
+            "   * allowance to zero by calling `approve(spender_, 0)` if it is not",
+            "   * already 0 to mitigate the race condition described in:",
+            "   * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+            "   *",
+            "   * @param spender_ The address which will spend the funds.",
+            "   * @param value_ The amount of tokens to be spent.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.\n   *\n   * Beware that changing an allowance with this method brings the risk that someone may use both the old\n   * and the new allowance by unfortunate transaction ordering.\n   *\n   * To change the approve amount you first have to reduce the addresses\n   * allowance to zero by calling `approve(spender_, 0)` if it is not\n   * already 0 to mitigate the race condition described in:\n   * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n   *\n   * @param spender_ The address which will spend the funds.\n   * @param value_ The amount of tokens to be spent.\n   */\n",
+        "@dev": "Approve the passed address to spend the specified amount of tokens on behalf of msg.sender. * * Beware that changing an allowance with this method brings the risk that someone may use both the old * and the new allowance by unfortunate transaction ordering. * * To change the approve amount you first have to reduce the addresses * allowance to zero by calling `approve(spender_, 0)` if it is not * already 0 to mitigate the race condition described in: * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729",
+        "@param1": "spender_ The address which will spend the funds.",
+        "@param2": "value_ The amount of tokens to be spent.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "allowance",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "owner_",
+                "type": "address"
+            },
+            {
+                "name": "spender_",
+                "type": "address"
+            }
+        ],
+        "func": "function allowance(address owner_, address spender_) view public returns (uint) {\n    return allowed[owner_][spender_];\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Function to check the amount of tokens that an owner allowed to a spender.",
+            "   * @param owner_ address The address which owns the funds.",
+            "   * @param spender_ address The address which will spend the funds.",
+            "   * @return A uint specifying the amount of tokens still available for the spender.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Function to check the amount of tokens that an owner allowed to a spender.\n   * @param owner_ address The address which owns the funds.\n   * @param spender_ address The address which will spend the funds.\n   * @return A uint specifying the amount of tokens still available for the spender.\n   */\n",
+        "@dev": "Function to check the amount of tokens that an owner allowed to a spender.",
+        "@param1": "owner_ address The address which owns the funds.",
+        "@param2": "spender_ address The address which will spend the funds.",
+        "@return1": "A uint specifying the amount of tokens still available for the spender.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "BaseICOToken",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "totalSupply_",
+                "type": "uint"
+            }
+        ],
+        "func": "function BaseICOToken(uint totalSupply_) public {\n    locked = true; // Audit: I'd call lock() for better readability\n    totalSupply = totalSupply_;\n    availableSupply = totalSupply_;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Not mintable, ERC20 compilant token, distributed by ICO/Pre-ICO.",
+            "   * @param totalSupply_ Total tokens supply.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Not mintable, ERC20 compilant token, distributed by ICO/Pre-ICO.\n   * @param totalSupply_ Total tokens supply.\n   */\n",
+        "@dev": "Not mintable, ERC20 compilant token, distributed by ICO/Pre-ICO.",
+        "@param1": "totalSupply_ Total tokens supply.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "changeICO",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "ico_",
+                "type": "address"
+            }
+        ],
+        "func": "function changeICO(address ico_) onlyOwner public {\n    ico = ico_;\n    ICOChanged(ico);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Set address of ICO smart-contract which controls token",
+            "   * initial token distribution.",
+            "   * @param ico_ ICO contract address.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Set address of ICO smart-contract which controls token\n   * initial token distribution.\n   * @param ico_ ICO contract address.\n   */\n",
+        "@dev": "Set address of ICO smart-contract which controls token * initial token distribution.",
+        "@param1": "ico_ ICO contract address.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "icoInvestment",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "to_",
+                "type": "address"
+            },
+            {
+                "name": "amount_",
+                "type": "uint"
+            }
+        ],
+        "func": "function icoInvestment(address to_, uint amount_) public returns (uint) {\n    require(isValidICOInvestment(to_, amount_));\n    availableSupply -= amount_; // Audit: Please keep using safe math here too \n    balances[to_] = balances[to_].add(amount_);\n    ICOTokensInvested(to_, amount_);\n    return amount_;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Assign `amount_` of tokens to investor identified by `to_` address.",
+            "   * @param to_ Investor address.",
+            "   * @param amount_ Number of tokens distributed.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Assign `amount_` of tokens to investor identified by `to_` address.\n   * @param to_ Investor address.\n   * @param amount_ Number of tokens distributed.\n   */\n",
+        "@dev": "Assign `amount_` of tokens to investor identified by `to_` address.",
+        "@param1": "to_ Investor address.",
+        "@param2": "amount_ Number of tokens distributed.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "whitelist",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "address_",
+                "type": "address"
+            }
+        ],
+        "func": "function whitelist(address address_) external onlyOwner {\n    whitelist[address_] = true;\n    ICOWhitelisted(address_);\n  }",
+        "comments": [
+            "/**",
+            "   * Add address to ICO whitelist",
+            "   * @param address_ Investor address",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Add address to ICO whitelist\n   * @param address_ Investor address\n   */\n",
+        "@param1": "address_ Investor address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "blacklist",
+        "visibility": "external",
+        "args": [
+            {
+                "name": "address_",
+                "type": "address"
+            }
+        ],
+        "func": "function blacklist(address address_) external onlyOwner {\n    delete whitelist[address_];\n    ICOBlacklisted(address_);\n  }",
+        "comments": [
+            "/**",
+            "   * Remove address from ICO whitelist",
+            "   * @param address_ Investor address",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * Remove address from ICO whitelist\n   * @param address_ Investor address\n   */\n",
+        "@param1": "address_ Investor address",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "whitelisted",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "address_",
+                "type": "address"
+            }
+        ],
+        "func": "function whitelisted(address address_) public view returns (bool) {\n    if (whitelistEnabled) {\n      return whitelist[address_];\n    } else {\n      return true;\n    }\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Returns true if given address in ICO whitelist",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Returns true if given address in ICO whitelist\n   */\n",
+        "@dev": "Returns true if given address in ICO whitelist",
+        "notice_missing": 1,
+        "param_missing": 1,
+        "return_missing": 1,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "enableWhitelist",
+        "visibility": "public",
+        "args": [],
+        "func": "function enableWhitelist() public onlyOwner {\n    whitelistEnabled = true;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Enable whitelisting",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Enable whitelisting\n   */\n",
+        "@dev": "Enable whitelisting",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "disableWhitelist",
+        "visibility": "public",
+        "args": [],
+        "func": "function disableWhitelist() public onlyOwner {\n    whitelistEnabled = false;\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Disable whitelisting",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Disable whitelisting\n   */\n",
+        "@dev": "Disable whitelisting",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "start",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "endAt_",
+                "type": "uint"
+            }
+        ],
+        "func": "function start(uint endAt_) onlyOwner public {\n    require(endAt_ > block.timestamp && state == State.Inactive);\n    endAt = endAt_;\n    startAt = block.timestamp;\n    state = State.Active;\n    ICOStarted(endAt, lowCapWei, hardCapWei, lowCapTxWei, hardCapTxWei);\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Trigger start of ICO.",
+            "   * @param endAt_ ICO end date, seconds since epoch.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Trigger start of ICO.\n   * @param endAt_ ICO end date, seconds since epoch.\n   */\n",
+        "@dev": "Trigger start of ICO.",
+        "@param1": "endAt_ ICO end date, seconds since epoch.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "suspend",
+        "visibility": "public",
+        "args": [],
+        "func": "function suspend() onlyOwner isActive public {\n    state = State.Suspended;\n    ICOSuspended();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Suspend this ICO.",
+            "   * ICO can be activated later by calling `resume()` function.",
+            "   * In suspend state, ICO owner can change basic ICO paraneter using `tune()` function,",
+            "   * tokens cannot be distributed among investors.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Suspend this ICO.\n   * ICO can be activated later by calling `resume()` function.\n   * In suspend state, ICO owner can change basic ICO paraneter using `tune()` function,\n   * tokens cannot be distributed among investors.\n   */\n",
+        "@dev": "Suspend this ICO. * ICO can be activated later by calling `resume()` function. * In suspend state, ICO owner can change basic ICO paraneter using `tune()` function, * tokens cannot be distributed among investors.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "terminate",
+        "visibility": "public",
+        "args": [],
+        "func": "function terminate() onlyOwner public {\n    require(state != State.Terminated &&\n            state != State.NotCompleted &&\n            state != State.Completed);\n    state = State.Terminated;\n    ICOTerminated();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Terminate the ICO.",
+            "   * ICO goals are not reached, ICO terminated and cannot be resumed.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Terminate the ICO.\n   * ICO goals are not reached, ICO terminated and cannot be resumed.\n   */\n",
+        "@dev": "Terminate the ICO. * ICO goals are not reached, ICO terminated and cannot be resumed.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "tune",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "endAt_",
+                "type": "uint"
+            },
+            {
+                "name": "lowCapWei_",
+                "type": "uint"
+            },
+            {
+                "name": "hardCapWei_",
+                "type": "uint"
+            },
+            {
+                "name": "lowCapTxWei_",
+                "type": "uint"
+            },
+            {
+                "name": "hardCapTxWei_",
+                "type": "uint"
+            }
+        ],
+        "func": "function tune(uint endAt_,\n                uint lowCapWei_,\n                uint hardCapWei_,\n                uint lowCapTxWei_,\n                uint hardCapTxWei_) onlyOwner isSuspended public {\n    if (endAt_ > block.timestamp) {\n      endAt = endAt_;\n    }\n    if (lowCapWei_ > 0) {\n      lowCapWei = lowCapWei_;\n    }\n    if (hardCapWei_ > 0) {\n      hardCapWei = hardCapWei_;\n    }\n    if (lowCapTxWei_ > 0) {\n      lowCapTxWei = lowCapTxWei_;\n    }\n    if (hardCapTxWei_ > 0) {\n      hardCapTxWei = hardCapTxWei_;\n    }\n    require(lowCapWei <= hardCapWei && lowCapTxWei <= hardCapTxWei);\n    touch();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Change basic ICO parameters. Can be done only during `Suspended` state.",
+            "   * Any provided parameter is used only if it is not zero.",
+            "   * @param endAt_ ICO end date seconds since epoch. Used if it is not zero.",
+            "   * @param lowCapWei_ ICO low capacity. Used if it is not zero.",
+            "   * @param hardCapWei_ ICO hard capacity. Used if it is not zero.",
+            "   * @param lowCapTxWei_ Min limit for ICO per transaction",
+            "   * @param hardCapTxWei_ Hard limit for ICO per transaction",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Change basic ICO parameters. Can be done only during `Suspended` state.\n   * Any provided parameter is used only if it is not zero.\n   * @param endAt_ ICO end date seconds since epoch. Used if it is not zero.\n   * @param lowCapWei_ ICO low capacity. Used if it is not zero.\n   * @param hardCapWei_ ICO hard capacity. Used if it is not zero.\n   * @param lowCapTxWei_ Min limit for ICO per transaction\n   * @param hardCapTxWei_ Hard limit for ICO per transaction\n   */\n",
+        "@dev": "Change basic ICO parameters. Can be done only during `Suspended` state. * Any provided parameter is used only if it is not zero.",
+        "@param1": "endAt_ ICO end date seconds since epoch. Used if it is not zero.",
+        "@param2": "lowCapWei_ ICO low capacity. Used if it is not zero.",
+        "@param3": "hardCapWei_ ICO hard capacity. Used if it is not zero.",
+        "@param4": "lowCapTxWei_ Min limit for ICO per transaction",
+        "@param5": "hardCapTxWei_ Hard limit for ICO per transaction",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "resume",
+        "visibility": "public",
+        "args": [],
+        "func": "function resume() onlyOwner isSuspended public {\n    state = State.Active;\n    ICOResumed(endAt, lowCapWei, hardCapWei, lowCapTxWei, hardCapTxWei);\n    touch();\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Resume a previously suspended ICO.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Resume a previously suspended ICO.\n   */\n",
+        "@dev": "Resume a previously suspended ICO.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "OTCPreICO",
+        "visibility": "public",
+        "args": [
+            {
+                "name": "icoToken_",
+                "type": "address"
+            },
+            {
+                "name": "teamWallet_",
+                "type": "address"
+            },
+            {
+                "name": "lowCapWei_",
+                "type": "uint"
+            },
+            {
+                "name": "hardCapWei_",
+                "type": "uint"
+            },
+            {
+                "name": "lowCapTxWei_",
+                "type": "uint"
+            },
+            {
+                "name": "hardCapTxWei_",
+                "type": "uint"
+            }
+        ],
+        "func": "function OTCPreICO(address icoToken_,\n                     address teamWallet_,\n                     uint lowCapWei_,\n                     uint hardCapWei_,\n                     uint lowCapTxWei_,\n                     uint hardCapTxWei_) public {\n    require(icoToken_ != address(0) && teamWallet_ != address(0));\n    token = BaseICOToken(icoToken_); \n    teamWallet = teamWallet_;\n    state = State.Inactive;\n    lowCapWei = lowCapWei_;\n    hardCapWei = hardCapWei_;\n    lowCapTxWei = lowCapTxWei_;\n    hardCapTxWei = hardCapTxWei_;\n  }",
+        "comments": [
+            "",
+            "  // Audit: It might be better for these setters to be in a constructur in the BaseICO",
+            "  "
+        ],
+        "comt": "\n  // Audit: It might be better for these setters to be in a constructur in the BaseICO\n  ",
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "touch",
+        "visibility": "public",
+        "args": [],
+        "func": "function touch() public {\n    if (state != State.Active && state != State.Suspended) {\n      return;\n    }\n    if (collectedWei >= hardCapWei) {\n      state = State.Completed;\n      endAt = block.timestamp;\n      ICOCompleted(collectedWei);\n    } else if (block.timestamp >= endAt) {\n      if (collectedWei < lowCapWei) {\n        state = State.NotCompleted;\n        ICONotCompleted();\n      } else {\n        state = State.Completed;\n        ICOCompleted(collectedWei);\n      }\n    }\n  }",
+        "comments": [
+            "/**",
+            "   * @dev Recalculate ICO state based on current block time.",
+            "   * Should be called periodically by ICO owner.",
+            "   */",
+            ""
+        ],
+        "comt": "/**\n   * @dev Recalculate ICO state based on current block time.\n   * Should be called periodically by ICO owner.\n   */\n",
+        "@dev": "Recalculate ICO state based on current block time. * Should be called periodically by ICO owner.",
+        "notice_missing": 1,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 0,
+        "inconsistent_dxn": 1,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    },
+    {
+        "name": "buyTokens",
+        "visibility": "public",
+        "args": [],
+        "func": "function buyTokens() public payable {\n    require(state == State.Active &&\n            block.timestamp <= endAt &&\n            msg.value >= lowCapTxWei &&\n            msg.value <= hardCapTxWei &&\n            collectedWei + msg.value <= hardCapWei &&\n            whitelisted(msg.sender) );\n    uint amountWei = msg.value;\n    uint8 bonus = (block.timestamp - startAt >= 1 weeks) ? 10 : 20;\n    uint iwei = bonus > 0 ? amountWei.mul(100 + bonus).div(100) : amountWei;\n    uint itokens = iwei * ETH_TOKEN_EXCHANGE_RATIO;\n    token.icoInvestment(msg.sender, itokens); // Transfer tokens to investor\n    collectedWei = collectedWei.add(amountWei);\n    ICOInvestment(msg.sender, amountWei, itokens, bonus);\n    forwardFunds();\n    touch();\n  }",
+        "comments": [],
+        "notice_missing": 0,
+        "param_missing": 0,
+        "return_missing": 0,
+        "no_comment": 1,
+        "inconsistent_dxn": 0,
+        "inconsistent_others": 0,
+        "low_quality": 0
+    }
+]
