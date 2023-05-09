@@ -15,11 +15,6 @@ TsimCtr = 0
 TunsimCtr = 0
 synonym_sets = []
 
-with open("synonym.txt", "r") as file:
-    for line in file:
-        words = line.strip().split()
-        synonym_sets.append(set(words))
-
 sim = {
     "@notice":[0,0],
     "@param":[0,0],
@@ -149,138 +144,46 @@ for root, dirs, files in os.walk(data_dir):
                                             tag["d"][3]+=1
 
                                 else:
-                                    w1 = stemmed_words1[0]
-                                    w2 = stemmed_words2[0]
+                                    TunsimCtr+=1    
 
-                                    if key[0:6]=="@param" and data[key].split()[0] not in ("from", "to"):
-                                        w1 = stemmed_words1[1]
-                                        w2 = stemmed_words2[1]        
+                                    if key!="@dev":
+                                        tag[key[1]+"p"] = np.append(tag[key[1]+"p"],percentage)
 
-                                    if w1==w2:
-                                        TsimCtr+=1
+                                    if key[0:6]=="@param":
+                                        tag[key[0:6]][1]+=1
 
-                                        if key!="@dev":
-                                            tag[key[1]+"p"] = np.append(tag[key[1]+"p"],percentage)
-
-                                        if key[0:6]=="@param":
-                                            tag[key[0:6]][0]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["p"][0]+=1
-
-                                            else:
-                                                tag["p"][1]+=1
-
-                                        elif key[0:7]=="@return":
-                                            tag[key[0:7]][0]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["r"][0]+=1
-
-                                            else:
-                                                tag["r"][1]+=1
-
-                                        elif key=="@notice":
-                                            tag["@notice"][0]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["n"][0]+=1
-
-                                            else:
-                                                tag["n"][1]+=1
+                                        if data["@t"+key[1:]]==0:
+                                            tag["p"][2]+=1
 
                                         else:
-                                            tag["@dev"][1]+=1
+                                            tag["p"][3]+=1
 
-                                            if data["@t"+key[1:]]==0:
-                                                tag["d"][2]+=1
+                                    elif key[0:7]=="@return":
+                                        tag[key[0:7]][1]+=1
 
-                                            else:
-                                                tag["d"][3]+=1
-
-                                    elif any({w1, w2} <= synonym_set for synonym_set in synonym_sets):
-                                        TsimCtr+=1
-
-                                        if key!="@dev":
-                                            tag[key[1]+"p"] = np.append(tag[key[1]+"p"],percentage)
-
-                                        if key[0:6]=="@param":
-                                            tag[key[0:6]][0]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["p"][0]+=1
-
-                                            else:
-                                                tag["p"][1]+=1
-
-                                        elif key[0:7]=="@return":
-                                            tag[key[0:7]][0]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["r"][0]+=1
-
-                                            else:
-                                                tag["r"][1]+=1
-
-                                        elif key=="@notice":
-                                            tag["@notice"][0]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["n"][0]+=1
-
-                                            else:
-                                                tag["n"][1]+=1
+                                        if data["@t"+key[1:]]==0:
+                                            tag["r"][2]+=1
 
                                         else:
-                                            tag["@dev"][1]+=1
+                                            tag["r"][3]+=1
 
-                                            if data["@t"+key[1:]]==0:
-                                                tag["d"][2]+=1
+                                    elif key=="@notice":
+                                        tag["@notice"][1]+=1
 
-                                            else:
-                                                tag["d"][3]+=1
+                                        if data["@t"+key[1:]]==0:
+                                            tag["n"][2]+=1
+
+                                        else:
+                                            tag["n"][3]+=1
 
                                     else:
-                                        TunsimCtr+=1    
+                                        tag["@dev"][0]+=1
 
-                                        if key!="@dev":
-                                            tag[key[1]+"p"] = np.append(tag[key[1]+"p"],percentage)
-
-                                        if key[0:6]=="@param":
-                                            tag[key[0:6]][1]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["p"][2]+=1
-
-                                            else:
-                                                tag["p"][3]+=1
-
-                                        elif key[0:7]=="@return":
-                                            tag[key[0:7]][1]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["r"][2]+=1
-
-                                            else:
-                                                tag["r"][3]+=1
-
-                                        elif key=="@notice":
-                                            tag["@notice"][1]+=1
-
-                                            if data["@t"+key[1:]]==0:
-                                                tag["n"][2]+=1
-
-                                            else:
-                                                tag["n"][3]+=1
+                                        if data["@t"+key[1:]]==1:
+                                            tag["d"][1]+=1
 
                                         else:
-                                            tag["@dev"][0]+=1
-
-                                            if data["@t"+key[1:]]==1:
-                                                tag["d"][1]+=1
-
-                                            else:
-                                                tag["d"][0]+=1
+                                            tag["d"][0]+=1
 
                     for k,v in tag.items():
 
