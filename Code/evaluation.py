@@ -13,7 +13,6 @@ from nltk.stem import PorterStemmer
 ps = PorterStemmer()
 TsimCtr = 0
 TunsimCtr = 0
-synonym_sets = []
 
 sim = {
     "@notice":[0,0],
