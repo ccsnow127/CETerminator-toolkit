@@ -1,7 +1,7 @@
 # CETerminator
 <p align="center">
     <br>
-    <img src="Knowledge-Graph.webp" width="300"/>
+    <img src="Learn_Illustration_What_is_a_Smart_Contract__1_.png" width="300"/>
     <br>
 </p>
 
